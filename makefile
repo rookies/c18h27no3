@@ -2,18 +2,18 @@
 ## Target:
 TARGET = game
 ## Object-Files:
-OBJECTS = 	build/main.o \
-			build/padding_data_calculator.o \
-			build/game.o \
-			build/video_sequence.o \
-			build/cursor.o
+OBJECTS = build/main.o \
+          build/padding_data_calculator.o \
+          build/game.o \
+          build/video_sequence.o \
+          build/cursor.o
 ## Headers:
-HEADERS = 	src/main.h \
-			src/globals.h \
-			src/padding_data_calculator.h \
-			src/game.h \
-			src/video_sequence.h \
-			src/cursor.h
+HEADERS = src/main.h \
+          src/globals.h \
+          src/padding_data_calculator.h \
+          src/game.h \
+          src/video_sequence.h \
+          src/cursor.h
 ## Libs:
 LIBS = sdl SDL_image SDL_gfx libavformat libavcodec
 ## Compiler-Flags:
