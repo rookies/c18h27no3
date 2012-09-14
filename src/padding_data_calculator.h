@@ -1,7 +1,7 @@
 #ifndef _padding_data_calculator_h_
-	#define _padding_data_calculator_h_
+#	define _padding_data_calculator_h_
 	
-	#include <iostream>
+#	include <iostream>
 	
 	class PaddingDataCalculator
 	{

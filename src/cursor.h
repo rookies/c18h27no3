@@ -1,9 +1,9 @@
 #ifndef _cursor_h_
-	#define _cursor_h_
+#	define _cursor_h_
 	
-	#include <iostream>
-	#include <SDL.h>
-	#include "globals.h"
+#	include <iostream>
+#	include <SDL.h>
+#	include "globals.h"
 	
 	class Cursor
 	{

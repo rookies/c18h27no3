@@ -6,14 +6,19 @@ OBJECTS = build/main.o \
           build/padding_data_calculator.o \
           build/game.o \
           build/video_sequence.o \
-          build/cursor.o
+          build/cursor.o \
+          build/config_linux.o
 ## Headers:
 HEADERS = src/main.h \
           src/globals.h \
           src/padding_data_calculator.h \
           src/game.h \
           src/video_sequence.h \
-          src/cursor.h
+          src/cursor.h \
+          src/config.h \
+          src/config_linux.h \
+          src/config_windows.h \
+          src/config_common.h
 ## Libs:
 LIBS = sdl SDL_image SDL_gfx libavformat libavcodec
 ## Compiler-Flags:

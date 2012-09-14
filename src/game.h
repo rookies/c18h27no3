@@ -1,13 +1,14 @@
 #ifndef _game_h_
-	#define _game_h_
+#	define _game_h_
 	
-	#include <iostream>
-	#include <SDL.h>
-	#include <SDL_image.h>
-	#include <SDL_rotozoom.h>
-	#include "padding_data_calculator.h"
-	#include "video_sequence.h"
-	#include "cursor.h"
+#	include <iostream>
+#	include <SDL.h>
+#	include <SDL_image.h>
+#	include <SDL_rotozoom.h>
+#	include "padding_data_calculator.h"
+#	include "video_sequence.h"
+#	include "cursor.h"
+#	include "config.h"
 	
 	class Game
 	{
@@ -53,6 +54,7 @@
 			PaddingDataCalculator m_padding_data_calculator;
 			VideoSequence m_video_sequence;
 			Cursor m_cursor;
+			Config m_config;
 			/*
 			 * Game mode:
 			 *  0 - undefined

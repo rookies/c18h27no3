@@ -1,0 +1,11 @@
+=== CONFIGURATION ===
+== Linux ==
+~/.<game>/config.bin
+= Binary format =
+[...]
+== Windows ==
+Registry: HKEY_CURRENT_USER\Software\<corporation>\<game>
+= Keys =
+[...]
+=== LEVELS ===
+[...]
