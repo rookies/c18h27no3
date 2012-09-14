@@ -19,6 +19,8 @@ int Game::init(int w, int h, int fullscreen)
 	Uint32 flags;
 	int w_;
 	int h_;
+	const SDL_VideoInfo *videoinfo;
+	SDL_Rect **modes;
 	/*
 	 * Initialize SDL:
 	*/
@@ -37,18 +39,18 @@ int Game::init(int w, int h, int fullscreen)
 	 * Get video info:
 	*/
 	cout << "Getting video info..." << endl;
-	m_videoinfo = SDL_GetVideoInfo();
-	cout << "  Screen Resolution: " << m_videoinfo->current_w << "x" << m_videoinfo->current_h << endl;
+	videoinfo = SDL_GetVideoInfo();
+	cout << "  Screen Resolution: " << videoinfo->current_w << "x" << videoinfo->current_h << endl;
 	/*
 	 * Check forced screen width:
 	*/
 	if (w == -1)
 	{
-		w_ = m_videoinfo->current_w;
+		m_screen_w = videoinfo->current_w;
 	}
 	else
 	{
-		w_ = w;
+		m_screen_w = w;
 		cout << "  Forced Screen Width: " << w << endl;
 	};
 	/*
@@ -56,32 +58,32 @@ int Game::init(int w, int h, int fullscreen)
 	*/
 	if (h == -1)
 	{
-		h_ = m_videoinfo->current_h;
+		m_screen_h = videoinfo->current_h;
 	}
 	else
 	{
-		h_ = h;
+		m_screen_h = h;
 		cout << "  Forced Screen Height: " << h << endl;
 	};
 	/*
 	 * Create flag variable:
 	*/
 	if (fullscreen == 1)
-		flags = SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF;
+		m_screenflags = SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF;
 	else
-		flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+		m_screenflags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 	/*
 	 * Get modes:
 	*/
 	cout << "Getting video modes... ";
-	m_modes = SDL_ListModes(NULL, flags);
-	if (m_modes == (SDL_Rect**)0)
+	modes = SDL_ListModes(NULL, m_screenflags);
+	if (modes == (SDL_Rect**)0)
 	{
 		cout << "[FAIL]" << endl;
 		cout << "Error: No modes available!" << endl;
 		return 1;
 	}
-	else if (m_modes == (SDL_Rect**)-1)
+	else if (modes == (SDL_Rect**)-1)
 	{
 		cout << "[DONE]" << endl;
 		cout << "All modes available!" << endl;
@@ -90,53 +92,28 @@ int Game::init(int w, int h, int fullscreen)
 	{
 		cout << "[DONE]" << endl;
 		cout << "Available modes:" << endl;
-		for (i=0; m_modes[i]; i++)
-			cout <<  "  " << m_modes[i]->w << "x" << m_modes[i]->h << endl;
+		for (i=0; modes[i]; i++)
+			cout <<  "  " << modes[i]->w << "x" << modes[i]->h << endl;
 	};
 	/*
-	 * Set video mode:
+	 * Init window:
 	*/
-	cout << "Setting video mode (" << w_ << "x" << h_ << ")... ";
-	m_screen = SDL_SetVideoMode(w_, h_, 32, flags);
-	if (m_screen == NULL)
-	{
-		cout << "[FAIL]" << endl;
-		cout << "Error: " << SDL_GetError() << endl;
+	if (init_window() == 1)
 		return 1;
-	};
-	cout << "[DONE]" << endl;
-	/*
-	 * Set window caption:
-	*/
-	SDL_WM_SetCaption("Game", NULL);
-	/*
-	 * Calculate padding data:
-	*/
-	m_padding_data_calculator.set_screen_w(double(w_));
-	m_padding_data_calculator.set_screen_h(double(h_));
-	m_padding_data_calculator.calculate();
-	/*
-	 * Create padded surface:
-	*/
-	if (create_surface() == 1)
-		return 1;
-	/*
-	 * Init cursor:
-	*/
-	SDL_ShowCursor(0);
-	if (m_cursor.init() == 1)
-		return 1;
-	m_cursor.set_surface(m_surface);
-	m_cursor.set_mouse_position(
-		int(m_padding_data_calculator.get_usable_w()/2.0),
-		int(m_padding_data_calculator.get_usable_h()/2.0)
-	);
 	/*
 	 * Finish successful:
 	*/
 	return 0;
 }
-void Game::loop(void)
+int Game::uninit(void)
+{
+	SDL_FreeSurface(m_surface);
+	SDL_FreeSurface(m_screen);
+	m_cursor.uninit();
+	SDL_Quit();
+	return 0;
+}
+int Game::loop(void)
 {
 	/*
 	 * Variable definitons:
@@ -178,7 +155,7 @@ void Game::loop(void)
 		SDL_BlitSurface(img2, NULL, m_surface, &rect2);
 		SDL_FreeSurface(img2);
 		SDL_FreeSurface(img);
-		m_cursor.draw();
+		m_cursor.draw(m_surface);
 		/*
 		 * Update padded surface:
 		*/
@@ -194,6 +171,7 @@ void Game::loop(void)
 		SDL_UpdateRect(m_screen, 0, 0, 0, 0);
         SDL_Flip(m_screen);
 	}
+	return done;
 }
 int Game::process_events(void)
 {
@@ -290,6 +268,10 @@ int Game::process_events(void)
 						cout << "ESCAPE key pressed." << endl;
 						return 1;
 						break;
+					case SDLK_F1:
+						cout << "F1 key pressed." << endl;
+						return 2;
+						break;
 				}
 				break;
 			case SDL_QUIT:
@@ -306,7 +288,6 @@ int Game::process_events(void)
 int Game::create_surface(void)
 {
 	cout << "Creating padded surface... ";
-	m_surface = NULL;
 	m_surface = SDL_CreateRGBSurface(
 		SDL_HWSURFACE,
 		int(m_padding_data_calculator.get_usable_w()),
@@ -325,4 +306,48 @@ int Game::create_surface(void)
 	};
 	cout << "[DONE]" << endl;
 	return 0;
+}
+int Game::calculate_sizes(void)
+{
+	
+}
+int Game::init_window(void)
+{
+	/*
+	 * Set video mode:
+	*/
+	cout << "Setting video mode (" << m_screen_w << "x" << m_screen_h << ")... ";
+	m_screen = SDL_SetVideoMode(m_screen_w, m_screen_h, 32, m_screenflags);
+	if (m_screen == NULL)
+	{
+		cout << "[FAIL]" << endl;
+		cout << "Error: " << SDL_GetError() << endl;
+		return 1;
+	};
+	cout << "[DONE]" << endl;
+	/*
+	 * Set window caption:
+	*/
+	SDL_WM_SetCaption("Game", NULL);
+	/*
+	 * Calculate padding data:
+	*/
+	m_padding_data_calculator.set_screen_w(double(m_screen_w));
+	m_padding_data_calculator.set_screen_h(double(m_screen_h));
+	m_padding_data_calculator.calculate();
+	/*
+	 * Create padded surface:
+	*/
+	if (create_surface() == 1)
+		return 1;
+	/*
+	 * Init cursor:
+	*/
+	SDL_ShowCursor(0);
+	if (m_cursor.init() == 1)
+		return 1;
+	m_cursor.set_mouse_position(
+		int(m_padding_data_calculator.get_usable_w()/2.0),
+		int(m_padding_data_calculator.get_usable_h()/2.0)
+	);
 }

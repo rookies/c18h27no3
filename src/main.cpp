@@ -33,7 +33,15 @@ int main(int argc, char **argv)
 	/*
 	 * Start event loop:
 	*/
-	game.loop();
+	while (game.loop() == 2)
+	{
+		game.uninit();
+		if (game.init(w, h, fullscreen) == 1)
+		{
+			SDL_Quit();
+			return 1;
+		};
+	}
 	/*
 	 * Shutdown:
 	*/

@@ -16,13 +16,14 @@
 			~Game();
 			
 			/*
-			 * Init game:
+			 * (Un)Init game:
 			*/
 			int init(int w, int h, int fullscreen);
+			int uninit(void);
 			/*
 			 * Start main loop:
 			*/
-			void loop(void);
+			int loop(void);
 		private:
 			/*
 			 * Process events:
@@ -32,14 +33,23 @@
 			 * Create surface:
 			*/
 			int create_surface(void);
+			/*
+			 * Calculate sizes:
+			*/
+			int calculate_sizes(void);
+			/*
+			 * Init window:
+			*/
+			int init_window(void);
 			
 			/*
 			 * Internal variables:
 			*/
-			const SDL_VideoInfo *m_videoinfo;
-			SDL_Rect **m_modes;
 			SDL_Surface *m_screen;
 			SDL_Surface *m_surface;
+			Uint32 m_screenflags;
+			int m_screen_w;
+			int m_screen_h;
 			PaddingDataCalculator m_padding_data_calculator;
 			VideoSequence m_video_sequence;
 			Cursor m_cursor;

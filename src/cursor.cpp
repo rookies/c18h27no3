@@ -8,8 +8,7 @@ Cursor::Cursor()
 }
 Cursor::~Cursor()
 {
-	SDL_FreeSurface(m_cursor1);
-	SDL_FreeSurface(m_cursor2);
+	uninit();
 }
 int Cursor::init(void)
 {
@@ -31,10 +30,12 @@ int Cursor::init(void)
 		return 1;
 	};
 	cout << "[DONE]" << endl;
+	return 0;
 }
-void Cursor::set_surface(SDL_Surface *surface)
+void Cursor::uninit(void)
 {
-	m_surface = surface;
+	SDL_FreeSurface(m_cursor1);
+	SDL_FreeSurface(m_cursor2);
 }
 void Cursor::set_mouse_position(int x, int y)
 {
@@ -49,18 +50,18 @@ int Cursor::get_mouse_position_y(void)
 {
 	return m_mouse_y;
 }
-void Cursor::draw(void)
+void Cursor::draw(SDL_Surface *surface)
 {
 	SDL_Rect dst_rect;
 	
 	dst_rect.x = m_mouse_x-CURSOR_WIDTH/2;
 	dst_rect.y = m_mouse_y-CURSOR_HEIGHT/2;
-	dst_rect.w = m_surface->w;
-	dst_rect.h = m_surface->h;
+	dst_rect.w = surface->w;
+	dst_rect.h = surface->h;
 	if (m_actioncursor_active == 1)
-		SDL_BlitSurface(m_cursor2, NULL, m_surface, &dst_rect);
+		SDL_BlitSurface(m_cursor2, NULL, surface, &dst_rect);
 	else
-		SDL_BlitSurface(m_cursor1, NULL, m_surface, &dst_rect);
+		SDL_BlitSurface(m_cursor1, NULL, surface, &dst_rect);
 }
 void Cursor::activate_action_cursor(void)
 {

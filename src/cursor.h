@@ -15,10 +15,7 @@
 			 * Init cursor:
 			*/
 			int init(void);
-			/*
-			 * Set drawing surface:
-			*/
-			void set_surface(SDL_Surface *surface);
+			void uninit(void);
 			/*
 			 * Set mouse position:
 			*/
@@ -31,7 +28,7 @@
 			/*
 			 * Draw cursor:
 			*/
-			void draw(void);
+			void draw(SDL_Surface *surface);
 			/*
 			 * (De)Activate action cursor:
 			*/
@@ -45,7 +42,6 @@
 			/*
 			 * Internal variables:
 			*/
-			SDL_Surface *m_surface;
 			SDL_Surface *m_cursor1;
 			SDL_Surface *m_cursor2;
 			int m_mouse_x;
