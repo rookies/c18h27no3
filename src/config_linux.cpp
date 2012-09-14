@@ -1,4 +1,4 @@
-#include "config.h"
+#include "config_linux.h"
 
 Config::Config()
 {
