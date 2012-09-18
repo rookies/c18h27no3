@@ -2,13 +2,11 @@
 #	define _game_h_
 	
 #	include <iostream>
-#	include <SDL.h>
-#	include <SDL_image.h>
-#	include <SDL_rotozoom.h>
+#	include <SFML/Window.hpp>
 #	include "padding_data_calculator.h"
-#	include "video_sequence.h"
 #	include "cursor.h"
-#	include "config.h"
+//#	include "video_sequence.h"
+//#	include "config.h"
 	
 	class Game
 	{
@@ -31,30 +29,23 @@
 			*/
 			int process_events(void);
 			/*
-			 * Create surface:
-			*/
-			int create_surface(void);
-			/*
 			 * Calculate sizes:
 			*/
 			int calculate_sizes(void);
-			/*
-			 * Init window:
-			*/
-			int init_window(void);
 			
 			/*
 			 * Internal variables:
 			*/
-			SDL_Surface *m_screen;
-			SDL_Surface *m_surface;
-			Uint32 m_screenflags;
 			int m_screen_w;
 			int m_screen_h;
+			int m_screen_bits;
+			sf::RenderWindow m_window;
+			sf::RenderTexture m_texture;
 			PaddingDataCalculator m_padding_data_calculator;
-			VideoSequence m_video_sequence;
 			Cursor m_cursor;
-			Config m_config;
+			//VideoSequence m_video_sequence;
+			//Config m_config;
+			int m_frames;
 			/*
 			 * Game mode:
 			 *  0 - undefined

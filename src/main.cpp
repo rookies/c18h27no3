@@ -12,12 +12,12 @@ int main(int argc, char **argv)
 	/*
 	 * Variable definitions:
 	*/
-	//w = -1; // auto resolution
-	w = 1280;
-	//h = -1; // auto resolution
-	h = 800;
-	//fullscreen = 1; // fullscreen
-	fullscreen = 0;
+	w = -1; // auto resolution
+	//w = 1280;
+	h = -1; // auto resolution
+	//h = 800;
+	fullscreen = 1; // fullscreen
+	//fullscreen = 0;
 	/*
 	 * Startup:
 	*/
@@ -27,7 +27,6 @@ int main(int argc, char **argv)
 	*/
 	if (game.init(w, h, fullscreen) == 1)
 	{
-		SDL_Quit();
 		return 1;
 	};
 	/*
@@ -38,7 +37,6 @@ int main(int argc, char **argv)
 		game.uninit();
 		if (game.init(w, h, fullscreen) == 1)
 		{
-			SDL_Quit();
 			return 1;
 		};
 	}
@@ -46,6 +44,5 @@ int main(int argc, char **argv)
 	 * Shutdown:
 	*/
 	cout << "Shutting down." << endl;
-	SDL_Quit();
 	return 0;
 }
