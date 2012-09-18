@@ -81,8 +81,8 @@ int Game::init(int w, int h, int fullscreen)
 	if (m_cursor.init() == 1)
 		return 1;
 	m_cursor.set_mouse_position(
-		int(m_padding_data_calculator.get_usable_w()/2.0),
-		int(m_padding_data_calculator.get_usable_h()/2.0)
+		sf::Mouse::getPosition().x,
+		sf::Mouse::getPosition().y
 	);
 	/*
 	 * Finish successful:
