@@ -3,7 +3,7 @@
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
-#	include "globals.h"
+#	include "globals.hpp"
 	
 	class Cursor
 	{

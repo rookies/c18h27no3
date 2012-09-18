@@ -1,4 +1,4 @@
-#include "config_windows.h"
+#include "config_windows.hpp"
 
 /*
  * REG_BINARY, REG_DWORD

@@ -1,4 +1,4 @@
-#include "cursor.h"
+#include "cursor.hpp"
 
 using namespace std;
 

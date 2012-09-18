@@ -1,4 +1,4 @@
-#include "video_sequence.h"
+#include "video_sequence.hpp"
 
 using namespace std;
 

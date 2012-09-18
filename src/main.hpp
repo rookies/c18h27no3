@@ -2,8 +2,8 @@
 #	define _main_h_
 	
 #	include <iostream>
-#	include "globals.h"
-#	include "game.h"
+#	include "globals.hpp"
+#	include "game.hpp"
 	
 	int main(int argc, char **argv);
 #endif // _main_h_

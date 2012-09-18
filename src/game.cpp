@@ -1,4 +1,4 @@
-#include "game.h"
+#include "game.hpp"
 
 Game::Game()
 {
@@ -143,7 +143,7 @@ int Game::loop(void)
 		);
 		m_window.draw(sprite);
 		m_window.display();
-		if (frames == 100)
+		if (frames == 500)
 		{
 			std::cout << (frames/framerate_clock.getElapsedTime().asSeconds()) << " fps" << std::endl;
 			framerate_clock.restart();

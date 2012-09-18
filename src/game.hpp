@@ -3,10 +3,10 @@
 	
 #	include <iostream>
 #	include <SFML/Window.hpp>
-#	include "padding_data_calculator.h"
-#	include "cursor.h"
-//#	include "video_sequence.h"
-//#	include "config.h"
+#	include "padding_data_calculator.hpp"
+#	include "cursor.hpp"
+#	include "video_sequence.hpp"
+#	include "config.hpp"
 	
 	class Game
 	{

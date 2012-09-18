@@ -1,7 +1,7 @@
 #ifndef _config_linux_h_
 #	define _config_linux_h_
 	
-#	include "config_common.h"
+#	include "config_common.hpp"
 	
 	class Config
 	{
