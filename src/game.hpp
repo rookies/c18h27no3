@@ -2,6 +2,8 @@
 #	define _game_h_
 	
 #	include <iostream>
+#	include <string>
+#	include <sstream>
 #	include <SFML/Window.hpp>
 #	include "padding_data_calculator.hpp"
 #	include "cursor.hpp"

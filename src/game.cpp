@@ -104,6 +104,9 @@ int Game::loop(void)
 	sf::Sprite sprite;
 	sf::Texture img1;
 	sf::Sprite img1_sprite;
+	sf::Text text1;
+	sf::String text1_str;
+	std::ostringstream text1_float;
 	/*
 	 * Load img1:
 	*/
@@ -112,6 +115,12 @@ int Game::loop(void)
 	img1_sprite.setPosition(10, 10);
 	img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	img1_sprite.setScale(10, 10);
+	/*
+	 * Load text1:
+	*/
+	text1.setCharacterSize(20);
+	text1.setColor(sf::Color::Red);
+	text1.setPosition(10, m_padding_data_calculator.get_usable_h()-30);
 	/*
 	 * Reset framerate clock:
 	*/
@@ -140,6 +149,7 @@ int Game::loop(void)
 			 * Draw everything on padded texture and show it:
 			*/
 			m_texture.draw(img1_sprite);
+			m_texture.draw(text1);
 			m_texture.draw(m_cursor.get_drawable());
 			m_texture.display();
 			/*
@@ -156,9 +166,14 @@ int Game::loop(void)
 			/*
 			 * Calculate framerate:
 			*/
-			if (m_framerate_frames == 1000)
+			if (m_framerate_frames == 500)
 			{
 				std::cout << (m_framerate_frames/m_framerate_clock.getElapsedTime().asSeconds()) << " fps" << std::endl;
+				text1_float.str("");
+				text1_float << (m_framerate_frames/m_framerate_clock.getElapsedTime().asSeconds());
+				text1_str = text1_float.str();
+				text1_str += " fps";
+				text1.setString(text1_str);
 				m_framerate_clock.restart();
 				m_framerate_frames = 0;
 			}
