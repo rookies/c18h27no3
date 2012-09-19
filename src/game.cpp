@@ -58,6 +58,7 @@ int Game::init(int w, int h, int fullscreen)
 	else
 		m_window.create(sf::VideoMode(m_screen_w, m_screen_h, m_screen_bits), "Game");
 	std::cout << "[DONE]" << std::endl;
+	m_window_has_focus = 1;
 	/*
 	 * Calculate padding data:
 	*/
@@ -91,6 +92,7 @@ int Game::init(int w, int h, int fullscreen)
 }
 int Game::uninit(void)
 {
+	m_window.close();
 	return EXIT_SUCCESS;
 }
 int Game::loop(void)
@@ -100,10 +102,8 @@ int Game::loop(void)
 	*/
 	int done = 0;
 	sf::Sprite sprite;
-	sf::Clock framerate_clock;
 	sf::Texture img1;
 	sf::Sprite img1_sprite;
-	int frames = 0;
 	/*
 	 * Load img1:
 	*/
@@ -112,6 +112,11 @@ int Game::loop(void)
 	img1_sprite.setPosition(10, 10);
 	img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	img1_sprite.setScale(10, 10);
+	/*
+	 * Reset framerate clock:
+	*/
+	m_framerate_clock.restart();
+	m_framerate_frames = 0;
 	/*
 	 * Main loop:
 	*/
@@ -122,42 +127,86 @@ int Game::loop(void)
 		*/
 		done = process_events();
 		/*
-		 * Clean window and padded texture:
+		 * Check if we have to draw the stuff:
 		*/
-		m_window.clear();
-		m_texture.clear(sf::Color::White);
-		/*
-		 * Draw everything on padded texture and show it:
-		*/
-		m_texture.draw(img1_sprite);
-		m_texture.draw(m_cursor.get_drawable());
-		m_texture.display();
-		/*
-		 * Draw padded texture on window and show it:
-		*/
-		sprite = sf::Sprite();
-		sprite.setTexture(m_texture.getTexture());
-		sprite.setPosition(
-			m_padding_data_calculator.get_padding_x(),
-			m_padding_data_calculator.get_padding_y()
-		);
-		m_window.draw(sprite);
-		m_window.display();
-		if (frames == 500)
+		if (m_window_has_focus == 1)
 		{
-			std::cout << (frames/framerate_clock.getElapsedTime().asSeconds()) << " fps" << std::endl;
-			framerate_clock.restart();
-			frames = 0;
+			/*
+			 * Clean window and padded texture:
+			*/
+			m_window.clear();
+			m_texture.clear(sf::Color::White);
+			/*
+			 * Draw everything on padded texture and show it:
+			*/
+			m_texture.draw(img1_sprite);
+			m_texture.draw(m_cursor.get_drawable());
+			m_texture.display();
+			/*
+			 * Draw padded texture on window and show it:
+			*/
+			sprite = sf::Sprite();
+			sprite.setTexture(m_texture.getTexture());
+			sprite.setPosition(
+				m_padding_data_calculator.get_padding_x(),
+				m_padding_data_calculator.get_padding_y()
+			);
+			m_window.draw(sprite);
+			m_window.display();
+			/*
+			 * Calculate framerate:
+			*/
+			if (m_framerate_frames == 1000)
+			{
+				std::cout << (m_framerate_frames/m_framerate_clock.getElapsedTime().asSeconds()) << " fps" << std::endl;
+				m_framerate_clock.restart();
+				m_framerate_frames = 0;
+			}
+			else
+				m_framerate_frames++;
 		}
 		else
-			frames++;
+		{
+			/*
+			 * We have no focus, so we sleep:
+			*/
+			if (wait_for_focus() == 1)
+				return 1;
+		};
 	}
 	return done;
+}
+int Game::wait_for_focus(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	sf::Event event;
+	/*
+	 * Wait for events:
+	*/
+	while (m_window.waitEvent(event))
+	{
+		switch (event.type)
+		{
+			case sf::Event::GainedFocus:
+				std::cout << "GainedFocus" << std::endl;
+				m_window_has_focus = 1;
+				m_framerate_clock.restart();
+				m_framerate_frames = 0;
+				return 0;
+				break;
+			case sf::Event::Closed:
+				std::cout << "QUIT signal received." << std::endl;
+				return 1;
+				break;
+		}
+	}
 }
 int Game::process_events(void)
 {
 	/*
-	 * Variable definitons:
+	 * Variable declarations:
 	*/
 	sf::Event event;
 	int x, y;
@@ -258,6 +307,16 @@ int Game::process_events(void)
 				else if (y > m_padding_data_calculator.get_usable_h())
 					y = m_padding_data_calculator.get_usable_h();
 				std::cout << " @ (" << x << "," << y << ")" << std::endl;
+				break;
+			case sf::Event::LostFocus:
+				std::cout << "LostFocus" << std::endl;
+				m_window_has_focus = 0;
+				break;
+			case sf::Event::GainedFocus:
+				std::cout << "GainedFocus" << std::endl;
+				m_window_has_focus = 1;
+				m_framerate_clock.restart();
+				m_framerate_frames = 0;
 				break;
 		}
 	}

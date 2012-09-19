@@ -25,6 +25,10 @@
 			int loop(void);
 		private:
 			/*
+			 * Wait for focus:
+			*/
+			int wait_for_focus(void);
+			/*
 			 * Process events:
 			*/
 			int process_events(void);
@@ -39,13 +43,16 @@
 			int m_screen_w;
 			int m_screen_h;
 			int m_screen_bits;
+			int m_framerate_frames;
 			sf::RenderWindow m_window;
 			sf::RenderTexture m_texture;
+			sf::Clock m_framerate_clock;
 			PaddingDataCalculator m_padding_data_calculator;
 			Cursor m_cursor;
 			//VideoSequence m_video_sequence;
 			//Config m_config;
 			int m_frames;
+			int m_window_has_focus;
 			/*
 			 * Game mode:
 			 *  0 - undefined
