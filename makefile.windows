@@ -1,0 +1,42 @@
+### OPTIONS
+## Target:
+TARGET = game.exe
+## Object-Files:
+OBJECTS = build.windows/main.cpp.o \
+          build.windows/game.cpp.o \
+          build.windows/padding_data_calculator.cpp.o \
+          build.windows/cursor.cpp.o \
+          build.windows/video_sequence.cpp.o \
+          build.windows/config_windows.cpp.o
+## Headers:
+HEADERS = src/main.hpp \
+          src/globals.hpp \
+          src/game.hpp \
+          src/padding_data_calculator.hpp \
+          src/cursor.hpp \
+          src/video_sequence.hpp \
+          src/config.hpp \
+          src/config_linux.hpp \
+          src/config_windows.hpp \
+          src/config_common.hpp
+## Libs:
+LIBS = sfml-window sfml-graphics sfml-system libavformat libavcodec
+LIBFILES = windows_env/lib/libsfml-window.a \
+           windows_env/lib/libsfml-graphics.a \
+           windows_env/lib/libsfml-system.a \
+           windows_env/lib/avformat-54.dll \
+           windows_env/lib/avcodec-54.dll
+## Compiler-Flags:
+CFLAGS = -c -I/usr/include `pkg-config $(LIBS) --cflags`
+## Linker-Flags:
+LFLAGS = $(LIBFILES) -static
+
+### TARGETS
+## link all:
+all: $(TARGET) makefile.windows
+## link exe:
+$(TARGET): $(OBJECTS)
+	i486-mingw32-g++ -o $@ $(OBJECTS) $(LFLAGS)
+## compile src/*.cpp to build.windows/*.o:
+build.windows/%.cpp.o : src/%.cpp $(HEADERS)
+	i486-mingw32-g++ $< -o $@ $(CFLAGS)

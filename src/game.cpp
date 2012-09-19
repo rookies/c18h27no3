@@ -104,7 +104,7 @@ int Game::loop(void)
 	sf::Sprite sprite;
 	sf::Texture img1;
 	sf::Sprite img1_sprite;
-	sf::Text text1;
+	sf::Text text1("0 fps");
 	sf::String text1_str;
 	std::ostringstream text1_float;
 	/*
@@ -168,12 +168,24 @@ int Game::loop(void)
 			*/
 			if (m_framerate_frames == 500)
 			{
-				std::cout << (m_framerate_frames/m_framerate_clock.getElapsedTime().asSeconds()) << " fps" << std::endl;
+				/*
+				 * Build the string for showing:
+				*/
 				text1_float.str("");
 				text1_float << (m_framerate_frames/m_framerate_clock.getElapsedTime().asSeconds());
 				text1_str = text1_float.str();
 				text1_str += " fps";
+				/*
+				 * Print to console:
+				*/
+				std::cout << text1_float.str() << " fps" << std::endl;
+				/*
+				 * Show on display:
+				*/
 				text1.setString(text1_str);
+				/*
+				 * Reset framerate clock:
+				*/
 				m_framerate_clock.restart();
 				m_framerate_frames = 0;
 			}
