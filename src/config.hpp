@@ -26,7 +26,7 @@
 #	ifdef _WIN32
 #		include "config_windows.hpp"
 #	endif
-#	ifdef __linux__
+#	ifdef __unix__ 
 #		include "config_unix.hpp"
 #	endif
 #endif // _config_h_
