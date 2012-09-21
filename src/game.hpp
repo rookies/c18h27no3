@@ -30,6 +30,7 @@
 #	include "video_sequence.hpp"
 #	include "config.hpp"
 #	include "fps_counter.hpp"
+#	include "main_menu.hpp"
 	
 	class Game
 	{
@@ -68,6 +69,10 @@
 			*/
 			int init_gamemode(int gamemode);
 			int uninit_gamemode(int gamemode);
+			/*
+			 * Draw functions:
+			*/
+			void draw_main_menu(void);
 			
 			/*
 			 * Internal variables:
@@ -76,6 +81,7 @@
 			int m_screen_h;
 			int m_screen_bits;
 			int m_framerate_frames;
+			int m_window_has_focus;
 			sf::RenderWindow m_window;
 			sf::RenderTexture m_texture;
 			PaddingDataCalculator m_padding_data_calculator;
@@ -83,7 +89,7 @@
 			VideoSequence m_video_sequence;
 			Config m_config;
 			FPScounter m_fps_counter;
-			int m_window_has_focus;
+			MainMenu *m_main_menu;
 			/*
 			 * Game mode:
 			 *  0 - undefined

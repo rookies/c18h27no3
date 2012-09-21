@@ -114,6 +114,7 @@ int Game::init(int w, int h, int fullscreen)
 	/*
 	 * Show main menu:
 	*/
+	m_gamemode = 0;
 	set_gamemode(1);
 	/*
 	 * Finish successful:
@@ -122,6 +123,7 @@ int Game::init(int w, int h, int fullscreen)
 }
 int Game::uninit(void)
 {
+	uninit_gamemode(m_gamemode);
 	m_window.close();
 	return EXIT_SUCCESS;
 }
@@ -132,16 +134,16 @@ int Game::loop(void)
 	*/
 	int done = 0;
 	sf::Sprite sprite;
-	sf::Texture img1;
-	sf::Sprite img1_sprite;
+	/*sf::Texture img1;
+	sf::Sprite img1_sprite;*/
 	/*
 	 * Load img1:
 	*/
-	img1.loadFromFile("data/grass.png");
+	/*img1.loadFromFile("data/grass.png");
 	img1_sprite.setTexture(img1);
 	img1_sprite.setPosition(10, 10);
 	img1_sprite.setColor(sf::Color(255, 255, 255, 255));
-	img1_sprite.setScale(10, 10);
+	img1_sprite.setScale(10, 10);*/
 	/*
 	 * Main loop:
 	*/
@@ -164,7 +166,16 @@ int Game::loop(void)
 			/*
 			 * Draw everything on padded texture and show it:
 			*/
-			m_texture.draw(img1_sprite);
+			//m_texture.draw(img1_sprite);
+			switch (m_gamemode)
+			{
+				case 1:
+					/*
+					 * Main Menu
+					*/
+					draw_main_menu();
+					break;
+			}
 			m_texture.draw(m_fps_counter.get_drawable());
 			m_texture.draw(m_cursor.get_drawable());
 			m_texture.display();
@@ -332,6 +343,15 @@ int Game::process_events(void)
 				m_fps_counter.restart();
 				break;
 		}
+		switch (m_gamemode)
+		{
+			case 1:
+				/*
+				 * Main Menu
+				*/
+				m_main_menu->process_event(event);
+				break;
+		}
 	}
 	/*
 	 * Finish successful:
@@ -340,7 +360,18 @@ int Game::process_events(void)
 }
 int Game::calculate_sizes(void)
 {
-	
+	switch (m_gamemode)
+	{
+		case 1:
+			/*
+			 * Main Menu
+			*/
+			m_main_menu->calculate_sizes(
+				m_padding_data_calculator.get_usable_w(),
+				m_padding_data_calculator.get_usable_h()
+			);
+			break;
+	}
 }
 int Game::set_gamemode(int gamemode)
 {
@@ -358,6 +389,14 @@ int Game::set_gamemode(int gamemode)
 	 * Set new game mode variable:
 	*/
 	m_gamemode = gamemode;
+	/*
+	 * Calculate sizes:
+	*/
+	calculate_sizes();
+	/*
+	 * Print status message:
+	*/
+	std::cout << ">>>> ENTERED GAMEMODE " << m_gamemode << std::endl;
 }
 int Game::init_gamemode(int gamemode)
 {
@@ -367,6 +406,8 @@ int Game::init_gamemode(int gamemode)
 			/*
 			 * Main Menu
 			*/
+			m_main_menu = new MainMenu;
+			return 0;
 			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
@@ -381,9 +422,15 @@ int Game::uninit_gamemode(int gamemode)
 			/*
 			 * Main Menu
 			*/
+			delete m_main_menu;
+			return 0;
 			break;
 		default:
 			std::cout << "Invalid gamemode passed to uninit_gamemode(): " << gamemode << std::endl;
 			return 0;
 	}
+}
+void Game::draw_main_menu(void)
+{
+	m_texture.draw(m_main_menu->get_menuitem());
 }
