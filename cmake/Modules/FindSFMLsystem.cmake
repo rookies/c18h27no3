@@ -1,22 +1,22 @@
 # Find include file:
-FIND_PATH(SFMLsystem_INCLUDE_DIR SFML/System.hpp)
+find_path(SFMLsystem_INCLUDE_DIR SFML/System.hpp)
 # Find library:
-FIND_LIBRARY(SFMLsystem_LIBRARIES NAMES sfml-system)
+find_library(SFMLsystem_LIBRARIES NAMES sfml-system)
 # Set success status:
 IF (SFMLsystem_LIBRARIES AND SFMLsystem_INCLUDE_DIR)
-	SET(SFMLsystem_FOUND "YES")
+	set(SFMLsystem_FOUND "YES")
 ELSE (SFMLsystem_LIBRARIES AND SFMLsystem_INCLUDE_DIR)
-	SET(SFMLsystem_FOUND "NO")
+	set(SFMLsystem_FOUND "NO")
 ENDIF (SFMLsystem_LIBRARIES AND SFMLsystem_INCLUDE_DIR)
 
 IF (SFMLsystem_FOUND)
 	IF (NOT SFMLsystem_FIND_QUIETLY)
-		MESSAGE(STATUS "Found SFMLsystem: ${SFMLsystem_LIBRARIES}")
+		message(STATUS "Found SFMLsystem: ${SFMLsystem_LIBRARIES}")
 	ENDIF (NOT SFMLsystem_FIND_QUIETLY)
 ELSE (SFMLsystem_FOUND)
 	IF (SFMLsystem_FIND_REQUIRED)
-		MESSAGE(FATAL_ERROR "Could not find SFMLsystem library")
+		message(FATAL_ERROR "Could not find SFMLsystem library")
 	ENDIF (SFMLsystem_FIND_REQUIRED)
 ENDIF (SFMLsystem_FOUND)
 
-MARK_AS_ADVANCED(SFMLsystem_LIBRARIES SFMLsystem_INCLUDE_DIR)
+mark_as_advanced(SFMLsystem_LIBRARIES SFMLsystem_INCLUDE_DIR)
