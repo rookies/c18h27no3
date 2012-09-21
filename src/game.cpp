@@ -349,14 +349,18 @@ int Game::process_events(void)
 				/*
 				 * Main Menu
 				*/
-				m_main_menu->process_event(event);
+				return m_main_menu->process_event(
+					event,
+					m_cursor.get_mouse_position_x(),
+					m_cursor.get_mouse_position_y()
+				);
 				break;
 		}
 	}
 	/*
 	 * Finish successful:
 	*/
-	return EXIT_SUCCESS;
+	return 0;
 }
 int Game::calculate_sizes(void)
 {
@@ -432,5 +436,9 @@ int Game::uninit_gamemode(int gamemode)
 }
 void Game::draw_main_menu(void)
 {
-	m_texture.draw(m_main_menu->get_menuitem());
+	m_texture.draw(m_main_menu->get_menuitem1());
+	m_texture.draw(m_main_menu->get_menuitem2());
+	m_texture.draw(m_main_menu->get_menuitem3());
+	m_texture.draw(m_main_menu->get_menuitem4());
+	m_texture.draw(m_main_menu->get_menuitem5());
 }

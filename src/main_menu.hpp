@@ -23,6 +23,7 @@
 #ifndef _main_menu_h_
 #	define _main_menu_h_
 	
+#	include <iostream>
 #	include <SFML/Graphics.hpp>
 	
 	class MainMenu
@@ -43,13 +44,29 @@
 			/*
 			 * Process events:
 			*/
-			int process_event(sf::Event event); /* Called in Game::process_events() */
+			int process_event(sf::Event event, int mouse_x, int mouse_y); /* Called in Game::process_events() */
+			/*
+			 * Reset menuitemX_over variables:
+			*/
+			void reset_menuitem_over(void);
 			/*
 			 * Get menuitem:
 			*/
-			sf::RectangleShape get_menuitem(void);
+			sf::RectangleShape get_menuitem1(void);
+			sf::RectangleShape get_menuitem2(void);
+			sf::RectangleShape get_menuitem3(void);
+			sf::RectangleShape get_menuitem4(void);
+			sf::RectangleShape get_menuitem5(void);
 		private:
 			int m_sizes_menuitem_width;
+			int m_sizes_menuitem_height;
 			int m_sizes_menuitem_xoffset;
+			int m_sizes_menuitem_first_yoffset;
+			int m_sizes_menuitem_gap;
+			int m_menuitem1_over;
+			int m_menuitem2_over;
+			int m_menuitem3_over;
+			int m_menuitem4_over;
+			int m_menuitem5_over;
 	};
 #endif // _main_menu_h_
