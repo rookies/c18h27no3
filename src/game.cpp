@@ -115,7 +115,8 @@ int Game::init(int w, int h, int fullscreen)
 	 * Show main menu:
 	*/
 	m_gamemode = 0;
-	set_gamemode(1);
+	if (set_gamemode(1) == 1)
+		return 1;
 	/*
 	 * Finish successful:
 	*/
@@ -240,6 +241,9 @@ int Game::process_events(void)
 	*/
 	while (m_window.pollEvent(event))
 	{
+		/*
+		 * Handle important events:
+		*/
 		switch (event.type)
 		{
 			case sf::Event::Closed:
@@ -248,17 +252,6 @@ int Game::process_events(void)
 				break;
 			case sf::Event::KeyPressed:
 				std::cout << "KeyPressed " << event.key.code << std::endl;
-				switch (event.key.code)
-				{
-					case sf::Keyboard::Escape:
-						std::cout << "ESCAPE key pressed." << std::endl;
-						return 1;
-						break;
-					case sf::Keyboard::F1:
-						std::cout << "F1 key pressed." << std::endl;
-						return 2;
-						break;
-				}
 				break;
 			case sf::Event::MouseMoved:
 				/*
@@ -343,6 +336,9 @@ int Game::process_events(void)
 				m_fps_counter.restart();
 				break;
 		}
+		/*
+		 * And then let the gamemode classes handle them:
+		*/
 		switch (m_gamemode)
 		{
 			case 1:
@@ -364,6 +360,9 @@ int Game::process_events(void)
 }
 int Game::calculate_sizes(void)
 {
+	/*
+	 * Calculate element sizes for new screen size:
+	*/
 	switch (m_gamemode)
 	{
 		case 1:
