@@ -50,8 +50,9 @@
 			*/
 			void reset_menuitem_over(void);
 			/*
-			 * Get menuitem:
+			 * Get drawable items:
 			*/
+			sf::Sprite get_grassblock(void);
 			sf::RectangleShape get_menuitem1(void);
 			sf::RectangleShape get_menuitem2(void);
 			sf::RectangleShape get_menuitem3(void);
@@ -63,10 +64,15 @@
 			int m_sizes_menuitem_xoffset;
 			int m_sizes_menuitem_first_yoffset;
 			int m_sizes_menuitem_gap;
+			int m_sizes_grassblock;
+			int m_sizes_grassblock_xoffset;
+			int m_sizes_grassblock_yoffset;
 			int m_menuitem1_over;
 			int m_menuitem2_over;
 			int m_menuitem3_over;
 			int m_menuitem4_over;
 			int m_menuitem5_over;
+			sf::Texture m_img1;
+			sf::Sprite m_img1_sprite;
 	};
 #endif // _main_menu_h_

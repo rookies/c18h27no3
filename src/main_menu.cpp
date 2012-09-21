@@ -32,6 +32,9 @@ MainMenu::~MainMenu()
 }
 int MainMenu::init(void)
 {
+	m_img1.loadFromFile("data/grass.png");
+	m_img1_sprite.setTexture(m_img1);
+	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	reset_menuitem_over();
 	return 0;
 }
@@ -52,9 +55,17 @@ int MainMenu::calculate_sizes(int w, int h)
 	 * Menuitem first Y offset = 45%
 	 * Menuitem gap = 2%
 	*/
-	m_sizes_menuitem_xoffset = (w-m_sizes_menuitem_width)/2;
+	m_sizes_menuitem_xoffset = (w-m_sizes_menuitem_width)/2.0;
 	m_sizes_menuitem_first_yoffset = h*(45/100.0);
 	m_sizes_menuitem_gap = h*(2/100.0);
+	/*
+	 * 
+	*/
+	m_sizes_grassblock = h*(30/100.0);
+	m_sizes_grassblock_xoffset = (w-m_sizes_grassblock)/2.0;
+	m_sizes_grassblock_yoffset = h*(10/100.0);
+	m_img1_sprite.setPosition(m_sizes_grassblock_xoffset, m_sizes_grassblock_yoffset);
+	m_img1_sprite.setScale(m_sizes_grassblock/20.0, m_sizes_grassblock/20.0);
 	return 0;
 }
 int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -137,6 +148,10 @@ void MainMenu::reset_menuitem_over(void)
 	m_menuitem3_over = 0;
 	m_menuitem4_over = 0;
 	m_menuitem5_over = 0;
+}
+sf::Sprite MainMenu::get_grassblock(void)
+{
+	return m_img1_sprite;
 }
 sf::RectangleShape MainMenu::get_menuitem1(void)
 {

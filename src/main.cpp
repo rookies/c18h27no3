@@ -34,12 +34,12 @@ int main(int argc, char **argv)
 	/*
 	 * Variable definitions:
 	*/
-	//w = -1; // auto resolution
-	w = 1580;
-	//h = -1; // auto resolution
-	h = 1000;
-	//fullscreen = 1; // fullscreen
-	fullscreen = 0;
+	w = -1; // auto resolution
+	//w = 1580;
+	h = -1; // auto resolution
+	//h = 1000;
+	fullscreen = 1; // fullscreen
+	//fullscreen = 0;
 	/*
 	 * Startup:
 	*/

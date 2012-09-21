@@ -135,16 +135,6 @@ int Game::loop(void)
 	*/
 	int done = 0;
 	sf::Sprite sprite;
-	/*sf::Texture img1;
-	sf::Sprite img1_sprite;*/
-	/*
-	 * Load img1:
-	*/
-	/*img1.loadFromFile("data/grass.png");
-	img1_sprite.setTexture(img1);
-	img1_sprite.setPosition(10, 10);
-	img1_sprite.setColor(sf::Color(255, 255, 255, 255));
-	img1_sprite.setScale(10, 10);*/
 	/*
 	 * Main loop:
 	*/
@@ -163,11 +153,10 @@ int Game::loop(void)
 			 * Clean window and padded texture:
 			*/
 			m_window.clear();
-			m_texture.clear(sf::Color::White);
+			m_texture.clear(sf::Color(170, 217, 152));
 			/*
 			 * Draw everything on padded texture and show it:
 			*/
-			//m_texture.draw(img1_sprite);
 			switch (m_gamemode)
 			{
 				case 1:
@@ -177,8 +166,8 @@ int Game::loop(void)
 					draw_main_menu();
 					break;
 			}
-			m_texture.draw(m_fps_counter.get_drawable());
 			m_texture.draw(m_cursor.get_drawable());
+			m_texture.draw(m_fps_counter.get_drawable());
 			m_texture.display();
 			/*
 			 * Draw padded texture on window and show it:
@@ -410,6 +399,7 @@ int Game::init_gamemode(int gamemode)
 			 * Main Menu
 			*/
 			m_main_menu = new MainMenu;
+			m_main_menu->init();
 			return 0;
 			break;
 		default:
@@ -435,6 +425,7 @@ int Game::uninit_gamemode(int gamemode)
 }
 void Game::draw_main_menu(void)
 {
+	m_texture.draw(m_main_menu->get_grassblock());
 	m_texture.draw(m_main_menu->get_menuitem1());
 	m_texture.draw(m_main_menu->get_menuitem2());
 	m_texture.draw(m_main_menu->get_menuitem3());
