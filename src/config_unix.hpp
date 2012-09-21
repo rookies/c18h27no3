@@ -1,5 +1,5 @@
 /*
- * config_linux.hpp
+ * config_unix.hpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _config_linux_h_
-#	define _config_linux_h_
+#ifndef _config_unix_h_
+#	define _config_unix_h_
 	
 #	include "config_common.hpp"
 	
@@ -47,4 +47,4 @@
 		private:
 			
 	};
-#endif // _config_linux_h_
+#endif // _config_unix_h_

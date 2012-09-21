@@ -1,5 +1,5 @@
 /*
- * config_linux.cpp
+ * config_unix.cpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,7 +20,7 @@
  * 
  * 
  */
-#include "config_linux.hpp"
+#include "config_unix.hpp"
 
 Config::Config()
 {
