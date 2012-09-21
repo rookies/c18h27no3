@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 2.8)
+project(sf-game)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+# Find packages:
+find_package(SFMLwindow REQUIRED)
+find_package(SFMLgraphics REQUIRED)
+find_package(SFMLsystem REQUIRED)
+find_package(LIBAVCODEC REQUIRED)
+find_package(LIBAVFORMAT REQUIRED)
+find_package(LIBSWSCALE REQUIRED)
+# Add include directories:
+include_directories(${SFMLwindow_INCLUDE_DIR})
+include_directories(${SFMLgraphics_INCLUDE_DIR})
+include_directories(${SFMLsystem_INCLUDE_DIR})
+include_directories(${LIBAVCODEC_INCLUDE_DIR})
+include_directories(${LIBAVFORMAT_INCLUDE_DIR})
+include_directories(${LIBSWSCALE_INCLUDE_DIR})
+# Add game executable:
+add_executable(game src/main.cpp src/game.cpp src/padding_data_calculator.cpp src/cursor.cpp src/video_sequence.cpp src/config_linux.cpp)
+# Link libraries:
+target_link_libraries(game ${SFMLwindow_LIBRARIES})
+target_link_libraries(game ${SFMLgraphics_LIBRARIES})
+target_link_libraries(game ${SFMLsystem_LIBRARIES})
+target_link_libraries(game ${LIBAVCODEC_LIBRARIES})
+target_link_libraries(game ${LIBAVFORMAT_LIBRARIES})
+target_link_libraries(game ${LIBSWSCALE_LIBRARIES})
