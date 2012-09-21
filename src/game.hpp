@@ -24,13 +24,12 @@
 #	define _game_h_
 	
 #	include <iostream>
-#	include <string>
-#	include <sstream>
 #	include <SFML/Window.hpp>
 #	include "padding_data_calculator.hpp"
 #	include "cursor.hpp"
 #	include "video_sequence.hpp"
 #	include "config.hpp"
+#	include "fps_counter.hpp"
 	
 	class Game
 	{
@@ -60,6 +59,15 @@
 			 * Calculate sizes:
 			*/
 			int calculate_sizes(void);
+			/*
+			 * Set game mode:
+			*/
+			int set_gamemode(int gamemode);
+			/*
+			 * (Un)init game mode:
+			*/
+			int init_gamemode(int gamemode);
+			int uninit_gamemode(int gamemode);
 			
 			/*
 			 * Internal variables:
@@ -70,17 +78,16 @@
 			int m_framerate_frames;
 			sf::RenderWindow m_window;
 			sf::RenderTexture m_texture;
-			sf::Clock m_framerate_clock;
 			PaddingDataCalculator m_padding_data_calculator;
 			Cursor m_cursor;
-			//VideoSequence m_video_sequence;
-			//Config m_config;
-			int m_frames;
+			VideoSequence m_video_sequence;
+			Config m_config;
+			FPScounter m_fps_counter;
 			int m_window_has_focus;
 			/*
 			 * Game mode:
 			 *  0 - undefined
-			 *  ...
+			 *  1 - main menu
 			*/
 			int m_gamemode;
 	};

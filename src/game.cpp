@@ -108,6 +108,14 @@ int Game::init(int w, int h, int fullscreen)
 		sf::Mouse::getPosition().y
 	);
 	/*
+	 * Init framecounter:
+	*/
+	m_fps_counter.init(m_padding_data_calculator.get_usable_h());
+	/*
+	 * Show main menu:
+	*/
+	set_gamemode(1);
+	/*
 	 * Finish successful:
 	*/
 	return EXIT_SUCCESS;
@@ -126,9 +134,6 @@ int Game::loop(void)
 	sf::Sprite sprite;
 	sf::Texture img1;
 	sf::Sprite img1_sprite;
-	sf::Text text1("0 fps");
-	sf::String text1_str;
-	std::ostringstream text1_float;
 	/*
 	 * Load img1:
 	*/
@@ -137,17 +142,6 @@ int Game::loop(void)
 	img1_sprite.setPosition(10, 10);
 	img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	img1_sprite.setScale(10, 10);
-	/*
-	 * Load text1:
-	*/
-	text1.setCharacterSize(20);
-	text1.setColor(sf::Color::Red);
-	text1.setPosition(10, m_padding_data_calculator.get_usable_h()-30);
-	/*
-	 * Reset framerate clock:
-	*/
-	m_framerate_clock.restart();
-	m_framerate_frames = 0;
 	/*
 	 * Main loop:
 	*/
@@ -171,7 +165,7 @@ int Game::loop(void)
 			 * Draw everything on padded texture and show it:
 			*/
 			m_texture.draw(img1_sprite);
-			m_texture.draw(text1);
+			m_texture.draw(m_fps_counter.get_drawable());
 			m_texture.draw(m_cursor.get_drawable());
 			m_texture.display();
 			/*
@@ -185,34 +179,6 @@ int Game::loop(void)
 			);
 			m_window.draw(sprite);
 			m_window.display();
-			/*
-			 * Calculate framerate:
-			*/
-			if (m_framerate_frames == 500)
-			{
-				/*
-				 * Build the string for showing:
-				*/
-				text1_float.str("");
-				text1_float << (m_framerate_frames/m_framerate_clock.getElapsedTime().asSeconds());
-				text1_str = text1_float.str();
-				text1_str += " fps";
-				/*
-				 * Print to console:
-				*/
-				std::cout << text1_float.str() << " fps" << std::endl;
-				/*
-				 * Show on display:
-				*/
-				text1.setString(text1_str);
-				/*
-				 * Reset framerate clock:
-				*/
-				m_framerate_clock.restart();
-				m_framerate_frames = 0;
-			}
-			else
-				m_framerate_frames++;
 		}
 		else
 		{
@@ -241,8 +207,7 @@ int Game::wait_for_focus(void)
 			case sf::Event::GainedFocus:
 				std::cout << "GainedFocus" << std::endl;
 				m_window_has_focus = 1;
-				m_framerate_clock.restart();
-				m_framerate_frames = 0;
+				m_fps_counter.restart();
 				return 0;
 				break;
 			case sf::Event::Closed:
@@ -364,8 +329,7 @@ int Game::process_events(void)
 			case sf::Event::GainedFocus:
 				std::cout << "GainedFocus" << std::endl;
 				m_window_has_focus = 1;
-				m_framerate_clock.restart();
-				m_framerate_frames = 0;
+				m_fps_counter.restart();
 				break;
 		}
 	}
@@ -377,4 +341,49 @@ int Game::process_events(void)
 int Game::calculate_sizes(void)
 {
 	
+}
+int Game::set_gamemode(int gamemode)
+{
+	/*
+	 * Uninit old game mode:
+	*/
+	if (uninit_gamemode(m_gamemode) == 1)
+		return 1;
+	/*
+	 * Init new game mode:
+	*/
+	if (init_gamemode(gamemode) == 1)
+		return 1;
+	/*
+	 * Set new game mode variable:
+	*/
+	m_gamemode = gamemode;
+}
+int Game::init_gamemode(int gamemode)
+{
+	switch (gamemode)
+	{
+		case 1:
+			/*
+			 * Main Menu
+			*/
+			break;
+		default:
+			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
+			return 1;
+	}
+}
+int Game::uninit_gamemode(int gamemode)
+{
+	switch (gamemode)
+	{
+		case 1:
+			/*
+			 * Main Menu
+			*/
+			break;
+		default:
+			std::cout << "Invalid gamemode passed to uninit_gamemode(): " << gamemode << std::endl;
+			return 0;
+	}
 }
