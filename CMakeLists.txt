@@ -7,6 +7,7 @@ find_package(SFMLgraphics REQUIRED)
 find_package(SFMLsystem REQUIRED)
 find_package(LIBAVCODEC REQUIRED)
 find_package(LIBAVFORMAT REQUIRED)
+find_package(LIBAVUTIL REQUIRED)
 find_package(LIBSWSCALE REQUIRED)
 # Add include directories:
 include_directories(${SFMLwindow_INCLUDE_DIR})
