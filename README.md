@@ -19,6 +19,7 @@ For details, see COPYING.
  * Parts of the FFmpeg project (unmodified, for sources and license information see below):
   * avcodec-54.dll
   * avformat-54.dll
+  * avutil-51.dll
   * swscale-2.dll
   * include/libavcodec/*
   * include/libavformat/*
