@@ -1,7 +1,11 @@
-# Find include file:
-find_path(LIBAVCODEC_INCLUDE_DIR libavcodec/avcodec.h)
-# Find library:
-find_library(LIBAVCODEC_LIBRARIES NAMES avcodec)
+# Find include file & library:
+IF (UNIX)
+	find_path(LIBAVCODEC_INCLUDE_DIR libavcodec/avcodec.h)
+	find_library(LIBAVCODEC_LIBRARIES NAMES avcodec)
+ELSEIF (WIN32)
+	set(LIBAVCODEC_INCLUDE_DIR include/)
+	set(LIBAVCODEC_LIBRARIES avcodec-54.dll)
+ENDIF (UNIX)
 # Set success status:
 IF (LIBAVCODEC_LIBRARIES AND LIBAVCODEC_INCLUDE_DIR)
 	set(LIBAVCODEC_FOUND "YES")

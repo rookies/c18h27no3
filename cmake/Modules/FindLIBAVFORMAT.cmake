@@ -1,7 +1,11 @@
-# Find include file:
-find_path(LIBAVFORMAT_INCLUDE_DIR libavformat/avformat.h)
-# Find library:
-find_library(LIBAVFORMAT_LIBRARIES NAMES avformat)
+# Find include file & library:
+IF (UNIX)
+	find_path(LIBAVFORMAT_INCLUDE_DIR libavformat/avformat.h)
+	find_library(LIBAVFORMAT_LIBRARIES NAMES avformat)
+ELSEIF (WIN32)
+	set(LIBAVFORMAT_INCLUDE_DIR include/)
+	set(LIBAVFORMAT_LIBRARIES avformat-54.dll)
+ENDIF (UNIX)
 # Set success status:
 IF (LIBAVFORMAT_LIBRARIES AND LIBAVFORMAT_INCLUDE_DIR)
 	set(LIBAVFORMAT_FOUND "YES")

@@ -1,7 +1,11 @@
-# Find include file:
-find_path(SFMLsystem_INCLUDE_DIR SFML/System.hpp)
-# Find library:
-find_library(SFMLsystem_LIBRARIES NAMES sfml-system)
+# Find include file & library:
+IF (UNIX)
+	find_path(SFMLsystem_INCLUDE_DIR SFML/System.hpp)
+	find_library(SFMLsystem_LIBRARIES NAMES sfml-system)
+ELSEIF (WIN32)
+	set(SFMLsystem_INCLUDE_DIR include/)
+	set(SFMLsystem_LIBRARIES sfml-system-2.dll)
+ENDIF (UNIX)
 # Set success status:
 IF (SFMLsystem_LIBRARIES AND SFMLsystem_INCLUDE_DIR)
 	set(SFMLsystem_FOUND "YES")

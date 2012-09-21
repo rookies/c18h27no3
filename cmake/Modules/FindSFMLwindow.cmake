@@ -1,7 +1,11 @@
-# Find include file:
-find_path(SFMLwindow_INCLUDE_DIR SFML/Window.hpp)
-# Find library:
-find_library(SFMLwindow_LIBRARIES NAMES sfml-window)
+# Find include file & library:
+IF (UNIX)
+	find_path(SFMLwindow_INCLUDE_DIR SFML/Window.hpp)
+	find_library(SFMLwindow_LIBRARIES NAMES sfml-window)
+ELSEIF (WIN32)
+	set(SFMLwindow_INCLUDE_DIR include/)
+	set(SFMLwindow_LIBRARIES sfml-window-2.dll)
+ENDIF (UNIX)
 # Set success status:
 IF (SFMLwindow_LIBRARIES AND SFMLwindow_INCLUDE_DIR)
 	set(SFMLwindow_FOUND "YES")

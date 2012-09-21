@@ -1,7 +1,11 @@
-# Find include file:
-find_path(LIBSWSCALE_INCLUDE_DIR libswscale/swscale.h)
-# Find library:
-find_library(LIBSWSCALE_LIBRARIES NAMES swscale)
+# Find include file & library:
+IF (UNIX)
+	find_path(LIBSWSCALE_INCLUDE_DIR libswscale/swscale.h)
+	find_library(LIBSWSCALE_LIBRARIES NAMES swscale)
+ELSEIF (WIN32)
+	set(LIBSWSCALE_INCLUDE_DIR include/)
+	set(LIBSWSCALE_LIBRARIES swscale-2.dll)
+ENDIF (UNIX)
 # Set success status:
 IF (LIBSWSCALE_LIBRARIES AND LIBSWSCALE_INCLUDE_DIR)
 	set(LIBSWSCALE_FOUND "YES")

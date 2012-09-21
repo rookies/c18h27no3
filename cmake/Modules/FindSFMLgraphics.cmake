@@ -1,7 +1,11 @@
-# Find include file:
-find_path(SFMLgraphics_INCLUDE_DIR SFML/Graphics.hpp)
-# Find library:
-find_library(SFMLgraphics_LIBRARIES NAMES sfml-graphics)
+# Find include file & library:
+IF (UNIX)
+	find_path(SFMLgraphics_INCLUDE_DIR SFML/Graphics.hpp)
+	find_library(SFMLgraphics_LIBRARIES NAMES sfml-graphics)
+ELSEIF (WIN32)
+	set(SFMLgraphics_INCLUDE_DIR include/)
+	set(SFMLgraphics_LIBRARIES sfml-graphics-2.dll)
+ENDIF (UNIX)
 # Set success status:
 IF (SFMLgraphics_LIBRARIES AND SFMLgraphics_INCLUDE_DIR)
 	set(SFMLgraphics_FOUND "YES")
