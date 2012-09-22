@@ -66,9 +66,11 @@ int MainMenu::calculate_sizes(int w, int h)
 	/*
 	 * Menuitem width = 30%
 	 * Menuitem height = 5%
+	 * Menuitem outline thickness = 1%
 	*/
 	m_sizes_menuitem_width = w*(30/100.0);
 	m_sizes_menuitem_height = h*(5/100.0);
+	m_sizes_menuitem_outline = h*(0.5/100.0);
 	/*
 	 * Menuitem X offset = middle
 	 * Menuitem first Y offset = 45%
@@ -107,11 +109,11 @@ int MainMenu::calculate_sizes(int w, int h)
 	m_menuitem3.setOutlineColor(sf::Color::Black);
 	m_menuitem4.setOutlineColor(sf::Color::Black);
 	m_menuitem5.setOutlineColor(sf::Color::Black);
-	m_menuitem1.setOutlineThickness(5);
-	m_menuitem2.setOutlineThickness(5);
-	m_menuitem3.setOutlineThickness(5);
-	m_menuitem4.setOutlineThickness(5);
-	m_menuitem5.setOutlineThickness(5);
+	m_menuitem1.setOutlineThickness(m_sizes_menuitem_outline);
+	m_menuitem2.setOutlineThickness(m_sizes_menuitem_outline);
+	m_menuitem3.setOutlineThickness(m_sizes_menuitem_outline);
+	m_menuitem4.setOutlineThickness(m_sizes_menuitem_outline);
+	m_menuitem5.setOutlineThickness(m_sizes_menuitem_outline);
 	m_menuitem1.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset);
 	m_menuitem2.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap);
 	m_menuitem3.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2);

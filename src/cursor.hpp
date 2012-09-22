@@ -49,7 +49,7 @@
 			/*
 			 * Draw cursor:
 			*/
-			sf::Sprite get_drawable(void);
+			sf::Sprite get_drawable(int w, int h);
 			/*
 			 * (De)Activate action cursor:
 			*/

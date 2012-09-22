@@ -73,6 +73,7 @@
 			int m_sizes_grassblock_xoffset;
 			int m_sizes_grassblock_yoffset;
 			int m_sizes_menuitem_text_add_gap;
+			int m_sizes_menuitem_outline;
 			int m_menuitem1_over;
 			int m_menuitem2_over;
 			int m_menuitem3_over;

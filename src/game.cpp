@@ -172,7 +172,10 @@ int Game::loop(void)
 					draw_settings_menu();
 					break;
 			}
-			m_texture.draw(m_cursor.get_drawable());
+			m_texture.draw(m_cursor.get_drawable(
+				m_padding_data_calculator.get_usable_w(),
+				m_padding_data_calculator.get_usable_h()
+			));
 			m_texture.draw(m_fps_counter.get_drawable());
 			m_texture.display();
 			/*

@@ -32,14 +32,26 @@ int main(int argc, char **argv)
 	Game game;
 	int w, h, fullscreen;
 	/*
-	 * Variable definitions:
+	 * Parse command line arguments:
 	*/
-	//w = -1; // auto resolution
-	w = 1580;
-	//h = -1; // auto resolution
-	h = 1000;
-	//fullscreen = 1; // fullscreen
-	fullscreen = 0;
+	if (argc >= 4)
+	{
+		w = atoi(argv[1]);
+		h = atoi(argv[2]);
+		fullscreen = atoi(argv[3]);
+	}
+	else if (argc == 3)
+	{
+		w = atoi(argv[1]);
+		h = atoi(argv[2]);
+		fullscreen = 0;
+	}
+	else
+	{
+		w = -1; // auto resolution
+		h = -1; // auto resolution
+		fullscreen = 1; // fullscreen
+	};
 	/*
 	 * Startup:
 	*/

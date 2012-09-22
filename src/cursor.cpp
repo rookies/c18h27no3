@@ -69,7 +69,7 @@ int Cursor::get_mouse_position_y(void)
 {
 	return m_mouse_y;
 }
-sf::Sprite Cursor::get_drawable(void)
+sf::Sprite Cursor::get_drawable(int w, int h)
 {
 	/*
 	 * Variable declarations:
@@ -85,6 +85,7 @@ sf::Sprite Cursor::get_drawable(void)
 	/*
 	 * Set position:
 	*/
+	//sprite.setScale(w*(1/100.0), h*(1/100.0));
 	sprite.setPosition(m_mouse_x-CURSOR_WIDTH/2, m_mouse_y-CURSOR_HEIGHT/2);
 	/*
 	 * Set color:
