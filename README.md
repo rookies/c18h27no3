@@ -16,6 +16,7 @@ Most of the things are licensed under the GNU General Public License v2 or (at y
 For details, see COPYING.
 ### Exceptions
  * data/grass.png
+ * data/creeper.png
  * Parts of the FFmpeg project (unmodified, for sources and license information see below):
   * avcodec-54.dll
   * avformat-54.dll

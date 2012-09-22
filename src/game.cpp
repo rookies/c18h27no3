@@ -500,6 +500,7 @@ void Game::draw_main_menu(void)
 }
 void Game::draw_settings_menu(void)
 {
+	m_texture.draw(m_settings_menu->get_creeper());
 	m_texture.draw(m_settings_menu->get_menuitem1());
 	m_texture.draw(m_settings_menu->get_menuitem1_txt());
 	m_texture.draw(m_settings_menu->get_menuitem2());

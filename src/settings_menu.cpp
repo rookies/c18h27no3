@@ -33,6 +33,12 @@ SettingsMenu::~SettingsMenu()
 int SettingsMenu::init(void)
 {
 	/*
+	 * Init creeper:
+	*/
+	m_img1.loadFromFile("data/creeper.png");
+	m_img1_sprite.setTexture(m_img1);
+	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
+	/*
 	 * Init menuitem shapes:
 	*/
 	m_menuitem1.setOutlineColor(sf::Color::Black);
@@ -76,9 +82,22 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	m_sizes_menuitem_first_yoffset = h*(45/100.0);
 	m_sizes_menuitem_gap = h*(2/100.0);
 	/*
+	 * Creeper height = 30%
+	 * Creeper X offset = middle
+	 * Creeper Y offset = 10%
+	*/
+	m_sizes_creeper = h*(30/100.0);
+	m_sizes_creeper_xoffset = (w-m_sizes_creeper)/2.0;
+	m_sizes_creeper_yoffset = h*(10/100.0);
+	/*
 	 * Menuitem text additional gap = 2%
 	*/
 	m_sizes_menuitem_text_add_gap = h*(1/100.0);
+	/*
+	 * Update creeper position & size:
+	*/
+	m_img1_sprite.setPosition(m_sizes_creeper_xoffset, m_sizes_creeper_yoffset);
+	m_img1_sprite.setScale(m_sizes_creeper/98.0, m_sizes_creeper/98.0);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
@@ -187,36 +206,40 @@ void SettingsMenu::reset_menuitem_over(void)
 	m_menuitem3_over = 0;
 	m_menuitem4_over = 0;
 }
+sf::Sprite SettingsMenu::get_creeper(void)
+{
+	return m_img1_sprite;
+}
 sf::RectangleShape SettingsMenu::get_menuitem1(void)
 {
 	if (m_menuitem1_over == 1)
-		m_menuitem1.setFillColor(sf::Color::Red);
+		m_menuitem1.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem1.setFillColor(sf::Color::Blue);
+		m_menuitem1.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem1;
 }
 sf::RectangleShape SettingsMenu::get_menuitem2(void)
 {
 	if (m_menuitem2_over == 1)
-		m_menuitem2.setFillColor(sf::Color::Red);
+		m_menuitem2.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem2.setFillColor(sf::Color::Blue);
+		m_menuitem2.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem2;
 }
 sf::RectangleShape SettingsMenu::get_menuitem3(void)
 {
 	if (m_menuitem3_over == 1)
-		m_menuitem3.setFillColor(sf::Color::Red);
+		m_menuitem3.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem3.setFillColor(sf::Color::Blue);
+		m_menuitem3.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem3;
 }
 sf::RectangleShape SettingsMenu::get_menuitem4(void)
 {
 	if (m_menuitem4_over == 1)
-		m_menuitem4.setFillColor(sf::Color::Red);
+		m_menuitem4.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem4.setFillColor(sf::Color::Blue);
+		m_menuitem4.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem4;
 }
 sf::Text SettingsMenu::get_menuitem1_txt(void)

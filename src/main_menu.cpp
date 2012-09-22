@@ -242,49 +242,49 @@ sf::Sprite MainMenu::get_grassblock(void)
 sf::RectangleShape MainMenu::get_menuitem1(void)
 {
 	if (m_menuitem1_over == 1)
-		m_menuitem1.setFillColor(sf::Color::Red);
+		m_menuitem1.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem1.setFillColor(sf::Color::Blue);
+		m_menuitem1.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem1;
 }
 sf::RectangleShape MainMenu::get_menuitem2(void)
 {
 	if (m_menuitem2_over == 1)
-		m_menuitem2.setFillColor(sf::Color::Red);
+		m_menuitem2.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem2.setFillColor(sf::Color::Blue);
+		m_menuitem2.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem2;
 }
 sf::RectangleShape MainMenu::get_menuitem3(void)
 {
 	if (m_menuitem3_over == 1)
-		m_menuitem3.setFillColor(sf::Color::Red);
+		m_menuitem3.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem3.setFillColor(sf::Color::Blue);
+		m_menuitem3.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem3;
 }
 sf::RectangleShape MainMenu::get_menuitem4(void)
 {
 	if (m_menuitem4_over == 1)
-		m_menuitem4.setFillColor(sf::Color::Red);
+		m_menuitem4.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem4.setFillColor(sf::Color::Blue);
+		m_menuitem4.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem4;
 }
 sf::RectangleShape MainMenu::get_menuitem5(void)
 {
 	if (m_menuitem5_over == 1)
-		m_menuitem5.setFillColor(sf::Color::Red);
+		m_menuitem5.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem5.setFillColor(sf::Color::Blue);
+		m_menuitem5.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem5;
 }
 sf::RectangleShape MainMenu::get_menuitem6(void)
 {
 	if (m_menuitem6_over == 1)
-		m_menuitem6.setFillColor(sf::Color::Red);
+		m_menuitem6.setFillColor(sf::Color(115, 228, 71));
 	else
-		m_menuitem6.setFillColor(sf::Color::Blue);
+		m_menuitem6.setFillColor(sf::Color(73, 186, 29));
 	return m_menuitem6;
 }
 sf::Text MainMenu::get_menuitem1_txt(void)

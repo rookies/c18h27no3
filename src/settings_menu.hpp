@@ -52,6 +52,7 @@
 			/*
 			 * Get drawable items:
 			*/
+			sf::Sprite get_creeper(void);
 			sf::RectangleShape get_menuitem1(void);
 			sf::RectangleShape get_menuitem2(void);
 			sf::RectangleShape get_menuitem3(void);
@@ -66,6 +67,9 @@
 			int m_sizes_menuitem_xoffset;
 			int m_sizes_menuitem_first_yoffset;
 			int m_sizes_menuitem_gap;
+			int m_sizes_creeper;
+			int m_sizes_creeper_xoffset;
+			int m_sizes_creeper_yoffset;
 			int m_sizes_menuitem_text_add_gap;
 			int m_sizes_menuitem_outline;
 			int m_menuitem1_over;
@@ -80,5 +84,7 @@
 			sf::Text m_menuitem2_txt;
 			sf::Text m_menuitem3_txt;
 			sf::Text m_menuitem4_txt;
+			sf::Texture m_img1;
+			sf::Sprite m_img1_sprite;
 	};
 #endif // _settings_menu_hpp_

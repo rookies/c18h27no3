@@ -36,7 +36,7 @@ int FPScounter::init(int screen_h)
 	 * Load text:
 	*/
 	m_txt.setCharacterSize(20);
-	m_txt.setColor(sf::Color::Red);
+	m_txt.setColor(sf::Color::Black);
 	m_txt.setPosition(10, screen_h-30);
 	m_txt.setString("0 fps");
 	/*
