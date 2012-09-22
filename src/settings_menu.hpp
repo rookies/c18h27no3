@@ -1,5 +1,5 @@
 /*
- * main.cpp
+ * settings_menu.hpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,51 +20,32 @@
  * 
  * 
  */
-#include "main.hpp"
-
-using namespace std;
-
-int main(int argc, char **argv)
-{
-	/*
-	 * Variable declarations:
-	*/
-	Game game;
-	int w, h, fullscreen;
-	/*
-	 * Variable definitions:
-	*/
-	//w = -1; // auto resolution
-	w = 1580;
-	//h = -1; // auto resolution
-	h = 1000;
-	//fullscreen = 1; // fullscreen
-	fullscreen = 0;
-	/*
-	 * Startup:
-	*/
-	cout << "Game v" << VERSION << endl;
-	/*
-	 * Init game:
-	*/
-	if (game.init(w, h, fullscreen) == 1)
+#ifndef _settings_menu_hpp_
+#	define _settings_menu_hpp_
+	
+#	include <iostream>
+#	include <SFML/Graphics.hpp>
+	
+	class SettingsMenu
 	{
-		return 1;
+		public:
+			SettingsMenu();
+			~SettingsMenu();
+			
+			/*
+			 * (Un)init:
+			*/
+			int init(void); /* Called in Game::init_gamemode() */
+			int uninit(void); /* Called in Game::uninit_gamemode() */
+			/*
+			 * Calculate sizes:
+			*/
+			int calculate_sizes(int w, int h); /* Called in Game::calculate_sizes() */
+			/*
+			 * Process events:
+			*/
+			int process_event(sf::Event event, int mouse_x, int mouse_y); /* Called in Game::process_events() */
+		private:
+			
 	};
-	/*
-	 * Start event loop:
-	*/
-	while (game.loop() == 2)
-	{
-		game.uninit();
-		if (game.init(w, h, fullscreen) == 1)
-		{
-			return 1;
-		};
-	}
-	/*
-	 * Shutdown:
-	*/
-	cout << "Shutting down." << endl;
-	return 0;
-}
+#endif // _settings_menu_hpp_

@@ -31,6 +31,7 @@ ELSE (UNIX)
 ENDIF (UNIX)
 set(GAME_SOURCES ${GAME_SOURCES} src/fps_counter.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/main_menu.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/settings_menu.cpp)
 add_executable(game ${GAME_SOURCES})
 # Add libraries to game executable:
 target_link_libraries(game ${SFMLwindow_LIBRARIES})

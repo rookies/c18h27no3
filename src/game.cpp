@@ -165,6 +165,12 @@ int Game::loop(void)
 					*/
 					draw_main_menu();
 					break;
+				case 2:
+					/*
+					 * Settings Menu
+					*/
+					draw_settings_menu();
+					break;
 			}
 			m_texture.draw(m_cursor.get_drawable());
 			m_texture.draw(m_fps_counter.get_drawable());
@@ -221,10 +227,11 @@ int Game::wait_for_focus(void)
 int Game::process_events(void)
 {
 	/*
-	 * Variable declarations:
+	 * Variable definitions:
 	*/
 	sf::Event event;
 	int x, y;
+	int res = -2;
 	/*
 	 * Check for events:
 	*/
@@ -334,13 +341,29 @@ int Game::process_events(void)
 				/*
 				 * Main Menu
 				*/
-				return m_main_menu->process_event(
+				res = m_main_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
 				);
 				break;
+			case 2:
+				/*
+				 * Settings Menu
+				*/
+				res = m_settings_menu->process_event(
+					event,
+					m_cursor.get_mouse_position_x(),
+					m_cursor.get_mouse_position_y()
+				);
 		}
+		if (res == -1)
+			return 1; // exit
+		else if (res == 0 || res == -2)
+			continue; // go on
+		else
+			if (set_gamemode(res) == 1) // set gamemode
+				return 1; // setting gamemode failed, exit
 	}
 	/*
 	 * Finish successful:
@@ -362,11 +385,23 @@ int Game::calculate_sizes(void)
 				m_padding_data_calculator.get_usable_w(),
 				m_padding_data_calculator.get_usable_h()
 			);
+			return 0;
+			break;
+		case 2:
+			/*
+			 * Settings Menu
+			*/
+			m_settings_menu->calculate_sizes(
+				m_padding_data_calculator.get_usable_w(),
+				m_padding_data_calculator.get_usable_h()
+			);
+			return 0;
 			break;
 	}
 }
 int Game::set_gamemode(int gamemode)
 {
+	std::cout << "set_gamemode(" << gamemode << ") called" << std::endl;
 	/*
 	 * Uninit old game mode:
 	*/
@@ -402,6 +437,14 @@ int Game::init_gamemode(int gamemode)
 			m_main_menu->init();
 			return 0;
 			break;
+		case 2:
+			/*
+			 * Settings Menu
+			*/
+			m_settings_menu = new SettingsMenu;
+			m_settings_menu->init();
+			return 0;
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
@@ -418,6 +461,13 @@ int Game::uninit_gamemode(int gamemode)
 			delete m_main_menu;
 			return 0;
 			break;
+		case 2:
+			/*
+			 * Settings Menu
+			*/
+			delete m_settings_menu;
+			return 0;
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to uninit_gamemode(): " << gamemode << std::endl;
 			return 0;
@@ -427,8 +477,17 @@ void Game::draw_main_menu(void)
 {
 	m_texture.draw(m_main_menu->get_grassblock());
 	m_texture.draw(m_main_menu->get_menuitem1());
+	m_texture.draw(m_main_menu->get_menuitem1_txt());
 	m_texture.draw(m_main_menu->get_menuitem2());
+	m_texture.draw(m_main_menu->get_menuitem2_txt());
 	m_texture.draw(m_main_menu->get_menuitem3());
+	m_texture.draw(m_main_menu->get_menuitem3_txt());
 	m_texture.draw(m_main_menu->get_menuitem4());
+	m_texture.draw(m_main_menu->get_menuitem4_txt());
 	m_texture.draw(m_main_menu->get_menuitem5());
+	m_texture.draw(m_main_menu->get_menuitem5_txt());
+}
+void Game::draw_settings_menu(void)
+{
+	
 }

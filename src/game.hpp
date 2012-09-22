@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _game_h_
-#	define _game_h_
+#ifndef _game_hpp_
+#	define _game_hpp_
 	
 #	include <iostream>
 #	include <SFML/Window.hpp>
@@ -31,6 +31,7 @@
 #	include "config.hpp"
 #	include "fps_counter.hpp"
 #	include "main_menu.hpp"
+#	include "settings_menu.hpp"
 	
 	class Game
 	{
@@ -73,6 +74,7 @@
 			 * Draw functions:
 			*/
 			void draw_main_menu(void);
+			void draw_settings_menu(void);
 			
 			/*
 			 * Internal variables:
@@ -90,11 +92,13 @@
 			Config m_config;
 			FPScounter m_fps_counter;
 			MainMenu *m_main_menu;
+			SettingsMenu *m_settings_menu;
 			/*
 			 * Game mode:
 			 *  0 - undefined
 			 *  1 - main menu
+			 *  2 - settings menu
 			*/
 			int m_gamemode;
 	};
-#endif // _game_h_
+#endif // _game_hpp_

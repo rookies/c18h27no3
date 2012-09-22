@@ -1,5 +1,5 @@
 /*
- * main.cpp
+ * settings_menu.cpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,51 +20,40 @@
  * 
  * 
  */
-#include "main.hpp"
+#include "settings_menu.hpp"
 
-using namespace std;
-
-int main(int argc, char **argv)
+SettingsMenu::SettingsMenu()
 {
-	/*
-	 * Variable declarations:
-	*/
-	Game game;
-	int w, h, fullscreen;
-	/*
-	 * Variable definitions:
-	*/
-	//w = -1; // auto resolution
-	w = 1580;
-	//h = -1; // auto resolution
-	h = 1000;
-	//fullscreen = 1; // fullscreen
-	fullscreen = 0;
-	/*
-	 * Startup:
-	*/
-	cout << "Game v" << VERSION << endl;
-	/*
-	 * Init game:
-	*/
-	if (game.init(w, h, fullscreen) == 1)
+	
+}
+SettingsMenu::~SettingsMenu()
+{
+	
+}
+int SettingsMenu::init(void)
+{
+	return 0;
+}
+int SettingsMenu::uninit(void)
+{
+	return 0;
+}
+int SettingsMenu::calculate_sizes(int w, int h)
+{
+	return 0;
+}
+int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+{
+	switch (event.type)
 	{
-		return 1;
-	};
-	/*
-	 * Start event loop:
-	*/
-	while (game.loop() == 2)
-	{
-		game.uninit();
-		if (game.init(w, h, fullscreen) == 1)
-		{
-			return 1;
-		};
+		case sf::Event::KeyPressed:
+			switch (event.key.code)
+			{
+				case sf::Keyboard::Escape:
+					return 1; // back to gamemode 1 (main menu)
+					break;
+			}
+			break;
 	}
-	/*
-	 * Shutdown:
-	*/
-	cout << "Shutting down." << endl;
 	return 0;
 }

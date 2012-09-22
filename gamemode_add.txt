@@ -1,0 +1,11 @@
+1. create <name>.cpp and <name>.hpp
+2. include <name>.hpp in game.hpp
+3. include <name>.cpp in CMakeLists.txt
+4. create internal variable in game.hpp
+5. create gamemode comment entry in game.hpp
+6. create entry in init_gamemode() in game.cpp
+7. create entry in uninit_gamemode() in game.cpp
+8. create entry in calculate_sizes() in game.cpp
+9. create entry in process_events() in game.cpp
+10. create entry in loop() in game.cpp
+11. create draw_<name>() function in game.cpp and game.hpp
