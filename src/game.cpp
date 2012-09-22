@@ -437,7 +437,8 @@ int Game::init_gamemode(int gamemode)
 			 * Main Menu
 			*/
 			m_main_menu = new MainMenu;
-			m_main_menu->init();
+			if (m_main_menu->init() == 1)
+				return 1;
 			return 0;
 			break;
 		case 2:
@@ -445,7 +446,8 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Menu
 			*/
 			m_settings_menu = new SettingsMenu;
-			m_settings_menu->init();
+			if (m_settings_menu->init() == 1)
+				return 1;
 			return 0;
 			break;
 		default:
@@ -461,6 +463,8 @@ int Game::uninit_gamemode(int gamemode)
 			/*
 			 * Main Menu
 			*/
+			if (m_main_menu->uninit() == 1)
+				return 1;
 			delete m_main_menu;
 			return 0;
 			break;
@@ -468,6 +472,8 @@ int Game::uninit_gamemode(int gamemode)
 			/*
 			 * Settings Menu
 			*/
+			if (m_settings_menu->uninit() == 1)
+				return 1;
 			delete m_settings_menu;
 			return 0;
 			break;
