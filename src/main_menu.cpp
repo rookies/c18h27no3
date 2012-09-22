@@ -124,7 +124,7 @@ int MainMenu::calculate_sizes(int w, int h)
 	m_menuitem3.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2);
 	m_menuitem4.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*3);
 	m_menuitem5.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*4);
-	m_menuitem6.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*5);
+	m_menuitem6.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*5+m_sizes_menuitem_gap);
 	/*
 	 * Update menuitem text size & positions:
 	*/
@@ -139,7 +139,7 @@ int MainMenu::calculate_sizes(int w, int h)
 	m_menuitem3_txt.setPosition((w-m_menuitem3_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2+m_sizes_menuitem_text_add_gap);
 	m_menuitem4_txt.setPosition((w-m_menuitem4_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*3+m_sizes_menuitem_text_add_gap);
 	m_menuitem5_txt.setPosition((w-m_menuitem5_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*4+m_sizes_menuitem_text_add_gap);
-	m_menuitem6_txt.setPosition((w-m_menuitem6_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*5+m_sizes_menuitem_text_add_gap);
+	m_menuitem6_txt.setPosition((w-m_menuitem6_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*5+m_sizes_menuitem_text_add_gap+m_sizes_menuitem_gap);
 	return 0;
 }
 int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -197,7 +197,7 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					m_menuitem5_over = 1;
 					//std::cout << "#5" << std::endl;
 				}
-				else if (mouse_y > m_sizes_menuitem_first_yoffset+5*m_sizes_menuitem_height+5*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+6*m_sizes_menuitem_height+5*m_sizes_menuitem_gap)
+				else if (mouse_y > m_sizes_menuitem_first_yoffset+5*m_sizes_menuitem_height+5*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+6*m_sizes_menuitem_height+5*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
 				{
 					/*
 					 * Menuitem 6
