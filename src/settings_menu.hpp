@@ -45,7 +45,40 @@
 			 * Process events:
 			*/
 			int process_event(sf::Event event, int mouse_x, int mouse_y); /* Called in Game::process_events() */
+			/*
+			 * Reset menuitemX_over variables:
+			*/
+			void reset_menuitem_over(void);
+			/*
+			 * Get drawable items:
+			*/
+			sf::RectangleShape get_menuitem1(void);
+			sf::RectangleShape get_menuitem2(void);
+			sf::RectangleShape get_menuitem3(void);
+			sf::RectangleShape get_menuitem4(void);
+			sf::Text get_menuitem1_txt(void);
+			sf::Text get_menuitem2_txt(void);
+			sf::Text get_menuitem3_txt(void);
+			sf::Text get_menuitem4_txt(void);
 		private:
-			
+			int m_sizes_menuitem_width;
+			int m_sizes_menuitem_height;
+			int m_sizes_menuitem_xoffset;
+			int m_sizes_menuitem_first_yoffset;
+			int m_sizes_menuitem_gap;
+			int m_sizes_menuitem_text_add_gap;
+			int m_sizes_menuitem_outline;
+			int m_menuitem1_over;
+			int m_menuitem2_over;
+			int m_menuitem3_over;
+			int m_menuitem4_over;
+			sf::RectangleShape m_menuitem1;
+			sf::RectangleShape m_menuitem2;
+			sf::RectangleShape m_menuitem3;
+			sf::RectangleShape m_menuitem4;
+			sf::Text m_menuitem1_txt;
+			sf::Text m_menuitem2_txt;
+			sf::Text m_menuitem3_txt;
+			sf::Text m_menuitem4_txt;
 	};
 #endif // _settings_menu_hpp_

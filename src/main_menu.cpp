@@ -41,6 +41,12 @@ int MainMenu::init(void)
 	/*
 	 * Init menuitem shapes:
 	*/
+	m_menuitem1.setOutlineColor(sf::Color::Black);
+	m_menuitem2.setOutlineColor(sf::Color::Black);
+	m_menuitem3.setOutlineColor(sf::Color::Black);
+	m_menuitem4.setOutlineColor(sf::Color::Black);
+	m_menuitem5.setOutlineColor(sf::Color::Black);
+	m_menuitem6.setOutlineColor(sf::Color::Black);
 	/*
 	 * Init menuitem texts:
 	*/
@@ -107,12 +113,6 @@ int MainMenu::calculate_sizes(int w, int h)
 	m_menuitem4.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
 	m_menuitem5.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
 	m_menuitem6.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem1.setOutlineColor(sf::Color::Black);
-	m_menuitem2.setOutlineColor(sf::Color::Black);
-	m_menuitem3.setOutlineColor(sf::Color::Black);
-	m_menuitem4.setOutlineColor(sf::Color::Black);
-	m_menuitem5.setOutlineColor(sf::Color::Black);
-	m_menuitem6.setOutlineColor(sf::Color::Black);
 	m_menuitem1.setOutlineThickness(m_sizes_menuitem_outline);
 	m_menuitem2.setOutlineThickness(m_sizes_menuitem_outline);
 	m_menuitem3.setOutlineThickness(m_sizes_menuitem_outline);
@@ -217,9 +217,9 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 			{
 				case sf::Mouse::Left:
 					if (m_menuitem6_over == 1)
-						return -1;
+						return -1; // exit
 					else if (m_menuitem4_over == 1)
-						return 2;
+						return 2; // go to settings menu
 					break;
 			}
 			break;
