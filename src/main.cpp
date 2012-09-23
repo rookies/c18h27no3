@@ -30,7 +30,6 @@ int main(int argc, char **argv)
 	 * Variable declarations:
 	*/
 	Game game;
-	int w, h, fullscreen;
 	/*
 	 * Startup:
 	*/
