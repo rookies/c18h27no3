@@ -53,3 +53,7 @@ target_link_libraries(game ${SFMLsystem_LIBRARIES})
 target_link_libraries(game ${LIBAVCODEC_LIBRARIES})
 target_link_libraries(game ${LIBAVFORMAT_LIBRARIES})
 target_link_libraries(game ${LIBSWSCALE_LIBRARIES})
+# Add install targets:
+install(TARGETS game DESTINATION bin)
+file(GLOB files "${CMAKE_SOURCE_DIR}/data/*")
+install(FILES ${files} DESTINATION share)
