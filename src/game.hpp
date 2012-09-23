@@ -33,6 +33,8 @@
 #	include "main_menu.hpp"
 #	include "settings_menu.hpp"
 #	include "settings_graphics_menu.hpp"
+#	include "settings_control_menu.hpp"
+#	include "settings_sound_menu.hpp"
 	
 	class Game
 	{
@@ -77,6 +79,8 @@
 			void draw_main_menu(void);
 			void draw_settings_menu(void);
 			void draw_settings_graphics_menu(void);
+			void draw_settings_control_menu(void);
+			void draw_settings_sound_menu(void);
 			
 			/*
 			 * Internal variables:
@@ -96,12 +100,16 @@
 			MainMenu *m_main_menu;
 			SettingsMenu *m_settings_menu;
 			SettingsGraphicsMenu *m_settings_graphics_menu;
+			SettingsControlMenu *m_settings_control_menu;
+			SettingsSoundMenu *m_settings_sound_menu;
 			/*
 			 * Game mode:
 			 *  0 - undefined
 			 *  1 - main menu
 			 *  2 - settings menu
 			 *  3 - settings graphics menu
+			 *  4 - settings control menu
+			 *  5 - settings sound menu
 			*/
 			int m_gamemode;
 	};

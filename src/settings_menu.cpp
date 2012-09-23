@@ -192,6 +192,10 @@ int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 				case sf::Mouse::Left:
 					if (m_menuitem1_over == 1)
 						return 3; // go to settings graphics menu
+					else if (m_menuitem2_over = 1)
+						return 4; // go to settings control menu
+					else if (m_menuitem3_over == 1)
+						return 5; // go to settings control menu
 					else if (m_menuitem4_over == 1)
 						return 1; // back to main menu
 					break;
