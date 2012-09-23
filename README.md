@@ -35,3 +35,4 @@ For details, see COPYING.
 ### Used libraries
  * [Simple and Fast Multimedia Library](http://www.sfml-dev.org/) (SFML) is released under the zlib/libpng license.
  * libavcodec (part of the [FFmpeg](http://ffmpeg.org/) project) is released under the GNU Lesser General Public License.
+ * libintl (part of the [GNU gettext](http://www.gnu.org/software/gettext/gettext.html) project) is released under the GNU Lesser General Public License.
