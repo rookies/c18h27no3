@@ -15,11 +15,11 @@ ENDIF (SFMLsystem_LIBRARIES AND SFMLsystem_INCLUDE_DIR)
 
 IF (SFMLsystem_FOUND)
 	IF (NOT SFMLsystem_FIND_QUIETLY)
-		message(STATUS "Found SFMLsystem: ${SFMLsystem_LIBRARIES}")
+		message(STATUS "Found SFML-system: ${SFMLsystem_LIBRARIES}")
 	ENDIF (NOT SFMLsystem_FIND_QUIETLY)
 ELSE (SFMLsystem_FOUND)
 	IF (SFMLsystem_FIND_REQUIRED)
-		message(FATAL_ERROR "Could not find SFMLsystem library")
+		message(FATAL_ERROR "Could not find SFML-system library")
 	ENDIF (SFMLsystem_FIND_REQUIRED)
 ENDIF (SFMLsystem_FOUND)
 

@@ -15,11 +15,11 @@ ENDIF (SFMLgraphics_LIBRARIES AND SFMLgraphics_INCLUDE_DIR)
 
 IF (SFMLgraphics_FOUND)
 	IF (NOT SFMLgraphics_FIND_QUIETLY)
-		message(STATUS "Found SFMLgraphics: ${SFMLgraphics_LIBRARIES}")
+		message(STATUS "Found SFML-graphics: ${SFMLgraphics_LIBRARIES}")
 	ENDIF (NOT SFMLgraphics_FIND_QUIETLY)
 ELSE (SFMLgraphics_FOUND)
 	IF (SFMLgraphics_FIND_REQUIRED)
-		message(FATAL_ERROR "Could not find SFMLgraphics library")
+		message(FATAL_ERROR "Could not find SFML-graphics library")
 	ENDIF (SFMLgraphics_FIND_REQUIRED)
 ENDIF (SFMLgraphics_FOUND)
 

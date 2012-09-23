@@ -15,11 +15,11 @@ ENDIF (SFMLwindow_LIBRARIES AND SFMLwindow_INCLUDE_DIR)
 
 IF (SFMLwindow_FOUND)
 	IF (NOT SFMLwindow_FIND_QUIETLY)
-		message(STATUS "Found SFMLwindow: ${SFMLwindow_LIBRARIES}")
+		message(STATUS "Found SFML-window: ${SFMLwindow_LIBRARIES}")
 	ENDIF (NOT SFMLwindow_FIND_QUIETLY)
 ELSE (SFMLwindow_FOUND)
 	IF (SFMLwindow_FIND_REQUIRED)
-		message(FATAL_ERROR "Could not find SFMLwindow library")
+		message(FATAL_ERROR "Could not find SFML-window library")
 	ENDIF (SFMLwindow_FIND_REQUIRED)
 ENDIF (SFMLwindow_FOUND)
 
