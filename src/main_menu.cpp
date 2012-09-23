@@ -146,6 +146,14 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 {
 	switch (event.type)
 	{
+		case sf::Event::KeyPressed:
+			switch (event.key.code)
+			{
+				case sf::Keyboard::Escape:
+					return -1; // exit
+					break;
+			}
+			break;
 		case sf::Event::MouseMoved:
 			if (mouse_x > m_sizes_menuitem_xoffset && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width)
 			{

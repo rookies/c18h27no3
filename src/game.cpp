@@ -171,6 +171,12 @@ int Game::loop(void)
 					*/
 					draw_settings_menu();
 					break;
+				case 3:
+					/*
+					 * Settings Graphics Menu
+					*/
+					draw_settings_graphics_menu();
+					break;
 			}
 			m_texture.draw(m_cursor.get_drawable(
 				m_padding_data_calculator.get_usable_w(),
@@ -359,6 +365,17 @@ int Game::process_events(void)
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
 				);
+				break;
+			case 3:
+				/*
+				 * Settings Graphics Menu
+				*/
+				res = m_settings_graphics_menu->process_event(
+					event,
+					m_cursor.get_mouse_position_x(),
+					m_cursor.get_mouse_position_y()
+				);
+				break;
 		}
 		if (res == -1)
 			return 1; // exit
@@ -384,20 +401,33 @@ int Game::calculate_sizes(void)
 			/*
 			 * Main Menu
 			*/
-			m_main_menu->calculate_sizes(
+			if (m_main_menu->calculate_sizes(
 				m_padding_data_calculator.get_usable_w(),
 				m_padding_data_calculator.get_usable_h()
-			);
+			) == 1)
+				return 1;
 			return 0;
 			break;
 		case 2:
 			/*
 			 * Settings Menu
 			*/
-			m_settings_menu->calculate_sizes(
+			if (m_settings_menu->calculate_sizes(
 				m_padding_data_calculator.get_usable_w(),
 				m_padding_data_calculator.get_usable_h()
-			);
+			) == 1)
+				return 1;
+			return 0;
+			break;
+		case 3:
+			/*
+			 * Settings Graphics Menu
+			*/
+			if (m_settings_graphics_menu->calculate_sizes(
+				m_padding_data_calculator.get_usable_w(),
+				m_padding_data_calculator.get_usable_h()
+			) == 1)
+				return 1;
 			return 0;
 			break;
 	}
@@ -450,6 +480,15 @@ int Game::init_gamemode(int gamemode)
 				return 1;
 			return 0;
 			break;
+		case 3:
+			/*
+			 * Settings Graphics Menu
+			*/
+			m_settings_graphics_menu = new SettingsGraphicsMenu;
+			if (m_settings_graphics_menu->init() == 1)
+				return 1;
+			return 0;
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
@@ -475,6 +514,15 @@ int Game::uninit_gamemode(int gamemode)
 			if (m_settings_menu->uninit() == 1)
 				return 1;
 			delete m_settings_menu;
+			return 0;
+			break;
+		case 3:
+			/*
+			 * Settings Graphics Menu
+			*/
+			if (m_settings_graphics_menu->uninit() == 1)
+				return 1;
+			delete m_settings_graphics_menu;
 			return 0;
 			break;
 		default:
@@ -509,4 +557,8 @@ void Game::draw_settings_menu(void)
 	m_texture.draw(m_settings_menu->get_menuitem3_txt());
 	m_texture.draw(m_settings_menu->get_menuitem4());
 	m_texture.draw(m_settings_menu->get_menuitem4_txt());
+}
+void Game::draw_settings_graphics_menu(void)
+{
+	
 }
