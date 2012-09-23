@@ -13,6 +13,7 @@ find_package(LIBAVCODEC REQUIRED)
 find_package(LIBAVFORMAT REQUIRED)
 find_package(LIBAVUTIL REQUIRED)
 find_package(LIBSWSCALE REQUIRED)
+find_package(GETTEXT REQUIRED)
 # Add include directories:
 include_directories("${SFMLwindow_INCLUDE_DIR}")
 include_directories("${SFMLgraphics_INCLUDE_DIR}")
@@ -20,6 +21,7 @@ include_directories("${SFMLsystem_INCLUDE_DIR}")
 include_directories("${LIBAVCODEC_INCLUDE_DIR}")
 include_directories("${LIBAVFORMAT_INCLUDE_DIR}")
 include_directories("${LIBSWSCALE_INCLUDE_DIR}")
+include_directories("${GETTEXT_INCLUDE_DIR}")
 # Create globals.hpp:
 configure_file(
 	"${CMAKE_SOURCE_DIR}/src/globals.hpp.in"
@@ -46,6 +48,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/settings_general_menu.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/settings_graphics_menu.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/settings_control_menu.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/settings_sound_menu.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/widestring.cpp)
 add_executable(game ${GAME_SOURCES})
 # Add libraries to game executable:
 target_link_libraries(game ${SFMLwindow_LIBRARIES})
@@ -54,6 +57,7 @@ target_link_libraries(game ${SFMLsystem_LIBRARIES})
 target_link_libraries(game ${LIBAVCODEC_LIBRARIES})
 target_link_libraries(game ${LIBAVFORMAT_LIBRARIES})
 target_link_libraries(game ${LIBSWSCALE_LIBRARIES})
+target_link_libraries(game ${GETTEXT_LIBRARIES})
 # Add install targets:
 install(TARGETS game DESTINATION bin)
 file(GLOB files "${CMAKE_SOURCE_DIR}/data/*")

@@ -72,6 +72,11 @@ int Game::init(int w, int h, int fullscreen)
 		std::cout << "  Forced Screen Height: " << h << std::endl;
 	};
 	/*
+	 * Init locale:
+	*/
+	if (init_locale() == 1)
+		return 1;
+	/*
 	 * Create window:
 	*/
 	std::cout << "Creating window (" << m_screen_w << "x" << m_screen_h << "x" << m_screen_bits << ")... ";
@@ -224,6 +229,14 @@ int Game::loop(void)
 		};
 	}
 	return done;
+}
+int Game::init_locale(void)
+{
+	setlocale(LC_ALL, "");
+	setlocale(LC_CTYPE, "");
+	bindtextdomain("sf-game", "./locale");
+	textdomain("sf-game");
+	return 0;
 }
 int Game::wait_for_focus(void)
 {

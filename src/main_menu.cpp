@@ -50,12 +50,12 @@ int MainMenu::init(void)
 	/*
 	 * Init menuitem texts:
 	*/
-	m_menuitem1_txt.setString("Neues Spiel");
-	m_menuitem2_txt.setString("Spiel Laden");
-	m_menuitem3_txt.setString("Level-Editor");
-	m_menuitem4_txt.setString("Einstellungen");
-	m_menuitem5_txt.setString("Credits");
-	m_menuitem6_txt.setString("Beenden");
+	m_menuitem1_txt.setString(get_wstring(_("main_menu_entry_newgame")));
+	m_menuitem2_txt.setString(get_wstring(_("main_menu_entry_loadgame")));
+	m_menuitem3_txt.setString(get_wstring(_("main_menu_entry_leveleditor")));
+	m_menuitem4_txt.setString(get_wstring(_("main_menu_entry_settings")));
+	m_menuitem5_txt.setString(get_wstring(_("main_menu_entry_credits")));
+	m_menuitem6_txt.setString(get_wstring(_("main_menu_entry_exit")));
 	m_menuitem1_txt.setColor(sf::Color::Black);
 	m_menuitem2_txt.setColor(sf::Color::Black);
 	m_menuitem3_txt.setColor(sf::Color::Black);

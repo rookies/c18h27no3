@@ -1,5 +1,5 @@
 /*
- * globals.hpp(.in)
+ * widestring.cpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,22 +20,37 @@
  * 
  * 
  */
-#ifndef _globals_hpp_
-#	define _globals_hpp_
+#include "widestring.hpp"
+
+/*
+ * Thanks to:
+ *  http://stackoverflow.com/questions/7141260/compare-stdwstring-and-stdstring/7159944#7159944
+*/
+std::wstring get_wstring(const std::string &str)
+{
+	const char *cstr = str.c_str();
+	const size_t wn = std::mbsrtowcs(NULL, &cstr, 0, NULL);
 	
-	/*
-	 * Game version:
-	*/
-#	define VERSION_MAJOR @GAME_VERSION_MAJOR@
-#	define VERSION_MINOR @GAME_VERSION_MINOR@
-#	define VERSION @GAME_VERSION_MAJOR@.@GAME_VERSION_MINOR@
-	/*
-	 * Cursor dimensions:
-	*/
-#	define CURSOR_WIDTH 16
-#	define CURSOR_HEIGHT 16
-	/*
-	 * gettext definitions:
-	*/
-#	define _(String) gettext(String)
-#endif // _globals_hpp_
+	if (wn == size_t(-1))
+	{
+		std::cout << "Error in mbsrtowcs(): " << errno << std::endl;
+		return L"";
+	}
+	
+	std::vector<wchar_t> buf(wn + 1);
+#ifdef _WIN32
+	const size_t wn_again = std::mbstowcs(buf.data(), cstr, wn+1);
+#else
+	const size_t wn_again = std::mbsrtowcs(buf.data(), &cstr, wn+1, NULL);
+#endif
+	
+	if (wn_again == size_t(-1))
+	{
+		std::cout << "Error in mbsrtowcs(): " << errno << std::endl;
+		return L"";
+	}
+	
+	assert(cstr == NULL);
+	
+	return std::wstring(buf.data(), wn);
+}

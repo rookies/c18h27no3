@@ -1,5 +1,5 @@
 /*
- * globals.hpp(.in)
+ * widestring.hpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,22 +20,16 @@
  * 
  * 
  */
-#ifndef _globals_hpp_
-#	define _globals_hpp_
+#ifndef _widestring_hpp_
+#	define _widestring_hpp_
 	
-	/*
-	 * Game version:
-	*/
-#	define VERSION_MAJOR @GAME_VERSION_MAJOR@
-#	define VERSION_MINOR @GAME_VERSION_MINOR@
-#	define VERSION @GAME_VERSION_MAJOR@.@GAME_VERSION_MINOR@
-	/*
-	 * Cursor dimensions:
-	*/
-#	define CURSOR_WIDTH 16
-#	define CURSOR_HEIGHT 16
-	/*
-	 * gettext definitions:
-	*/
-#	define _(String) gettext(String)
-#endif // _globals_hpp_
+#	include <iostream>
+#	include <string>
+#	include <vector>
+#	include <cassert>
+#	include <cstdlib>
+#	include <cwchar>
+#	include <cerrno>
+	
+	std::wstring get_wstring(const std::string &str);
+#endif // _widestring_hpp_

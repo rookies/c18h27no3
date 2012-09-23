@@ -25,6 +25,7 @@
 	
 #	include <iostream>
 #	include <SFML/Window.hpp>
+#	include <libintl.h>
 #	include "padding_data_calculator.hpp"
 #	include "cursor.hpp"
 #	include "video_sequence.hpp"
@@ -53,6 +54,10 @@
 			*/
 			int loop(void);
 		private:
+			/*
+			 * Init locale:
+			*/
+			int init_locale(void);
 			/*
 			 * Wait for focus:
 			*/

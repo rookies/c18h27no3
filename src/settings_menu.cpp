@@ -49,11 +49,11 @@ int SettingsMenu::init(void)
 	/*
 	 * Init menuitem texts:
 	*/
-	m_menuitem1_txt.setString("Allgemein");
-	m_menuitem2_txt.setString("Grafik");
-	m_menuitem3_txt.setString("Steuerung");
-	m_menuitem4_txt.setString("Sound");
-	m_menuitem5_txt.setString(sf::String(L"Zurück"));
+	m_menuitem1_txt.setString(get_wstring(_("settings_menu_entry_general")));
+	m_menuitem2_txt.setString(get_wstring(_("settings_menu_entry_graphics")));
+	m_menuitem3_txt.setString(get_wstring(_("settings_menu_entry_control")));
+	m_menuitem4_txt.setString(get_wstring(_("settings_menu_entry_sound")));
+	m_menuitem5_txt.setString(get_wstring(_("settings_menu_entry_back")));
 	m_menuitem1_txt.setColor(sf::Color::Black);
 	m_menuitem2_txt.setColor(sf::Color::Black);
 	m_menuitem3_txt.setColor(sf::Color::Black);
