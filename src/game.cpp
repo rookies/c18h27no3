@@ -173,17 +173,23 @@ int Game::loop(void)
 					break;
 				case 3:
 					/*
+					 * Settings General Menu
+					*/
+					draw_settings_general_menu();
+					break;
+				case 4:
+					/*
 					 * Settings Graphics Menu
 					*/
 					draw_settings_graphics_menu();
 					break;
-				case 4:
+				case 5:
 					/*
 					 * Settings Control Menu
 					*/
 					draw_settings_control_menu();
 					break;
-				case 5:
+				case 6:
 					/*
 					 * Settings Sound Menu
 					*/
@@ -380,6 +386,16 @@ int Game::process_events(void)
 				break;
 			case 3:
 				/*
+				 * Settings General Menu
+				*/
+				res = m_settings_general_menu->process_event(
+					event,
+					m_cursor.get_mouse_position_x(),
+					m_cursor.get_mouse_position_y()
+				);
+				break;
+			case 4:
+				/*
 				 * Settings Graphics Menu
 				*/
 				res = m_settings_graphics_menu->process_event(
@@ -388,7 +404,7 @@ int Game::process_events(void)
 					m_cursor.get_mouse_position_y()
 				);
 				break;
-			case 4:
+			case 5:
 				/*
 				 * Settings Control Menu
 				*/
@@ -398,7 +414,7 @@ int Game::process_events(void)
 					m_cursor.get_mouse_position_y()
 				);
 				break;
-			case 5:
+			case 6:
 				/*
 				 * Settings Sound Menu
 				*/
@@ -453,6 +469,17 @@ int Game::calculate_sizes(void)
 			break;
 		case 3:
 			/*
+			 * Settings General Menu
+			*/
+			if (m_settings_general_menu->calculate_sizes(
+				m_padding_data_calculator.get_usable_w(),
+				m_padding_data_calculator.get_usable_h()
+			) == 1)
+				return 1;
+			return 0;
+			break;
+		case 4:
+			/*
 			 * Settings Graphics Menu
 			*/
 			if (m_settings_graphics_menu->calculate_sizes(
@@ -462,7 +489,7 @@ int Game::calculate_sizes(void)
 				return 1;
 			return 0;
 			break;
-		case 4:
+		case 5:
 			/*
 			 * Settings Control Menu
 			*/
@@ -473,7 +500,7 @@ int Game::calculate_sizes(void)
 				return 1;
 			return 0;
 			break;
-		case 5:
+		case 6:
 			/*
 			 * Settings Sound Menu
 			*/
@@ -536,6 +563,15 @@ int Game::init_gamemode(int gamemode)
 			break;
 		case 3:
 			/*
+			 * Settings General Menu
+			*/
+			m_settings_general_menu = new SettingsGeneralMenu;
+			if (m_settings_general_menu->init() == 1)
+				return 1;
+			return 0;
+			break;
+		case 4:
+			/*
 			 * Settings Graphics Menu
 			*/
 			m_settings_graphics_menu = new SettingsGraphicsMenu;
@@ -543,7 +579,7 @@ int Game::init_gamemode(int gamemode)
 				return 1;
 			return 0;
 			break;
-		case 4:
+		case 5:
 			/*
 			 * Settings Control Menu
 			*/
@@ -552,7 +588,7 @@ int Game::init_gamemode(int gamemode)
 				return 1;
 			return 0;
 			break;
-		case 5:
+		case 6:
 			/*
 			 * Settings Sound Menu
 			*/
@@ -590,6 +626,15 @@ int Game::uninit_gamemode(int gamemode)
 			break;
 		case 3:
 			/*
+			 * Settings General Menu
+			*/
+			if (m_settings_general_menu->uninit() == 1)
+				return 1;
+			delete m_settings_general_menu;
+			return 0;
+			break;
+		case 4:
+			/*
 			 * Settings Graphics Menu
 			*/
 			if (m_settings_graphics_menu->uninit() == 1)
@@ -597,7 +642,7 @@ int Game::uninit_gamemode(int gamemode)
 			delete m_settings_graphics_menu;
 			return 0;
 			break;
-		case 4:
+		case 5:
 			/*
 			 * Settings Control Menu
 			*/
@@ -606,7 +651,7 @@ int Game::uninit_gamemode(int gamemode)
 			delete m_settings_control_menu;
 			return 0;
 			break;
-		case 5:
+		case 6:
 			/*
 			 * Settings Sound Menu
 			*/
@@ -647,6 +692,12 @@ void Game::draw_settings_menu(void)
 	m_texture.draw(m_settings_menu->get_menuitem3_txt());
 	m_texture.draw(m_settings_menu->get_menuitem4());
 	m_texture.draw(m_settings_menu->get_menuitem4_txt());
+	m_texture.draw(m_settings_menu->get_menuitem5());
+	m_texture.draw(m_settings_menu->get_menuitem5_txt());
+}
+void Game::draw_settings_general_menu(void)
+{
+	
 }
 void Game::draw_settings_graphics_menu(void)
 {

@@ -32,6 +32,7 @@
 #	include "fps_counter.hpp"
 #	include "main_menu.hpp"
 #	include "settings_menu.hpp"
+#	include "settings_general_menu.hpp"
 #	include "settings_graphics_menu.hpp"
 #	include "settings_control_menu.hpp"
 #	include "settings_sound_menu.hpp"
@@ -78,6 +79,7 @@
 			*/
 			void draw_main_menu(void);
 			void draw_settings_menu(void);
+			void draw_settings_general_menu(void);
 			void draw_settings_graphics_menu(void);
 			void draw_settings_control_menu(void);
 			void draw_settings_sound_menu(void);
@@ -99,6 +101,7 @@
 			FPScounter m_fps_counter;
 			MainMenu *m_main_menu;
 			SettingsMenu *m_settings_menu;
+			SettingsGeneralMenu *m_settings_general_menu;
 			SettingsGraphicsMenu *m_settings_graphics_menu;
 			SettingsControlMenu *m_settings_control_menu;
 			SettingsSoundMenu *m_settings_sound_menu;
@@ -107,9 +110,10 @@
 			 *  0 - undefined
 			 *  1 - main menu
 			 *  2 - settings menu
-			 *  3 - settings graphics menu
-			 *  4 - settings control menu
-			 *  5 - settings sound menu
+			 *  3 - settings general menu
+			 *  4 - settings graphics menu
+			 *  5 - settings control menu
+			 *  6 - settings sound menu
 			*/
 			int m_gamemode;
 	};
