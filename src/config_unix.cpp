@@ -63,57 +63,61 @@ int Config::load(void)
 	 * Open file
 	*/
 	file.open("config.txt");
-	if (file.is_open())
-	{
-		while (file.good())
-		{
-			getline(file, line);
-			found = line.find_first_of("#");
-			if (found != std::string::npos)
-			{
-				/*
-				 * Line seems valid
-				*/
-				index = line.substr(0, found);
-				value_raw = line.substr(found+1, std::string::npos);
-				/*
-				 * Search for the index:
-				*/
-				for (i=0; i < CONFIGVAR_COUNT; i++)
-				{
-					if (m_vars[i].index.compare(index) == 0)
-					{
-						/*
-						 * We got the right index
-						 * Try to interpret the value:
-						*/
-						switch (m_vars[i].type)
-						{
-							case CONFIGVAR_TYPE_INTEGER:
-								m_vars[i].value_int = atoi(value_raw.c_str());
-								break;
-							case CONFIGVAR_TYPE_BOOLEAN:
-								if (value_raw.compare("true") == 0)
-									m_vars[i].value_bool = true;
-								else
-									m_vars[i].value_bool = false;
-								break;
-							case CONFIGVAR_TYPE_STRING:
-								m_vars[i].value_string = value_raw;
-								break;
-						}
-					};
-				}
-			}
-			else if (!line.compare("\n") && !line.compare(""))
-				std::cout << "Invalid config line: " << line << std::endl;
-		}
-	}
-	else
+	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;
 		return 1;
 	};
+	/*
+	 * ... read it:
+	*/
+	while (file.good())
+	{
+		getline(file, line);
+		found = line.find_first_of("#");
+		if (found != std::string::npos)
+		{
+			/*
+			 * Line seems valid
+			*/
+			index = line.substr(0, found);
+			value_raw = line.substr(found+1, std::string::npos);
+			/*
+			 * Search for the index:
+			*/
+			for (i=0; i < CONFIGVAR_COUNT; i++)
+			{
+				if (m_vars[i].index.compare(index) == 0)
+				{
+					/*
+					 * We got the right index
+					 * Try to interpret the value:
+					*/
+					switch (m_vars[i].type)
+					{
+						case CONFIGVAR_TYPE_INTEGER:
+							m_vars[i].value_int = atoi(value_raw.c_str());
+							break;
+						case CONFIGVAR_TYPE_BOOLEAN:
+							if (value_raw.compare("true") == 0)
+								m_vars[i].value_bool = true;
+							else
+								m_vars[i].value_bool = false;
+							break;
+						case CONFIGVAR_TYPE_STRING:
+							m_vars[i].value_string = value_raw;
+							break;
+					}
+				};
+			}
+		}
+		else if (!line.compare("\n") && !line.compare(""))
+			std::cout << "Invalid config line: " << line << std::endl;
+	}
+	/*
+	 * ... and close it:
+	*/
+	file.close();
 	/*
 	 * Return success:
 	*/
@@ -122,6 +126,7 @@ int Config::load(void)
 }
 int Config::write(void)
 {
+	std::cout << "Writing config... ";
 	/*
 	 * Variable declarations:
 	*/
@@ -131,6 +136,11 @@ int Config::write(void)
 	 * Open file:
 	*/
 	file.open("config.txt");
+	if (!file.is_open())
+	{
+		std::cout << "[FAIL]" << std::endl;
+		return 1;
+	};
 	/*
 	 * ... write into it:
 	*/
@@ -157,6 +167,10 @@ int Config::write(void)
 	 * ... and close it:
 	*/
 	file.close();
+	/*
+	 * Return success:
+	*/
+	std::cout << "[DONE]" << std::endl;
 	return 0;
 }
 void Config::dump(void)
@@ -207,5 +221,16 @@ ConfigVariable Config::get(std::string index)
 }
 void Config::set(std::string index, ConfigVariable value)
 {
-	
+	/*
+	 * Variable declarations:
+	*/
+	int i;
+	/*
+	 * Run through variables:
+	*/
+	for (i=0; i < CONFIGVAR_COUNT; i++)
+	{
+		if (m_vars[i].index.compare(index) == 0)
+			m_vars[i] = value;
+	}
 }
