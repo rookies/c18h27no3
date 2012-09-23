@@ -32,34 +32,13 @@ int main(int argc, char **argv)
 	Game game;
 	int w, h, fullscreen;
 	/*
-	 * Parse command line arguments:
-	*/
-	if (argc >= 4)
-	{
-		w = atoi(argv[1]);
-		h = atoi(argv[2]);
-		fullscreen = atoi(argv[3]);
-	}
-	else if (argc == 3)
-	{
-		w = atoi(argv[1]);
-		h = atoi(argv[2]);
-		fullscreen = 0;
-	}
-	else
-	{
-		w = -1; // auto resolution
-		h = -1; // auto resolution
-		fullscreen = 1; // fullscreen
-	};
-	/*
 	 * Startup:
 	*/
 	cout << "Game v" << VERSION << endl;
 	/*
 	 * Init game:
 	*/
-	if (game.init(w, h, fullscreen) == 1)
+	if (game.init() == 1)
 	{
 		return 1;
 	};
@@ -69,7 +48,7 @@ int main(int argc, char **argv)
 	while (game.loop() == 2)
 	{
 		game.uninit();
-		if (game.init(w, h, fullscreen) == 1)
+		if (game.init() == 1)
 		{
 			return 1;
 		};

@@ -47,7 +47,7 @@
 			/*
 			 * (Un)Init game:
 			*/
-			int init(int w, int h, int fullscreen);
+			int init(void);
 			int uninit(void);
 			/*
 			 * Start main loop:

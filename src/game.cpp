@@ -30,7 +30,7 @@ Game::~Game()
 {
 	
 }
-int Game::init(int w, int h, int fullscreen)
+int Game::init(void)
 {
 	/*
 	 * Variable declarations:
@@ -39,6 +39,13 @@ int Game::init(int w, int h, int fullscreen)
 	int w_;
 	int h_;
 	sf::VideoMode videomode;
+	/*
+	 * Load configuration:
+	*/
+	m_config.load();
+	m_config.dump();
+	if (m_config.write() == 1)
+		return 1;
 	/*
 	 * Get video info:
 	*/
@@ -50,34 +57,27 @@ int Game::init(int w, int h, int fullscreen)
 	/*
 	 * Check forced screen width:
 	*/
-	if (w == -1)
+	if (m_config.get("GRAPHICS__RESOLUTION_X").value_int == 0)
 	{
 		m_screen_w = videomode.width;
 	}
 	else
 	{
-		m_screen_w = w;
-		std::cout << "  Forced Screen Width: " << w << std::endl;
+		m_screen_w = m_config.get("GRAPHICS__RESOLUTION_X").value_int;
+		std::cout << "  Forced Screen Width: " << m_screen_w << std::endl;
 	};
 	/*
 	 * Check forced screen height:
 	*/
-	if (h == -1)
+	if (m_config.get("GRAPHICS__RESOLUTION_Y").value_int == 0)
 	{
 		m_screen_h = videomode.height;
 	}
 	else
 	{
-		m_screen_h = h;
-		std::cout << "  Forced Screen Height: " << h << std::endl;
+		m_screen_h = m_config.get("GRAPHICS__RESOLUTION_Y").value_int;
+		std::cout << "  Forced Screen Height: " << m_screen_h << std::endl;
 	};
-	/*
-	 * Load configuration:
-	*/
-	if (m_config.load() == 1)
-		return 1;
-	m_config.dump();
-	m_config.write();
 	/*
 	 * Init locale:
 	*/
@@ -87,7 +87,7 @@ int Game::init(int w, int h, int fullscreen)
 	 * Create window:
 	*/
 	std::cout << "Creating window (" << m_screen_w << "x" << m_screen_h << "x" << m_screen_bits << ")... ";
-	if (fullscreen == 1)
+	if (m_config.get("GRAPHICS__FULLSCREEN").value_bool)
 		m_window.create(videomode, "Game", sf::Style::Fullscreen);
 	else
 		m_window.create(sf::VideoMode(m_screen_w, m_screen_h, m_screen_bits), "Game");
@@ -239,7 +239,7 @@ int Game::loop(void)
 }
 int Game::init_locale(void)
 {
-	setenv("LANGUAGE", "en", 1);
+	setenv("LANGUAGE", m_config.get("GENERAL__LANGUAGE").value_string.c_str(), 1);
 	setlocale(LC_ALL, "");
 	bindtextdomain("sf-game", "./locale");
 	textdomain("sf-game");

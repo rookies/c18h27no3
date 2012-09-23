@@ -26,6 +26,7 @@
 #	include <string>
 #	include <iostream>
 #	include <fstream>
+#	include <stdlib.h>
 #	include "config_common.hpp"
 
 	

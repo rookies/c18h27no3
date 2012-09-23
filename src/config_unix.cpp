@@ -50,6 +50,73 @@ Config::~Config()
 int Config::load(void)
 {
 	std::cout << "Loading config... ";
+	/*
+	 * Variable declarations:
+	*/
+	std::ifstream file;
+	std::string line;
+	size_t found;
+	std::string index;
+	std::string value_raw;
+	int i;
+	/*
+	 * Open file
+	*/
+	file.open("config.txt");
+	if (file.is_open())
+	{
+		while (file.good())
+		{
+			getline(file, line);
+			found = line.find_first_of("#");
+			if (found != std::string::npos)
+			{
+				/*
+				 * Line seems valid
+				*/
+				index = line.substr(0, found);
+				value_raw = line.substr(found+1, std::string::npos);
+				/*
+				 * Search for the index:
+				*/
+				for (i=0; i < CONFIGVAR_COUNT; i++)
+				{
+					if (m_vars[i].index.compare(index) == 0)
+					{
+						/*
+						 * We got the right index
+						 * Try to interpret the value:
+						*/
+						switch (m_vars[i].type)
+						{
+							case CONFIGVAR_TYPE_INTEGER:
+								m_vars[i].value_int = atoi(value_raw.c_str());
+								break;
+							case CONFIGVAR_TYPE_BOOLEAN:
+								if (value_raw.compare("true") == 0)
+									m_vars[i].value_bool = true;
+								else
+									m_vars[i].value_bool = false;
+								break;
+							case CONFIGVAR_TYPE_STRING:
+								m_vars[i].value_string = value_raw;
+								break;
+						}
+					};
+				}
+			}
+			else if (!line.compare("\n") && !line.compare(""))
+				std::cout << "Invalid config line: " << line << std::endl;
+		}
+	}
+	else
+	{
+		std::cout << "[FAIL]" << std::endl;
+		return 1;
+	};
+	/*
+	 * Return success:
+	*/
 	std::cout << "[DONE]" << std::endl;
 	return 0;
 }
@@ -94,8 +161,14 @@ int Config::write(void)
 }
 void Config::dump(void)
 {
-	std::cout << "== CONFIG DUMP ==" << std::endl;
+	/*
+	 * Variable declarations:
+	*/
 	int i;
+	std::cout << "== CONFIG DUMP ==" << std::endl;
+	/*
+	 * Run through variables:
+	*/
 	for (i=0; i < CONFIGVAR_COUNT; i++)
 	{
 		std::cout << m_vars[i].index;
@@ -119,7 +192,18 @@ void Config::dump(void)
 }
 ConfigVariable Config::get(std::string index)
 {
-	
+	/*
+	 * Variable declarations:
+	*/
+	int i;
+	/*
+	 * Run through variables:
+	*/
+	for (i=0; i < CONFIGVAR_COUNT; i++)
+	{
+		if (m_vars[i].index.compare(index) == 0)
+			return m_vars[i];
+	}
 }
 void Config::set(std::string index, ConfigVariable value)
 {
