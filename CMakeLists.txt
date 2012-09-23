@@ -1,5 +1,9 @@
+## <GENERAL SETTINGS>
 cmake_minimum_required(VERSION 2.8)
 project(sf-game)
+set(GAME_VERSION_MAJOR 0)
+set(GAME_VERSION_MINOR 1)
+## </GENERAL SETTINGS>
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 # Find packages:
 find_package(SFMLwindow REQUIRED)
@@ -10,12 +14,18 @@ find_package(LIBAVFORMAT REQUIRED)
 find_package(LIBAVUTIL REQUIRED)
 find_package(LIBSWSCALE REQUIRED)
 # Add include directories:
-include_directories(${SFMLwindow_INCLUDE_DIR})
-include_directories(${SFMLgraphics_INCLUDE_DIR})
-include_directories(${SFMLsystem_INCLUDE_DIR})
-include_directories(${LIBAVCODEC_INCLUDE_DIR})
-include_directories(${LIBAVFORMAT_INCLUDE_DIR})
-include_directories(${LIBSWSCALE_INCLUDE_DIR})
+include_directories("${SFMLwindow_INCLUDE_DIR}")
+include_directories("${SFMLgraphics_INCLUDE_DIR}")
+include_directories("${SFMLsystem_INCLUDE_DIR}")
+include_directories("${LIBAVCODEC_INCLUDE_DIR}")
+include_directories("${LIBAVFORMAT_INCLUDE_DIR}")
+include_directories("${LIBSWSCALE_INCLUDE_DIR}")
+# Create globals.hpp:
+configure_file(
+	"${CMAKE_SOURCE_DIR}/src/globals.hpp.in"
+	"${CMAKE_BINARY_DIR}/globals.hpp"
+)
+include_directories("${CMAKE_BINARY_DIR}")
 # Add source files to game executable:
 set(GAME_SOURCES src/main.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/game.cpp)
