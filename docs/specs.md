@@ -1,6 +1,3 @@
-Specification
-=======
-
 # Configuration
 
 ## Keys
@@ -19,6 +16,7 @@ Specification
   * Fallback #1: true
  * CONTROL__...
  * SOUND__...
+
 ## Linux
 ~/.<game>/config.bin
 
