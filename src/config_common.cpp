@@ -1,5 +1,5 @@
 /*
- * config_unix.hpp
+ * config_common.cpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,39 +20,13 @@
  * 
  * 
  */
-#ifndef _config_unix_hpp_
-#	define _config_unix_hpp_
-	
-#	include <string>
-#	include <iostream>
-#	include <fstream>
-#	include "config_common.hpp"
+#include "config_common.hpp"
 
+ConfigVariable::ConfigVariable()
+{
 	
-	class Config
-	{
-		public:
-			Config();
-			~Config();
-			
-			/*
-			 * Load config:
-			*/
-			int load(void);
-			/*
-			 * Write config:
-			*/
-			int write(void);
-			/*
-			 * Dump config:
-			*/
-			void dump(void);
-			/*
-			 * Get / set variable:
-			*/
-			ConfigVariable get(std::string index);
-			void set(std::string index, ConfigVariable value);
-		private:
-			ConfigVariable m_vars[CONFIGVAR_COUNT];
-	};
-#endif // _config_unix_hpp_
+}
+ConfigVariable::~ConfigVariable()
+{
+	
+}

@@ -19,7 +19,12 @@
  * ...
 
 ## Unix
-~/.@GAME@/config.bin
+~/.@GAME@/config.txt
+
+### Format
+@KEY@#@VALUE@
+@KEY@#@VALUE@
+...
 
 ## Windows
 HKEY_CURRENT_USER\Software\@CORPORATION@\@GAME@

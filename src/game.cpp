@@ -72,6 +72,13 @@ int Game::init(int w, int h, int fullscreen)
 		std::cout << "  Forced Screen Height: " << h << std::endl;
 	};
 	/*
+	 * Load configuration:
+	*/
+	if (m_config.load() == 1)
+		return 1;
+	m_config.dump();
+	m_config.write();
+	/*
 	 * Init locale:
 	*/
 	if (init_locale() == 1)
@@ -232,8 +239,8 @@ int Game::loop(void)
 }
 int Game::init_locale(void)
 {
+	setenv("LANGUAGE", "en", 1);
 	setlocale(LC_ALL, "");
-	setlocale(LC_CTYPE, "");
 	bindtextdomain("sf-game", "./locale");
 	textdomain("sf-game");
 	return 0;

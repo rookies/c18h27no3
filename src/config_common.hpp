@@ -20,22 +20,43 @@
  * 
  * 
  */
-#ifndef _config_common_h_
-#	define _config_common_h_
-
-	/*
-	 * Configuration types:
-	*/
-#	define CONFIG_TYPE_STRING 1
-#	define CONFIG_TYPE_INTEGER 2
-	/*
-	 * Configuration indexes:
-	*/
-	// [...]
+#ifndef _config_common_hpp_
+#	define _config_common_hpp_
 	
-	typedef union {
-		int type;
-		char *string;
-		int integer;
-	} ConfigVariable;
-#endif // _config_common_h_
+#	include <string>
+#	include "globals.hpp"
+	
+#	define CONFIGVAR_TYPE_INTEGER 1
+#	define CONFIGVAR_TYPE_BOOLEAN 2
+#	define CONFIGVAR_TYPE_STRING 3
+	
+	class ConfigVariable
+	{
+		public:
+			ConfigVariable();
+			~ConfigVariable();
+			
+			/*
+			 * Type
+			*/
+			int type;
+			/*
+			 * Index
+			*/
+			std::string index;
+			/*
+			 * Integer Value
+			*/
+			int value_int;
+			/*
+			 * Boolean Value
+			*/
+			bool value_bool;
+			/*
+			 * String Value
+			*/
+			std::string value_string;
+		private:
+			
+	};
+#endif // _config_common_hpp_
