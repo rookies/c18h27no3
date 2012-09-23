@@ -151,7 +151,6 @@ int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem1_over = 1;
-					//std::cout << "#1" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+m_sizes_menuitem_gap)
 				{
@@ -160,7 +159,6 @@ int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem2_over = 1;
-					//std::cout << "#2" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+2*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_height+2*m_sizes_menuitem_gap)
 				{
@@ -169,7 +167,6 @@ int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem3_over = 1;
-					//std::cout << "#3" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_height+3*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+4*m_sizes_menuitem_height+3*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
 				{
@@ -178,7 +175,6 @@ int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem4_over = 1;
-					//std::cout << "#4" << std::endl;
 				}
 				else
 					reset_menuitem_over();
@@ -192,7 +188,7 @@ int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 				case sf::Mouse::Left:
 					if (m_menuitem1_over == 1)
 						return 3; // go to settings graphics menu
-					else if (m_menuitem2_over = 1)
+					else if (m_menuitem2_over == 1)
 						return 4; // go to settings control menu
 					else if (m_menuitem3_over == 1)
 						return 5; // go to settings control menu

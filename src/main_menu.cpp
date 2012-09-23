@@ -167,7 +167,6 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem1_over = 1;
-					//std::cout << "#1" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+m_sizes_menuitem_gap)
 				{
@@ -176,7 +175,6 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem2_over = 1;
-					//std::cout << "#2" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+2*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_height+2*m_sizes_menuitem_gap)
 				{
@@ -185,7 +183,6 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem3_over = 1;
-					//std::cout << "#3" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_height+3*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+4*m_sizes_menuitem_height+3*m_sizes_menuitem_gap)
 				{
@@ -194,7 +191,6 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem4_over = 1;
-					//std::cout << "#4" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+4*m_sizes_menuitem_height+4*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+5*m_sizes_menuitem_height+4*m_sizes_menuitem_gap)
 				{
@@ -203,7 +199,6 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem5_over = 1;
-					//std::cout << "#5" << std::endl;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+5*m_sizes_menuitem_height+5*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+6*m_sizes_menuitem_height+5*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
 				{
@@ -212,7 +207,6 @@ int MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 					*/
 					reset_menuitem_over();
 					m_menuitem6_over = 1;
-					//std::cout << "#6" << std::endl;
 				}
 				else
 					reset_menuitem_over();
