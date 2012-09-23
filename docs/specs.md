@@ -18,9 +18,9 @@
  * SOUND__...
 
 ## Linux
-~/.<game>/config.bin
+~/.@GAME@/config.bin
 
 ## Windows
-HKEY_CURRENT_USER\Software\<corporation>\<game>
+HKEY_CURRENT_USER\Software\@CORPORATION@\@GAME@
 
 # Level Format
