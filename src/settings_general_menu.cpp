@@ -73,17 +73,17 @@ int SettingsGeneralMenu::calculate_sizes(int w, int h)
 	m_menuitem1.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
 	m_menuitem2.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
 	m_menuitem1.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset);
-	m_menuitem2.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height);
+	m_menuitem2.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height+m_sizes_menuitem_gap);
 	/*
 	 * Update menuitem header size & positions:
 	*/
-	m_menuitem1_header.setCharacterSize(h*(SIZE_MENU_ELEMENT_HEIGHT/100.0)/2.0);
+	m_menuitem1_header.setCharacterSize(m_sizes_menuitem_height2/2.0);
 	m_menuitem1_header.setPosition((w-m_menuitem1_header.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
 	/*
 	 * Update menuitem text size & positions:
 	*/
-	m_menuitem2_txt.setCharacterSize(h*(SIZE_MENU_ELEMENT_HEIGHT/100.0)/2.0);
-	m_menuitem2_txt.setPosition((w-m_menuitem2_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
+	m_menuitem2_txt.setCharacterSize(m_sizes_menuitem_height2/2.0);
+	m_menuitem2_txt.setPosition((w-m_menuitem2_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
 	return 0;
 }
 int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -104,7 +104,7 @@ int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y
 				/*
 				 * Cursor is in X range of the menu items
 				*/
-				if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_height2+m_sizes_menuitem_gap)
+				if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_height2+m_sizes_menuitem_gap+m_sizes_menuitem_gap)
 				{
 					/*
 					 * Menuitem 2
