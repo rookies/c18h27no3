@@ -716,6 +716,8 @@ void Game::draw_settings_general_menu(void)
 {
 	m_texture.draw(m_settings_general_menu->get_menuitem1());
 	m_texture.draw(m_settings_general_menu->get_menuitem1_header());
+	m_texture.draw(m_settings_general_menu->get_menuitem2());
+	m_texture.draw(m_settings_general_menu->get_menuitem2_txt());
 }
 void Game::draw_settings_graphics_menu(void)
 {
