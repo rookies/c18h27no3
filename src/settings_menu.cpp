@@ -69,38 +69,24 @@ int SettingsMenu::uninit(void)
 int SettingsMenu::calculate_sizes(int w, int h)
 {
 	/*
-	 * Menuitem width = 30%
-	 * Menuitem height = 5%
-	 * Menuitem outline thickness = 1%
+	 * Variable declarations:
 	*/
-	m_sizes_menuitem_width = w*(30/100.0);
-	m_sizes_menuitem_height = h*(5/100.0);
-	m_sizes_menuitem_outline = h*(0.5/100.0);
+	int creeper_height;
+	
+	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
+	m_sizes_menuitem_height = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
+	m_sizes_menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
+	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
+	creeper_height = h*(SIZE_SETTINGSMENU_CREEPER_HEIGHT/100.0);
 	/*
 	 * Menuitem X offset = middle
-	 * Menuitem first Y offset = 45%
-	 * Menuitem gap = 2%
 	*/
 	m_sizes_menuitem_xoffset = (w-m_sizes_menuitem_width)/2.0;
-	m_sizes_menuitem_first_yoffset = h*(45/100.0);
-	m_sizes_menuitem_gap = h*(2/100.0);
-	/*
-	 * Creeper height = 30%
-	 * Creeper X offset = middle
-	 * Creeper Y offset = 10%
-	*/
-	m_sizes_creeper = h*(30/100.0);
-	m_sizes_creeper_xoffset = (w-m_sizes_creeper)/2.0;
-	m_sizes_creeper_yoffset = h*(10/100.0);
-	/*
-	 * Menuitem text additional gap = 2%
-	*/
-	m_sizes_menuitem_text_add_gap = h*(1/100.0);
 	/*
 	 * Update creeper position & size:
 	*/
-	m_img1_sprite.setPosition(m_sizes_creeper_xoffset, m_sizes_creeper_yoffset);
-	m_img1_sprite.setScale(m_sizes_creeper/98.0, m_sizes_creeper/98.0);
+	m_img1_sprite.setPosition((w-creeper_height)/2.0, h*(SIZE_SETTINGSMENU_CREEPER_YOFFSET/100.0));
+	m_img1_sprite.setScale(creeper_height/98.0, creeper_height/98.0);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
@@ -109,11 +95,11 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	m_menuitem3.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
 	m_menuitem4.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
 	m_menuitem5.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem1.setOutlineThickness(m_sizes_menuitem_outline);
-	m_menuitem2.setOutlineThickness(m_sizes_menuitem_outline);
-	m_menuitem3.setOutlineThickness(m_sizes_menuitem_outline);
-	m_menuitem4.setOutlineThickness(m_sizes_menuitem_outline);
-	m_menuitem5.setOutlineThickness(m_sizes_menuitem_outline);
+	m_menuitem1.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
+	m_menuitem2.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
+	m_menuitem3.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
+	m_menuitem4.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
+	m_menuitem5.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
 	m_menuitem1.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset);
 	m_menuitem2.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap);
 	m_menuitem3.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2);
@@ -127,11 +113,11 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	m_menuitem3_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
 	m_menuitem4_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
 	m_menuitem5_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
-	m_menuitem1_txt.setPosition((w-m_menuitem1_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_text_add_gap);
-	m_menuitem2_txt.setPosition((w-m_menuitem2_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_menuitem_text_add_gap);
-	m_menuitem3_txt.setPosition((w-m_menuitem3_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2+m_sizes_menuitem_text_add_gap);
-	m_menuitem4_txt.setPosition((w-m_menuitem4_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*3+m_sizes_menuitem_text_add_gap);
-	m_menuitem5_txt.setPosition((w-m_menuitem4_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*4+m_sizes_menuitem_text_add_gap+m_sizes_menuitem_gap);
+	m_menuitem1_txt.setPosition((w-m_menuitem1_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
+	m_menuitem2_txt.setPosition((w-m_menuitem2_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
+	m_menuitem3_txt.setPosition((w-m_menuitem3_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
+	m_menuitem4_txt.setPosition((w-m_menuitem4_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*3+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
+	m_menuitem5_txt.setPosition((w-m_menuitem5_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*4+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
 	return 0;
 }
 int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -218,7 +204,6 @@ int SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 	}
 	return 0;
 }
-
 void SettingsMenu::reset_menuitem_over(void)
 {
 	m_menuitem1_over = 0;
@@ -234,41 +219,41 @@ sf::Sprite SettingsMenu::get_creeper(void)
 sf::RectangleShape SettingsMenu::get_menuitem1(void)
 {
 	if (m_menuitem1_over == 1)
-		m_menuitem1.setFillColor(sf::Color(115, 228, 71));
+		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
-		m_menuitem1.setFillColor(sf::Color(73, 186, 29));
+		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
 	return m_menuitem1;
 }
 sf::RectangleShape SettingsMenu::get_menuitem2(void)
 {
 	if (m_menuitem2_over == 1)
-		m_menuitem2.setFillColor(sf::Color(115, 228, 71));
+		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
-		m_menuitem2.setFillColor(sf::Color(73, 186, 29));
+		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
 	return m_menuitem2;
 }
 sf::RectangleShape SettingsMenu::get_menuitem3(void)
 {
 	if (m_menuitem3_over == 1)
-		m_menuitem3.setFillColor(sf::Color(115, 228, 71));
+		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
-		m_menuitem3.setFillColor(sf::Color(73, 186, 29));
+		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
 	return m_menuitem3;
 }
 sf::RectangleShape SettingsMenu::get_menuitem4(void)
 {
 	if (m_menuitem4_over == 1)
-		m_menuitem4.setFillColor(sf::Color(115, 228, 71));
+		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
-		m_menuitem4.setFillColor(sf::Color(73, 186, 29));
+		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT);
 	return m_menuitem4;
 }
 sf::RectangleShape SettingsMenu::get_menuitem5(void)
 {
 	if (m_menuitem5_over == 1)
-		m_menuitem5.setFillColor(sf::Color(115, 228, 71));
+		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
-		m_menuitem5.setFillColor(sf::Color(73, 186, 29));
+		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT);
 	return m_menuitem5;
 }
 sf::Text SettingsMenu::get_menuitem1_txt(void)

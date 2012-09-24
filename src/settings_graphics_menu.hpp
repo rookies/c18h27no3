@@ -25,6 +25,8 @@
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
+#	include "globals.hpp"
+#	include "widestring.hpp"
 	
 	class SettingsGraphicsMenu
 	{
@@ -45,7 +47,22 @@
 			 * Process events:
 			*/
 			int process_event(sf::Event event, int mouse_x, int mouse_y); /* Called in Game::process_events() */
+			/*
+			 * Get drawable items:
+			*/
+			sf::RectangleShape get_menuitem1(void);
+			sf::RectangleShape get_menuitem2(void);
+			sf::Text get_menuitem1_header(void);
+			sf::Text get_menuitem2_header(void);
 		private:
-			
+			int m_sizes_menuitem_width;
+			int m_sizes_menuitem_height;
+			int m_sizes_menuitem_xoffset;
+			int m_sizes_menuitem_first_yoffset;
+			int m_sizes_menuitem_gap;
+			sf::RectangleShape m_menuitem1;
+			sf::RectangleShape m_menuitem2;
+			sf::Text m_menuitem1_header;
+			sf::Text m_menuitem2_header;
 	};
 #endif // _settings_graphics_menu_hpp_

@@ -31,6 +31,16 @@ SettingsGeneralMenu::~SettingsGeneralMenu()
 }
 int SettingsGeneralMenu::init(void)
 {
+	/*
+	 * Init menuitem shapes:
+	*/
+	m_menuitem1.setOutlineColor(sf::Color::Black);
+	m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
+	/*
+	 * Init menuitem headers:
+	*/
+	m_menuitem1_header.setString(get_wstring(_("settings_general_menu_entry_header_language")));
+	m_menuitem1_header.setColor(sf::Color::Black);
 	return 0;
 }
 int SettingsGeneralMenu::uninit(void)
@@ -39,6 +49,25 @@ int SettingsGeneralMenu::uninit(void)
 }
 int SettingsGeneralMenu::calculate_sizes(int w, int h)
 {
+	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
+	m_sizes_menuitem_height = h*(SIZE_MENU_CONFIG_ELEMENT_HEIGHT/100.0);
+	m_sizes_menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
+	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
+	/*
+	 * Menuitem X offset = middle
+	*/
+	m_sizes_menuitem_xoffset = (w-m_sizes_menuitem_width)/2.0;
+	/*
+	 * Update menuitem positions & sizes:
+	*/
+	m_menuitem1.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
+	m_menuitem1.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
+	m_menuitem1.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset);
+	/*
+	 * Update menuitem header size & positions:
+	*/
+	m_menuitem1_header.setCharacterSize(h*(SIZE_MENU_ELEMENT_HEIGHT/100.0)/2.0);
+	m_menuitem1_header.setPosition((w-m_menuitem1_header.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
 	return 0;
 }
 int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -55,4 +84,12 @@ int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y
 			break;
 	}
 	return 0;
+}
+sf::RectangleShape SettingsGeneralMenu::get_menuitem1(void)
+{
+	return m_menuitem1;
+}
+sf::Text SettingsGeneralMenu::get_menuitem1_header(void)
+{
+	return m_menuitem1_header;
 }

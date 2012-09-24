@@ -72,11 +72,6 @@
 			int m_sizes_menuitem_xoffset;
 			int m_sizes_menuitem_first_yoffset;
 			int m_sizes_menuitem_gap;
-			int m_sizes_creeper;
-			int m_sizes_creeper_xoffset;
-			int m_sizes_creeper_yoffset;
-			int m_sizes_menuitem_text_add_gap;
-			int m_sizes_menuitem_outline;
 			int m_menuitem1_over;
 			int m_menuitem2_over;
 			int m_menuitem3_over;
