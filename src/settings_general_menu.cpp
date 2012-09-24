@@ -67,7 +67,7 @@ int SettingsGeneralMenu::calculate_sizes(int w, int h)
 	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
 	m_sizes_menuitem_height = h*(SIZE_MENU_CONFIG_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
-	m_sizes_menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
+	m_sizes_menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
 	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
 	/*
 	 * Menuitem X offset = middle

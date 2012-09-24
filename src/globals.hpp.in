@@ -56,6 +56,7 @@
 #	define SIZE_MENU_ELEMENT_HEIGHT 5.0 /* height of an element */
 #	define SIZE_MENU_ELEMENT_OUTLINE 0.5 /* outline of an element */
 #	define SIZE_MENU_FIRST_ELEMENT_YOFFSET 45.0 /* Y offset of the first element */
+#	define SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET 30.0 /* Y offset of the first element in the sub menus of the settings menu */
 #	define SIZE_MENU_ELEMENT_GAP 2.0 /* gap between two elements */
 #	define SIZE_MAINMENU_GRASSBLOCK_HEIGHT 30.0 /* height of the grass image in main menu */
 #	define SIZE_MAINMENU_GRASSBLOCK_YOFFSET 10.0 /* Y offset of the grass image in main menu */
