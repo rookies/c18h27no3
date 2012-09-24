@@ -101,8 +101,10 @@ int Config::load(void)
 						case CONFIGVAR_TYPE_BOOLEAN:
 							if (value_raw.compare("true") == 0)
 								m_vars[i].value_bool = true;
-							else
+							else if (value_raw.compare("false") == 0)
 								m_vars[i].value_bool = false;
+							else
+								std::cout << "Invalid config line: " << line << std::endl;
 							break;
 						case CONFIGVAR_TYPE_STRING:
 							m_vars[i].value_string = value_raw;
