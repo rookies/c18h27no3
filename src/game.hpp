@@ -59,6 +59,10 @@
 			*/
 			int init_locale(void);
 			/*
+			 * Set language:
+			*/
+			int set_language(std::string lang);
+			/*
 			 * Wait for focus:
 			*/
 			int wait_for_focus(void);

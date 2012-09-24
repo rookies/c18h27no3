@@ -242,6 +242,15 @@ int Game::init_locale(void)
 	textdomain("sf-game");
 	return 0;
 }
+int Game::set_language(std::string lang)
+{
+	setenv("LANGUAGE", lang.c_str(), 1);
+	{
+		extern int _nl_msg_cat_cntr;
+		++_nl_msg_cat_cntr;
+	}
+	set_gamemode(m_gamemode);
+}
 int Game::wait_for_focus(void)
 {
 	/*
@@ -292,6 +301,11 @@ int Game::process_events(void)
 				break;
 			case sf::Event::KeyPressed:
 				std::cout << "KeyPressed " << event.key.code << std::endl;
+				switch (event.key.code)
+				{
+					case sf::Keyboard::F1:
+						break;
+				}
 				break;
 			case sf::Event::MouseMoved:
 				/*
