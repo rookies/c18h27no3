@@ -24,45 +24,50 @@
 #	define _globals_hpp_
 	
 	/*
+	 * === THINGS DEFINED BY CMake ===
 	 * Game version:
 	*/
 #	define VERSION_MAJOR @GAME_VERSION_MAJOR@
 #	define VERSION_MINOR @GAME_VERSION_MINOR@
 #	define VERSION @GAME_VERSION_MAJOR@.@GAME_VERSION_MINOR@
 	/*
+	 * === FUNCTION DEFINITIONS ===
+	*/
+#	define _(String) gettext(String)
+	/*
+	 * === OTHER CONFIGURATION VARIABLES ===
 	 * Cursor dimensions:
 	*/
 #	define CURSOR_WIDTH 16
 #	define CURSOR_HEIGHT 16
 	/*
-	 * Configuration:
+	 * Configuration variable count:
 	*/
-#	define CONFIGVAR_COUNT 4
-	/*
-	 * gettext definitions:
-	*/
-#	define _(String) gettext(String)
+#	define CONFIGVAR_COUNT 4 /* number of the configuration variables */
 	/*
 	 * Colors:
 	*/
-#	define COLOR_MENU_ELEMENT sf::Color(73, 186, 29)
-#	define COLOR_MENU_ELEMENT_HOVER sf::Color(115, 228, 71)
+#	define COLOR_MENU_ELEMENT sf::Color(73, 186, 29) /* color of an menu element */
+#	define COLOR_MENU_ELEMENT_HOVER sf::Color(115, 228, 71) /* color of an menu element in hover status */
 	/*
-	 * Sizes:
+	 * Sizes (in percent):
 	*/
-#	define SIZE_MENU_ELEMENT_WIDTH 30.0
-#	define SIZE_MENU_ELEMENT_HEIGHT 5.0
-#	define SIZE_MENU_ELEMENT_OUTLINE 0.5
-#	define SIZE_MENU_FIRST_ELEMENT_YOFFSET 45.0
-#	define SIZE_MENU_ELEMENT_GAP 2.0
-#	define SIZE_MAINMENU_GRASSBLOCK_HEIGHT 30.0
-#	define SIZE_MAINMENU_GRASSBLOCK_YOFFSET 10.0
-#	define SIZE_MENU_ELEMENT_TEXT_GAP 1.0
-#	define SIZE_SETTINGSMENU_CREEPER_HEIGHT 30.0
-#	define SIZE_SETTINGSMENU_CREEPER_YOFFSET 10.0
-#	define SIZE_MENU_CONFIG_ELEMENT_HEIGHT 2*SIZE_MENU_ELEMENT_HEIGHT
-#	define SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER 2.0
-#	define SIZE_MENU_CONFIG_ELEMENT_HEADER_SIZE_DIVIDER 2.0
-#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER 3.0
-#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP 6.0
+#	define SIZE_MENU_ELEMENT_WIDTH 30.0 /* width of an element */
+#	define SIZE_MENU_ELEMENT_HEIGHT 5.0 /* height of an element */
+#	define SIZE_MENU_ELEMENT_OUTLINE 0.5 /* outline of an element */
+#	define SIZE_MENU_FIRST_ELEMENT_YOFFSET 45.0 /* Y offset of the first element */
+#	define SIZE_MENU_ELEMENT_GAP 2.0 /* gap between two elements */
+#	define SIZE_MAINMENU_GRASSBLOCK_HEIGHT 30.0 /* height of the grass image in main menu */
+#	define SIZE_MAINMENU_GRASSBLOCK_YOFFSET 10.0 /* Y offset of the grass image in main menu */
+#	define SIZE_MENU_ELEMENT_TEXT_GAP 1.0 /* gap between top of the element and the top of the text */
+#	define SIZE_SETTINGSMENU_CREEPER_HEIGHT 30.0 /* height of the creeper image in settings menu */
+#	define SIZE_SETTINGSMENU_CREEPER_YOFFSET 10.0 /* Y offset of the creeper image in settings menu */
+#	define SIZE_MENU_CONFIG_ELEMENT_HEIGHT 2*SIZE_MENU_ELEMENT_HEIGHT /* height of an config element */
+#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP 6.0 /* gap between top of the config element and the top of the value text */
+	/*
+	 * Size dividers:
+	*/
+#	define SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER 2.0 /* divide element height by this value to get the text size */
+#	define SIZE_MENU_CONFIG_ELEMENT_HEADER_SIZE_DIVIDER 2.0 /* divide element height by this value to get the config header text size */
+#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER 3.0 /* divide element height by this value to get the config value text size */
 #endif // _globals_hpp_
