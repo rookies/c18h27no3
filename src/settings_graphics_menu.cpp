@@ -38,6 +38,7 @@ int SettingsGraphicsMenu::init(void)
 	m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
 	m_menuitem2.setOutlineColor(sf::Color::Black);
 	m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
+	m_menuitem3.setOutlineColor(sf::Color::Black);
 	/*
 	 * Init menuitem headers:
 	*/
@@ -45,6 +46,12 @@ int SettingsGraphicsMenu::init(void)
 	m_menuitem1_header.setColor(sf::Color::Black);
 	m_menuitem2_header.setString(get_wstring(_("settings_graphics_menu_entry_header_fullscreen")));
 	m_menuitem2_header.setColor(sf::Color::Black);
+	/*
+	 * Init menuitem texts:
+	*/
+	m_menuitem3_txt.setString(get_wstring(_("settings_graphics_menu_entry_back")));
+	m_menuitem3_txt.setColor(sf::Color::Black);
+	reset_menuitem_over();
 	return 0;
 }
 int SettingsGraphicsMenu::uninit(void)
@@ -55,6 +62,7 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 {
 	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
 	m_sizes_menuitem_height = h*(SIZE_MENU_CONFIG_ELEMENT_HEIGHT/100.0);
+	m_sizes_menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
 	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
 	/*
@@ -66,17 +74,25 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	*/
 	m_menuitem1.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
 	m_menuitem2.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
+	m_menuitem3.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height2));
 	m_menuitem1.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
 	m_menuitem2.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
+	m_menuitem3.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
 	m_menuitem1.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset);
 	m_menuitem2.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height);
+	m_menuitem3.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+m_sizes_menuitem_gap);
 	/*
 	 * Update menuitem header size & positions:
 	*/
-	m_menuitem1_header.setCharacterSize(h*(SIZE_MENU_ELEMENT_HEIGHT/100.0)/2.0);
-	m_menuitem2_header.setCharacterSize(h*(SIZE_MENU_ELEMENT_HEIGHT/100.0)/2.0);
+	m_menuitem1_header.setCharacterSize(m_sizes_menuitem_height2/2.0);
+	m_menuitem2_header.setCharacterSize(m_sizes_menuitem_height2/2.0);
 	m_menuitem1_header.setPosition((w-m_menuitem1_header.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
 	m_menuitem2_header.setPosition((w-m_menuitem2_header.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
+	/*
+	 * Update menuitem text size & positions:
+	*/
+	m_menuitem3_txt.setCharacterSize(m_sizes_menuitem_height2/2.0);
+	m_menuitem3_txt.setPosition((w-m_menuitem3_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
 	return 0;
 }
 int SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -91,22 +107,67 @@ int SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_
 					break;
 			}
 			break;
+		case sf::Event::MouseMoved:
+			if (mouse_x > m_sizes_menuitem_xoffset && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width)
+			{
+				/*
+				 * Cursor is in X range of the menu items
+				*/
+				if (mouse_y > m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+2*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+m_sizes_menuitem_height2+2*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
+				{
+					/*
+					 * Menuitem 3
+					*/
+					reset_menuitem_over();
+					m_menuitem3_over = 1;
+				}
+				else
+					reset_menuitem_over();
+			}
+			else
+				reset_menuitem_over();
+			break;
+		case sf::Event::MouseButtonPressed:
+			switch (event.mouseButton.button)
+			{
+				case sf::Mouse::Left:
+					if (m_menuitem3_over == 1)
+						return 2; // back to settings menu
+					break;
+			}
+			break;
 	}
 	return 0;
+}
+void SettingsGraphicsMenu::reset_menuitem_over(void)
+{
+	m_menuitem3_over = 0;
 }
 sf::RectangleShape SettingsGraphicsMenu::get_menuitem1(void)
 {
 	return m_menuitem1;
 }
-sf::Text SettingsGraphicsMenu::get_menuitem1_header(void)
-{
-	return m_menuitem1_header;
-}
 sf::RectangleShape SettingsGraphicsMenu::get_menuitem2(void)
 {
 	return m_menuitem2;
 }
+sf::RectangleShape SettingsGraphicsMenu::get_menuitem3(void)
+{
+	if (m_menuitem3_over == 1)
+		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
+	else
+		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
+	return m_menuitem3;
+}
+sf::Text SettingsGraphicsMenu::get_menuitem1_header(void)
+{
+	return m_menuitem1_header;
+}
 sf::Text SettingsGraphicsMenu::get_menuitem2_header(void)
 {
 	return m_menuitem2_header;
+}
+sf::Text SettingsGraphicsMenu::get_menuitem3_txt(void)
+{
+	return m_menuitem3_txt;
 }

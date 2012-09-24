@@ -76,3 +76,7 @@ msgstr "Bildschirmauflösung"
 #: settings_graphics_menu.cpp:46
 msgid "settings_graphics_menu_entry_header_fullscreen"
 msgstr "Vollbild"
+
+#: settings_graphics_menu.cpp:52
+msgid "settings_graphics_menu_entry_back"
+msgstr "Zurück zu den Einstellungen"

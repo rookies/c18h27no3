@@ -75,3 +75,8 @@ msgstr "Screen Resolution"
 #: settings_graphics_menu.cpp:46
 msgid "settings_graphics_menu_entry_header_fullscreen"
 msgstr "Fullscreen"
+
+#: settings_graphics_menu.cpp:52
+msgid "settings_graphics_menu_entry_back"
+msgstr "Back to Settings"
+
