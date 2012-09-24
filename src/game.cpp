@@ -244,12 +244,23 @@ int Game::init_locale(void)
 }
 int Game::set_language(std::string lang)
 {
+	/*
+	 * Set environment variable:
+	*/
 	setenv("LANGUAGE", lang.c_str(), 1);
+	/*
+	 * Make it public:
+	*/
 	{
 		extern int _nl_msg_cat_cntr;
 		++_nl_msg_cat_cntr;
 	}
-	set_gamemode(m_gamemode);
+	/*
+	 * Reload menu:
+	*/
+	if (set_gamemode(m_gamemode) == 1)
+		return 1;
+	return 0;
 }
 int Game::wait_for_focus(void)
 {
