@@ -16,7 +16,7 @@ for langf in *.po; do
 		mkdir "$lang/LC_MESSAGES" || return 1
 	fi
 	## Create .mo file:
-	msgfmt -o "`echo $lang | cut -d'.' -f1`/LC_MESSAGES/sf-game.mo" "$langf"
+	msgfmt -o "$lang/LC_MESSAGES/sf-game.mo" "$langf"
 	## Print status on console:
 	if [[ $? -eq 0 ]]; then
 		echo "[DONE]"
