@@ -2,14 +2,13 @@ sf-game
 =======
 
 ## Installation
- * **1. Create build directory and change into it**
- * **2. Create Makefile with CMake**
-  * *Linux:* Run *cmake ..*
-  * *Windows:* Run *cmake-gui* and create the Makefile for your IDE
- * **3. Compile**
-  * *Linux:* Run *make*
-  * *Windows:* Compile with your IDE
- * **4. Run the Game from the main directory, otherwise it won't find the data files (pictures, sounds, ...)**
+
+### Linux
+ * *git clone git://github.com/rookies/sf-game.git*
+ * *cd sf-game*
+ * *./build.sh* (creates build directory and runs cmake & make)
+ * *./build/game*
+ * or: *ln -s build/game game* and *./game*
 
 ## License
 Most of the things are licensed under the GNU General Public License v2 or (at your option) any later version.
