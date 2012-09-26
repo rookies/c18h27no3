@@ -32,6 +32,13 @@ SettingsGeneralMenu::~SettingsGeneralMenu()
 int SettingsGeneralMenu::init(void)
 {
 	/*
+	 * Init ConfigChooser instance for language:
+	*/
+	m_config_chooser1.init(CONFIGVAR_TYPE_STRING, CONFIGVAR_LANGUAGE_COUNT);
+	m_config_chooser1.add_string("English", "en");
+	m_config_chooser1.add_string("Deutsch", "de");
+	m_config_chooser1.set_actual_string(getenv("LANGUAGE"));
+	/*
 	 * Init arrows:
 	*/
 	if (!m_arrow_left.loadFromFile("data/arrow_left.png"))
@@ -57,7 +64,7 @@ int SettingsGeneralMenu::init(void)
 	/*
 	 * Init menuitem values:
 	*/
-	m_menuitem1_value.setString(L"<test>Deutsch</test>");
+	m_menuitem1_value.setString(get_wstring(m_config_chooser1.get_actual_showable()));
 	m_menuitem1_value.setColor(sf::Color::Black);
 	/*
 	 * Init menuitem texts:
@@ -75,12 +82,20 @@ int SettingsGeneralMenu::uninit(void)
 }
 int SettingsGeneralMenu::calculate_sizes(int w, int h)
 {
+	/*
+	 * Save screen sizes:
+	*/
+	m_w = w;
+	m_h = h;
+	
 	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
 	m_sizes_menuitem_height = h*(SIZE_MENU_CONFIG_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
 	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
-	m_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
+	m_sizes_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
+	m_sizes_arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0;
+	m_sizes_arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP)/100.0;
 	/*
 	 * Menuitem X offset = middle
 	*/
@@ -117,10 +132,10 @@ int SettingsGeneralMenu::calculate_sizes(int w, int h)
 	/*
 	 * Update arrow positions & sizes:
 	*/
-	m_arrow_left1_sprite.setPosition(m_sizes_menuitem_xoffset+w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0));
-	m_arrow_right1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-(w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0)-m_arrow_height, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0));
-	m_arrow_left1_sprite.setScale(m_arrow_height/7.0, m_arrow_height/7.0);
-	m_arrow_right1_sprite.setScale(m_arrow_height/7.0, m_arrow_height/7.0);
+	m_arrow_left1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_arrow_xgap, m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap);
+	m_arrow_right1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height, m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap);
+	m_arrow_left1_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
+	m_arrow_right1_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
 	return 0;
 }
 int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -159,6 +174,38 @@ int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y
 				}
 				else
 					reset_menuitem_over();
+				if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
+				{
+					/*
+					 * Cursor is in X range of the left arrows
+					*/
+					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					{
+						/*
+						 * Arrow Left 1
+						*/
+						reset_menuitem_over();
+						m_arrow_left1_over = 1;
+					}
+					else
+						reset_menuitem_over();
+				}
+				else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
+				{
+					/*
+					 * Cursor is in X range of the right arrows
+					*/
+					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					{
+						/*
+						 * Arrow Right 1
+						*/
+						reset_menuitem_over();
+						m_arrow_right1_over = 1;
+					}
+					else
+						reset_menuitem_over();
+				};
 			}
 			else
 				reset_menuitem_over();
@@ -167,8 +214,35 @@ int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y
 			switch (event.mouseButton.button)
 			{
 				case sf::Mouse::Left:
-					if (m_menuitem3_over == 1)
+					if (m_menuitem2_over == 1)
+					{
+						/*
+						 * Save!
+						 * Language:
+						*/
+						setenv("LANGUAGE", m_config_chooser1.get_actual_string().c_str(), 1);
 						return 2; // back to settings menu
+					}
+					else if (m_menuitem3_over == 1)
+						return 2; // back to settings menu
+					else if (m_arrow_left1_over == 1)
+					{
+						/*
+						 * Left Language Arrow
+						*/
+						m_config_chooser1.prev();
+						m_menuitem1_value.setString(get_wstring(m_config_chooser1.get_actual_showable()));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_arrow_right1_over == 1)
+					{
+						/*
+						 * Right Language Arrow
+						*/
+						m_config_chooser1.next();
+						m_menuitem1_value.setString(get_wstring(m_config_chooser1.get_actual_showable()));
+						calculate_sizes(m_w, m_h);
+					}
 					break;
 			}
 			break;
@@ -179,6 +253,8 @@ void SettingsGeneralMenu::reset_menuitem_over(void)
 {
 	m_menuitem2_over = 0;
 	m_menuitem3_over = 0;
+	m_arrow_left1_over = 0;
+	m_arrow_right1_over = 0;
 }
 sf::RectangleShape SettingsGeneralMenu::get_menuitem1(void)
 {

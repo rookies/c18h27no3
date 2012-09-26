@@ -44,6 +44,7 @@
 	 * Configuration variable count:
 	*/
 #	define CONFIGVAR_COUNT 4 /* number of the configuration variables */
+#	define CONFIGVAR_LANGUAGE_COUNT 2 /* number of the languages for settings_general_menu */
 	/*
 	 * Colors:
 	*/
@@ -66,7 +67,7 @@
 #	define SIZE_MENU_CONFIG_ELEMENT_HEIGHT 2*SIZE_MENU_ELEMENT_HEIGHT /* height of an config element */
 #	define SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP 6.0 /* gap between top of the config element and the top of the value text */
 #	define SIZE_MENU_CONFIG_ARROW_HEIGHT 3.0 /* size of the config arrows */
-#	define SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP 5.0 /* gap between top of the config element and the top of the arrows */
+#	define SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP 6.0 /* gap between top of the config element and the top of the arrows */
 #	define SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP 1.0 /* gap between left of the config element and the left arrows */
 	/*
 	 * Size dividers:

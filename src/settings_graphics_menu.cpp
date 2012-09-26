@@ -90,7 +90,9 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_sizes_menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
 	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
-	m_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
+	m_sizes_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
+	m_sizes_arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0;
+	m_sizes_arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP)/100.0;
 	/*
 	 * Menuitem X offset = middle
 	*/
@@ -134,14 +136,14 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	/*
 	 * Update arrow positions & sizes:
 	*/
-	m_arrow_left1_sprite.setPosition(m_sizes_menuitem_xoffset+w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0));
-	m_arrow_left2_sprite.setPosition(m_sizes_menuitem_xoffset+w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0));
-	m_arrow_right1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-(w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0)-m_arrow_height, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0));
-	m_arrow_right2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-(w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0)-m_arrow_height, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0));
-	m_arrow_left1_sprite.setScale(m_arrow_height/7.0, m_arrow_height/7.0);
-	m_arrow_left2_sprite.setScale(m_arrow_height/7.0, m_arrow_height/7.0);
-	m_arrow_right1_sprite.setScale(m_arrow_height/7.0, m_arrow_height/7.0);
-	m_arrow_right2_sprite.setScale(m_arrow_height/7.0, m_arrow_height/7.0);
+	m_arrow_left1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_arrow_xgap, m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap);
+	m_arrow_left2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_arrow_xgap, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap);
+	m_arrow_right1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height, m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap);
+	m_arrow_right2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap);
+	m_arrow_left1_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
+	m_arrow_left2_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
+	m_arrow_right1_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
+	m_arrow_right2_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
 	return 0;
 }
 int SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)

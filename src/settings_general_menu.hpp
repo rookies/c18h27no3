@@ -27,6 +27,8 @@
 #	include <SFML/Graphics.hpp>
 #	include "globals.hpp"
 #	include "widestring.hpp"
+#	include "config_chooser.hpp"
+#	include "config_common.hpp"
 	
 	class SettingsGeneralMenu
 	{
@@ -64,13 +66,17 @@
 			sf::Sprite get_arrow_left1(void);
 			sf::Sprite get_arrow_right1(void);
 		private:
+			int m_w, m_h;
+			ConfigChooser m_config_chooser1;
 			int m_sizes_menuitem_width;
 			int m_sizes_menuitem_height;
 			int m_sizes_menuitem_height2;
 			int m_sizes_menuitem_xoffset;
 			int m_sizes_menuitem_first_yoffset;
 			int m_sizes_menuitem_gap;
-			int m_arrow_height;
+			int m_sizes_arrow_height;
+			int m_sizes_arrow_xgap;
+			int m_sizes_arrow_ygap;
 			sf::RectangleShape m_menuitem1;
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;
@@ -84,5 +90,7 @@
 			sf::Text m_menuitem3_txt;
 			int m_menuitem2_over;
 			int m_menuitem3_over;
+			int m_arrow_left1_over;
+			int m_arrow_right1_over;
 	};
 #endif // _settings_general_menu_hpp_
