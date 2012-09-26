@@ -64,6 +64,10 @@
 			sf::Text get_menuitem2_value(void);
 			sf::Text get_menuitem3_txt(void);
 			sf::Text get_menuitem4_txt(void);
+			sf::Sprite get_arrow_left1(void);
+			sf::Sprite get_arrow_right1(void);
+			sf::Sprite get_arrow_left2(void);
+			sf::Sprite get_arrow_right2(void);
 		private:
 			int m_sizes_menuitem_width;
 			int m_sizes_menuitem_height;
@@ -71,10 +75,17 @@
 			int m_sizes_menuitem_xoffset;
 			int m_sizes_menuitem_first_yoffset;
 			int m_sizes_menuitem_gap;
+			int m_arrow_height;
 			sf::RectangleShape m_menuitem1;
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;
 			sf::RectangleShape m_menuitem4;
+			sf::Texture m_arrow_left;
+			sf::Texture m_arrow_right;
+			sf::Sprite m_arrow_left1_sprite;
+			sf::Sprite m_arrow_right1_sprite;
+			sf::Sprite m_arrow_left2_sprite;
+			sf::Sprite m_arrow_right2_sprite;
 			sf::Text m_menuitem1_header;
 			sf::Text m_menuitem2_header;
 			sf::Text m_menuitem1_value;

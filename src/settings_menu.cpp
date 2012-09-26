@@ -35,7 +35,8 @@ int SettingsMenu::init(void)
 	/*
 	 * Init creeper:
 	*/
-	m_img1.loadFromFile("data/creeper.png");
+	if (!m_img1.loadFromFile("data/creeper.png"))
+		return 1;
 	m_img1_sprite.setTexture(m_img1);
 	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	/*

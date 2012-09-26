@@ -1,11 +1,11 @@
 #!/bin/bash
 ## Create build directory:
 if [[ ! -d build ]]; then
-	mkdir build || return 1
+	mkdir build || exit 1
 fi
 ## Change into build directory:
-cd build || return 1
+cd build || exit 1
 ## Run CMake:
-cmake .. || return 1
+cmake .. || exit 1
 ## Run make:
-make || return 1
+make || exit 1

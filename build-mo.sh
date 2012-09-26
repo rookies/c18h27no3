@@ -9,11 +9,11 @@ for langf in *.po; do
 	echo -n "Compiling language file for [$lang]... "
 	## Create directory "locale/$lang"
 	if [[ ! -d "$lang" ]]; then
-		mkdir "$lang" || return 1
+		mkdir "$lang" || exit 1
 	fi
 	## Create directory "locale/$lang/LC_MESSAGES"
 	if [[ ! -d "$lang/LC_MESSAGES" ]]; then
-		mkdir "$lang/LC_MESSAGES" || return 1
+		mkdir "$lang/LC_MESSAGES" || exit 1
 	fi
 	## Create .mo file:
 	msgfmt -o "$lang/LC_MESSAGES/sf-game.mo" "$langf"

@@ -742,6 +742,8 @@ void Game::draw_settings_general_menu(void)
 	m_texture.draw(m_settings_general_menu->get_menuitem1());
 	m_texture.draw(m_settings_general_menu->get_menuitem1_header());
 	m_texture.draw(m_settings_general_menu->get_menuitem1_value());
+	m_texture.draw(m_settings_general_menu->get_arrow_left1());
+	m_texture.draw(m_settings_general_menu->get_arrow_right1());
 	m_texture.draw(m_settings_general_menu->get_menuitem2());
 	m_texture.draw(m_settings_general_menu->get_menuitem2_txt());
 	m_texture.draw(m_settings_general_menu->get_menuitem3());
@@ -752,9 +754,13 @@ void Game::draw_settings_graphics_menu(void)
 	m_texture.draw(m_settings_graphics_menu->get_menuitem1());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem1_header());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem1_value());
+	m_texture.draw(m_settings_graphics_menu->get_arrow_left1());
+	m_texture.draw(m_settings_graphics_menu->get_arrow_right1());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2_header());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2_value());
+	m_texture.draw(m_settings_graphics_menu->get_arrow_left2());
+	m_texture.draw(m_settings_graphics_menu->get_arrow_right2());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem3());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem3_txt());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem4());
