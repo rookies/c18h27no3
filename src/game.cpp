@@ -642,7 +642,9 @@ int Game::init_gamemode(int gamemode)
 			*/
 			m_settings_graphics_menu = new SettingsGraphicsMenu;
 			if (m_settings_graphics_menu->init(
-				m_config.get("GRAPHICS__FULLSCREEN").value_bool
+				m_config.get("GRAPHICS__FULLSCREEN").value_bool,
+				m_config.get("GRAPHICS__RESOLUTION_X").value_int,
+				m_config.get("GRAPHICS__RESOLUTION_Y").value_int
 			) == 1)
 				return 1;
 			return 0;
@@ -782,6 +784,8 @@ void Game::draw_settings_graphics_menu(void)
 	m_texture.draw(m_settings_graphics_menu->get_menuitem1_value());
 	m_texture.draw(m_settings_graphics_menu->get_textfield1_1());
 	m_texture.draw(m_settings_graphics_menu->get_textfield1_2());
+	m_texture.draw(m_settings_graphics_menu->get_textfield1_1_txt());
+	m_texture.draw(m_settings_graphics_menu->get_textfield1_2_txt());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2_header());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2_value());

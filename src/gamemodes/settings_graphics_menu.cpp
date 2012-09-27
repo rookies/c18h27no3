@@ -29,8 +29,15 @@ SettingsGraphicsMenu::~SettingsGraphicsMenu()
 {
 	
 }
-int SettingsGraphicsMenu::init(bool fullscreen)
+int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 {
+	/*
+	 * Init NumericalTextfieldBuffer instances for resolution:
+	*/
+	m_textfield1_1_buffer.init(4);
+	m_textfield1_1_buffer.set(screenw);
+	m_textfield1_2_buffer.init(4);
+	m_textfield1_2_buffer.set(screenh);
 	/*
 	 * Init ConfigChooser instance for fullscreen:
 	*/
@@ -43,6 +50,13 @@ int SettingsGraphicsMenu::init(bool fullscreen)
 	*/
 	m_textfield1_1.setOutlineColor(sf::Color::Black);
 	m_textfield1_2.setOutlineColor(sf::Color::Black);
+	/*
+	 * Init textfield texts:
+	*/
+	m_textfield1_1_txt.setString(m_textfield1_1_buffer.get_string());
+	m_textfield1_2_txt.setString(m_textfield1_2_buffer.get_string());
+	m_textfield1_1_txt.setColor(sf::Color::Black);
+	m_textfield1_2_txt.setColor(sf::Color::Black);
 	/*
 	 * Init arrows:
 	*/
@@ -161,6 +175,13 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_textfield1_1.setPosition(m_sizes_menuitem_xoffset+m_sizes_textfield_xgap, m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap);
 	m_textfield1_2.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-m_sizes_textfield_xgap, m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap);
 	/*
+	 * Update textfield text size & positions:
+	*/
+	m_textfield1_1_txt.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER);
+	m_textfield1_2_txt.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER);
+	m_textfield1_1_txt.setPosition(m_sizes_menuitem_xoffset+m_sizes_textfield_xgap+(m_sizes_textfield_width-m_textfield1_1_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_TEXT_YGAP/100.0));
+	m_textfield1_2_txt.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-m_sizes_textfield_xgap+(m_sizes_textfield_width-m_textfield1_2_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_TEXT_YGAP/100.0));
+	/*
 	 * Update arrow positions & sizes:
 	*/
 	m_arrow_left2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_arrow_xgap, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap);
@@ -185,6 +206,18 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 					ret.set_gamemode(2); // back to settings menu
 					break;
 			}
+			if (m_textfield1_1_over)
+			{
+				m_textfield1_1_buffer.handle_keypress(event);
+				m_textfield1_1_txt.setString(m_textfield1_1_buffer.get_string());
+				calculate_sizes(m_w, m_h);
+			}
+			else if (m_textfield1_2_over)
+			{
+				m_textfield1_2_buffer.handle_keypress(event);
+				m_textfield1_2_txt.setString(m_textfield1_2_buffer.get_string());
+				calculate_sizes(m_w, m_h);
+			};
 			break;
 		case sf::Event::MouseMoved:
 			reset_menuitem_over();
@@ -275,14 +308,30 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 					{
 						/*
 						 * Save!
+						*/
+						ConfigVariable var1, var2, var3;
+						ret.init_confvars(3);
+						/*
+						 * Resolution:
+						*/
+						var1.type = CONFIGVAR_TYPE_INTEGER;
+						var1.index = "GRAPHICS__RESOLUTION_X";
+						var1.value_int = m_textfield1_1_buffer.get_int();
+						ret.add_confvar(var1);
+						var2.type = CONFIGVAR_TYPE_INTEGER;
+						var2.index = "GRAPHICS__RESOLUTION_Y";
+						var2.value_int = m_textfield1_2_buffer.get_int();
+						ret.add_confvar(var2);
+						/*
 						 * Fullscreen:
 						*/
-						ConfigVariable var;
-						ret.init_confvars(1);
-						var.type = CONFIGVAR_TYPE_BOOLEAN;
-						var.index = "GRAPHICS__FULLSCREEN";
-						var.value_bool = m_config_chooser2.get_actual_bool();
-						ret.add_confvar(var);
+						var3.type = CONFIGVAR_TYPE_BOOLEAN;
+						var3.index = "GRAPHICS__FULLSCREEN";
+						var3.value_bool = m_config_chooser2.get_actual_bool();
+						ret.add_confvar(var3);
+						/*
+						 * Reload:
+						*/
 						ret.set_reload(true); // reload
 					}
 					else if (m_menuitem4_over == 1)
@@ -365,6 +414,14 @@ sf::RectangleShape SettingsGraphicsMenu::get_textfield1_2(void)
 	else
 		m_textfield1_2.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD);
 	return m_textfield1_2;
+}
+sf::Text SettingsGraphicsMenu::get_textfield1_1_txt(void)
+{
+	return m_textfield1_1_txt;
+}
+sf::Text SettingsGraphicsMenu::get_textfield1_2_txt(void)
+{
+	return m_textfield1_2_txt;
 }
 sf::Sprite SettingsGraphicsMenu::get_arrow_left2(void)
 {

@@ -29,6 +29,7 @@
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
 #	include "../config_chooser.hpp"
+#	include "../numerical_textfield_buffer.hpp"
 	
 	class SettingsGraphicsMenu
 	{
@@ -39,7 +40,7 @@
 			/*
 			 * (Un)init:
 			*/
-			int init(bool fullscreen); /* Called in Game::init_gamemode() */
+			int init(bool fullscreen, int screenw, int screenh); /* Called in Game::init_gamemode() */
 			int uninit(void); /* Called in Game::uninit_gamemode() */
 			/*
 			 * Calculate sizes:
@@ -68,6 +69,8 @@
 			sf::Text get_menuitem4_txt(void);
 			sf::RectangleShape get_textfield1_1(void);
 			sf::RectangleShape get_textfield1_2(void);
+			sf::Text get_textfield1_1_txt(void);
+			sf::Text get_textfield1_2_txt(void);
 			sf::Sprite get_arrow_left2(void);
 			sf::Sprite get_arrow_right2(void);
 		private:
@@ -95,6 +98,10 @@
 			sf::Texture m_arrow_right;
 			sf::RectangleShape m_textfield1_1;
 			sf::RectangleShape m_textfield1_2;
+			NumericalTextfieldBuffer m_textfield1_1_buffer;
+			NumericalTextfieldBuffer m_textfield1_2_buffer;
+			sf::Text m_textfield1_1_txt;
+			sf::Text m_textfield1_2_txt;
 			sf::Sprite m_arrow_left2_sprite;
 			sf::Sprite m_arrow_right2_sprite;
 			sf::Text m_menuitem1_header;
