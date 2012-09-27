@@ -31,12 +31,12 @@
 #	include "video_sequence.hpp"
 #	include "config.hpp"
 #	include "fps_counter.hpp"
-#	include "main_menu.hpp"
-#	include "settings_menu.hpp"
-#	include "settings_general_menu.hpp"
-#	include "settings_graphics_menu.hpp"
-#	include "settings_control_menu.hpp"
-#	include "settings_sound_menu.hpp"
+#	include "gamemodes/main_menu.hpp"
+#	include "gamemodes/settings_menu.hpp"
+#	include "gamemodes/settings_general_menu.hpp"
+#	include "gamemodes/settings_graphics_menu.hpp"
+#	include "gamemodes/settings_control_menu.hpp"
+#	include "gamemodes/settings_sound_menu.hpp"
 #	include "event_processor_return.hpp"
 	
 	class Game

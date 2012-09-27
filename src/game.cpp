@@ -339,6 +339,7 @@ int Game::process_events(void)
 				m_cursor.set_mouse_position(x, y);
 				break;
 			case sf::Event::MouseButtonPressed:
+				break; // skip
 				std::cout << "MouseButtonPressed ";
 				switch (event.mouseButton.button)
 				{
@@ -366,6 +367,7 @@ int Game::process_events(void)
 				std::cout << " @ (" << x << "," << y << ")" << std::endl;
 				break;
 			case sf::Event::MouseButtonReleased:
+				break; // skip
 				std::cout << "MouseButtonReleased ";
 				switch (event.mouseButton.button)
 				{
@@ -523,7 +525,6 @@ int Game::calculate_sizes(void)
 				m_padding_data_calculator.get_usable_h()
 			) == 1)
 				return 1;
-			return 0;
 			break;
 		case 2:
 			/*
@@ -534,7 +535,6 @@ int Game::calculate_sizes(void)
 				m_padding_data_calculator.get_usable_h()
 			) == 1)
 				return 1;
-			return 0;
 			break;
 		case 3:
 			/*
@@ -545,7 +545,6 @@ int Game::calculate_sizes(void)
 				m_padding_data_calculator.get_usable_h()
 			) == 1)
 				return 1;
-			return 0;
 			break;
 		case 4:
 			/*
@@ -556,7 +555,6 @@ int Game::calculate_sizes(void)
 				m_padding_data_calculator.get_usable_h()
 			) == 1)
 				return 1;
-			return 0;
 			break;
 		case 5:
 			/*
@@ -567,7 +565,6 @@ int Game::calculate_sizes(void)
 				m_padding_data_calculator.get_usable_h()
 			) == 1)
 				return 1;
-			return 0;
 			break;
 		case 6:
 			/*
@@ -578,9 +575,9 @@ int Game::calculate_sizes(void)
 				m_padding_data_calculator.get_usable_h()
 			) == 1)
 				return 1;
-			return 0;
 			break;
 	}
+	return 0;
 }
 int Game::set_gamemode(int gamemode)
 {

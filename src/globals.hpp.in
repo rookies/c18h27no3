@@ -65,7 +65,7 @@
 #	define SIZE_SETTINGSMENU_CREEPER_HEIGHT 30.0 /* height of the creeper image in settings menu */
 #	define SIZE_SETTINGSMENU_CREEPER_YOFFSET 10.0 /* Y offset of the creeper image in settings menu */
 #	define SIZE_MENU_CONFIG_ELEMENT_HEIGHT 2*SIZE_MENU_ELEMENT_HEIGHT /* height of an config element */
-#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP 6.0 /* gap between top of the config element and the top of the value text */
+#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP 5.0 /* gap between top of the config element and the top of the value text */
 #	define SIZE_MENU_CONFIG_ARROW_HEIGHT 3.0 /* size of the config arrows */
 #	define SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP 6.0 /* gap between top of the config element and the top of the arrows */
 #	define SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP 1.0 /* gap between left of the config element and the left arrows */
@@ -74,5 +74,5 @@
 	*/
 #	define SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER 2.0 /* divide element height by this value to get the text size */
 #	define SIZE_MENU_CONFIG_ELEMENT_HEADER_SIZE_DIVIDER 2.0 /* divide element height by this value to get the config header text size */
-#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER 3.0 /* divide element height by this value to get the config value text size */
+#	define SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER 2.2 /* divide element height by this value to get the config value text size */
 #endif // _globals_hpp_

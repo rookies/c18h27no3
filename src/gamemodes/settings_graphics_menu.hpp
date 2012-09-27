@@ -1,5 +1,5 @@
 /*
- * settings_general_menu.hpp
+ * settings_graphics_menu.hpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,22 +20,20 @@
  * 
  * 
  */
-#ifndef _settings_general_menu_hpp_
-#	define _settings_general_menu_hpp_
+#ifndef _settings_graphics_menu_hpp_
+#	define _settings_graphics_menu_hpp_
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
 #	include "globals.hpp"
-#	include "widestring.hpp"
-#	include "config_chooser.hpp"
-#	include "config_common.hpp"
-#	include "event_processor_return.hpp"
+#	include "../widestring.hpp"
+#	include "../event_processor_return.hpp"
 	
-	class SettingsGeneralMenu
+	class SettingsGraphicsMenu
 	{
 		public:
-			SettingsGeneralMenu();
-			~SettingsGeneralMenu();
+			SettingsGraphicsMenu();
+			~SettingsGraphicsMenu();
 			
 			/*
 			 * (Un)init:
@@ -60,15 +58,18 @@
 			sf::RectangleShape get_menuitem1(void);
 			sf::RectangleShape get_menuitem2(void);
 			sf::RectangleShape get_menuitem3(void);
+			sf::RectangleShape get_menuitem4(void);
 			sf::Text get_menuitem1_header(void);
+			sf::Text get_menuitem2_header(void);
 			sf::Text get_menuitem1_value(void);
-			sf::Text get_menuitem2_txt(void);
+			sf::Text get_menuitem2_value(void);
 			sf::Text get_menuitem3_txt(void);
+			sf::Text get_menuitem4_txt(void);
 			sf::Sprite get_arrow_left1(void);
 			sf::Sprite get_arrow_right1(void);
+			sf::Sprite get_arrow_left2(void);
+			sf::Sprite get_arrow_right2(void);
 		private:
-			int m_w, m_h;
-			ConfigChooser m_config_chooser1;
 			int m_sizes_menuitem_width;
 			int m_sizes_menuitem_height;
 			int m_sizes_menuitem_height2;
@@ -81,17 +82,20 @@
 			sf::RectangleShape m_menuitem1;
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;
+			sf::RectangleShape m_menuitem4;
 			sf::Texture m_arrow_left;
 			sf::Texture m_arrow_right;
 			sf::Sprite m_arrow_left1_sprite;
 			sf::Sprite m_arrow_right1_sprite;
+			sf::Sprite m_arrow_left2_sprite;
+			sf::Sprite m_arrow_right2_sprite;
 			sf::Text m_menuitem1_header;
+			sf::Text m_menuitem2_header;
 			sf::Text m_menuitem1_value;
-			sf::Text m_menuitem2_txt;
+			sf::Text m_menuitem2_value;
 			sf::Text m_menuitem3_txt;
-			int m_menuitem2_over;
+			sf::Text m_menuitem4_txt;
 			int m_menuitem3_over;
-			int m_arrow_left1_over;
-			int m_arrow_right1_over;
+			int m_menuitem4_over;
 	};
-#endif // _settings_general_menu_hpp_
+#endif // _settings_graphics_menu_hpp_

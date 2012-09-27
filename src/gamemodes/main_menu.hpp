@@ -27,8 +27,8 @@
 #	include <SFML/Graphics.hpp>
 #	include <libintl.h>
 #	include "globals.hpp"
-#	include "widestring.hpp"
-#	include "event_processor_return.hpp"
+#	include "../widestring.hpp"
+#	include "../event_processor_return.hpp"
 	
 	class MainMenu
 	{

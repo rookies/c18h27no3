@@ -59,7 +59,7 @@ sf::Text FPScounter::get_drawable(void)
 		/*
 		 * Print to console:
 		*/
-		std::cout << m_txt_float.str() << " fps" << std::endl;
+		//std::cout << m_txt_float.str() << " fps" << std::endl;
 		/*
 		 * Show on display:
 		*/

@@ -1,5 +1,5 @@
 /*
- * settings_control_menu.hpp
+ * settings_sound_menu.hpp
  * 
  * Copyright 2012 Robert Knauer <robert@privatdemail.net>
  * 
@@ -20,18 +20,18 @@
  * 
  * 
  */
-#ifndef _settings_control_menu_hpp_
-#	define _settings_control_menu_hpp_
+#ifndef _settings_sound_menu_hpp_
+#	define _settings_sound_menu_hpp_
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
-#	include "event_processor_return.hpp"
+#	include "../event_processor_return.hpp"
 	
-	class SettingsControlMenu
+	class SettingsSoundMenu
 	{
 		public:
-			SettingsControlMenu();
-			~SettingsControlMenu();
+			SettingsSoundMenu();
+			~SettingsSoundMenu();
 			
 			/*
 			 * (Un)init:
@@ -49,4 +49,4 @@
 		private:
 			
 	};
-#endif // _settings_control_menu_hpp_
+#endif // _settings_sound_menu_hpp_
