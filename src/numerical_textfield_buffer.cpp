@@ -80,7 +80,6 @@ void NumericalTextfieldBuffer::handle_keypress(sf::Event event)
 		/*
 		 * And update value:
 		*/
-		std::cout << tmp << std::endl;
 		set(atoi(tmp.c_str()));
 		return;
 	};
@@ -140,6 +139,5 @@ void NumericalTextfieldBuffer::handle_keypress(sf::Event event)
 			tmp.append("9");
 			break;
 	}
-	std::cout << tmp << std::endl;
 	set(atoi(tmp.c_str()));
 }
