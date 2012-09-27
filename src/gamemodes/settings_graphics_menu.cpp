@@ -104,9 +104,11 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_sizes_menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
 	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
-	m_sizes_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
 	m_sizes_textfield_width = w*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_WIDTH/100.0);
 	m_sizes_textfield_height = h*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_HEIGHT/100.0);
+	m_sizes_textfield_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP/100.0);
+	m_sizes_textfield_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP/100.0);
+	m_sizes_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
 	m_sizes_arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP/100.0);
 	m_sizes_arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0);
 	/*
@@ -156,8 +158,8 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_textfield1_2.setSize(sf::Vector2f(m_sizes_textfield_width, m_sizes_textfield_height));
 	m_textfield1_1.setOutlineThickness(h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE/100.0));
 	m_textfield1_2.setOutlineThickness(h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE/100.0));
-	m_textfield1_1.setPosition(m_sizes_menuitem_xoffset+w*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP/100.0), m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP/100.0));
-	m_textfield1_2.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-w*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP/100.0), m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP/100.0));
+	m_textfield1_1.setPosition(m_sizes_menuitem_xoffset+m_sizes_textfield_xgap, m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap);
+	m_textfield1_2.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-m_sizes_textfield_xgap, m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap);
 	/*
 	 * Update arrow positions & sizes:
 	*/
@@ -205,25 +207,39 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 					*/
 					m_menuitem4_over = 1;
 				};
-				if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
+				if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap+m_sizes_textfield_height)
 				{
 					/*
-					 * Cursor is in X range of the left arrows
+					 * Cursor is in Y range of the resolution textfields
 					*/
-					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_textfield_xgap && mouse_x < m_sizes_menuitem_xoffset+m_sizes_textfield_xgap+m_sizes_textfield_width)
+					{
+						/*
+						 * Textfield 1_1
+						*/
+						m_textfield1_1_over = 1;
+					}
+					else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-m_sizes_textfield_xgap && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_xgap)
+					{
+						/*
+						 * Textfield 1_2
+						*/
+						m_textfield1_2_over = 1;
+					};
+				};
+				if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap+m_sizes_arrow_height)
+				{
+					/*
+					 * Cursor is in Y range of the fullscreen arrows
+					*/
+					if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
 					{
 						/*
 						 * Arrow Left 2
 						*/
 						m_arrow_left2_over = 1;
-					};
-				}
-				else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
-				{
-					/*
-					 * Cursor is in X range of the right arrows
-					*/
-					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					}
+					else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
 					{
 						/*
 						 * Arrow Right 2

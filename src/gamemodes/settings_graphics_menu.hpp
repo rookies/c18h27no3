@@ -80,9 +80,11 @@
 			int m_sizes_menuitem_xoffset;
 			int m_sizes_menuitem_first_yoffset;
 			int m_sizes_menuitem_gap;
-			int m_sizes_arrow_height;
 			int m_sizes_textfield_width;
 			int m_sizes_textfield_height;
+			int m_sizes_textfield_xgap;
+			int m_sizes_textfield_ygap;
+			int m_sizes_arrow_height;
 			int m_sizes_arrow_xgap;
 			int m_sizes_arrow_ygap;
 			sf::RectangleShape m_menuitem1;

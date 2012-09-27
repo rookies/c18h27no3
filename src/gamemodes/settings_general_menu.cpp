@@ -176,25 +176,19 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 					*/
 					m_menuitem3_over = 1;
 				};
-				if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
+				if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap+m_sizes_arrow_height)
 				{
 					/*
-					 * Cursor is in X range of the left arrows
+					 * Cursor is in Y range of the language arrows
 					*/
-					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
 					{
 						/*
 						 * Arrow Left 1
 						*/
 						m_arrow_left1_over = 1;
-					};
-				}
-				else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
-				{
-					/*
-					 * Cursor is in X range of the right arrows
-					*/
-					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					}
+					else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
 					{
 						/*
 						 * Arrow Right 1
