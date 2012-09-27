@@ -29,8 +29,20 @@ SettingsGraphicsMenu::~SettingsGraphicsMenu()
 {
 	
 }
-int SettingsGraphicsMenu::init(void)
+int SettingsGraphicsMenu::init(bool fullscreen)
 {
+	/*
+	 * Init ConfigChooser instance for fullscreen:
+	*/
+	m_config_chooser2.init(CONFIGVAR_TYPE_BOOLEAN, CONFIGVAR_FULLSCREEN_COUNT);
+	m_config_chooser2.add_bool("settings_graphics_menu_entry_value_fullscreen_enabled", true);
+	m_config_chooser2.add_bool("settings_graphics_menu_entry_value_fullscreen_disabled", false);
+	m_config_chooser2.set_actual_bool(fullscreen);
+	/*
+	 * Init textfields:
+	*/
+	m_textfield1_1.setOutlineColor(sf::Color::Black);
+	m_textfield1_2.setOutlineColor(sf::Color::Black);
 	/*
 	 * Init arrows:
 	*/
@@ -38,13 +50,9 @@ int SettingsGraphicsMenu::init(void)
 		return 1;
 	if (!m_arrow_right.loadFromFile("data/arrow_right.png"))
 		return 1;
-	m_arrow_left1_sprite.setTexture(m_arrow_left);
 	m_arrow_left2_sprite.setTexture(m_arrow_left);
-	m_arrow_right1_sprite.setTexture(m_arrow_right);
 	m_arrow_right2_sprite.setTexture(m_arrow_right);
-	m_arrow_left1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	m_arrow_left2_sprite.setColor(sf::Color(255, 255, 255, 255));
-	m_arrow_right1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	m_arrow_right2_sprite.setColor(sf::Color(255, 255, 255, 255));
 	/*
 	 * Init menuitem shapes:
@@ -65,8 +73,8 @@ int SettingsGraphicsMenu::init(void)
 	/*
 	 * Init menuitem values:
 	*/
-	m_menuitem1_value.setString(L"<test>1920x1080</test>");
-	m_menuitem2_value.setString(L"<test>aktiviert</test>");
+	m_menuitem1_value.setString("x");
+	m_menuitem2_value.setString(get_wstring(_(m_config_chooser2.get_actual_showable().c_str())));
 	m_menuitem1_value.setColor(sf::Color::Black);
 	m_menuitem2_value.setColor(sf::Color::Black);
 	/*
@@ -85,14 +93,22 @@ int SettingsGraphicsMenu::uninit(void)
 }
 int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 {
+	/*
+	 * Save screen size:
+	*/
+	m_w = w;
+	m_h = h;
+	
 	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
 	m_sizes_menuitem_height = h*(SIZE_MENU_CONFIG_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	m_sizes_menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
 	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
 	m_sizes_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
-	m_sizes_arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0;
-	m_sizes_arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP)/100.0;
+	m_sizes_textfield_width = w*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_WIDTH/100.0);
+	m_sizes_textfield_height = h*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_HEIGHT/100.0);
+	m_sizes_arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP/100.0);
+	m_sizes_arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0);
 	/*
 	 * Menuitem X offset = middle
 	*/
@@ -134,15 +150,20 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_menuitem3_txt.setPosition((w-m_menuitem3_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
 	m_menuitem4_txt.setPosition((w-m_menuitem4_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+m_sizes_menuitem_height2+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
 	/*
+	 * Update textfield positions & sizes:
+	*/
+	m_textfield1_1.setSize(sf::Vector2f(m_sizes_textfield_width, m_sizes_textfield_height));
+	m_textfield1_2.setSize(sf::Vector2f(m_sizes_textfield_width, m_sizes_textfield_height));
+	m_textfield1_1.setOutlineThickness(h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE/100.0));
+	m_textfield1_2.setOutlineThickness(h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE/100.0));
+	m_textfield1_1.setPosition(m_sizes_menuitem_xoffset+w*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP/100.0), m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP/100.0));
+	m_textfield1_2.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-w*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP/100.0), m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP/100.0));
+	/*
 	 * Update arrow positions & sizes:
 	*/
-	m_arrow_left1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_arrow_xgap, m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap);
 	m_arrow_left2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_arrow_xgap, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap);
-	m_arrow_right1_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height, m_sizes_menuitem_first_yoffset+m_sizes_arrow_ygap);
 	m_arrow_right2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap);
-	m_arrow_left1_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
 	m_arrow_left2_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
-	m_arrow_right1_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
 	m_arrow_right2_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
 	return 0;
 }
@@ -164,6 +185,7 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 			}
 			break;
 		case sf::Event::MouseMoved:
+			reset_menuitem_over();
 			if (mouse_x > m_sizes_menuitem_xoffset && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width)
 			{
 				/*
@@ -174,7 +196,6 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 					/*
 					 * Menuitem 3
 					*/
-					reset_menuitem_over();
 					m_menuitem3_over = 1;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+m_sizes_menuitem_height2+3*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+2*m_sizes_menuitem_height2+3*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
@@ -182,20 +203,73 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 					/*
 					 * Menuitem 4
 					*/
-					reset_menuitem_over();
 					m_menuitem4_over = 1;
+				};
+				if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
+				{
+					/*
+					 * Cursor is in X range of the left arrows
+					*/
+					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					{
+						/*
+						 * Arrow Left 2
+						*/
+						m_arrow_left2_over = 1;
+					};
 				}
-				else
-					reset_menuitem_over();
-			}
-			else
-				reset_menuitem_over();
+				else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
+				{
+					/*
+					 * Cursor is in X range of the right arrows
+					*/
+					if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap+m_sizes_arrow_height)
+					{
+						/*
+						 * Arrow Right 2
+						*/
+						m_arrow_right2_over = 1;
+					};
+				};
+			};
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
 			{
 				case sf::Mouse::Left:
-					if (m_menuitem4_over == 1)
+					if (m_arrow_left2_over == 1)
+					{
+						/*
+						 * Left Fullscreen Arrow
+						*/
+						m_config_chooser2.prev();
+						m_menuitem2_value.setString(get_wstring(_(m_config_chooser2.get_actual_showable().c_str())));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_arrow_right2_over == 1)
+					{
+						/*
+						 * Right Fullscreen Arrow
+						*/
+						m_config_chooser2.next();
+						m_menuitem2_value.setString(get_wstring(_(m_config_chooser2.get_actual_showable().c_str())));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_menuitem3_over == 1)
+					{
+						/*
+						 * Save!
+						 * Fullscreen:
+						*/
+						ConfigVariable var;
+						ret.init_confvars(1);
+						var.type = CONFIGVAR_TYPE_BOOLEAN;
+						var.index = "GRAPHICS__FULLSCREEN";
+						var.value_bool = m_config_chooser2.get_actual_bool();
+						ret.add_confvar(var);
+						ret.set_reload(true); // reload
+					}
+					else if (m_menuitem4_over == 1)
 						ret.set_gamemode(2); // back to settings menu
 					break;
 			}
@@ -205,6 +279,10 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 }
 void SettingsGraphicsMenu::reset_menuitem_over(void)
 {
+	m_textfield1_1_over = 0;
+	m_textfield1_2_over = 0;
+	m_arrow_left2_over = 0;
+	m_arrow_right2_over = 0;
 	m_menuitem3_over = 0;
 	m_menuitem4_over = 0;
 }
@@ -256,13 +334,21 @@ sf::Text SettingsGraphicsMenu::get_menuitem4_txt(void)
 {
 	return m_menuitem4_txt;
 }
-sf::Sprite SettingsGraphicsMenu::get_arrow_left1(void)
+sf::RectangleShape SettingsGraphicsMenu::get_textfield1_1(void)
 {
-	return m_arrow_left1_sprite;
+	if (m_textfield1_1_over == 1)
+		m_textfield1_1.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD_HOVER);
+	else
+		m_textfield1_1.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD);
+	return m_textfield1_1;
 }
-sf::Sprite SettingsGraphicsMenu::get_arrow_right1(void)
+sf::RectangleShape SettingsGraphicsMenu::get_textfield1_2(void)
 {
-	return m_arrow_right1_sprite;
+	if (m_textfield1_2_over == 1)
+		m_textfield1_2.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD_HOVER);
+	else
+		m_textfield1_2.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD);
+	return m_textfield1_2;
 }
 sf::Sprite SettingsGraphicsMenu::get_arrow_left2(void)
 {

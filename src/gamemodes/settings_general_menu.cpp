@@ -29,7 +29,7 @@ SettingsGeneralMenu::~SettingsGeneralMenu()
 {
 	
 }
-int SettingsGeneralMenu::init(void)
+int SettingsGeneralMenu::init(std::string language)
 {
 	/*
 	 * Init ConfigChooser instance for language:
@@ -37,7 +37,7 @@ int SettingsGeneralMenu::init(void)
 	m_config_chooser1.init(CONFIGVAR_TYPE_STRING, CONFIGVAR_LANGUAGE_COUNT);
 	m_config_chooser1.add_string("English", "en");
 	m_config_chooser1.add_string("Deutsch", "de");
-	m_config_chooser1.set_actual_string(getenv("LANGUAGE"));
+	m_config_chooser1.set_actual_string(language);
 	/*
 	 * Init arrows:
 	*/
@@ -156,6 +156,7 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 			}
 			break;
 		case sf::Event::MouseMoved:
+			reset_menuitem_over();
 			if (mouse_x > m_sizes_menuitem_xoffset && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width)
 			{
 				/*
@@ -166,7 +167,6 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 					/*
 					 * Menuitem 2
 					*/
-					reset_menuitem_over();
 					m_menuitem2_over = 1;
 				}
 				else if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_height2+2*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+2*m_sizes_menuitem_height2+2*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
@@ -174,11 +174,8 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 					/*
 					 * Menuitem 3
 					*/
-					reset_menuitem_over();
 					m_menuitem3_over = 1;
-				}
-				else
-					reset_menuitem_over();
+				};
 				if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
 				{
 					/*
@@ -189,11 +186,8 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 						/*
 						 * Arrow Left 1
 						*/
-						reset_menuitem_over();
 						m_arrow_left1_over = 1;
-					}
-					else
-						reset_menuitem_over();
+					};
 				}
 				else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
 				{
@@ -205,38 +199,16 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 						/*
 						 * Arrow Right 1
 						*/
-						reset_menuitem_over();
 						m_arrow_right1_over = 1;
-					}
-					else
-						reset_menuitem_over();
+					};
 				};
-			}
-			else
-				reset_menuitem_over();
+			};
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
 			{
 				case sf::Mouse::Left:
-					if (m_menuitem2_over == 1)
-					{
-						/*
-						 * Save!
-						 * Language:
-						*/
-						ConfigVariable var;
-						ret.set_language(m_config_chooser1.get_actual_string());
-						ret.init_confvars(1); // confvar count = 1
-						var.type = CONFIGVAR_TYPE_STRING;
-						var.index = "GENERAL__LANGUAGE";
-						var.value_string = m_config_chooser1.get_actual_string();
-						ret.add_confvar(var);
-						ret.set_gamemode(2); // back to settings menu
-					}
-					else if (m_menuitem3_over == 1)
-						ret.set_gamemode(2); // back to settings menu
-					else if (m_arrow_left1_over == 1)
+					if (m_arrow_left1_over == 1)
 					{
 						/*
 						 * Left Language Arrow
@@ -254,6 +226,23 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 						m_menuitem1_value.setString(get_wstring(m_config_chooser1.get_actual_showable()));
 						calculate_sizes(m_w, m_h);
 					}
+					else if (m_menuitem2_over == 1)
+					{
+						/*
+						 * Save!
+						 * Language:
+						*/
+						ConfigVariable var;
+						ret.set_language(m_config_chooser1.get_actual_string());
+						ret.init_confvars(1); // confvar count = 1
+						var.type = CONFIGVAR_TYPE_STRING;
+						var.index = "GENERAL__LANGUAGE";
+						var.value_string = m_config_chooser1.get_actual_string();
+						ret.add_confvar(var);
+						ret.set_gamemode(2); // back to settings menu
+					}
+					else if (m_menuitem3_over == 1)
+						ret.set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;

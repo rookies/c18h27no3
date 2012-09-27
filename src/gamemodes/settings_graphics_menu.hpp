@@ -28,6 +28,7 @@
 #	include "globals.hpp"
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
+#	include "../config_chooser.hpp"
 	
 	class SettingsGraphicsMenu
 	{
@@ -38,7 +39,7 @@
 			/*
 			 * (Un)init:
 			*/
-			int init(void); /* Called in Game::init_gamemode() */
+			int init(bool fullscreen); /* Called in Game::init_gamemode() */
 			int uninit(void); /* Called in Game::uninit_gamemode() */
 			/*
 			 * Calculate sizes:
@@ -65,11 +66,14 @@
 			sf::Text get_menuitem2_value(void);
 			sf::Text get_menuitem3_txt(void);
 			sf::Text get_menuitem4_txt(void);
-			sf::Sprite get_arrow_left1(void);
-			sf::Sprite get_arrow_right1(void);
+			sf::RectangleShape get_textfield1_1(void);
+			sf::RectangleShape get_textfield1_2(void);
 			sf::Sprite get_arrow_left2(void);
 			sf::Sprite get_arrow_right2(void);
 		private:
+			int m_w;
+			int m_h;
+			ConfigChooser m_config_chooser2;
 			int m_sizes_menuitem_width;
 			int m_sizes_menuitem_height;
 			int m_sizes_menuitem_height2;
@@ -77,6 +81,8 @@
 			int m_sizes_menuitem_first_yoffset;
 			int m_sizes_menuitem_gap;
 			int m_sizes_arrow_height;
+			int m_sizes_textfield_width;
+			int m_sizes_textfield_height;
 			int m_sizes_arrow_xgap;
 			int m_sizes_arrow_ygap;
 			sf::RectangleShape m_menuitem1;
@@ -85,8 +91,8 @@
 			sf::RectangleShape m_menuitem4;
 			sf::Texture m_arrow_left;
 			sf::Texture m_arrow_right;
-			sf::Sprite m_arrow_left1_sprite;
-			sf::Sprite m_arrow_right1_sprite;
+			sf::RectangleShape m_textfield1_1;
+			sf::RectangleShape m_textfield1_2;
 			sf::Sprite m_arrow_left2_sprite;
 			sf::Sprite m_arrow_right2_sprite;
 			sf::Text m_menuitem1_header;
@@ -95,6 +101,10 @@
 			sf::Text m_menuitem2_value;
 			sf::Text m_menuitem3_txt;
 			sf::Text m_menuitem4_txt;
+			int m_textfield1_1_over;
+			int m_textfield1_2_over;
+			int m_arrow_left2_over;
+			int m_arrow_right2_over;
 			int m_menuitem3_over;
 			int m_menuitem4_over;
 	};

@@ -45,17 +45,21 @@
 	*/
 #	define CONFIGVAR_COUNT 4 /* number of the configuration variables */
 #	define CONFIGVAR_LANGUAGE_COUNT 2 /* number of the languages for settings_general_menu */
+#	define CONFIGVAR_FULLSCREEN_COUNT 2
 	/*
 	 * Colors:
 	*/
 #	define COLOR_MENU_ELEMENT sf::Color(73, 186, 29) /* color of an menu element */
 #	define COLOR_MENU_ELEMENT_HOVER sf::Color(115, 228, 71) /* color of an menu element in hover status */
+#	define COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD sf::Color(73, 186, 29)
+#	define COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD_HOVER sf::Color(115, 228, 71)
 	/*
 	 * Sizes (in percent):
 	*/
 #	define SIZE_MENU_ELEMENT_WIDTH 30.0 /* width of an element */
 #	define SIZE_MENU_ELEMENT_HEIGHT 5.0 /* height of an element */
 #	define SIZE_MENU_ELEMENT_OUTLINE 0.5 /* outline of an element */
+#	define SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE 0.2 /* outline of an config textfield */
 #	define SIZE_MENU_FIRST_ELEMENT_YOFFSET 45.0 /* Y offset of the first element */
 #	define SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET 30.0 /* Y offset of the first element in the sub menus of the settings menu */
 #	define SIZE_MENU_ELEMENT_GAP 2.0 /* gap between two elements */
@@ -66,6 +70,10 @@
 #	define SIZE_SETTINGSMENU_CREEPER_YOFFSET 10.0 /* Y offset of the creeper image in settings menu */
 #	define SIZE_MENU_CONFIG_ELEMENT_HEIGHT 2*SIZE_MENU_ELEMENT_HEIGHT /* height of an config element */
 #	define SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP 5.0 /* gap between top of the config element and the top of the value text */
+#	define SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_WIDTH 10.0 /* width of an textfield of the resolution config in settings_graphics_menu */
+#	define SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_HEIGHT 2.0 /* height of an textfield of the resolution config in settings_graphics_menu */
+#	define SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP 1.0 /* gap between the border of the menu element and the textfield */
+#	define SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP 7.0 /* gap between the border of the menu element and the textfield */
 #	define SIZE_MENU_CONFIG_ARROW_HEIGHT 3.0 /* size of the config arrows */
 #	define SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP 6.0 /* gap between top of the config element and the top of the arrows */
 #	define SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP 1.0 /* gap between left of the config element and the left arrows */

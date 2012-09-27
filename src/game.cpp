@@ -339,19 +339,18 @@ int Game::process_events(void)
 				m_cursor.set_mouse_position(x, y);
 				break;
 			case sf::Event::MouseButtonPressed:
-				break; // skip
-				std::cout << "MouseButtonPressed ";
+				//std::cout << "MouseButtonPressed ";
 				switch (event.mouseButton.button)
 				{
 					case sf::Mouse::Left:
-						std::cout << "LEFT";
+						//std::cout << "LEFT";
 						m_cursor.activate_action_cursor();
 						break;
 					case sf::Mouse::Middle:
-						std::cout << "MIDDLE";
+						//std::cout << "MIDDLE";
 						break;
 					case sf::Mouse::Right:
-						std::cout << "RIGHT";
+						//std::cout << "RIGHT";
 						break;
 				}
 				x = event.mouseButton.x-m_padding_data_calculator.get_padding_x();
@@ -364,22 +363,21 @@ int Game::process_events(void)
 					y = 0;
 				else if (y > m_padding_data_calculator.get_usable_h())
 					y = m_padding_data_calculator.get_usable_h();
-				std::cout << " @ (" << x << "," << y << ")" << std::endl;
+				//std::cout << " @ (" << x << "," << y << ")" << std::endl;
 				break;
 			case sf::Event::MouseButtonReleased:
-				break; // skip
-				std::cout << "MouseButtonReleased ";
+				//std::cout << "MouseButtonReleased ";
 				switch (event.mouseButton.button)
 				{
 					case sf::Mouse::Left:
-						std::cout << "LEFT";
+						//std::cout << "LEFT";
 						m_cursor.deactivate_action_cursor();
 						break;
 					case sf::Mouse::Middle:
-						std::cout << "MIDDLE";
+						//std::cout << "MIDDLE";
 						break;
 					case sf::Mouse::Right:
-						std::cout << "RIGHT";
+						//std::cout << "RIGHT";
 						break;
 				}
 				x = event.mouseButton.x-m_padding_data_calculator.get_padding_x();
@@ -392,7 +390,7 @@ int Game::process_events(void)
 					y = 0;
 				else if (y > m_padding_data_calculator.get_usable_h())
 					y = m_padding_data_calculator.get_usable_h();
-				std::cout << " @ (" << x << "," << y << ")" << std::endl;
+				//std::cout << " @ (" << x << "," << y << ")" << std::endl;
 				break;
 			case sf::Event::LostFocus:
 				std::cout << "LostFocus" << std::endl;
@@ -632,7 +630,9 @@ int Game::init_gamemode(int gamemode)
 			 * Settings General Menu
 			*/
 			m_settings_general_menu = new SettingsGeneralMenu;
-			if (m_settings_general_menu->init() == 1)
+			if (m_settings_general_menu->init(
+				m_config.get("GENERAL__LANGUAGE").value_string
+			) == 1)
 				return 1;
 			return 0;
 			break;
@@ -641,7 +641,9 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Graphics Menu
 			*/
 			m_settings_graphics_menu = new SettingsGraphicsMenu;
-			if (m_settings_graphics_menu->init() == 1)
+			if (m_settings_graphics_menu->init(
+				m_config.get("GRAPHICS__FULLSCREEN").value_bool
+			) == 1)
 				return 1;
 			return 0;
 			break;
@@ -778,8 +780,8 @@ void Game::draw_settings_graphics_menu(void)
 	m_texture.draw(m_settings_graphics_menu->get_menuitem1());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem1_header());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem1_value());
-	m_texture.draw(m_settings_graphics_menu->get_arrow_left1());
-	m_texture.draw(m_settings_graphics_menu->get_arrow_right1());
+	m_texture.draw(m_settings_graphics_menu->get_textfield1_1());
+	m_texture.draw(m_settings_graphics_menu->get_textfield1_2());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2_header());
 	m_texture.draw(m_settings_graphics_menu->get_menuitem2_value());

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: Robert Knauer <robert@privatdemail.net>\n"
 "POT-Creation-Date: 2012-09-23 17:50+0200\n"
-"PO-Revision-Date: 2012-09-24 20:54+0200\n"
+"PO-Revision-Date: 2012-09-27 20:02+0200\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -64,6 +64,12 @@ msgstr "Bildschirmauflösung"
 
 msgid "settings_graphics_menu_entry_header_fullscreen"
 msgstr "Vollbild"
+
+msgid "settings_graphics_menu_entry_value_fullscreen_enabled"
+msgstr "aktiviert"
+
+msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
+msgstr "deaktiviert"
 
 msgid "settings_graphics_menu_entry_abort"
 msgstr "Abbrechen"

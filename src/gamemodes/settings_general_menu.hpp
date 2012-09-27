@@ -40,7 +40,7 @@
 			/*
 			 * (Un)init:
 			*/
-			int init(void); /* Called in Game::init_gamemode() */
+			int init(std::string language); /* Called in Game::init_gamemode() */
 			int uninit(void); /* Called in Game::uninit_gamemode() */
 			/*
 			 * Calculate sizes:
