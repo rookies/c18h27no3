@@ -469,12 +469,6 @@ int Game::process_events(void)
 				break;
 		}
 		/*
-		 * Change GameMode?
-		*/
-		if (event_processor_return.get_gamemode() != 0)
-			if (set_gamemode(event_processor_return.get_gamemode()) == 1) // set gamemode
-				return 1; // setting gamemode failed, exit
-		/*
 		 * Set config variables?
 		*/
 		if (event_processor_return.are_confvars_initialized())
@@ -491,6 +485,12 @@ int Game::process_events(void)
 		*/
 		if (event_processor_return.get_language().compare("") != 0)
 			set_language(event_processor_return.get_language());
+		/*
+		 * Change GameMode?
+		*/
+		if (event_processor_return.get_gamemode() != 0)
+			if (set_gamemode(event_processor_return.get_gamemode()) == 1) // set gamemode
+				return 1; // setting gamemode failed, exit
 		/*
 		 * Reload?
 		*/

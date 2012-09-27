@@ -45,7 +45,7 @@
 	*/
 #	define CONFIGVAR_COUNT 4 /* number of the configuration variables */
 #	define CONFIGVAR_LANGUAGE_COUNT 2 /* number of the languages for settings_general_menu */
-#	define CONFIGVAR_FULLSCREEN_COUNT 2
+#	define CONFIGVAR_FULLSCREEN_COUNT 2 /* number of the fullscreen choices for settings_graphics_menu (should be 2 - true and false) */
 	/*
 	 * Colors:
 	*/
