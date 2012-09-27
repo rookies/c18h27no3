@@ -218,9 +218,7 @@ int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y
 					{
 						/*
 						 * Save!
-						 * Language:
 						*/
-						setenv("LANGUAGE", m_config_chooser1.get_actual_string().c_str(), 1);
 						return 2; // back to settings menu
 					}
 					else if (m_menuitem3_over == 1)
