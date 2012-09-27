@@ -138,15 +138,20 @@ int SettingsGeneralMenu::calculate_sizes(int w, int h)
 	m_arrow_right1_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
 	return 0;
 }
-int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 {
+	/*
+	 * Variable declarations:
+	*/
+	EventProcessorReturn ret;
+	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					return 2; // back to settings menu
+					ret.set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
@@ -218,11 +223,19 @@ int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y
 					{
 						/*
 						 * Save!
+						 * Language:
 						*/
-						return 2; // back to settings menu
+						ConfigVariable var;
+						ret.set_language(m_config_chooser1.get_actual_string());
+						ret.init_confvars(1); // confvar count = 1
+						var.type = CONFIGVAR_TYPE_STRING;
+						var.index = "GENERAL__LANGUAGE";
+						var.value_string = m_config_chooser1.get_actual_string();
+						ret.add_confvar(var);
+						ret.set_gamemode(2); // back to settings menu
 					}
 					else if (m_menuitem3_over == 1)
-						return 2; // back to settings menu
+						ret.set_gamemode(2); // back to settings menu
 					else if (m_arrow_left1_over == 1)
 					{
 						/*
@@ -245,7 +258,7 @@ int SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y
 			}
 			break;
 	}
-	return 0;
+	return ret;
 }
 void SettingsGeneralMenu::reset_menuitem_over(void)
 {

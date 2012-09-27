@@ -295,7 +295,8 @@ int Game::process_events(void)
 	*/
 	sf::Event event;
 	int x, y;
-	int res = -2;
+	int i;
+	EventProcessorReturn event_processor_return;
 	/*
 	 * Check for events:
 	*/
@@ -410,7 +411,7 @@ int Game::process_events(void)
 				/*
 				 * Main Menu
 				*/
-				res = m_main_menu->process_event(
+				event_processor_return = m_main_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
@@ -420,7 +421,7 @@ int Game::process_events(void)
 				/*
 				 * Settings Menu
 				*/
-				res = m_settings_menu->process_event(
+				event_processor_return = m_settings_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
@@ -430,7 +431,7 @@ int Game::process_events(void)
 				/*
 				 * Settings General Menu
 				*/
-				res = m_settings_general_menu->process_event(
+				event_processor_return = m_settings_general_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
@@ -440,7 +441,7 @@ int Game::process_events(void)
 				/*
 				 * Settings Graphics Menu
 				*/
-				res = m_settings_graphics_menu->process_event(
+				event_processor_return = m_settings_graphics_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
@@ -450,7 +451,7 @@ int Game::process_events(void)
 				/*
 				 * Settings Control Menu
 				*/
-				res = m_settings_control_menu->process_event(
+				event_processor_return = m_settings_control_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
@@ -460,20 +461,46 @@ int Game::process_events(void)
 				/*
 				 * Settings Sound Menu
 				*/
-				res = m_settings_sound_menu->process_event(
+				event_processor_return = m_settings_sound_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
 					m_cursor.get_mouse_position_y()
 				);
 				break;
 		}
-		if (res == -1)
-			return 1; // exit
-		else if (res == 0 || res == -2)
-			continue; // go on
-		else
-			if (set_gamemode(res) == 1) // set gamemode
+		/*
+		 * Change GameMode?
+		*/
+		if (event_processor_return.get_gamemode() != 0)
+			if (set_gamemode(event_processor_return.get_gamemode()) == 1) // set gamemode
 				return 1; // setting gamemode failed, exit
+		/*
+		 * Set config variables?
+		*/
+		if (event_processor_return.are_confvars_initialized())
+		{
+			for (i=0; i < event_processor_return.get_confvars_count(); i++)
+				m_config.set(
+					event_processor_return.get_confvar(i).index,
+					event_processor_return.get_confvar(i)
+				);
+			m_config.write();
+		};
+		/*
+		 * Set language?
+		*/
+		if (event_processor_return.get_language().compare("") != 0)
+			set_language(event_processor_return.get_language());
+		/*
+		 * Reload?
+		*/
+		if (event_processor_return.get_reload())
+			return 2; // reload
+		/*
+		 * Exit?
+		*/
+		if (event_processor_return.get_exit())
+			return 1; // exit
 	}
 	/*
 	 * Finish successful:

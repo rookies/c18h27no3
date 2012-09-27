@@ -41,18 +41,23 @@ int SettingsSoundMenu::calculate_sizes(int w, int h)
 {
 	return 0;
 }
-int SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+EventProcessorReturn SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 {
+	/*
+	 * Variable declarations:
+	*/
+	EventProcessorReturn ret;
+	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					return 2; // back to settings menu
+					ret.set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
 	}
-	return 0;
+	return ret;
 }

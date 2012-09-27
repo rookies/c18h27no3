@@ -1,0 +1,57 @@
+/*
+ * event_processor_return.hpp
+ * 
+ * Copyright 2012 Robert Knauer <robert@privatdemail.net>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ * 
+ */
+#ifndef _event_processor_return_hpp_
+#	define _event_processor_return_hpp_
+	
+#	include "config_common.hpp"
+	
+	class EventProcessorReturn
+	{
+		public:
+			EventProcessorReturn();
+			~EventProcessorReturn();
+			
+			void set_gamemode(int gamemode);
+			void init_confvars(int count);
+			void add_confvar(ConfigVariable var);
+			void set_language(std::string lang);
+			void set_exit(bool exit);
+			void set_reload(bool reload);
+			
+			int get_gamemode(void);
+			bool are_confvars_initialized(void);
+			int get_confvars_count(void);
+			ConfigVariable get_confvar(int index);
+			std::string get_language(void);
+			bool get_exit(void);
+			bool get_reload(void);
+		private:
+			int m_gamemode;
+			ConfigVariable *m_confvars;
+			int m_confvar_pointer;
+			bool m_confvars_initialized;
+			std::string m_lang;
+			bool m_exit;
+			bool m_reload;
+	};
+#endif // _event_processor_return_hpp_

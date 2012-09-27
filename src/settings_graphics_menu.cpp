@@ -146,15 +146,20 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_arrow_right2_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
 	return 0;
 }
-int SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
 {
+	/*
+	 * Variable declarations:
+	*/
+	EventProcessorReturn ret;
+	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					return 2; // back to settings menu
+					ret.set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
@@ -191,12 +196,12 @@ int SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_
 			{
 				case sf::Mouse::Left:
 					if (m_menuitem4_over == 1)
-						return 2; // back to settings menu
+						ret.set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
 	}
-	return 0;
+	return ret;
 }
 void SettingsGraphicsMenu::reset_menuitem_over(void)
 {

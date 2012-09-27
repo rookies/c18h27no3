@@ -52,6 +52,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/settings_sound_menu.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/widestring.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/config_common.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/config_chooser.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/event_processor_return.cpp)
 add_executable(game ${GAME_SOURCES})
 # Add libraries to game executable:
 target_link_libraries(game ${SFMLwindow_LIBRARIES})

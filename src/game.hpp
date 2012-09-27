@@ -37,6 +37,7 @@
 #	include "settings_graphics_menu.hpp"
 #	include "settings_control_menu.hpp"
 #	include "settings_sound_menu.hpp"
+#	include "event_processor_return.hpp"
 	
 	class Game
 	{
