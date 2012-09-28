@@ -119,7 +119,7 @@ int Game::init(void)
 	/*
 	 * Init framecounter:
 	*/
-	m_fps_counter.init(m_padding_data_calculator.get_usable_h());
+	m_fps_counter.init();
 	/*
 	 * Show main menu:
 	*/
@@ -538,7 +538,14 @@ int Game::process_events(void)
 int Game::calculate_sizes(void)
 {
 	/*
-	 * Calculate element sizes for new screen size:
+	 * FPS counter:
+	*/
+	m_fps_counter.calculate_sizes(
+		m_padding_data_calculator.get_usable_w(),
+		m_padding_data_calculator.get_usable_h()
+	);
+	/*
+	 * Game Modes:
 	*/
 	switch (m_gamemode)
 	{

@@ -78,6 +78,9 @@
 #	define SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP 6.0 /* gap between top of the config element and the top of the arrows */
 #	define SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP 1.0 /* gap between left of the config element and the left arrows */
 #	define SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_TEXT_YGAP 6.4
+#	define SIZE_FPS_COUNTER_TEXT 2.0
+#	define SIZE_FPS_COUNTER_XGAP 0.6
+#	define SIZE_FPS_COUNTER_YGAP 1.0
 	/*
 	 * Size dividers:
 	*/

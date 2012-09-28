@@ -26,8 +26,10 @@
 #	include <iostream>
 #	include <string>
 #	include <sstream>
+#	include <cmath>
 #	include <SFML/System.hpp>
 #	include <SFML/Graphics.hpp>
+#	include "globals.hpp" 
 	
 	class FPScounter
 	{
@@ -38,7 +40,11 @@
 			/*
 			 * Init:
 			*/
-			int init(int screen_h);
+			int init(void);
+			/*
+			 * Calculate sizes:
+			*/
+			int calculate_sizes(int w, int h);
 			/*
 			 * Get drawable:
 			*/

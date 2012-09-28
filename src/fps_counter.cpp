@@ -30,20 +30,23 @@ FPScounter::~FPScounter()
 {
 	
 }
-int FPScounter::init(int screen_h)
+int FPScounter::init(void)
 {
 	/*
 	 * Load text:
 	*/
-	m_txt.setCharacterSize(20);
 	m_txt.setColor(sf::Color::Black);
-	m_txt.setPosition(10, screen_h-30);
 	m_txt.setString("0 fps");
 	/*
 	 * Reset clock:
 	*/
 	m_clock.restart();
 	m_frames = 0;
+}
+int FPScounter::calculate_sizes(int w, int h)
+{
+	m_txt.setCharacterSize(h*(SIZE_FPS_COUNTER_TEXT/100.0));
+	m_txt.setPosition(w*(SIZE_FPS_COUNTER_XGAP/100.0), h-h*(SIZE_FPS_COUNTER_YGAP/100.0)-m_txt.getGlobalBounds().height);
 }
 sf::Text FPScounter::get_drawable(void)
 {
@@ -53,7 +56,7 @@ sf::Text FPScounter::get_drawable(void)
 		 * Build the string for showing:
 		*/
 		m_txt_float.str("");
-		m_txt_float << (m_frames/m_clock.getElapsedTime().asSeconds());
+		m_txt_float << floor(m_frames/m_clock.getElapsedTime().asSeconds() + 0.5); // round
 		m_txt_str = m_txt_float.str();
 		m_txt_str += " fps";
 		/*
