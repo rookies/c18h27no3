@@ -17,20 +17,6 @@ For details, see COPYING.
 ### Exceptions
  * data/grass.png
  * data/creeper.png
- * Parts of the FFmpeg project (unmodified, for sources and license information see below):
-  * avcodec-54.dll
-  * avformat-54.dll
-  * avutil-51.dll
-  * swscale-2.dll
-  * include/libavcodec/*
-  * include/libavformat/*
-  * include/libavutil/*
-  * include/libswscale/*
- * Parts of the SFML project (unmodified, for sources and license information see below):
-  * sfml-graphics-2.dll
-  * sfml-system-2.dll
-  * sfml-window-2.dll
-  * include/SFML/*
 
 ### Used libraries
  * [Simple and Fast Multimedia Library](http://www.sfml-dev.org/) (SFML) is released under the zlib/libpng license.
