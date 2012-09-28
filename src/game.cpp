@@ -32,6 +32,7 @@ Game::~Game()
 }
 int Game::init(void)
 {
+	std::cout << "========== INIT START ==========" << std::endl;
 	/*
 	 * Variable declarations:
 	*/
