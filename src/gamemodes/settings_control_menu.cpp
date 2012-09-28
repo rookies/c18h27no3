@@ -61,3 +61,19 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 	}
 	return ret;
 }
+UniversalDrawableArray SettingsControlMenu::get_drawables(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	UniversalDrawableArray arr;
+	/*
+	 * Init UniversalDrawableArray:
+	*/
+	arr.init(0);
+	/*
+	 * Add elements:
+	 * ...
+	*/
+	return arr;
+}

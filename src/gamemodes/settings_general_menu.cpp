@@ -250,47 +250,46 @@ void SettingsGeneralMenu::reset_menuitem_over(void)
 	m_arrow_left1_over = 0;
 	m_arrow_right1_over = 0;
 }
-sf::RectangleShape SettingsGeneralMenu::get_menuitem1(void)
+UniversalDrawableArray SettingsGeneralMenu::get_drawables(void)
 {
-	return m_menuitem1;
-}
-sf::RectangleShape SettingsGeneralMenu::get_menuitem2(void)
-{
+	/*
+	 * Variable declarations:
+	*/
+	UniversalDrawableArray arr;
+	/*
+	 * Init UniversalDrawableArray:
+	*/
+	arr.init(9);
+	/*
+	 * Add elements:
+	*/
+	arr.set_rectshape(0, m_menuitem1);
+	//
 	if (m_menuitem2_over == 1)
 		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem2;
-}
-sf::RectangleShape SettingsGeneralMenu::get_menuitem3(void)
-{
+	arr.set_rectshape(1, m_menuitem2);
+	//
 	if (m_menuitem3_over == 1)
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem3;
-}
-sf::Text SettingsGeneralMenu::get_menuitem1_header(void)
-{
-	return m_menuitem1_header;
-}
-sf::Text SettingsGeneralMenu::get_menuitem1_value(void)
-{
-	return m_menuitem1_value;
-}
-sf::Text SettingsGeneralMenu::get_menuitem2_txt(void)
-{
-	return m_menuitem2_txt;
-}
-sf::Text SettingsGeneralMenu::get_menuitem3_txt(void)
-{
-	return m_menuitem3_txt;
-}
-sf::Sprite SettingsGeneralMenu::get_arrow_left1(void)
-{
-	return m_arrow_left1_sprite;
-}
-sf::Sprite SettingsGeneralMenu::get_arrow_right1(void)
-{
-	return m_arrow_right1_sprite;
+	arr.set_rectshape(2, m_menuitem3);
+	//
+	arr.set_text(3, m_menuitem1_header);
+	//
+	arr.set_text(4, m_menuitem1_value);
+	//
+	arr.set_text(5, m_menuitem2_txt);
+	//
+	arr.set_text(6, m_menuitem3_txt);
+	//
+	arr.set_sprite(7, m_arrow_left1_sprite);
+	//
+	arr.set_sprite(8, m_arrow_right1_sprite);
+	/*
+	 * Return:
+	*/
+	return arr;
 }

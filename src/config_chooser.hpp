@@ -96,5 +96,6 @@
 			int m_addpointer;
 			int m_getpointer;
 			ConfigChooserElement *m_elements;
+			bool m_elements_initialized;
 	};
 #endif // _config_chooser_hpp_

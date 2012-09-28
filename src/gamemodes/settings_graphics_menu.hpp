@@ -30,6 +30,7 @@
 #	include "../event_processor_return.hpp"
 #	include "../config_chooser.hpp"
 #	include "../numerical_textfield_buffer.hpp"
+#	include "../universal_drawable.hpp"
 	
 	class SettingsGraphicsMenu
 	{
@@ -57,22 +58,7 @@
 			/*
 			 * Get drawable items:
 			*/
-			sf::RectangleShape get_menuitem1(void);
-			sf::RectangleShape get_menuitem2(void);
-			sf::RectangleShape get_menuitem3(void);
-			sf::RectangleShape get_menuitem4(void);
-			sf::Text get_menuitem1_header(void);
-			sf::Text get_menuitem2_header(void);
-			sf::Text get_menuitem1_value(void);
-			sf::Text get_menuitem2_value(void);
-			sf::Text get_menuitem3_txt(void);
-			sf::Text get_menuitem4_txt(void);
-			sf::RectangleShape get_textfield1_1(void);
-			sf::RectangleShape get_textfield1_2(void);
-			sf::Text get_textfield1_1_txt(void);
-			sf::Text get_textfield1_2_txt(void);
-			sf::Sprite get_arrow_left2(void);
-			sf::Sprite get_arrow_right2(void);
+			UniversalDrawableArray get_drawables(void);
 		private:
 			int m_w;
 			int m_h;

@@ -219,67 +219,62 @@ void SettingsMenu::reset_menuitem_over(void)
 	m_menuitem4_over = 0;
 	m_menuitem5_over = 0;
 }
-sf::Sprite SettingsMenu::get_creeper(void)
+UniversalDrawableArray SettingsMenu::get_drawables(void)
 {
-	return m_img1_sprite;
-}
-sf::RectangleShape SettingsMenu::get_menuitem1(void)
-{
+	/*
+	 * Variable declarations:
+	*/
+	UniversalDrawableArray arr;
+	/*
+	 * Init UniversalDrawableArray:
+	*/
+	arr.init(11);
+	/*
+	 * Add elements:
+	*/
+	arr.set_sprite(0, m_img1_sprite);
+	//
 	if (m_menuitem1_over == 1)
 		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem1;
-}
-sf::RectangleShape SettingsMenu::get_menuitem2(void)
-{
+	arr.set_rectshape(1, m_menuitem1);
+	//
 	if (m_menuitem2_over == 1)
 		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem2;
-}
-sf::RectangleShape SettingsMenu::get_menuitem3(void)
-{
+	arr.set_rectshape(2, m_menuitem2);
+	//
 	if (m_menuitem3_over == 1)
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem3;
-}
-sf::RectangleShape SettingsMenu::get_menuitem4(void)
-{
+	arr.set_rectshape(3, m_menuitem3);
+	//
 	if (m_menuitem4_over == 1)
 		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem4;
-}
-sf::RectangleShape SettingsMenu::get_menuitem5(void)
-{
+	arr.set_rectshape(4, m_menuitem4);
+	//
 	if (m_menuitem5_over == 1)
 		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem5;
-}
-sf::Text SettingsMenu::get_menuitem1_txt(void)
-{
-	return m_menuitem1_txt;
-}
-sf::Text SettingsMenu::get_menuitem2_txt(void)
-{
-	return m_menuitem2_txt;
-}
-sf::Text SettingsMenu::get_menuitem3_txt(void)
-{
-	return m_menuitem3_txt;
-}
-sf::Text SettingsMenu::get_menuitem4_txt(void)
-{
-	return m_menuitem4_txt;
-}
-sf::Text SettingsMenu::get_menuitem5_txt(void)
-{
-	return m_menuitem5_txt;
+	arr.set_rectshape(5, m_menuitem5);
+	//
+	arr.set_text(6, m_menuitem1_txt);
+	//
+	arr.set_text(7, m_menuitem2_txt);
+	//
+	arr.set_text(8, m_menuitem3_txt);
+	//
+	arr.set_text(9, m_menuitem4_txt);
+	//
+	arr.set_text(10, m_menuitem5_txt);
+	/*
+	 * Return:
+	*/
+	return arr;
 }

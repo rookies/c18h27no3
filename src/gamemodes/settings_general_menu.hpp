@@ -30,6 +30,7 @@
 #	include "../config_chooser.hpp"
 #	include "../config_common.hpp"
 #	include "../event_processor_return.hpp"
+#	include "../universal_drawable.hpp"
 	
 	class SettingsGeneralMenu
 	{
@@ -57,15 +58,7 @@
 			/*
 			 * Get drawable items:
 			*/
-			sf::RectangleShape get_menuitem1(void);
-			sf::RectangleShape get_menuitem2(void);
-			sf::RectangleShape get_menuitem3(void);
-			sf::Text get_menuitem1_header(void);
-			sf::Text get_menuitem1_value(void);
-			sf::Text get_menuitem2_txt(void);
-			sf::Text get_menuitem3_txt(void);
-			sf::Sprite get_arrow_left1(void);
-			sf::Sprite get_arrow_right1(void);
+			UniversalDrawableArray get_drawables(void);
 		private:
 			int m_w, m_h;
 			ConfigChooser m_config_chooser1;

@@ -29,6 +29,7 @@
 #	include "globals.hpp"
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
+#	include "../universal_drawable.hpp"
 	
 	class MainMenu
 	{
@@ -56,19 +57,7 @@
 			/*
 			 * Get drawable items:
 			*/
-			sf::Sprite get_grassblock(void);
-			sf::RectangleShape get_menuitem1(void);
-			sf::RectangleShape get_menuitem2(void);
-			sf::RectangleShape get_menuitem3(void);
-			sf::RectangleShape get_menuitem4(void);
-			sf::RectangleShape get_menuitem5(void);
-			sf::RectangleShape get_menuitem6(void);
-			sf::Text get_menuitem1_txt(void);
-			sf::Text get_menuitem2_txt(void);
-			sf::Text get_menuitem3_txt(void);
-			sf::Text get_menuitem4_txt(void);
-			sf::Text get_menuitem5_txt(void);
-			sf::Text get_menuitem6_txt(void);
+			UniversalDrawableArray get_drawables(void);
 		private:
 			int m_sizes_menuitem_width;
 			int m_sizes_menuitem_height;

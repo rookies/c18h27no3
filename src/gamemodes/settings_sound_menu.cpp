@@ -61,3 +61,19 @@ EventProcessorReturn SettingsSoundMenu::process_event(sf::Event event, int mouse
 	}
 	return ret;
 }
+UniversalDrawableArray SettingsSoundMenu::get_drawables(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	UniversalDrawableArray arr;
+	/*
+	 * Init UniversalDrawableArray:
+	*/
+	arr.init(0);
+	/*
+	 * Add elements:
+	 * ...
+	*/
+	return arr;
+}

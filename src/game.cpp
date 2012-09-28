@@ -142,6 +142,9 @@ int Game::loop(void)
 	/*
 	 * Variable definitons:
 	*/
+	int i;
+	UniversalDrawableArray drawables;
+	UniversalDrawable drawable;
 	int done = 0;
 	sf::Sprite sprite;
 	/*
@@ -172,38 +175,54 @@ int Game::loop(void)
 					/*
 					 * Main Menu
 					*/
-					draw_main_menu();
+					drawables = m_main_menu->get_drawables();
 					break;
 				case 2:
 					/*
 					 * Settings Menu
 					*/
-					draw_settings_menu();
+					drawables = m_settings_menu->get_drawables();
 					break;
 				case 3:
 					/*
 					 * Settings General Menu
 					*/
-					draw_settings_general_menu();
+					drawables = m_settings_general_menu->get_drawables();
 					break;
 				case 4:
 					/*
 					 * Settings Graphics Menu
 					*/
-					draw_settings_graphics_menu();
+					drawables = m_settings_graphics_menu->get_drawables();
 					break;
 				case 5:
 					/*
 					 * Settings Control Menu
 					*/
-					draw_settings_control_menu();
+					drawables = m_settings_control_menu->get_drawables();
 					break;
 				case 6:
 					/*
 					 * Settings Sound Menu
 					*/
-					draw_settings_sound_menu();
+					drawables = m_settings_sound_menu->get_drawables();
 					break;
+			}
+			for (i=0; i < drawables.get_count(); i++)
+			{
+				drawable = drawables.get(i);
+				switch (drawable.type)
+				{
+					case UNIVERSAL_DRAWABLE_TYPE_TEXT:
+						m_texture.draw(drawable.value_text);
+						break;
+					case UNIVERSAL_DRAWABLE_TYPE_RECTSHAPE:
+						m_texture.draw(drawable.value_rectshape);
+						break;
+					case UNIVERSAL_DRAWABLE_TYPE_SPRITE:
+						m_texture.draw(drawable.value_sprite);
+						break;
+				}
 			}
 			m_texture.draw(m_cursor.get_drawable(
 				m_padding_data_calculator.get_usable_w(),
@@ -734,75 +753,4 @@ int Game::uninit_gamemode(int gamemode)
 			std::cout << "Invalid gamemode passed to uninit_gamemode(): " << gamemode << std::endl;
 			return 0;
 	}
-}
-void Game::draw_main_menu(void)
-{
-	m_texture.draw(m_main_menu->get_grassblock());
-	m_texture.draw(m_main_menu->get_menuitem1());
-	m_texture.draw(m_main_menu->get_menuitem1_txt());
-	m_texture.draw(m_main_menu->get_menuitem2());
-	m_texture.draw(m_main_menu->get_menuitem2_txt());
-	m_texture.draw(m_main_menu->get_menuitem3());
-	m_texture.draw(m_main_menu->get_menuitem3_txt());
-	m_texture.draw(m_main_menu->get_menuitem4());
-	m_texture.draw(m_main_menu->get_menuitem4_txt());
-	m_texture.draw(m_main_menu->get_menuitem5());
-	m_texture.draw(m_main_menu->get_menuitem5_txt());
-	m_texture.draw(m_main_menu->get_menuitem6());
-	m_texture.draw(m_main_menu->get_menuitem6_txt());
-}
-void Game::draw_settings_menu(void)
-{
-	m_texture.draw(m_settings_menu->get_creeper());
-	m_texture.draw(m_settings_menu->get_menuitem1());
-	m_texture.draw(m_settings_menu->get_menuitem1_txt());
-	m_texture.draw(m_settings_menu->get_menuitem2());
-	m_texture.draw(m_settings_menu->get_menuitem2_txt());
-	m_texture.draw(m_settings_menu->get_menuitem3());
-	m_texture.draw(m_settings_menu->get_menuitem3_txt());
-	m_texture.draw(m_settings_menu->get_menuitem4());
-	m_texture.draw(m_settings_menu->get_menuitem4_txt());
-	m_texture.draw(m_settings_menu->get_menuitem5());
-	m_texture.draw(m_settings_menu->get_menuitem5_txt());
-}
-void Game::draw_settings_general_menu(void)
-{
-	m_texture.draw(m_settings_general_menu->get_menuitem1());
-	m_texture.draw(m_settings_general_menu->get_menuitem1_header());
-	m_texture.draw(m_settings_general_menu->get_menuitem1_value());
-	m_texture.draw(m_settings_general_menu->get_arrow_left1());
-	m_texture.draw(m_settings_general_menu->get_arrow_right1());
-	m_texture.draw(m_settings_general_menu->get_menuitem2());
-	m_texture.draw(m_settings_general_menu->get_menuitem2_txt());
-	m_texture.draw(m_settings_general_menu->get_menuitem3());
-	m_texture.draw(m_settings_general_menu->get_menuitem3_txt());
-}
-void Game::draw_settings_graphics_menu(void)
-{
-	m_texture.draw(m_settings_graphics_menu->get_menuitem1());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem1_header());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem1_value());
-	m_texture.draw(m_settings_graphics_menu->get_textfield1_1());
-	m_texture.draw(m_settings_graphics_menu->get_textfield1_2());
-	m_texture.draw(m_settings_graphics_menu->get_textfield1_1_txt());
-	m_texture.draw(m_settings_graphics_menu->get_textfield1_2_txt());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem2());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem2_header());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem2_value());
-	m_texture.draw(m_settings_graphics_menu->get_arrow_left2());
-	m_texture.draw(m_settings_graphics_menu->get_arrow_right2());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem3());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem3_txt());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem4());
-	m_texture.draw(m_settings_graphics_menu->get_menuitem4_txt());
-}
-void Game::draw_settings_control_menu(void)
-{
-	/*m_texture.draw(m_settings_control_menu->get_menuitem1());
-	m_texture.draw(m_settings_control_menu->get_menuitem1_header());*/
-}
-void Game::draw_settings_sound_menu(void)
-{
-	/*m_texture.draw(m_settings_sound_menu->get_menuitem1());
-	m_texture.draw(m_settings_sound_menu->get_menuitem1_header());*/
 }

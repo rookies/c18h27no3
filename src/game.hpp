@@ -38,6 +38,7 @@
 #	include "gamemodes/settings_control_menu.hpp"
 #	include "gamemodes/settings_sound_menu.hpp"
 #	include "event_processor_return.hpp"
+#	include "universal_drawable.hpp"
 	
 	class Game
 	{
@@ -84,15 +85,6 @@
 			*/
 			int init_gamemode(int gamemode);
 			int uninit_gamemode(int gamemode);
-			/*
-			 * Draw functions:
-			*/
-			void draw_main_menu(void);
-			void draw_settings_menu(void);
-			void draw_settings_general_menu(void);
-			void draw_settings_graphics_menu(void);
-			void draw_settings_control_menu(void);
-			void draw_settings_sound_menu(void);
 			
 			/*
 			 * Internal variables:

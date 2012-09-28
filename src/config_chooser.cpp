@@ -63,11 +63,12 @@ void ConfigChooserElement::set_string(std::string value)
 }
 ConfigChooser::ConfigChooser()
 {
-	
+	m_elements_initialized = false;
 }
 ConfigChooser::~ConfigChooser()
 {
-	
+	if (m_elements_initialized)
+		delete[] m_elements;
 }
 void ConfigChooser::init(int type, int number)
 {
@@ -82,6 +83,7 @@ void ConfigChooser::init(int type, int number)
 	m_elements = new ConfigChooserElement[number];
 	m_getpointer = 0;
 	m_addpointer = 0;
+	m_elements_initialized = true;
 }
 void ConfigChooser::next(void)
 {

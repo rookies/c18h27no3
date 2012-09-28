@@ -351,83 +351,68 @@ void SettingsGraphicsMenu::reset_menuitem_over(void)
 	m_menuitem3_over = 0;
 	m_menuitem4_over = 0;
 }
-sf::RectangleShape SettingsGraphicsMenu::get_menuitem1(void)
+UniversalDrawableArray SettingsGraphicsMenu::get_drawables(void)
 {
-	return m_menuitem1;
-}
-sf::RectangleShape SettingsGraphicsMenu::get_menuitem2(void)
-{
-	return m_menuitem2;
-}
-sf::RectangleShape SettingsGraphicsMenu::get_menuitem3(void)
-{
+	/*
+	 * Variable declarations:
+	*/
+	UniversalDrawableArray arr;
+	/*
+	 * Init UniversalDrawableArray:
+	*/
+	arr.init(16);
+	/*
+	 * Add elements:
+	*/
+	arr.set_rectshape(0, m_menuitem1);
+	//
+	arr.set_rectshape(1, m_menuitem2);
+	//
 	if (m_menuitem3_over == 1)
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem3;
-}
-sf::RectangleShape SettingsGraphicsMenu::get_menuitem4(void)
-{
+	arr.set_rectshape(2, m_menuitem3);
+	//
 	if (m_menuitem4_over == 1)
 		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem4;
-}
-sf::Text SettingsGraphicsMenu::get_menuitem1_header(void)
-{
-	return m_menuitem1_header;
-}
-sf::Text SettingsGraphicsMenu::get_menuitem2_header(void)
-{
-	return m_menuitem2_header;
-}
-sf::Text SettingsGraphicsMenu::get_menuitem1_value(void)
-{
-	return m_menuitem1_value;
-}
-sf::Text SettingsGraphicsMenu::get_menuitem2_value(void)
-{
-	return m_menuitem2_value;
-}
-sf::Text SettingsGraphicsMenu::get_menuitem3_txt(void)
-{
-	return m_menuitem3_txt;
-}
-sf::Text SettingsGraphicsMenu::get_menuitem4_txt(void)
-{
-	return m_menuitem4_txt;
-}
-sf::RectangleShape SettingsGraphicsMenu::get_textfield1_1(void)
-{
+	arr.set_rectshape(3, m_menuitem4);
+	//
+	arr.set_text(4, m_menuitem1_header);
+	//
+	arr.set_text(5, m_menuitem2_header);
+	//
+	arr.set_text(6, m_menuitem1_value);
+	//
+	arr.set_text(7, m_menuitem2_value);
+	//
+	arr.set_text(8, m_menuitem3_txt);
+	//
+	arr.set_text(9, m_menuitem4_txt);
+	//
 	if (m_textfield1_1_over == 1)
 		m_textfield1_1.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD_HOVER);
 	else
 		m_textfield1_1.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD);
-	return m_textfield1_1;
-}
-sf::RectangleShape SettingsGraphicsMenu::get_textfield1_2(void)
-{
+	arr.set_rectshape(10, m_textfield1_1);
+	//
 	if (m_textfield1_2_over == 1)
 		m_textfield1_2.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD_HOVER);
 	else
 		m_textfield1_2.setFillColor(COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD);
-	return m_textfield1_2;
-}
-sf::Text SettingsGraphicsMenu::get_textfield1_1_txt(void)
-{
-	return m_textfield1_1_txt;
-}
-sf::Text SettingsGraphicsMenu::get_textfield1_2_txt(void)
-{
-	return m_textfield1_2_txt;
-}
-sf::Sprite SettingsGraphicsMenu::get_arrow_left2(void)
-{
-	return m_arrow_left2_sprite;
-}
-sf::Sprite SettingsGraphicsMenu::get_arrow_right2(void)
-{
-	return m_arrow_right2_sprite;
+	arr.set_rectshape(11, m_textfield1_2);
+	//
+	arr.set_text(12, m_textfield1_1_txt);
+	//
+	arr.set_text(13, m_textfield1_2_txt);
+	//
+	arr.set_sprite(14, m_arrow_left2_sprite);
+	//
+	arr.set_sprite(15, m_arrow_right2_sprite);
+	/*
+	 * Return:
+	*/
+	return arr;
 }

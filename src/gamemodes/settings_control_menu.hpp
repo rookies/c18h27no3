@@ -26,6 +26,7 @@
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
 #	include "../event_processor_return.hpp"
+#	include "../universal_drawable.hpp"
 	
 	class SettingsControlMenu
 	{
@@ -46,6 +47,10 @@
 			 * Process events:
 			*/
 			EventProcessorReturn process_event(sf::Event event, int mouse_x, int mouse_y); /* Called in Game::process_events() */
+			/*
+			 * Get drawable items:
+			*/
+			UniversalDrawableArray get_drawables(void);
 		private:
 			
 	};

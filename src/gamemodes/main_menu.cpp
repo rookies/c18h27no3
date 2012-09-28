@@ -229,79 +229,70 @@ void MainMenu::reset_menuitem_over(void)
 	m_menuitem5_over = 0;
 	m_menuitem6_over = 0;
 }
-sf::Sprite MainMenu::get_grassblock(void)
+UniversalDrawableArray MainMenu::get_drawables(void)
 {
-	return m_img1_sprite;
-}
-sf::RectangleShape MainMenu::get_menuitem1(void)
-{
+	/*
+	 * Variable declarations:
+	*/
+	UniversalDrawableArray arr;
+	/*
+	 * Init UniversalDrawableArray:
+	*/
+	arr.init(13);
+	/*
+	 * Add elements:
+	*/
+	arr.set_sprite(0, m_img1_sprite);
+	//
 	if (m_menuitem1_over == 1)
 		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem1;
-}
-sf::RectangleShape MainMenu::get_menuitem2(void)
-{
+	arr.set_rectshape(1, m_menuitem1);
+	//
 	if (m_menuitem2_over == 1)
 		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem2;
-}
-sf::RectangleShape MainMenu::get_menuitem3(void)
-{
+	arr.set_rectshape(2, m_menuitem2);
+	//
 	if (m_menuitem3_over == 1)
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem3;
-}
-sf::RectangleShape MainMenu::get_menuitem4(void)
-{
+	arr.set_rectshape(3, m_menuitem3);
+	//
 	if (m_menuitem4_over == 1)
 		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem4;
-}
-sf::RectangleShape MainMenu::get_menuitem5(void)
-{
+	arr.set_rectshape(4, m_menuitem4);
+	//
 	if (m_menuitem5_over == 1)
 		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem5;
-}
-sf::RectangleShape MainMenu::get_menuitem6(void)
-{
+	arr.set_rectshape(5, m_menuitem5);
+	//
 	if (m_menuitem6_over == 1)
 		m_menuitem6.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 	else
 		m_menuitem6.setFillColor(COLOR_MENU_ELEMENT);
-	return m_menuitem6;
-}
-sf::Text MainMenu::get_menuitem1_txt(void)
-{
-	return m_menuitem1_txt;
-}
-sf::Text MainMenu::get_menuitem2_txt(void)
-{
-	return m_menuitem2_txt;
-}
-sf::Text MainMenu::get_menuitem3_txt(void)
-{
-	return m_menuitem3_txt;
-}
-sf::Text MainMenu::get_menuitem4_txt(void)
-{
-	return m_menuitem4_txt;
-}
-sf::Text MainMenu::get_menuitem5_txt(void)
-{
-	return m_menuitem5_txt;
-}
-sf::Text MainMenu::get_menuitem6_txt(void)
-{
-	return m_menuitem6_txt;
+	arr.set_rectshape(6, m_menuitem6);
+	//
+	arr.set_text(7, m_menuitem1_txt);
+	//
+	arr.set_text(8, m_menuitem2_txt);
+	//
+	arr.set_text(9, m_menuitem3_txt);
+	//
+	arr.set_text(10, m_menuitem4_txt);
+	//
+	arr.set_text(11, m_menuitem5_txt);
+	//
+	arr.set_text(12, m_menuitem6_txt);
+	/*
+	 * Return:
+	*/
+	return arr;
 }
