@@ -63,7 +63,8 @@ int Config::load(void)
 	/*
 	 * Open file:
 	*/
-	fname.str(getenv("HOME"));
+	fname.str("");
+	fname << getenv("HOME");
 	if (fname.str().substr(fname.str().length()-1, 1).compare("/") != 0)
 		fname << "/";
 	fname << ".sf-game/config.txt";
