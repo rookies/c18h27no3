@@ -130,7 +130,7 @@ int Game::init(void)
 	 * Finish successful:
 	*/
 	std::cout << "========== INIT DONE ==========" << std::endl;
-	return EXIT_SUCCESS;
+	return 0;
 }
 int Game::uninit(void)
 {
@@ -262,8 +262,8 @@ int Game::init_locale(void)
 {
 	setenv("LANGUAGE", m_config.get("GENERAL__LANGUAGE").value_string.c_str(), 1);
 	setlocale(LC_ALL, "");
-	bindtextdomain("sf-game", "./locale");
-	textdomain("sf-game");
+	bindtextdomain(PROJECTNAME, "./locale");
+	textdomain(PROJECTNAME);
 	return 0;
 }
 int Game::set_language(std::string lang)
@@ -333,7 +333,7 @@ int Game::process_events(void)
 		{
 			case sf::Event::Closed:
 				std::cout << "QUIT signal received." << std::endl;
-				return 1;
+				return 1; // exit
 				break;
 			case sf::Event::KeyPressed:
 				std::cout << "KeyPressed " << event.key.code << std::endl;
@@ -649,7 +649,6 @@ int Game::init_gamemode(int gamemode)
 			m_main_menu = new MainMenu;
 			if (m_main_menu->init() == 1)
 				return 1;
-			return 0;
 			break;
 		case 2:
 			/*
@@ -658,7 +657,6 @@ int Game::init_gamemode(int gamemode)
 			m_settings_menu = new SettingsMenu;
 			if (m_settings_menu->init() == 1)
 				return 1;
-			return 0;
 			break;
 		case 3:
 			/*
@@ -669,7 +667,6 @@ int Game::init_gamemode(int gamemode)
 				m_config.get("GENERAL__LANGUAGE").value_string
 			) == 1)
 				return 1;
-			return 0;
 			break;
 		case 4:
 			/*
@@ -682,7 +679,6 @@ int Game::init_gamemode(int gamemode)
 				m_config.get("GRAPHICS__RESOLUTION_Y").value_int
 			) == 1)
 				return 1;
-			return 0;
 			break;
 		case 5:
 			/*
@@ -691,7 +687,6 @@ int Game::init_gamemode(int gamemode)
 			m_settings_control_menu = new SettingsControlMenu;
 			if (m_settings_control_menu->init() == 1)
 				return 1;
-			return 0;
 			break;
 		case 6:
 			/*
@@ -700,12 +695,13 @@ int Game::init_gamemode(int gamemode)
 			m_settings_sound_menu = new SettingsSoundMenu;
 			if (m_settings_sound_menu->init() == 1)
 				return 1;
-			return 0;
 			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
+			break;
 	}
+	return 0;
 }
 int Game::uninit_gamemode(int gamemode)
 {
@@ -718,7 +714,6 @@ int Game::uninit_gamemode(int gamemode)
 			if (m_main_menu->uninit() == 1)
 				return 1;
 			delete m_main_menu;
-			return 0;
 			break;
 		case 2:
 			/*
@@ -727,7 +722,6 @@ int Game::uninit_gamemode(int gamemode)
 			if (m_settings_menu->uninit() == 1)
 				return 1;
 			delete m_settings_menu;
-			return 0;
 			break;
 		case 3:
 			/*
@@ -736,7 +730,6 @@ int Game::uninit_gamemode(int gamemode)
 			if (m_settings_general_menu->uninit() == 1)
 				return 1;
 			delete m_settings_general_menu;
-			return 0;
 			break;
 		case 4:
 			/*
@@ -745,7 +738,6 @@ int Game::uninit_gamemode(int gamemode)
 			if (m_settings_graphics_menu->uninit() == 1)
 				return 1;
 			delete m_settings_graphics_menu;
-			return 0;
 			break;
 		case 5:
 			/*
@@ -754,7 +746,6 @@ int Game::uninit_gamemode(int gamemode)
 			if (m_settings_control_menu->uninit() == 1)
 				return 1;
 			delete m_settings_control_menu;
-			return 0;
 			break;
 		case 6:
 			/*
@@ -763,10 +754,10 @@ int Game::uninit_gamemode(int gamemode)
 			if (m_settings_sound_menu->uninit() == 1)
 				return 1;
 			delete m_settings_sound_menu;
-			return 0;
 			break;
 		default:
 			std::cout << "Invalid gamemode passed to uninit_gamemode(): " << gamemode << std::endl;
-			return 0;
+			break;
 	}
+	return 0;
 }

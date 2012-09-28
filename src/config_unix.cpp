@@ -42,7 +42,9 @@ int Config::load(void)
 	fname << getenv("HOME");
 	if (fname.str().substr(fname.str().length()-1, 1).compare("/") != 0)
 		fname << "/";
-	fname << ".sf-game/config.txt";
+	fname << ".";
+	fname << PROJECTNAME;
+	fname << "/config.txt";
 	file.open(fname.str().c_str());
 	if (!file.is_open())
 	{
@@ -124,7 +126,9 @@ int Config::write(void)
 	fname << getenv("HOME");
 	if (fname.str().substr(fname.str().length()-1, 1).compare("/") != 0)
 		fname << "/";
-	fname << ".sf-game/";
+	fname << ".";
+	fname << PROJECTNAME;
+	fname << "/";
 	/*
 	 * Check if it is a directory:
 	*/
