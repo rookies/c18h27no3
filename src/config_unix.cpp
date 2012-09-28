@@ -59,14 +59,18 @@ int Config::load(void)
 	std::string index;
 	std::string value_raw;
 	int i;
+	std::ostringstream fname;
 	/*
-	 * Open file
+	 * Open file:
 	*/
-	file.open("config.txt");
+	fname.str(getenv("HOME"));
+	if (fname.str().substr(fname.str().length()-1, 1).compare("/") != 0)
+		fname << "/";
+	fname << ".sf-game/config.txt";
+	file.open(fname.str().c_str());
 	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;
-		return 1;
 	};
 	/*
 	 * ... read it:
@@ -134,10 +138,49 @@ int Config::write(void)
 	*/
 	std::ofstream file;
 	int i;
+	int res;
+	std::ostringstream fname;
+	struct stat statbuf;
 	/*
-	 * Open file:
+	 * Construct $HOME/.sf-game/ into a variable:
 	*/
-	file.open("config.txt");
+	fname.str("");
+	fname << getenv("HOME");
+	if (fname.str().substr(fname.str().length()-1, 1).compare("/") != 0)
+		fname << "/";
+	fname << ".sf-game/";
+	/*
+	 * Check if it is a directory:
+	*/
+	if (stat(fname.str().c_str(), &statbuf) == -1)
+	{
+		if (!S_ISDIR(statbuf.st_mode))
+		{
+			/*
+			 * It's not a file and it doesn't exist
+			 * => CREATE
+			*/
+			res = mkdir(fname.str().c_str(), S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP);
+			if (res != 0)
+			{
+				std::cout << "[FAIL]" << std::endl;
+				return 1;
+			};
+		};
+	};
+	if (S_ISREG(statbuf.st_mode) || S_ISCHR(statbuf.st_mode) || S_ISBLK(statbuf.st_mode) || S_ISFIFO(statbuf.st_mode) || S_ISSOCK(statbuf.st_mode))
+	{
+		/*
+		 * It's not a directory, but it exists
+		*/
+		std::cout << "[FAIL]" << std::endl;
+		return 1;
+	};
+	/*
+	 * At this point, the directory should exist, so we can write:
+	*/
+	fname << "config.txt";
+	file.open(fname.str().c_str());
 	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;

@@ -26,7 +26,10 @@
 #	include <string>
 #	include <iostream>
 #	include <fstream>
+#	include <sstream>
 #	include <stdlib.h>
+#	include <sys/stat.h> // for mkdir
+#	include <sys/types.h> // for mkdir
 #	include "config_common.hpp"
 
 	

@@ -607,7 +607,7 @@ int Game::calculate_sizes(void)
 }
 int Game::set_gamemode(int gamemode)
 {
-	std::cout << ">>>> ENTERING GAMEMODE [" << m_gamemode << "]" << std::endl;
+	std::cout << ">>>> ENTERING GAMEMODE [" << gamemode << "]" << std::endl;
 	/*
 	 * Uninit old game mode:
 	*/
