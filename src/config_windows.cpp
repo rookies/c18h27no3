@@ -25,27 +25,11 @@
 /*
  * REG_BINARY, REG_DWORD
 */
-Config::Config()
-{
-	
-}
-Config::~Config()
-{
-	
-}
 int Config::load(void)
 {
-	
+	return 0;
 }
 int Config::write(void)
 {
-	
-}
-ConfigVariable Config::get(int index)
-{
-	
-}
-void Config::set(int index, ConfigVariable value)
-{
-	
+	return 0;
 }

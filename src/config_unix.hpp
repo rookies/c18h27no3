@@ -31,32 +31,4 @@
 #	include <sys/stat.h> // for mkdir
 #	include <sys/types.h> // for mkdir
 #	include "config_common.hpp"
-
-	
-	class Config
-	{
-		public:
-			Config();
-			~Config();
-			
-			/*
-			 * Load config:
-			*/
-			int load(void);
-			/*
-			 * Write config:
-			*/
-			int write(void);
-			/*
-			 * Dump config:
-			*/
-			void dump(void);
-			/*
-			 * Get / set variable:
-			*/
-			ConfigVariable get(std::string index);
-			void set(std::string index, ConfigVariable value);
-		private:
-			ConfigVariable m_vars[CONFIGVAR_COUNT];
-	};
 #endif // _config_unix_hpp_

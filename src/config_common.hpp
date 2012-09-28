@@ -23,6 +23,7 @@
 #ifndef _config_common_hpp_
 #	define _config_common_hpp_
 	
+#	include <iostream>
 #	include <string>
 #	include "globals.hpp"
 	
@@ -58,5 +59,31 @@
 			std::string value_string;
 		private:
 			
+	};
+	class Config
+	{
+		public:
+			Config();
+			~Config();
+			
+			/*
+			 * Load config:
+			*/
+			int load(void);
+			/*
+			 * Write config:
+			*/
+			int write(void);
+			/*
+			 * Dump config:
+			*/
+			void dump(void);
+			/*
+			 * Get / set variable:
+			*/
+			ConfigVariable get(std::string index);
+			void set(std::string index, ConfigVariable value);
+		private:
+			ConfigVariable m_vars[CONFIGVAR_COUNT];
 	};
 #endif // _config_common_hpp_
