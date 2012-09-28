@@ -6,7 +6,6 @@ cmake_minimum_required(VERSION 2.8)
 # project name:
 # 
 project(sf-game)
-set(PROJECTNAME "sf-game")
 # 
 # project version:
 # 
@@ -33,9 +32,10 @@ find_package(GETTEXT REQUIRED)
 include_directories("${SFMLwindow_INCLUDE_DIR}")
 include_directories("${SFMLgraphics_INCLUDE_DIR}")
 include_directories("${SFMLsystem_INCLUDE_DIR}")
-include_directories("${LIBAVCODEC_INCLUDE_DIR}")
-include_directories("${LIBAVFORMAT_INCLUDE_DIR}")
-include_directories("${LIBSWSCALE_INCLUDE_DIR}")
+#include_directories("${LIBAVCODEC_INCLUDE_DIR}")
+#include_directories("${LIBAVFORMAT_INCLUDE_DIR}")
+#include_directories("${LIBAVUTIL_INCLUDE_DIR}")
+#include_directories("${LIBSWSCALE_INCLUDE_DIR}")
 include_directories("${GETTEXT_INCLUDE_DIR}")
 # 
 # create globals.hpp and make it available:
@@ -52,7 +52,7 @@ set(GAME_SOURCES                 src/main.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/game.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/padding_data_calculator.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/cursor.cpp)
-set(GAME_SOURCES ${GAME_SOURCES} src/video_sequence.cpp)
+#set(GAME_SOURCES ${GAME_SOURCES} src/video_sequence.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/fps_counter.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/widestring.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/config_common.cpp)
