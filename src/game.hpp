@@ -28,7 +28,6 @@
 #	include <libintl.h>
 #	include "padding_data_calculator.hpp"
 #	include "cursor.hpp"
-#	include "video_sequence.hpp"
 #	include "config.hpp"
 #	include "fps_counter.hpp"
 #	include "gamemodes/main_menu.hpp"
@@ -98,7 +97,6 @@
 			sf::RenderTexture m_texture;
 			PaddingDataCalculator m_padding_data_calculator;
 			Cursor m_cursor;
-			VideoSequence m_video_sequence;
 			Config m_config;
 			FPScounter m_fps_counter;
 			MainMenu *m_main_menu;
