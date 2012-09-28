@@ -129,6 +129,7 @@ int Game::init(void)
 	/*
 	 * Finish successful:
 	*/
+	std::cout << "========== INIT DONE ==========" << std::endl;
 	return EXIT_SUCCESS;
 }
 int Game::uninit(void)
@@ -606,7 +607,7 @@ int Game::calculate_sizes(void)
 }
 int Game::set_gamemode(int gamemode)
 {
-	std::cout << "set_gamemode(" << gamemode << ") called" << std::endl;
+	std::cout << ">>>> ENTERING GAMEMODE [" << m_gamemode << "]" << std::endl;
 	/*
 	 * Uninit old game mode:
 	*/
@@ -628,7 +629,7 @@ int Game::set_gamemode(int gamemode)
 	/*
 	 * Print status message:
 	*/
-	std::cout << ">>>> ENTERED GAMEMODE " << m_gamemode << std::endl;
+	std::cout << ">>>> ENTERED GAMEMODE  [" << m_gamemode << "]" << std::endl;
 }
 int Game::init_gamemode(int gamemode)
 {
