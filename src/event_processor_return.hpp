@@ -31,6 +31,7 @@
 			EventProcessorReturn();
 			~EventProcessorReturn();
 			
+			void uninit(void);
 			void set_gamemode(int gamemode);
 			void init_confvars(int count);
 			void add_confvar(ConfigVariable var);

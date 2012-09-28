@@ -55,6 +55,7 @@
 			~UniversalDrawableArray();
 			
 			void init(int count);
+			void uninit(void);
 			UniversalDrawable get(int index);
 			int get_count(void);
 			void set(int index, UniversalDrawable value);

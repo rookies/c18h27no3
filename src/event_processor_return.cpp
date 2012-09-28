@@ -34,6 +34,11 @@ EventProcessorReturn::~EventProcessorReturn()
 {
 	
 }
+void EventProcessorReturn::uninit(void)
+{
+	if (m_confvars_initialized)
+		delete[] m_confvars;
+}
 void EventProcessorReturn::set_gamemode(int gamemode)
 {
 	m_gamemode = gamemode;

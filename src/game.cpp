@@ -224,6 +224,10 @@ int Game::loop(void)
 						break;
 				}
 			}
+			/*
+			 * IMPORTANT: Uninit UniversalDrawableArray to prevent memory leaks:
+			*/
+			drawables.uninit();
 			m_texture.draw(m_cursor.get_drawable(
 				m_padding_data_calculator.get_usable_w(),
 				m_padding_data_calculator.get_usable_h()
@@ -520,6 +524,10 @@ int Game::process_events(void)
 		*/
 		if (event_processor_return.get_exit())
 			return 1; // exit
+		/*
+		 * IMPORTANT: Uninit EventProcessorReturn to prevent memory leaks:
+		*/
+		event_processor_return.uninit();
 	}
 	/*
 	 * Finish successful:

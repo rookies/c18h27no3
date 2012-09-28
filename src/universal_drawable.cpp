@@ -45,6 +45,11 @@ void UniversalDrawableArray::init(int count)
 	m_values = new UniversalDrawable[count];
 	m_values_initialized = true;
 }
+void UniversalDrawableArray::uninit(void)
+{
+	if (m_values_initialized)
+		delete[] m_values;
+}
 UniversalDrawable UniversalDrawableArray::get(int index)
 {
 	return m_values[index];
