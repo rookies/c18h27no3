@@ -47,6 +47,10 @@
 			int get_mouse_position_x(void);
 			int get_mouse_position_y(void);
 			/*
+			 * Calculate sizes:
+			*/
+			int calculate_sizes(int w, int h);
+			/*
 			 * Draw cursor:
 			*/
 			sf::Sprite get_drawable(int w, int h);
@@ -59,10 +63,11 @@
 			/*
 			 * Internal variables:
 			*/
+			int m_cursorsize;
 			int m_mouse_x;
 			int m_mouse_y;
-			int m_actioncursor_active;
 			sf::Texture m_cursor1_texture;
 			sf::Texture m_cursor2_texture;
+			sf::Sprite m_sprite;
 	};
 #endif // CURSOR_HPP

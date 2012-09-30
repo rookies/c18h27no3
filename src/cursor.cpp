@@ -26,7 +26,7 @@ using namespace std;
 
 Cursor::Cursor()
 {
-	m_actioncursor_active = 0;
+	
 }
 Cursor::~Cursor()
 {
@@ -38,7 +38,7 @@ int Cursor::init(void)
 	 * Load cursor1:
 	*/
 	cout << "Loading cursor1... ";
-	if (!m_cursor1_texture.loadFromFile("data/cursor1.png"))
+	if (!m_cursor1_texture.loadFromFile("data/cursor1.png")) /* TODO: add function to get data path */
 	{
 		cout << "[FAIL]" << endl;
 		return 1;
@@ -48,18 +48,24 @@ int Cursor::init(void)
 	 * Load cursor2:
 	*/
 	cout << "Loading cursor2... ";
-	if (!m_cursor2_texture.loadFromFile("data/cursor2.png"))
+	if (!m_cursor2_texture.loadFromFile("data/cursor2.png")) /* TODO: add function to get data path */
 	{
 		cout << "[FAIL]" << endl;
 		return 1;
 	};
 	cout << "[DONE]" << endl;
+	/*
+	 * Init sprite:
+	*/
+	m_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_sprite.setTexture(m_cursor1_texture);
 	return 0;
 }
 void Cursor::set_mouse_position(int x, int y)
 {
 	m_mouse_x = x;
 	m_mouse_y = y;
+	m_sprite.setPosition(m_mouse_x-m_cursorsize/2, m_mouse_y-m_cursorsize/2);
 }
 int Cursor::get_mouse_position_x(void)
 {
@@ -69,41 +75,21 @@ int Cursor::get_mouse_position_y(void)
 {
 	return m_mouse_y;
 }
+int Cursor::calculate_sizes(int w, int h)
+{
+	m_cursorsize = h*(SIZE_CURSOR/100.0);
+	m_sprite.setScale(m_cursorsize/16.0, m_cursorsize/16.0);
+	return 0;
+}
 sf::Sprite Cursor::get_drawable(int w, int h)
 {
-	/*
-	 * Variable declarations:
-	*/
-	sf::Sprite sprite;
-	/*
-	 * Check if actioncursor is active:
-	*/
-	if (m_actioncursor_active == 1)
-		sprite.setTexture(m_cursor2_texture);
-	else
-		sprite.setTexture(m_cursor1_texture);
-	/*
-	 * Set position:
-	*/
-	//sprite.setScale(w*(1/100.0), h*(1/100.0));
-	sprite.setPosition(m_mouse_x-CURSOR_WIDTH/2, m_mouse_y-CURSOR_HEIGHT/2);
-	/*
-	 * Set color:
-	*/
-	sprite.setColor(sf::Color(255, 255, 255, 255));
-	return sprite;
+	return m_sprite;
 }
 void Cursor::activate_action_cursor(void)
 {
-	if (m_actioncursor_active == 0)
-	{
-		m_actioncursor_active = 1;
-	};
+	m_sprite.setTexture(m_cursor2_texture);
 }
 void Cursor::deactivate_action_cursor(void)
 {
-	if (m_actioncursor_active == 1)
-	{
-		m_actioncursor_active = 0;
-	};
+	m_sprite.setTexture(m_cursor1_texture);
 }

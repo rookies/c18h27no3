@@ -37,11 +37,6 @@
 #	define _(String) gettext(String)
 	/*
 	 * === OTHER CONFIGURATION VARIABLES ===
-	 * Cursor dimensions:
-	*/
-#	define CURSOR_WIDTH 16
-#	define CURSOR_HEIGHT 16
-	/*
 	 * Configuration variable count:
 	*/
 #	define CONFIGVAR_COUNT 4 /* number of the configuration variables */
@@ -83,6 +78,7 @@
 #	define SIZE_FPS_COUNTER_TEXT 2.0
 #	define SIZE_FPS_COUNTER_XGAP 0.6
 #	define SIZE_FPS_COUNTER_YGAP 1.0
+#	define SIZE_CURSOR 1.5
 	/*
 	 * Size dividers:
 	*/

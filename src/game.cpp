@@ -563,6 +563,13 @@ int Game::process_events(void)
 int Game::calculate_sizes(void)
 {
 	/*
+	 * Cursor:
+	*/
+	m_cursor.calculate_sizes(
+		m_padding_data_calculator.get_usable_w(),
+		m_padding_data_calculator.get_usable_h()
+	);
+	/*
 	 * FPS counter:
 	*/
 	m_fps_counter.calculate_sizes(
