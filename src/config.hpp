@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _config_h_
-#	define _config_h_
+#ifndef CONFIG_HPP
+#	define CONFIG_HPP
 	
 #	ifdef _WIN32
 #		include "config_windows.hpp"
@@ -29,4 +29,4 @@
 #	ifdef __unix__
 #		include "config_unix.hpp"
 #	endif
-#endif // _config_h_
+#endif // CONFIG_HPP

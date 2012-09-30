@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _config_unix_hpp_
-#	define _config_unix_hpp_
+#ifndef CONFIG_UNIX_HPP
+#	define CONFIG_UNIX_HPP
 	
 #	include <string>
 #	include <iostream>
@@ -31,4 +31,4 @@
 #	include <sys/stat.h> // for mkdir
 #	include <sys/types.h> // for mkdir
 #	include "config_common.hpp"
-#endif // _config_unix_hpp_
+#endif // CONFIG_UNIX_HPP

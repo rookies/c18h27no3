@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _settings_general_menu_hpp_
-#	define _settings_general_menu_hpp_
+#ifndef SETTINGS_GENERAL_MENU_HPP
+#	define SETTINGS_GENERAL_MENU_HPP
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
@@ -36,7 +36,7 @@
 	{
 		public:
 			SettingsGeneralMenu();
-			~SettingsGeneralMenu();
+			virtual ~SettingsGeneralMenu();
 			
 			/*
 			 * (Un)init:
@@ -87,4 +87,4 @@
 			int m_arrow_left1_over;
 			int m_arrow_right1_over;
 	};
-#endif // _settings_general_menu_hpp_
+#endif // SETTINGS_GENERAL_MENU_HPP

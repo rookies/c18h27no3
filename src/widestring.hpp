@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _widestring_hpp_
-#	define _widestring_hpp_
+#ifndef WIDESTRING_HPP
+#	define WIDESTRING_HPP
 	
 #	include <iostream>
 #	include <string>
@@ -32,4 +32,4 @@
 #	include <cerrno>
 	
 	std::wstring get_wstring(const std::string &str);
-#endif // _widestring_hpp_
+#endif // WIDESTRING_HPP

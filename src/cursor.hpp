@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _cursor_h_
-#	define _cursor_h_
+#ifndef CURSOR_HPP
+#	define CURSOR_HPP
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
@@ -31,7 +31,7 @@
 	{
 		public:
 			Cursor();
-			~Cursor();
+			virtual ~Cursor();
 			
 			/*
 			 * Init cursor:
@@ -65,4 +65,4 @@
 			sf::Texture m_cursor1_texture;
 			sf::Texture m_cursor2_texture;
 	};
-#endif // _cursor_h_
+#endif // CURSOR_HPP

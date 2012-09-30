@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _fps_counter_h_
-#	define _fps_counter_h_
+#ifndef FPS_COUNTER_HPP
+#	define FPS_COUNTER_HPP
 	
 #	include <iostream>
 #	include <string>
@@ -35,7 +35,7 @@
 	{
 		public:
 			FPScounter();
-			~FPScounter();
+			virtual ~FPScounter();
 			
 			/*
 			 * Init:
@@ -60,4 +60,4 @@
 			sf::Clock m_clock;
 			int m_frames;
 	};
-#endif // _fps_counter_h_
+#endif // FPS_COUNTER_HPP

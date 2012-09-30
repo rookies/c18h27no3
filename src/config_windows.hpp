@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _config_windows_h_
-#	define _config_windows_h_
+#ifndef CONFIG_WINDOWS_HPP
+#	define CONFIG_WINDOWS_HPP
 	
 #	include "config_common.hpp"
-#endif // _config_windows_h_
+#endif // CONFIG_WINDOWS_HPP

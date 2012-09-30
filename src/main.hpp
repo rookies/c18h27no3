@@ -20,12 +20,12 @@
  * 
  * 
  */
-#ifndef _main_h_
-#	define _main_h_
+#ifndef MAIN_HPP
+#	define MAIN_HPP
 	
 #	include <iostream>
 #	include "globals.hpp"
 #	include "game.hpp"
 	
 	int main(int argc, char **argv);
-#endif // _main_h_
+#endif // MAIN_HPP

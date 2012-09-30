@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _main_menu_h_
-#	define _main_menu_h_
+#ifndef MAIN_MENU_HPP
+#	define MAIN_MENU_HPP
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
@@ -35,7 +35,7 @@
 	{
 		public:
 			MainMenu();
-			~MainMenu();
+			virtual ~MainMenu();
 			
 			/*
 			 * (Un)init:
@@ -85,4 +85,4 @@
 			sf::Texture m_img1;
 			sf::Sprite m_img1_sprite;
 	};
-#endif // _main_menu_h_
+#endif // MAIN_MENU_HPP

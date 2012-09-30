@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _config_chooser_hpp_
-#	define _config_chooser_hpp_
+#ifndef CONFIG_CHOOSER_HPP
+#	define CONFIG_CHOOSER_HPP
 	
 #	include <string>
 	
@@ -29,7 +29,7 @@
 	{
 		public:
 			ConfigChooserElement();
-			~ConfigChooserElement();
+			virtual ~ConfigChooserElement();
 			
 			std::string get_showable(void);
 			int get_int(void);
@@ -98,4 +98,4 @@
 			ConfigChooserElement *m_elements;
 			bool m_elements_initialized;
 	};
-#endif // _config_chooser_hpp_
+#endif // CONFIG_CHOOSER_HPP

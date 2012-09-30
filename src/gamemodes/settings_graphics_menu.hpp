@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _settings_graphics_menu_hpp_
-#	define _settings_graphics_menu_hpp_
+#ifndef SETTINGS_GRAPHICS_MENU_HPP
+#	define SETTINGS_GRAPHICS_MENU_HPP
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
@@ -36,7 +36,7 @@
 	{
 		public:
 			SettingsGraphicsMenu();
-			~SettingsGraphicsMenu();
+			virtual ~SettingsGraphicsMenu();
 			
 			/*
 			 * (Un)init:
@@ -103,4 +103,4 @@
 			int m_menuitem3_over;
 			int m_menuitem4_over;
 	};
-#endif // _settings_graphics_menu_hpp_
+#endif // SETTINGS_GRAPHICS_MENU_HPP

@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _settings_menu_hpp_
-#	define _settings_menu_hpp_
+#ifndef SETTINGS_MENU_HPP
+#	define SETTINGS_MENU_HPP
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
@@ -35,7 +35,7 @@
 	{
 		public:
 			SettingsMenu();
-			~SettingsMenu();
+			virtual ~SettingsMenu();
 			
 			/*
 			 * (Un)init:
@@ -82,4 +82,4 @@
 			sf::Texture m_img1;
 			sf::Sprite m_img1_sprite;
 	};
-#endif // _settings_menu_hpp_
+#endif // SETTINGS_MENU_HPP

@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _event_processor_return_hpp_
-#	define _event_processor_return_hpp_
+#ifndef EVENT_PROCESSOR_RETURN_HPP
+#	define EVENT_PROCESSOR_RETURN_HPP
 	
 #	include "config_common.hpp"
 	
@@ -29,7 +29,7 @@
 	{
 		public:
 			EventProcessorReturn();
-			~EventProcessorReturn();
+			virtual ~EventProcessorReturn();
 			
 			void uninit(void);
 			void set_gamemode(int gamemode);
@@ -55,4 +55,4 @@
 			bool m_exit;
 			bool m_reload;
 	};
-#endif // _event_processor_return_hpp_
+#endif // EVENT_PROCESSOR_RETURN_HPP

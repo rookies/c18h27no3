@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _game_hpp_
-#	define _game_hpp_
+#ifndef GAME_HPP
+#	define GAME_HPP
 	
 #	include <iostream>
 #	include <SFML/Window.hpp>
@@ -43,7 +43,7 @@
 	{
 		public:
 			Game();
-			~Game();
+			virtual ~Game();
 			
 			/*
 			 * (Un)Init game:
@@ -117,4 +117,4 @@
 			*/
 			int m_gamemode;
 	};
-#endif // _game_hpp_
+#endif // GAME_HPP

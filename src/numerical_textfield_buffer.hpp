@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _numerical_textfield_buffer_hpp_
-#	define _numerical_textfield_buffer_hpp_
+#ifndef NUMERICAL_TEXTFIELD_BUFFER_HPP
+#	define NUMERICAL_TEXTFIELD_BUFFER_HPP
 	
 #	include <string>
 #	include <sstream>
@@ -32,7 +32,7 @@
 	{
 		public:
 			NumericalTextfieldBuffer();
-			~NumericalTextfieldBuffer();
+			virtual ~NumericalTextfieldBuffer();
 			
 			void init(int maxlen);
 			void set(int value);
@@ -43,4 +43,4 @@
 			int m_maxlen;
 			int m_value;
 	};
-#endif // _numerical_textfield_buffer_hpp_
+#endif // NUMERICAL_TEXTFIELD_BUFFER_HPP

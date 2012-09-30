@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _config_common_hpp_
-#	define _config_common_hpp_
+#ifndef CONFIG_COMMON_HPP
+#	define CONFIG_COMMON_HPP
 	
 #	include <iostream>
 #	include <string>
@@ -35,7 +35,7 @@
 	{
 		public:
 			ConfigVariable();
-			~ConfigVariable();
+			virtual ~ConfigVariable();
 			
 			/*
 			 * Type
@@ -86,4 +86,4 @@
 		private:
 			ConfigVariable m_vars[CONFIGVAR_COUNT];
 	};
-#endif // _config_common_hpp_
+#endif // CONFIG_COMMON_HPP

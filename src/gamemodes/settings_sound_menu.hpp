@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _settings_sound_menu_hpp_
-#	define _settings_sound_menu_hpp_
+#ifndef SETTINGS_SOUND_MENU_HPP
+#	define SETTINGS_SOUND_MENU_HPP
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
@@ -32,7 +32,7 @@
 	{
 		public:
 			SettingsSoundMenu();
-			~SettingsSoundMenu();
+			virtual ~SettingsSoundMenu();
 			
 			/*
 			 * (Un)init:
@@ -54,4 +54,4 @@
 		private:
 			
 	};
-#endif // _settings_sound_menu_hpp_
+#endif // SETTINGS_SOUND_MENU_HPP

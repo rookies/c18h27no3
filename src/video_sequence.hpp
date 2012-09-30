@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _video_sequence_h_
-#	define _video_sequence_h_
+#ifndef VIDEO_SEQUENCE_HPP
+#	define VIDEO_SEQUENCE_HPP
 	
 #	include <iostream>
 extern "C" {
@@ -40,7 +40,7 @@ extern "C" {
 	class VideoSequence {
 		public:
 			VideoSequence();
-			~VideoSequence();
+			virtual ~VideoSequence();
 			
 			/*
 			 * Set videofile:
@@ -75,4 +75,4 @@ extern "C" {
 			char *m_videofile;
 			int m_done;
 	};
-#endif // _video_sequence_h_
+#endif // VIDEO_SEQUENCE_HPP

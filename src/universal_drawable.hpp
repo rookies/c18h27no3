@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _universal_drawable_hpp_
-#	define _universal_drawable_hpp_
+#ifndef UNIVERSAL_DRAWABLE_HPP
+#	define UNIVERSAL_DRAWABLE_HPP
 	
 #	include <SFML/Graphics.hpp>
 	
@@ -33,7 +33,7 @@
 	{
 		public:
 			UniversalDrawable();
-			~UniversalDrawable();
+			virtual ~UniversalDrawable();
 			
 			/*
 			 * Type:
@@ -70,4 +70,4 @@
 			UniversalDrawable *m_values;
 			bool m_values_initialized;
 	};
-#endif // _universal_drawable_hpp_
+#endif // UNIVERSAL_DRAWABLE_HPP

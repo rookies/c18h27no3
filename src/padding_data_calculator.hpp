@@ -20,8 +20,8 @@
  * 
  * 
  */
-#ifndef _padding_data_calculator_h_
-#	define _padding_data_calculator_h_
+#ifndef PADDING_DATA_CALCULATOR_HPP
+#	define PADDING_DATA_CALCULATOR_HPP
 	
 #	include <iostream>
 	
@@ -29,7 +29,7 @@
 	{
 		public:
 			PaddingDataCalculator();
-			~PaddingDataCalculator();
+			virtual ~PaddingDataCalculator();
 			
 			/*
 			 * Set screen width and height:
@@ -64,4 +64,4 @@
 			double m_usable_w;
 			double m_usable_h;
 	};
-#endif // _padding_data_calculator_h_
+#endif // PADDING_DATA_CALCULATOR_HPP
