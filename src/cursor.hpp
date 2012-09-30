@@ -26,6 +26,7 @@
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
 #	include "globals.hpp"
+#	include "dataloader.hpp"
 	
 	class Cursor
 	{

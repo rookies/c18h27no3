@@ -31,6 +31,7 @@
 #	include "../config_common.hpp"
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
+#	include "../dataloader.hpp"
 	
 	class SettingsGeneralMenu
 	{

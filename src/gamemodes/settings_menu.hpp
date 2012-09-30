@@ -30,6 +30,7 @@
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
+#	include "../dataloader.hpp"
 	
 	class SettingsMenu
 	{

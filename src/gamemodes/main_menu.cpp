@@ -35,7 +35,7 @@ int MainMenu::init(void)
 	/*
 	 * Init grassblock:
 	*/
-	if (!m_img1.loadFromFile("data/grass.png")) /* TODO: add function to get data path */
+	if (!m_img1.loadFromFile(get_data_path("img/grass.png")))
 		return 1;
 	m_img1_sprite.setTexture(m_img1);
 	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));

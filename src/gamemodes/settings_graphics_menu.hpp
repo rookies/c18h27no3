@@ -31,6 +31,7 @@
 #	include "../config_chooser.hpp"
 #	include "../numerical_textfield_buffer.hpp"
 #	include "../universal_drawable.hpp"
+#	include "../dataloader.hpp"
 	
 	class SettingsGraphicsMenu
 	{

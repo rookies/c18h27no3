@@ -22,8 +22,6 @@
  */
 #include "cursor.hpp"
 
-using namespace std;
-
 Cursor::Cursor()
 {
 	
@@ -37,23 +35,13 @@ int Cursor::init(void)
 	/*
 	 * Load cursor1:
 	*/
-	cout << "Loading cursor1... ";
-	if (!m_cursor1_texture.loadFromFile("data/cursor1.png")) /* TODO: add function to get data path */
-	{
-		cout << "[FAIL]" << endl;
+	if (!m_cursor1_texture.loadFromFile(get_data_path("img/cursor.png")))
 		return 1;
-	};
-	cout << "[DONE]" << endl;
 	/*
 	 * Load cursor2:
 	*/
-	cout << "Loading cursor2... ";
-	if (!m_cursor2_texture.loadFromFile("data/cursor2.png")) /* TODO: add function to get data path */
-	{
-		cout << "[FAIL]" << endl;
+	if (!m_cursor2_texture.loadFromFile(get_data_path("img/cursor_active.png")))
 		return 1;
-	};
-	cout << "[DONE]" << endl;
 	/*
 	 * Init sprite:
 	*/

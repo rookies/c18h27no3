@@ -60,6 +60,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/config_chooser.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/event_processor_return.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/numerical_textfield_buffer.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/universal_drawable.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/dataloader.cpp)
 # 
 # add operating system specific source files:
 # 
@@ -97,6 +98,6 @@ target_link_libraries(game ${LIBINTL_LIBRARIES})
 #
 # add install targets:
 # 
-install(TARGETS game DESTINATION bin)
-file(GLOB files "${CMAKE_SOURCE_DIR}/data/*")
-install(FILES ${files} DESTINATION share)
+#install(TARGETS game DESTINATION bin)
+#file(GLOB files "${CMAKE_SOURCE_DIR}/data/*")
+#install(FILES ${files} DESTINATION share)
