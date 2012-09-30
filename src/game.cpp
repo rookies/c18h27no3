@@ -231,7 +231,8 @@ void Game::draw(void)
 	/*
 	 * Draw FPS counter:
 	*/
-	m_texture.draw(m_fps_counter.get_drawable());
+	if (m_config.get("GENERAL__FPSCOUNTER").value_bool)
+		m_texture.draw(m_fps_counter.get_drawable());
 	/*
 	 * Show everything on padded texture:
 	*/
@@ -696,7 +697,8 @@ int Game::init_gamemode(int gamemode)
 			*/
 			m_settings_general_menu = new SettingsGeneralMenu;
 			if (m_settings_general_menu->init(
-				m_config.get("GENERAL__LANGUAGE").value_string
+				m_config.get("GENERAL__LANGUAGE").value_string,
+				m_config.get("GENERAL__FPSCOUNTER").value_bool
 			) == 1)
 				return 1;
 			break;

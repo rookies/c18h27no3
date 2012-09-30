@@ -33,6 +33,11 @@ SettingsMenu::~SettingsMenu()
 int SettingsMenu::init(void)
 {
 	/*
+	 * Load fonts:
+	*/
+	if (!m_font1.loadFromFile(get_data_path("fonts/Vollkorn-Bold.ttf")))
+		return 1;
+	/*
 	 * Init creeper:
 	*/
 	if (!m_img1.loadFromFile(get_data_path("img/creeper.png")))
@@ -60,6 +65,11 @@ int SettingsMenu::init(void)
 	m_menuitem3_txt.setColor(sf::Color::Black);
 	m_menuitem4_txt.setColor(sf::Color::Black);
 	m_menuitem5_txt.setColor(sf::Color::Black);
+	m_menuitem1_txt.setFont(m_font1);
+	m_menuitem2_txt.setFont(m_font1);
+	m_menuitem3_txt.setFont(m_font1);
+	m_menuitem4_txt.setFont(m_font1);
+	m_menuitem5_txt.setFont(m_font1);
 	reset_menuitem_over();
 	return 0;
 }

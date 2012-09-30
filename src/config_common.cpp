@@ -38,18 +38,22 @@ Config::Config()
 	m_vars[0].index = "GENERAL__LANGUAGE";
 	m_vars[0].type = CONFIGVAR_TYPE_STRING;
 	m_vars[0].value_string = "en";
+
+	m_vars[1].index = "GENERAL__FPSCOUNTER";
+	m_vars[1].type = CONFIGVAR_TYPE_BOOLEAN;
+	m_vars[1].value_bool = false;
 	
-	m_vars[1].index = "GRAPHICS__RESOLUTION_X";
-	m_vars[1].type = CONFIGVAR_TYPE_INTEGER;
-	m_vars[1].value_int = 0;
-	
-	m_vars[2].index = "GRAPHICS__RESOLUTION_Y";
+	m_vars[2].index = "GRAPHICS__RESOLUTION_X";
 	m_vars[2].type = CONFIGVAR_TYPE_INTEGER;
 	m_vars[2].value_int = 0;
 	
-	m_vars[3].index = "GRAPHICS__FULLSCREEN";
-	m_vars[3].type = CONFIGVAR_TYPE_BOOLEAN;
-	m_vars[3].value_bool = true;
+	m_vars[3].index = "GRAPHICS__RESOLUTION_Y";
+	m_vars[3].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[3].value_int = 0;
+	
+	m_vars[4].index = "GRAPHICS__FULLSCREEN";
+	m_vars[4].type = CONFIGVAR_TYPE_BOOLEAN;
+	m_vars[4].value_bool = true;
 }
 Config::~Config()
 {

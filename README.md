@@ -18,7 +18,8 @@ For details, see COPYING.
  * data/grass.png
  * data/creeper.png
 
-### Used libraries
+### Used libraries & other stuff
  * [Simple and Fast Multimedia Library](http://www.sfml-dev.org/) (SFML) is released under the zlib/libpng license.
  * libavcodec (part of the [FFmpeg](http://ffmpeg.org/) project) is released under the GNU Lesser General Public License.
  * libintl (part of the [GNU gettext](http://www.gnu.org/software/gettext/gettext.html) project) is released under the GNU Lesser General Public License.
+ * [Vollkorn](http://friedrichalthausen.de/?page_id=411) is released under the SIL Open Font License.

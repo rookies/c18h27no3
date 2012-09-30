@@ -77,6 +77,8 @@
 			int m_sizes_arrow_height;
 			int m_sizes_arrow_xgap;
 			int m_sizes_arrow_ygap;
+			sf::Font m_font1;
+			sf::Font m_font2;
 			sf::RectangleShape m_menuitem1;
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;

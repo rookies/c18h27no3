@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: Robert Knauer <robert@privatdemail.net>\n"
 "POT-Creation-Date: 2012-09-23 17:50+0200\n"
-"PO-Revision-Date: 2012-09-27 20:02+0200\n"
+"PO-Revision-Date: 2012-09-30 20:04+0200\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -53,6 +53,9 @@ msgstr "Zurück zum Hauptmenü"
 msgid "settings_general_menu_entry_header_language"
 msgstr "Sprache"
 
+msgid "settings_general_menu_entry_header_fpscounter"
+msgstr "FPS-Anzeige"
+
 msgid "settings_general_menu_entry_abort"
 msgstr "Abbrechen"
 
@@ -70,6 +73,12 @@ msgstr "aktiviert"
 
 msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
 msgstr "deaktiviert"
+
+msgid "settings_general_menu_entry_value_fpscounter_enabled"
+msgstr "anzeigen"
+
+msgid "settings_general_menu_entry_value_fpscounter_disabled"
+msgstr "nicht anzeigen"
 
 msgid "settings_graphics_menu_entry_abort"
 msgstr "Abbrechen"

@@ -32,6 +32,13 @@ SettingsGraphicsMenu::~SettingsGraphicsMenu()
 int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 {
 	/*
+	 * Load fonts:
+	*/
+	if (!m_font1.loadFromFile(get_data_path("fonts/Vollkorn-Bold.ttf")))
+		return 1;
+	if (!m_font2.loadFromFile(get_data_path("fonts/Vollkorn-Regular.ttf")))
+		return 1;
+	/*
 	 * Init NumericalTextfieldBuffer instances for resolution:
 	*/
 	m_textfield1_1_buffer.init(4);
@@ -41,7 +48,7 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	/*
 	 * Init ConfigChooser instance for fullscreen:
 	*/
-	m_config_chooser2.init(CONFIGVAR_TYPE_BOOLEAN, CONFIGVAR_FULLSCREEN_COUNT);
+	m_config_chooser2.init(CONFIGVAR_TYPE_BOOLEAN, 2);
 	m_config_chooser2.add_bool("settings_graphics_menu_entry_value_fullscreen_enabled", true);
 	m_config_chooser2.add_bool("settings_graphics_menu_entry_value_fullscreen_disabled", false);
 	m_config_chooser2.set_actual_bool(fullscreen);
@@ -57,6 +64,8 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	m_textfield1_2_txt.setString(m_textfield1_2_buffer.get_string());
 	m_textfield1_1_txt.setColor(sf::Color::Black);
 	m_textfield1_2_txt.setColor(sf::Color::Black);
+	m_textfield1_1_txt.setFont(m_font2);
+	m_textfield1_2_txt.setFont(m_font2);
 	/*
 	 * Init arrows:
 	*/
@@ -81,9 +90,11 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	 * Init menuitem headers:
 	*/
 	m_menuitem1_header.setString(get_wstring(_("settings_graphics_menu_entry_header_resolution")));
-	m_menuitem1_header.setColor(sf::Color::Black);
 	m_menuitem2_header.setString(get_wstring(_("settings_graphics_menu_entry_header_fullscreen")));
+	m_menuitem1_header.setColor(sf::Color::Black);
 	m_menuitem2_header.setColor(sf::Color::Black);
+	m_menuitem1_header.setFont(m_font1);
+	m_menuitem2_header.setFont(m_font1);
 	/*
 	 * Init menuitem values:
 	*/
@@ -91,6 +102,8 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	m_menuitem2_value.setString(get_wstring(_(m_config_chooser2.get_actual_showable().c_str())));
 	m_menuitem1_value.setColor(sf::Color::Black);
 	m_menuitem2_value.setColor(sf::Color::Black);
+	m_menuitem1_value.setFont(m_font2);
+	m_menuitem2_value.setFont(m_font2);
 	/*
 	 * Init menuitem texts:
 	*/
@@ -98,6 +111,8 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	m_menuitem4_txt.setString(get_wstring(_("settings_graphics_menu_entry_abort")));
 	m_menuitem3_txt.setColor(sf::Color::Black);
 	m_menuitem4_txt.setColor(sf::Color::Black);
+	m_menuitem3_txt.setFont(m_font1);
+	m_menuitem4_txt.setFont(m_font1);
 	reset_menuitem_over();
 	return 0;
 }

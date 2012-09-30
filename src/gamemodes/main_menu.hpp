@@ -71,6 +71,7 @@
 			int m_menuitem4_over;
 			int m_menuitem5_over;
 			int m_menuitem6_over;
+			sf::Font m_font1;
 			sf::RectangleShape m_menuitem1;
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;
