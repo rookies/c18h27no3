@@ -139,16 +139,123 @@ int Game::uninit(void)
 	m_window.close();
 	return EXIT_SUCCESS;
 }
+void Game::draw(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	int i;
+	UniversalDrawableArray drawables;
+	UniversalDrawable drawable;
+	sf::Sprite sprite;
+	/*
+	 * Clean window and padded texture:
+	*/
+	m_window.clear();
+	m_texture.clear(COLOR_MENU_BACKGROUND);
+	/*
+	 * Get drawables from the GameMode classes:
+	*/
+	switch (m_gamemode)
+	{
+		case 1:
+			/*
+			 * Main Menu
+			*/
+			drawables = m_main_menu->get_drawables();
+			break;
+		case 2:
+			/*
+			 * Settings Menu
+			*/
+			drawables = m_settings_menu->get_drawables();
+			break;
+		case 3:
+			/*
+			 * Settings General Menu
+			*/
+			drawables = m_settings_general_menu->get_drawables();
+			break;
+		case 4:
+			/*
+			 * Settings Graphics Menu
+			*/
+			drawables = m_settings_graphics_menu->get_drawables();
+			break;
+		case 5:
+			/*
+			 * Settings Control Menu
+			*/
+			drawables = m_settings_control_menu->get_drawables();
+			break;
+		case 6:
+			/*
+			 * Settings Sound Menu
+			*/
+			drawables = m_settings_sound_menu->get_drawables();
+			break;
+	}
+	/*
+	 * Run through drawables:
+	*/
+	for (i=0; i < drawables.get_count(); i++)
+	{
+		/*
+		 * ... and draw them:
+		*/
+		drawable = drawables.get(i);
+		switch (drawable.type)
+		{
+			case UNIVERSAL_DRAWABLE_TYPE_TEXT:
+				m_texture.draw(drawable.value_text);
+				break;
+			case UNIVERSAL_DRAWABLE_TYPE_RECTSHAPE:
+				m_texture.draw(drawable.value_rectshape);
+				break;
+			case UNIVERSAL_DRAWABLE_TYPE_SPRITE:
+				m_texture.draw(drawable.value_sprite);
+				break;
+		}
+	}
+	/*
+	 * IMPORTANT: Uninit UniversalDrawableArray to prevent memory leaks:
+	*/
+	drawables.uninit();
+	/*
+	 * Draw cursor:
+	*/
+	m_texture.draw(m_cursor.get_drawable(
+		m_padding_data_calculator.get_usable_w(),
+		m_padding_data_calculator.get_usable_h()
+	));
+	/*
+	 * Draw FPS counter:
+	*/
+	m_texture.draw(m_fps_counter.get_drawable());
+	/*
+	 * Show everything on padded texture:
+	*/
+	m_texture.display();
+	/*
+	 * Draw padded texture on window:
+	*/
+	sprite.setTexture(m_texture.getTexture());
+	sprite.setPosition(
+		m_padding_data_calculator.get_padding_x(),
+		m_padding_data_calculator.get_padding_y()
+	);
+	m_window.draw(sprite);
+	/*
+	 * Show window:
+	*/
+	m_window.display();
+}
 int Game::loop(void)
 {
 	/*
 	 * Variable definitons:
 	*/
-	int i;
-	UniversalDrawableArray drawables;
-	UniversalDrawable drawable;
 	int done = 0;
-	sf::Sprite sprite;
 	/*
 	 * Main loop:
 	*/
@@ -163,90 +270,7 @@ int Game::loop(void)
 		*/
 		if (m_window_has_focus == 1)
 		{
-			/*
-			 * Clean window and padded texture:
-			*/
-			m_window.clear();
-			m_texture.clear(sf::Color(170, 217, 152));
-			/*
-			 * Draw everything on padded texture and show it:
-			*/
-			switch (m_gamemode)
-			{
-				case 1:
-					/*
-					 * Main Menu
-					*/
-					drawables = m_main_menu->get_drawables();
-					break;
-				case 2:
-					/*
-					 * Settings Menu
-					*/
-					drawables = m_settings_menu->get_drawables();
-					break;
-				case 3:
-					/*
-					 * Settings General Menu
-					*/
-					drawables = m_settings_general_menu->get_drawables();
-					break;
-				case 4:
-					/*
-					 * Settings Graphics Menu
-					*/
-					drawables = m_settings_graphics_menu->get_drawables();
-					break;
-				case 5:
-					/*
-					 * Settings Control Menu
-					*/
-					drawables = m_settings_control_menu->get_drawables();
-					break;
-				case 6:
-					/*
-					 * Settings Sound Menu
-					*/
-					drawables = m_settings_sound_menu->get_drawables();
-					break;
-			}
-			for (i=0; i < drawables.get_count(); i++)
-			{
-				drawable = drawables.get(i);
-				switch (drawable.type)
-				{
-					case UNIVERSAL_DRAWABLE_TYPE_TEXT:
-						m_texture.draw(drawable.value_text);
-						break;
-					case UNIVERSAL_DRAWABLE_TYPE_RECTSHAPE:
-						m_texture.draw(drawable.value_rectshape);
-						break;
-					case UNIVERSAL_DRAWABLE_TYPE_SPRITE:
-						m_texture.draw(drawable.value_sprite);
-						break;
-				}
-			}
-			/*
-			 * IMPORTANT: Uninit UniversalDrawableArray to prevent memory leaks:
-			*/
-			drawables.uninit();
-			m_texture.draw(m_cursor.get_drawable(
-				m_padding_data_calculator.get_usable_w(),
-				m_padding_data_calculator.get_usable_h()
-			));
-			m_texture.draw(m_fps_counter.get_drawable());
-			m_texture.display();
-			/*
-			 * Draw padded texture on window and show it:
-			*/
-			sprite = sf::Sprite();
-			sprite.setTexture(m_texture.getTexture());
-			sprite.setPosition(
-				m_padding_data_calculator.get_padding_x(),
-				m_padding_data_calculator.get_padding_y()
-			);
-			m_window.draw(sprite);
-			m_window.display();
+			draw();
 		}
 		else
 		{

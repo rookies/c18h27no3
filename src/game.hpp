@@ -51,6 +51,10 @@
 			int init(void);
 			int uninit(void);
 			/*
+			 * Draw everything:
+			*/
+			void draw(void);
+			/*
 			 * Start main loop:
 			*/
 			int loop(void);

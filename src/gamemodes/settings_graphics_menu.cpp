@@ -60,9 +60,9 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	/*
 	 * Init arrows:
 	*/
-	if (!m_arrow_left.loadFromFile("data/arrow_left.png"))
+	if (!m_arrow_left.loadFromFile("data/arrow_left.png")) /* TODO: add function to get data path */
 		return 1;
-	if (!m_arrow_right.loadFromFile("data/arrow_right.png"))
+	if (!m_arrow_right.loadFromFile("data/arrow_right.png")) /* TODO: add function to get data path */
 		return 1;
 	m_arrow_left2_sprite.setTexture(m_arrow_left);
 	m_arrow_right2_sprite.setTexture(m_arrow_right);

@@ -50,6 +50,7 @@
 	/*
 	 * Colors:
 	*/
+#	define COLOR_MENU_BACKGROUND sf::Color(170, 217, 152)
 #	define COLOR_MENU_ELEMENT sf::Color(73, 186, 29) /* color of an menu element */
 #	define COLOR_MENU_ELEMENT_HOVER sf::Color(115, 228, 71) /* color of an menu element in hover status */
 #	define COLOR_MENU_CONFIG_ELEMENT_TEXTFIELD sf::Color(73, 186, 29)
