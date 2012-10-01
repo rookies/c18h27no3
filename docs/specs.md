@@ -3,17 +3,19 @@
 ## Keys
  * GENERAL__LANGUAGE:string
   * Language of the game
-  * Fallback #1: System Locale
-  * Fallback #2: en
+  * **Fallback:** en
+ * GENERAL__FPSCOUNTER:bool
+  * Enable FPS gauge
+  * **Fallback:** false
  * GRAPHICS__RESOLUTION_X:int
   * Screen resolution (width)
-  * Fallback #1: auto
+  * **Fallback:** auto
  * GRAPHICS__RESOLUTION_Y:int
   * Screen resolution (height)
-  * Fallback #1: auto
+  * **Fallback:** auto
  * GRAPHICS__FULLSCREEN:bool
-  * Fullscreen mode
-  * Fallback #1: true
+  * Enable fullscreen mode
+  * **Fallback:** true
  * CONTROL__...
  * SOUND__...
  * ...
