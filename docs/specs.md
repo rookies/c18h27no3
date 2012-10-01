@@ -3,25 +3,29 @@
 ## Keys
  * GENERAL__LANGUAGE:string
   * Language of the game
-  * **Fallback:** en
+  * **Default:** en
  * GENERAL__FPSCOUNTER:bool
   * Enable FPS gauge
-  * **Fallback:** false
+  * **Default:** false
  * GRAPHICS__RESOLUTION_X:int
   * Screen resolution (width)
-  * **Fallback:** auto
+  * Special Values:
+   * 0 = get from Desktop Video Mode
+  * **Default:** 0
  * GRAPHICS__RESOLUTION_Y:int
   * Screen resolution (height)
-  * **Fallback:** auto
+  * Special Values:
+   * 0 = get from Desktop Video Mode
+  * **Default:** 0
  * GRAPHICS__FULLSCREEN:bool
   * Enable fullscreen mode
-  * **Fallback:** true
+  * **Default:** true
  * CONTROL__...
  * SOUND__...
  * ...
 
 ## Unix
-~/.@GAME@/config.txt
+**File:** ~/.@GAME@/config.txt
 
 ### Format
 ```
@@ -31,8 +35,11 @@
 ```
 
 ## Windows
-HKEY_CURRENT_USER\Software\@CORPORATION@\@GAME@
+**Registry:** HKEY_CURRENT_USER\Software\@CORPORATION@\@GAME@
 
 ### Format
-
-# Level Format
+```
+@KEY@:REG_SZ = @VALUE@
+@KEY@:REG_SZ = @VALUE@
+...
+```
