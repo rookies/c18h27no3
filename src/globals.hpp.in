@@ -30,6 +30,7 @@
 #	define VERSION_MAJOR @GAME_VERSION_MAJOR@
 #	define VERSION_MINOR @GAME_VERSION_MINOR@
 #	define VERSION @GAME_VERSION_MAJOR@.@GAME_VERSION_MINOR@
+#	define CORPORATION "rookiesoft"
 #	define PROJECTNAME "@CMAKE_PROJECT_NAME@"
 	/*
 	 * === FUNCTION DEFINITIONS ===
@@ -41,6 +42,7 @@
 	*/
 #	define CONFIGVAR_COUNT 5 /* number of the configuration variables */
 #	define CONFIGVAR_LANGUAGE_COUNT 2 /* number of the languages for settings_general_menu */
+#	define WINDOWS_CONFIG_BUFLEN 255
 	/*
 	 * Colors:
 	*/

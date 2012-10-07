@@ -27,6 +27,74 @@
 */
 int Config::load(void)
 {
+	std::cout << "Loading config...";
+	/*
+	 * Variable declarations:
+	*/
+	std::ostringstream keyname;
+	HKEY hkey;
+	int i;
+	DWORD type;
+	char buf[WINDOWS_CONFIG_BUFLEN];
+	DWORD bufsize;
+	/*
+	 * Open registry key:
+	*/
+	keyname.str("");
+	keyname << "Software\\";
+	keyname << CORPORATION;
+	keyname << "\\";
+	keyname << PROJECTNAME;
+	keyname << "\\config";
+	if (RegOpenKey(HKEY_CURRENT_USER, keyname.str().c_str(), &hkey) != ERROR_SUCCESS)
+	{
+		std::cout << "[FAIL]" << std::endl;
+		return 1;
+	};
+	/*
+	 * Read values:
+	*/
+	for (i=0; i < CONFIGVAR_COUNT; i++)
+	{
+		/*
+		 * Try to read from registry:
+		*/
+		type = REG_SZ;
+		bufsize = WINDOWS_CONFIG_BUFLEN;
+		if (RegQueryValueEx(hkey, m_vars[i].index.c_str(), 0, &type, (BYTE*)buf, &bufsize) == ERROR_SUCCESS)
+		{
+			/*
+			 * Try to interpret the value:
+			*/
+			switch (m_vars[i].type)
+			{
+				case CONFIGVAR_TYPE_INTEGER:
+					m_vars[i].value_int = atoi(buf);
+					break;
+				case CONFIGVAR_TYPE_BOOLEAN:
+					if (std::string(buf).compare("true") == 0)
+						m_vars[i].value_bool = true;
+					else if (std::string(buf).compare("false") == 0)
+						m_vars[i].value_bool = false;
+					else
+						std::cout << "Invalid registry value: " << buf << std::endl;
+					break;
+				case CONFIGVAR_TYPE_STRING:
+					m_vars[i].value_string = buf;
+					break;
+			}
+		}
+		else
+			std::cout << "Registry value not found: " << m_vars[i].index << std::endl;
+	}
+	/*
+	 * Close registry key:
+	*/
+	RegCloseKey(hkey);
+	/*
+	 * Return success:
+	*/
+	std::cout << "[DONE]" << std::endl;
 	return 0;
 }
 int Config::write(void)

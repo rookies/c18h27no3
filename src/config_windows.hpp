@@ -22,6 +22,8 @@
  */
 #ifndef CONFIG_WINDOWS_HPP
 #	define CONFIG_WINDOWS_HPP
-	
+
+#	include <windows.h>
+#	include <sstream>
 #	include "config_common.hpp"
 #endif // CONFIG_WINDOWS_HPP
