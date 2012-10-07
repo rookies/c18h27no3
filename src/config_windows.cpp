@@ -99,5 +99,85 @@ int Config::load(void)
 }
 int Config::write(void)
 {
+	std::cout << "Writing config... ";
+	/*
+	 * Variable declarations:
+	*/
+	std::ostringstream keyname;
+	HKEY hkey;
+	DWORD status;
+	int i;
+	DWORD type;
+	std::ostringstream buf;
+	/*
+	 * Create or open registry key:
+	*/
+	keyname.str("");
+	keyname << "Software\\";
+	keyname << CORPORATION;
+	keyname << "\\";
+	keyname << PROJECTNAME;
+	keyname << "\\config";
+	if (RegCreateKeyEx(
+		HKEY_CURRENT_USER,
+		keyname.str().c_str(),
+		0,
+		NULL,
+		REG_OPTION_NON_VOLATILE,
+		KEY_ALL_ACCESS,
+		NULL,
+		&hkey,
+		&status
+	) != ERROR_SUCCESS)
+	{
+		std::cout << "[FAIL]" << std::endl;
+		return 1;
+	};
+	if (status == REG_CREATED_NEW_KEY)
+		std::cout << "Registry key created." << std::endl;
+	/*
+	 * Write values:
+	*/
+	type = REG_SZ;
+	for (i=0; i < CONFIGVAR_COUNT; i++)
+	{
+		buf.str("");
+		switch (m_vars[i].type)
+		{
+			case CONFIGVAR_TYPE_INTEGER:
+				buf << m_vars[i].value_int;
+				break;
+			case CONFIGVAR_TYPE_BOOLEAN:
+				if (m_vars[i].value_bool)
+					buf << "true";
+				else
+					buf << "false";
+				break;
+			case CONFIGVAR_TYPE_STRING:
+				buf << m_vars[i].value_string;
+				break;
+		}
+		if (RegSetValueEx(
+			hkey,
+			m_vars[i].index.c_str(),
+			0,
+			type,
+			(BYTE *)buf.str().c_str(),
+			buf.str().length()
+		) != ERROR_SUCCESS)
+		{
+			std::cout << "Failed to write " << m_vars[i].index << "!" << std::endl;
+			std::cout << "[FAIL]" << std::endl;
+			return 1;
+		};
+	}
+	/*
+	 * Close registry key:
+	*/
+	RegCloseKey(hkey);
+	/*
+	 * Return success:
+	*/
+	std::cout << "[DONE]" << std::endl;
 	return 0;
 }
