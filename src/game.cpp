@@ -286,14 +286,17 @@ int Game::loop(void)
 }
 int Game::init_locale(void)
 {
+#ifndef _WIN32 // FIXME: add libintl support for windows
 	setenv("LANGUAGE", m_config.get("GENERAL__LANGUAGE").value_string.c_str(), 1);
 	setlocale(LC_ALL, "");
 	bindtextdomain(PROJECTNAME, "./locale");
 	textdomain(PROJECTNAME);
+#endif
 	return 0;
 }
 int Game::set_language(std::string lang)
 {
+#ifndef _WIN32 // FIXME: add libintl support for windows
 	/*
 	 * Set environment variable:
 	*/
@@ -310,6 +313,7 @@ int Game::set_language(std::string lang)
 	*/
 	if (set_gamemode(m_gamemode) == 1)
 		return 1;
+#endif
 	return 0;
 }
 int Game::wait_for_focus(void)

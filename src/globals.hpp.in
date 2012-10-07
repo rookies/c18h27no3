@@ -35,7 +35,11 @@
 	/*
 	 * === FUNCTION DEFINITIONS ===
 	*/
-#	define _(String) gettext(String)
+#	ifdef _WIN32 // FIXME: add libintl support for windows
+#		define _(String) (String)
+#	else
+#		define _(String) gettext(String)
+#	endif
 	/*
 	 * === OTHER CONFIGURATION VARIABLES ===
 	 * Configuration variable count:

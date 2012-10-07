@@ -21,7 +21,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(SFMLwindow REQUIRED)
 find_package(SFMLgraphics REQUIRED)
 find_package(SFMLsystem REQUIRED)
-find_package(LIBINTL REQUIRED)
+if (UNIX) # FIXME: add libintl support for windows
+	find_package(LIBINTL REQUIRED)
+endif ()
 #find_package(LIBAVCODEC REQUIRED)
 #find_package(LIBAVFORMAT REQUIRED)
 #find_package(LIBAVUTIL REQUIRED)
@@ -36,7 +38,9 @@ include_directories("${SFMLsystem_INCLUDE_DIR}")
 #include_directories("${LIBAVFORMAT_INCLUDE_DIR}")
 #include_directories("${LIBAVUTIL_INCLUDE_DIR}")
 #include_directories("${LIBSWSCALE_INCLUDE_DIR}")
-include_directories("${LIBINTL_INCLUDE_DIR}")
+if (UNIX) # FIXME: add libintl support for windows
+	include_directories("${LIBINTL_INCLUDE_DIR}")
+endif ()
 # 
 # create globals.hpp and make it available:
 # 
@@ -94,7 +98,9 @@ target_link_libraries(game ${SFMLsystem_LIBRARIES})
 #target_link_libraries(game ${LIBAVFORMAT_LIBRARIES})
 #target_link_libraries(game ${LIBAVUTIL_LIBRARIES})
 #target_link_libraries(game ${LIBSWSCALE_LIBRARIES})
-target_link_libraries(game ${LIBINTL_LIBRARIES})
+if (UNIX) # FIXME: add libintl support for windows
+	target_link_libraries(game ${LIBINTL_LIBRARIES})
+endif ()
 #
 # add install targets:
 # 
