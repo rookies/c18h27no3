@@ -22,9 +22,6 @@
  */
 #include "config_windows.hpp"
 
-/*
- * REG_BINARY, REG_DWORD
-*/
 int Config::load(void)
 {
 	std::cout << "Loading config...";
