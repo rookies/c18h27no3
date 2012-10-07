@@ -29,11 +29,15 @@
 std::wstring get_wstring(const std::string &str)
 {
 	const char *cstr = str.c_str();
+#ifdef _WIN32
+	const size_t wn = std::mbstowcs(NULL, cstr, 0);
+#else
 	const size_t wn = std::mbsrtowcs(NULL, &cstr, 0, NULL);
+#endif
 	
 	if (wn == size_t(-1))
 	{
-		std::cout << "Error in mbsrtowcs(): " << errno << std::endl;
+		std::cout << "Error in mbs(r)towcs(): " << errno << std::endl;
 		return L"";
 	}
 	
@@ -46,11 +50,13 @@ std::wstring get_wstring(const std::string &str)
 	
 	if (wn_again == size_t(-1))
 	{
-		std::cout << "Error in mbsrtowcs(): " << errno << std::endl;
+		std::cout << "Error in mbs(r)towcs(): " << errno << std::endl;
 		return L"";
 	}
 	
+#ifndef _WIN32
 	assert(cstr == NULL);
+#endif
 	
 	return std::wstring(buf.data(), wn);
 }
