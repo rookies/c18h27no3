@@ -49,6 +49,7 @@ int Config::load(void)
 	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;
+		return 1;
 	};
 	/*
 	 * ... read it:
