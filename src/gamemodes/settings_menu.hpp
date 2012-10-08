@@ -60,11 +60,6 @@
 			*/
 			UniversalDrawableArray get_drawables(void);
 		private:
-			int m_sizes_menuitem_width;
-			int m_sizes_menuitem_height;
-			int m_sizes_menuitem_xoffset;
-			int m_sizes_menuitem_first_yoffset;
-			int m_sizes_menuitem_gap;
 			int m_menuitem1_over;
 			int m_menuitem2_over;
 			int m_menuitem3_over;

@@ -128,81 +128,86 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_w = w;
 	m_h = h;
 	
-	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
-	m_sizes_menuitem_height = h*(SIZE_MENU_CONFIG_ELEMENT_HEIGHT/100.0);
-	m_sizes_menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
-	m_sizes_menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
-	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
-	m_sizes_textfield_width = w*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_WIDTH/100.0);
-	m_sizes_textfield_height = h*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_HEIGHT/100.0);
-	m_sizes_textfield_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP/100.0);
-	m_sizes_textfield_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP/100.0);
-	m_sizes_arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
-	m_sizes_arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP/100.0);
-	m_sizes_arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0);
-	/*
-	 * Menuitem X offset = middle
-	*/
-	m_sizes_menuitem_xoffset = (w-m_sizes_menuitem_width)/2.0;
+	int menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
+	int menuitem_height = h*(SIZE_MENU_CONFIG_ELEMENT_HEIGHT/100.0);
+	int menuitem_height2 = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
+	int menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
+	int menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
+	int textfield_width = w*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_WIDTH/100.0);
+	int textfield_height = h*(SIZE_MENU_SETTINGS_GRAPHICS_RESOLUTION_TEXTFIELD_HEIGHT/100.0);
+	int textfield_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_XGAP/100.0);
+	int textfield_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_YGAP/100.0);
+	int arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
+	int arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP/100.0);
+	int arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP/100.0);
+	int menuitem_xoffset = (w-menuitem_width)/2.0;
+	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
+	int header_size = menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_HEADER_SIZE_DIVIDER;
+	int value_size = menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER;
+	int text_size = menuitem_height2/SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER;
+	int textfield_outline = h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE/100.0);
+	int textfield_text_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_TEXT_YGAP/100.0);
+	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
+	int value_gap = h*(SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP/100.0);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
-	m_menuitem1.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem2.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem3.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height2));
-	m_menuitem4.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height2));
-	m_menuitem1.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem2.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem3.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem4.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem1.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset);
-	m_menuitem2.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height);
-	m_menuitem3.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+m_sizes_menuitem_gap);
-	m_menuitem4.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+m_sizes_menuitem_height2+m_sizes_menuitem_gap);
+	m_menuitem1.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem2.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem3.setSize(sf::Vector2f(menuitem_width, menuitem_height2));
+	m_menuitem4.setSize(sf::Vector2f(menuitem_width, menuitem_height2));
+	m_menuitem1.setOutlineThickness(element_outline);
+	m_menuitem2.setOutlineThickness(element_outline);
+	m_menuitem3.setOutlineThickness(element_outline);
+	m_menuitem4.setOutlineThickness(element_outline);
+	m_menuitem1.setPosition(menuitem_xoffset, menuitem_first_yoffset);
+	m_menuitem2.setPosition(menuitem_xoffset, menuitem_first_yoffset+menuitem_gap+menuitem_height);
+	m_menuitem3.setPosition(menuitem_xoffset, menuitem_first_yoffset+2*menuitem_gap+2*menuitem_height+menuitem_gap);
+	m_menuitem4.setPosition(menuitem_xoffset, menuitem_first_yoffset+3*menuitem_gap+2*menuitem_height+menuitem_height2+menuitem_gap);
 	/*
 	 * Update menuitem header size & positions:
 	*/
-	m_menuitem1_header.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_HEADER_SIZE_DIVIDER);
-	m_menuitem2_header.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_HEADER_SIZE_DIVIDER);
-	m_menuitem1_header.setPosition((w-m_menuitem1_header.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
-	m_menuitem2_header.setPosition((w-m_menuitem2_header.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_gap+m_sizes_menuitem_height+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
+	m_menuitem1_header.setCharacterSize(header_size);
+	m_menuitem2_header.setCharacterSize(header_size);
+	m_menuitem1_header.setPosition((w-(int)m_menuitem1_header.getGlobalBounds().width)/2, menuitem_first_yoffset+text_gap);
+	m_menuitem2_header.setPosition((w-(int)m_menuitem2_header.getGlobalBounds().width)/2, menuitem_first_yoffset+menuitem_gap+menuitem_height+text_gap);
 	/*
 	 * Update menuitem value size & positions:
 	*/
-	m_menuitem1_value.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER);
-	m_menuitem2_value.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER);
-	m_menuitem1_value.setPosition((w-m_menuitem1_value.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP/100.0));
-	m_menuitem2_value.setPosition((w-m_menuitem2_value.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+h*(SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP/100.0));
+	m_menuitem1_value.setCharacterSize(value_size);
+	m_menuitem2_value.setCharacterSize(value_size);
+	m_menuitem1_value.setPosition((w-(int)m_menuitem1_value.getGlobalBounds().width)/2, menuitem_first_yoffset+text_gap+value_gap);
+	m_menuitem2_value.setPosition((w-(int)m_menuitem2_value.getGlobalBounds().width)/2, menuitem_first_yoffset+menuitem_height+menuitem_gap+text_gap+value_gap);
 	/*
 	 * Update menuitem text size & positions:
 	*/
-	m_menuitem3_txt.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER);
-	m_menuitem4_txt.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER);
-	m_menuitem3_txt.setPosition((w-m_menuitem3_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
-	m_menuitem4_txt.setPosition((w-m_menuitem4_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_gap+2*m_sizes_menuitem_height+m_sizes_menuitem_height2+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
+	m_menuitem3_txt.setCharacterSize(text_size);
+	m_menuitem4_txt.setCharacterSize(text_size);
+	m_menuitem3_txt.setPosition((w-(int)m_menuitem3_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+2*menuitem_gap+2*menuitem_height+text_gap+menuitem_gap);
+	m_menuitem4_txt.setPosition((w-(int)m_menuitem4_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+3*menuitem_gap+2*menuitem_height+menuitem_height2+text_gap+menuitem_gap);
 	/*
 	 * Update textfield positions & sizes:
 	*/
-	m_textfield1_1.setSize(sf::Vector2f(m_sizes_textfield_width, m_sizes_textfield_height));
-	m_textfield1_2.setSize(sf::Vector2f(m_sizes_textfield_width, m_sizes_textfield_height));
-	m_textfield1_1.setOutlineThickness(h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE/100.0));
-	m_textfield1_2.setOutlineThickness(h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_OUTLINE/100.0));
-	m_textfield1_1.setPosition(m_sizes_menuitem_xoffset+m_sizes_textfield_xgap, m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap);
-	m_textfield1_2.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-m_sizes_textfield_xgap, m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap);
+	m_textfield1_1.setSize(sf::Vector2f(textfield_width, textfield_height));
+	m_textfield1_2.setSize(sf::Vector2f(textfield_width, textfield_height));
+	m_textfield1_1.setOutlineThickness(textfield_outline);
+	m_textfield1_2.setOutlineThickness(textfield_outline);
+	m_textfield1_1.setPosition(menuitem_xoffset+textfield_xgap, menuitem_first_yoffset+textfield_ygap);
+	m_textfield1_2.setPosition(menuitem_xoffset+menuitem_width-textfield_width-textfield_xgap, menuitem_first_yoffset+textfield_ygap);
 	/*
 	 * Update textfield text size & positions:
 	*/
-	m_textfield1_1_txt.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER);
-	m_textfield1_2_txt.setCharacterSize(m_sizes_menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER);
-	m_textfield1_1_txt.setPosition(m_sizes_menuitem_xoffset+m_sizes_textfield_xgap+(m_sizes_textfield_width-m_textfield1_1_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_TEXT_YGAP/100.0));
-	m_textfield1_2_txt.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-m_sizes_textfield_xgap+(m_sizes_textfield_width-m_textfield1_2_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_CONFIG_ELEMENT_TEXTFIELD_TEXT_YGAP/100.0));
+	m_textfield1_1_txt.setCharacterSize(value_size);
+	m_textfield1_2_txt.setCharacterSize(value_size);
+	m_textfield1_1_txt.setPosition(menuitem_xoffset+textfield_xgap+(textfield_width-(int)m_textfield1_1_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+textfield_text_ygap);
+	m_textfield1_2_txt.setPosition(menuitem_xoffset+menuitem_width-textfield_width-textfield_xgap+(textfield_width-(int)m_textfield1_2_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+textfield_text_ygap);
 	/*
 	 * Update arrow positions & sizes:
 	*/
-	m_arrow_left2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_arrow_xgap, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap);
-	m_arrow_right2_sprite.setPosition(m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap);
-	m_arrow_left2_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
-	m_arrow_right2_sprite.setScale(m_sizes_arrow_height/7.0, m_sizes_arrow_height/7.0);
+	m_arrow_left2_sprite.setPosition(menuitem_xoffset+arrow_xgap, menuitem_first_yoffset+menuitem_height+menuitem_gap+arrow_ygap);
+	m_arrow_right2_sprite.setPosition(menuitem_xoffset+menuitem_width-arrow_xgap-arrow_height, menuitem_first_yoffset+menuitem_height+menuitem_gap+arrow_ygap);
+	m_arrow_left2_sprite.setScale(arrow_height/7, arrow_height/7);
+	m_arrow_right2_sprite.setScale(arrow_height/7, arrow_height/7);
 	return 0;
 }
 EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -236,66 +241,18 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 			break;
 		case sf::Event::MouseMoved:
 			reset_menuitem_over();
-			if (mouse_x > m_sizes_menuitem_xoffset && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width)
-			{
-				/*
-				 * Cursor is in X range of the menu items
-				*/
-				if (mouse_y > m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+2*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+m_sizes_menuitem_height2+2*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
-				{
-					/*
-					 * Menuitem 3
-					*/
-					m_menuitem3_over = 1;
-				}
-				else if (mouse_y > m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+m_sizes_menuitem_height2+3*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+2*m_sizes_menuitem_height2+3*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
-				{
-					/*
-					 * Menuitem 4
-					*/
-					m_menuitem4_over = 1;
-				};
-				if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_textfield_ygap+m_sizes_textfield_height)
-				{
-					/*
-					 * Cursor is in Y range of the resolution textfields
-					*/
-					if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_textfield_xgap && mouse_x < m_sizes_menuitem_xoffset+m_sizes_textfield_xgap+m_sizes_textfield_width)
-					{
-						/*
-						 * Textfield 1_1
-						*/
-						m_textfield1_1_over = 1;
-					}
-					else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_width-m_sizes_textfield_xgap && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_textfield_xgap)
-					{
-						/*
-						 * Textfield 1_2
-						*/
-						m_textfield1_2_over = 1;
-					};
-				};
-				if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+m_sizes_arrow_ygap+m_sizes_arrow_height)
-				{
-					/*
-					 * Cursor is in Y range of the fullscreen arrows
-					*/
-					if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_arrow_xgap &&  mouse_x < m_sizes_menuitem_xoffset+m_sizes_arrow_height+m_sizes_arrow_xgap)
-					{
-						/*
-						 * Arrow Left 2
-						*/
-						m_arrow_left2_over = 1;
-					}
-					else if (mouse_x > m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap-m_sizes_arrow_height && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width-m_sizes_arrow_xgap)
-					{
-						/*
-						 * Arrow Right 2
-						*/
-						m_arrow_right2_over = 1;
-					};
-				};
-			};
+			if (m_menuitem3.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem3_over = 1;
+			else if (m_menuitem4.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem4_over = 1;
+			else if (m_textfield1_1.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_textfield1_1_over = 1;
+			else if (m_textfield1_2.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_textfield1_2_over = 1;
+			else if (m_arrow_left2_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_arrow_left2_over = 1;
+			else if (m_arrow_right2_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_arrow_right2_over = 1;
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)

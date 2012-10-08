@@ -65,15 +65,6 @@
 			int m_w, m_h;
 			ConfigChooser m_config_chooser1;
 			ConfigChooser m_config_chooser2;
-			int m_sizes_menuitem_width;
-			int m_sizes_menuitem_height;
-			int m_sizes_menuitem_height2;
-			int m_sizes_menuitem_xoffset;
-			int m_sizes_menuitem_first_yoffset;
-			int m_sizes_menuitem_gap;
-			int m_sizes_arrow_height;
-			int m_sizes_arrow_xgap;
-			int m_sizes_arrow_ygap;
 			sf::Font m_font1;
 			sf::Font m_font2;
 			sf::RectangleShape m_menuitem1;

@@ -84,60 +84,58 @@ int MainMenu::uninit(void)
 int MainMenu::calculate_sizes(int w, int h)
 {
 	/*
-	 * Variable declarations:
+	 * Variable definitions:
 	*/
-	int grassblock_height;
-	
-	m_sizes_menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
-	m_sizes_menuitem_height = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
-	m_sizes_menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
-	m_sizes_menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
-	grassblock_height = h*(SIZE_MAINMENU_GRASSBLOCK_HEIGHT/100.0);
-	/*
-	 * Menuitem X offset = middle
-	*/
-	m_sizes_menuitem_xoffset = (w-m_sizes_menuitem_width)/2.0;
+	int menuitem_width = w*(SIZE_MENU_ELEMENT_WIDTH/100.0);
+	int menuitem_height = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
+	int menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
+	int menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
+	int grassblock_height = h*(SIZE_MAINMENU_GRASSBLOCK_HEIGHT/100.0);
+	int menuitem_xoffset = (w-menuitem_width)/2.0;
+	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
+	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
+	int grassblock_yoffset = h*(SIZE_MAINMENU_GRASSBLOCK_YOFFSET/100.0);
 	/*
 	 * Update grassblock position & size:
 	*/
-	m_img1_sprite.setPosition((w-grassblock_height)/2.0, h*(SIZE_MAINMENU_GRASSBLOCK_YOFFSET/100.0));
-	m_img1_sprite.setScale(grassblock_height/20.0, grassblock_height/20.0);
+	m_img1_sprite.setPosition((w-grassblock_height)/2, grassblock_yoffset);
+	m_img1_sprite.setScale(grassblock_height/20, grassblock_height/20);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
-	m_menuitem1.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem2.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem3.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem4.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem5.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem6.setSize(sf::Vector2f(m_sizes_menuitem_width, m_sizes_menuitem_height));
-	m_menuitem1.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem2.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem3.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem4.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem5.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem6.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
-	m_menuitem1.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset);
-	m_menuitem2.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap);
-	m_menuitem3.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2);
-	m_menuitem4.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*3);
-	m_menuitem5.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*4);
-	m_menuitem6.setPosition(m_sizes_menuitem_xoffset, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*5+m_sizes_menuitem_gap);
+	m_menuitem1.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem2.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem3.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem4.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem5.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem6.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem1.setOutlineThickness(element_outline);
+	m_menuitem2.setOutlineThickness(element_outline);
+	m_menuitem3.setOutlineThickness(element_outline);
+	m_menuitem4.setOutlineThickness(element_outline);
+	m_menuitem5.setOutlineThickness(element_outline);
+	m_menuitem6.setOutlineThickness(element_outline);
+	m_menuitem1.setPosition(menuitem_xoffset, menuitem_first_yoffset);
+	m_menuitem2.setPosition(menuitem_xoffset, menuitem_first_yoffset+menuitem_height+menuitem_gap);
+	m_menuitem3.setPosition(menuitem_xoffset, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*2);
+	m_menuitem4.setPosition(menuitem_xoffset, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*3);
+	m_menuitem5.setPosition(menuitem_xoffset, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*4);
+	m_menuitem6.setPosition(menuitem_xoffset, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*5+menuitem_gap);
 	/*
 	 * Update menuitem text size & positions:
 	*/
-	m_menuitem1_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
-	m_menuitem2_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
-	m_menuitem3_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
-	m_menuitem4_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
-	m_menuitem5_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
-	m_menuitem6_txt.setCharacterSize(m_sizes_menuitem_height/2.0);
-	m_menuitem1_txt.setPosition((w-m_menuitem1_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
-	m_menuitem2_txt.setPosition((w-m_menuitem2_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
-	m_menuitem3_txt.setPosition((w-m_menuitem3_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*2+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
-	m_menuitem4_txt.setPosition((w-m_menuitem4_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*3+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
-	m_menuitem5_txt.setPosition((w-m_menuitem5_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*4+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0));
-	m_menuitem6_txt.setPosition((w-m_menuitem6_txt.getGlobalBounds().width)/2.0, m_sizes_menuitem_first_yoffset+(m_sizes_menuitem_height+m_sizes_menuitem_gap)*5+h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0)+m_sizes_menuitem_gap);
+	m_menuitem1_txt.setCharacterSize(menuitem_height/2);
+	m_menuitem2_txt.setCharacterSize(menuitem_height/2);
+	m_menuitem3_txt.setCharacterSize(menuitem_height/2);
+	m_menuitem4_txt.setCharacterSize(menuitem_height/2);
+	m_menuitem5_txt.setCharacterSize(menuitem_height/2);
+	m_menuitem6_txt.setCharacterSize(menuitem_height/2);
+	m_menuitem1_txt.setPosition((w-(int)m_menuitem1_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+text_gap);
+	m_menuitem2_txt.setPosition((w-(int)m_menuitem2_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+menuitem_height+menuitem_gap+text_gap);
+	m_menuitem3_txt.setPosition((w-(int)m_menuitem3_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*2+text_gap);
+	m_menuitem4_txt.setPosition((w-(int)m_menuitem4_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*3+text_gap);
+	m_menuitem5_txt.setPosition((w-(int)m_menuitem5_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*4+text_gap);
+	m_menuitem6_txt.setPosition((w-(int)m_menuitem6_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*5+text_gap+menuitem_gap);
 	return 0;
 }
 EventProcessorReturn MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -158,64 +156,19 @@ EventProcessorReturn MainMenu::process_event(sf::Event event, int mouse_x, int m
 			}
 			break;
 		case sf::Event::MouseMoved:
-			if (mouse_x > m_sizes_menuitem_xoffset && mouse_x < m_sizes_menuitem_xoffset+m_sizes_menuitem_width)
-			{
-				/*
-				 * Cursor is in X range of the menu items
-				*/
-				if (mouse_y > m_sizes_menuitem_first_yoffset && mouse_y < m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height)
-				{
-					/*
-					 * Menuitem 1
-					*/
-					reset_menuitem_over();
-					m_menuitem1_over = 1;
-				}
-				else if (mouse_y > m_sizes_menuitem_first_yoffset+m_sizes_menuitem_height+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+m_sizes_menuitem_gap)
-				{
-					/*
-					 * Menuitem 2
-					*/
-					reset_menuitem_over();
-					m_menuitem2_over = 1;
-				}
-				else if (mouse_y > m_sizes_menuitem_first_yoffset+2*m_sizes_menuitem_height+2*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_height+2*m_sizes_menuitem_gap)
-				{
-					/*
-					 * Menuitem 3
-					*/
-					reset_menuitem_over();
-					m_menuitem3_over = 1;
-				}
-				else if (mouse_y > m_sizes_menuitem_first_yoffset+3*m_sizes_menuitem_height+3*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+4*m_sizes_menuitem_height+3*m_sizes_menuitem_gap)
-				{
-					/*
-					 * Menuitem 4
-					*/
-					reset_menuitem_over();
-					m_menuitem4_over = 1;
-				}
-				else if (mouse_y > m_sizes_menuitem_first_yoffset+4*m_sizes_menuitem_height+4*m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+5*m_sizes_menuitem_height+4*m_sizes_menuitem_gap)
-				{
-					/*
-					 * Menuitem 5
-					*/
-					reset_menuitem_over();
-					m_menuitem5_over = 1;
-				}
-				else if (mouse_y > m_sizes_menuitem_first_yoffset+5*m_sizes_menuitem_height+5*m_sizes_menuitem_gap+m_sizes_menuitem_gap && mouse_y < m_sizes_menuitem_first_yoffset+6*m_sizes_menuitem_height+5*m_sizes_menuitem_gap+m_sizes_menuitem_gap)
-				{
-					/*
-					 * Menuitem 6
-					*/
-					reset_menuitem_over();
-					m_menuitem6_over = 1;
-				}
-				else
-					reset_menuitem_over();
-			}
-			else
-				reset_menuitem_over();
+			reset_menuitem_over();
+			if (m_menuitem1.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem1_over = 1;
+			else if (m_menuitem2.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem2_over = 1;
+			else if (m_menuitem3.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem3_over = 1;
+			else if (m_menuitem4.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem4_over = 1;
+			else if (m_menuitem5.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem5_over = 1;
+			else if (m_menuitem6.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem6_over = 1;
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)

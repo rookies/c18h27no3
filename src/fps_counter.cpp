@@ -45,8 +45,8 @@ int FPScounter::init(void)
 }
 int FPScounter::calculate_sizes(int w, int h)
 {
-	m_txt.setCharacterSize(h*(SIZE_FPS_COUNTER_TEXT/100.0));
-	m_txt.setPosition(w*(SIZE_FPS_COUNTER_XGAP/100.0), h-h*(SIZE_FPS_COUNTER_YGAP/100.0)-m_txt.getGlobalBounds().height);
+	m_txt.setCharacterSize((int)(h*(SIZE_FPS_COUNTER_TEXT/100.0)));
+	m_txt.setPosition((int)(w*(SIZE_FPS_COUNTER_XGAP/100.0)), (int)(h-h*(SIZE_FPS_COUNTER_YGAP/100.0)-m_txt.getGlobalBounds().height));
 }
 sf::Text FPScounter::get_drawable(void)
 {
