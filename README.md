@@ -14,19 +14,19 @@ sf-game
 ### Windows
  * Get the source code
  * [Download](https://github.com/LaurentGomila/SFML/zipball/2.0-rc), CMake and make SFML
-  * Copy *lib/sfml-{graphics,system,window}-2.dll* into the source dir of the game
-  * Copy *include/SFML* into a new directory 'include' in the source dir of the game
+  * Copy *{SFML_BUILDDIR}/lib/sfml-{graphics,system,window}-2.dll* into {GAME_SOURCEDIR}
+  * Copy *{SFML_SOURCEDIR}/include/SFML* into {GAME_SOURCEDIR}/include
  * Download [libintl for Windows](http://gnuwin32.sourceforge.net/packages/libintl.htm):
   * [Binaries](http://gnuwin32.sourceforge.net/downlinks/libintl-bin-zip.php)
-   * Copy *bin/libintl3.dll* into the source dir of the game
+   * Copy *bin/libintl3.dll* into {GAME_SOURCEDIR}
   * [Dependencies](http://gnuwin32.sourceforge.net/downlinks/libintl-dep-zip.php)
-   * Copy *bin/libiconv2.dll* into the source dir of the game
+   * Copy *bin/libiconv2.dll* into {GAME_SOURCEDIR}
   * [Developer files](http://gnuwin32.sourceforge.net/downlinks/libintl-lib-zip.php)
-   * Copy *include/libintl.h* into the created 'include' directory in the source dir of the game
+   * Copy *include/libintl.h* into {GAME_SOURCEDIR}/include
  * CMake the game
  * make the game
  * copy *game.exe* from build dir to source dir
- * create .mo files (locale/$lang.po => locale/$lang/LC_MESSAGES/sf-game.mo)
+ * create .mo files ({GAME_SOURCEDIR}/locale/$lang.po => {GAME_SOURCEDIR}/locale/$lang/LC_MESSAGES/sf-game.mo)
  * Start the game and hope that it works!
 
 ## License
