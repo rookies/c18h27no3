@@ -29,6 +29,7 @@
 #		include <windows.h>
 #	endif // _WIN32
 #	include <libintl.h>
+#	include "dataloader.hpp"
 #	include "padding_data_calculator.hpp"
 #	include "cursor.hpp"
 #	include "config.hpp"

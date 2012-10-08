@@ -37,6 +37,7 @@ int Game::init(void)
 	 * Variable declarations:
 	*/
 	sf::VideoMode videomode;
+	sf::Image icon;
 	/*
 	 * Load configuration:
 	*/
@@ -91,6 +92,21 @@ int Game::init(void)
 		m_window.create(sf::VideoMode(m_screen_w, m_screen_h, m_screen_bits), "Game");
 	std::cout << "[DONE]" << std::endl;
 	m_window_has_focus = 1;
+	/*
+	 * Set window icon:
+	*/
+	std::cout << "Setting window icon... ";
+	if (!icon.loadFromFile(get_data_path("img/icon.png")))
+	{
+		std::cout << "[FAIL]" << std::endl;
+		return 1;
+	};
+	m_window.setIcon(
+		icon.getSize().x,
+		icon.getSize().y,
+		icon.getPixelsPtr()
+	);
+	std::cout << "[DONE]" << std::endl;
 	/*
 	 * Calculate padding data:
 	*/
@@ -575,7 +591,8 @@ int Game::process_events(void)
 		 * Set language?
 		*/
 		if (event_processor_return.get_language().compare("") != 0)
-			set_language(event_processor_return.get_language());
+			if (set_language(event_processor_return.get_language()) == 1)
+				return 1; // setting language failed, exit
 		/*
 		 * Change GameMode?
 		*/
