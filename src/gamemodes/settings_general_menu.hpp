@@ -25,6 +25,7 @@
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
+#	include <libintl.h>
 #	include "globals.hpp"
 #	include "../widestring.hpp"
 #	include "../config_chooser.hpp"

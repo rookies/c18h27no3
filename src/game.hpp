@@ -25,6 +25,9 @@
 	
 #	include <iostream>
 #	include <SFML/Window.hpp>
+#	ifdef _WIN32
+#		include <windows.h>
+#	endif // _WIN32
 #	include <libintl.h>
 #	include "padding_data_calculator.hpp"
 #	include "cursor.hpp"
@@ -59,6 +62,10 @@
 			*/
 			int loop(void);
 		private:
+			/*
+			 * Set environment variable:
+			*/
+			int set_envvar(std::string name, std::string value);
 			/*
 			 * Init locale:
 			*/

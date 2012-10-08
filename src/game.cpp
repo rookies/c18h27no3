@@ -284,23 +284,61 @@ int Game::loop(void)
 	}
 	return done;
 }
+/*
+ * See:
+ * https://www.gnu.org/software/gettext/FAQ.html#windows_setenv
+*/
+int Game::set_envvar(std::string name, std::string value)
+{
+#ifdef _WIN32
+	/*
+	 * SetEnvironmentVariableA():
+	 * (Windows only)
+	*/
+	if (!SetEnvironmentVariableA(name.c_str(), value.c_str()))
+	{
+		std::cout << "SetEnvironmentVariableA(" << name << ", " << value << ") failed." << std::endl;
+		return 1;
+	};
+#endif // _WIN32
+#if defined(HAVE_SETENV)
+	/*
+	 * setenv():
+	*/
+	return setenv(name.c_str(), value.c_str(), 1);
+#elif defined(HAVE_PUTENV)
+	/*
+	 * putenv():
+	*/
+	std::stringstream buffer;
+	buffer.str("");
+	buffer << name;
+	buffer << "=";
+	buffer << value;
+	return putenv((char *)buffer.str().c_str());
+#else
+	/*
+	 * Nothing, compiler error:
+	*/
+#	error "FATAL: No putenv() or setenv() found."
+#endif // HAVE_PUTENV; HAVE_SETENV
+}
 int Game::init_locale(void)
 {
-#ifndef _WIN32 // FIXME: add libintl support for windows
-	setenv("LANGUAGE", m_config.get("GENERAL__LANGUAGE").value_string.c_str(), 1);
+	if (set_envvar("LANGUAGE", m_config.get("GENERAL__LANGUAGE").value_string) == 1)
+		return 1;
 	setlocale(LC_ALL, "");
 	bindtextdomain(PROJECTNAME, "./locale");
 	textdomain(PROJECTNAME);
-#endif
 	return 0;
 }
 int Game::set_language(std::string lang)
 {
-#ifndef _WIN32 // FIXME: add libintl support for windows
 	/*
 	 * Set environment variable:
 	*/
-	setenv("LANGUAGE", lang.c_str(), 1);
+	if (set_envvar("LANGUAGE", lang) == 1)
+		return 1;
 	/*
 	 * Make it public:
 	*/
@@ -313,7 +351,6 @@ int Game::set_language(std::string lang)
 	*/
 	if (set_gamemode(m_gamemode) == 1)
 		return 1;
-#endif
 	return 0;
 }
 int Game::wait_for_focus(void)
