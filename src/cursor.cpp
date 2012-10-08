@@ -66,7 +66,7 @@ int Cursor::get_mouse_position_y(void)
 int Cursor::calculate_sizes(int w, int h)
 {
 	m_cursorsize = h*(SIZE_CURSOR/100.0);
-	m_sprite.setScale((int)(m_cursorsize/16.0), (int)(m_cursorsize/16.0));
+	m_sprite.setScale(m_cursorsize/16.0, m_cursorsize/16.0);
 	return 0;
 }
 sf::Sprite Cursor::get_drawable(int w, int h)
