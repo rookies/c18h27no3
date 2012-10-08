@@ -23,11 +23,11 @@ sf-game
    * Copy *bin/libiconv2.dll* into the source dir of the game
   * [Developer files](http://gnuwin32.sourceforge.net/downlinks/libintl-lib-zip.php)
    * Copy *include/libintl.h* into the created 'include' directory in the source dir of the game
-  * CMake the game
-  * make the game
-  * copy *game.exe* from build dir to source dir
-  * create .mo files (locale/$lang.po => locale/$lang/LC_MESSAGES/sf-game.mo)
-  * Start the game and hope that it works!
+ * CMake the game
+ * make the game
+ * copy *game.exe* from build dir to source dir
+ * create .mo files (locale/$lang.po => locale/$lang/LC_MESSAGES/sf-game.mo)
+ * Start the game and hope that it works!
 
 ## License
 Most of the things are licensed under the GNU General Public License v2 or (at your option) any later version.
