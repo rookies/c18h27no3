@@ -34,18 +34,17 @@ int Config::load(void)
 	std::string index;
 	std::string value_raw;
 	int i;
-	std::ostringstream fname;
+	std::string fname;
 	/*
 	 * Open file:
 	*/
-	fname.str("");
-	fname << getenv("HOME");
-	if (fname.str().substr(fname.str().length()-1, 1).compare("/") != 0)
-		fname << "/";
-	fname << ".";
-	fname << PROJECTNAME;
-	fname << "/config.txt";
-	file.open(fname.str().c_str());
+	fname = getenv("HOME");
+	if (fname.substr(fname.length()-1, 1).compare("/") != 0)
+		fname.append("/");
+	fname.append(".");
+	fname.append(PROJECTNAME);
+	fname.append("/config.txt");
+	file.open(fname.c_str());
 	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;
@@ -118,22 +117,21 @@ int Config::write(void)
 	std::ofstream file;
 	int i;
 	int res;
-	std::ostringstream fname;
+	std::string fname;
 	struct stat statbuf;
 	/*
 	 * Construct $HOME/.sf-game/ into a variable:
 	*/
-	fname.str("");
-	fname << getenv("HOME");
-	if (fname.str().substr(fname.str().length()-1, 1).compare("/") != 0)
-		fname << "/";
-	fname << ".";
-	fname << PROJECTNAME;
-	fname << "/";
+	fname = getenv("HOME");
+	if (fname.substr(fname.length()-1, 1).compare("/") != 0)
+		fname.append("/");
+	fname.append(".");
+	fname.append(PROJECTNAME);
+	fname.append("/");
 	/*
 	 * Check if it is a directory:
 	*/
-	if (stat(fname.str().c_str(), &statbuf) == -1)
+	if (stat(fname.c_str(), &statbuf) == -1)
 	{
 		if (!S_ISDIR(statbuf.st_mode))
 		{
@@ -141,7 +139,7 @@ int Config::write(void)
 			 * It's not a file and it doesn't exist
 			 * => CREATE
 			*/
-			res = mkdir(fname.str().c_str(), S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP);
+			res = mkdir(fname.c_str(), S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP);
 			if (res != 0)
 			{
 				std::cout << "[FAIL]" << std::endl;
@@ -160,8 +158,8 @@ int Config::write(void)
 	/*
 	 * At this point, the directory should exist, so we can write:
 	*/
-	fname << "config.txt";
-	file.open(fname.str().c_str());
+	fname.append("config.txt");
+	file.open(fname.c_str());
 	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;

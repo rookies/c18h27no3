@@ -28,7 +28,7 @@ int Config::load(void)
 	/*
 	 * Variable declarations:
 	*/
-	std::ostringstream keyname;
+	std::string keyname;
 	HKEY hkey;
 	int i;
 	DWORD type;
@@ -37,13 +37,12 @@ int Config::load(void)
 	/*
 	 * Open registry key:
 	*/
-	keyname.str("");
-	keyname << "Software\\";
-	keyname << CORPORATION;
-	keyname << "\\";
-	keyname << PROJECTNAME;
-	keyname << "\\config";
-	if (RegOpenKey(HKEY_CURRENT_USER, keyname.str().c_str(), &hkey) != ERROR_SUCCESS)
+	keyname = "Software\\";
+	keyname.append(CORPORATION);
+	keyname.append("\\");
+	keyname.append(PROJECTNAME);
+	keyname.append("\\config");
+	if (RegOpenKey(HKEY_CURRENT_USER, keyname.c_str(), &hkey) != ERROR_SUCCESS)
 	{
 		std::cout << "[FAIL]" << std::endl;
 		return 1;
@@ -100,7 +99,7 @@ int Config::write(void)
 	/*
 	 * Variable declarations:
 	*/
-	std::ostringstream keyname;
+	std::string keyname;
 	HKEY hkey;
 	DWORD status;
 	int i;
@@ -109,15 +108,14 @@ int Config::write(void)
 	/*
 	 * Create or open registry key:
 	*/
-	keyname.str("");
-	keyname << "Software\\";
-	keyname << CORPORATION;
-	keyname << "\\";
-	keyname << PROJECTNAME;
-	keyname << "\\config";
+	keyname = "Software\\";
+	keyname.append(CORPORATION);
+	keyname.append("\\");
+	keyname.append(PROJECTNAME);
+	keyname.append("\\config");
 	if (RegCreateKeyEx(
 		HKEY_CURRENT_USER,
-		keyname.str().c_str(),
+		keyname.c_str(),
 		0,
 		NULL,
 		REG_OPTION_NON_VOLATILE,
