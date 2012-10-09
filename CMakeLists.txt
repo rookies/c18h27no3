@@ -14,6 +14,7 @@ set(GAME_VERSION_MINOR 1)
 # 
 # debug settings:
 # 
+#set(DATALOADER_DEBUG 1)
 #set(DATALOADER_VERBOSE 1)
 # 
 # find custom modules:

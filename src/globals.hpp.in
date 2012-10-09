@@ -41,6 +41,7 @@
 	*/
 	#cmakedefine HAVE_PUTENV
 	#cmakedefine HAVE_SETENV
+	#cmakedefine DATALOADER_DEBUG
 	#cmakedefine DATALOADER_VERBOSE
 	/*
 	 * ============================

@@ -101,9 +101,9 @@ std::string get_data_path(int type, std::string fname)
 			/*
 			 * It is readable, so take this directory:
 			*/
-#ifdef DATALOADER_VERBOSE
+#ifdef DATALOADER_DEBUG
 			std::cout << "Dataloader: '" << fname << "' found in '" << datasources[i] << "', returning." << std::endl;
-#endif // DATALOADER_VERBOSE
+#endif // DATALOADER_DEBUG
 			testfile.close();
 			break;
 		}
@@ -114,6 +114,10 @@ std::string get_data_path(int type, std::string fname)
 #endif // DATALOADER_VERBOSE
 		};
 	}
+#ifdef DATALOADER_DEBUG
+	if (ret.length() == 0)
+		std::cout << "Dataloader: '" << fname << "' not found." << std::endl;
+#endif // DATALOADER_DEBUG
 	/*
 	 * IMPORTANT: Call delete[] to prevent memory leaks:
 	*/
