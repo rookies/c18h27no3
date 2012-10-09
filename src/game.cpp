@@ -96,7 +96,7 @@ int Game::init(void)
 	 * Set window icon:
 	*/
 	std::cout << "Setting window icon... ";
-	if (!icon.loadFromFile(get_data_path("img/icon.png")))
+	if (!icon.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "icon.png")))
 	{
 		std::cout << "[FAIL]" << std::endl;
 		return 1;

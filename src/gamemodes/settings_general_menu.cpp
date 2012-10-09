@@ -34,9 +34,9 @@ int SettingsGeneralMenu::init(std::string language, bool fpscounter)
 	/*
 	 * Load fonts:
 	*/
-	if (!m_font1.loadFromFile(get_data_path("fonts/Vollkorn-Bold.ttf")))
+	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Bold.ttf")))
 		return 1;
-	if (!m_font2.loadFromFile(get_data_path("fonts/Vollkorn-Regular.ttf")))
+	if (!m_font2.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Regular.ttf")))
 		return 1;
 	/*
 	 * Init ConfigChooser instance for language:
@@ -55,9 +55,9 @@ int SettingsGeneralMenu::init(std::string language, bool fpscounter)
 	/*
 	 * Init arrows:
 	*/
-	if (!m_arrow_left.loadFromFile(get_data_path("img/arrow_left.png")))
+	if (!m_arrow_left.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow_left.png")))
 		return 1;
-	if (!m_arrow_right.loadFromFile(get_data_path("img/arrow_right.png")))
+	if (!m_arrow_right.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow_right.png")))
 		return 1;
 	m_arrow_left1_sprite.setTexture(m_arrow_left);
 	m_arrow_left2_sprite.setTexture(m_arrow_left);

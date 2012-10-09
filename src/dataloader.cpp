@@ -22,18 +22,102 @@
  */
 #include "dataloader.hpp"
 
-std::string get_data_path(std::string fname)
+std::string get_data_path(int type, std::string fname)
 {
 	/*
 	 * Variable declarations:
 	*/
+	int datasource_c;
+	std::string *datasources;
+	int i;
 	std::string ret;
-
+	std::ifstream testfile;
 	/*
-	 * TODO: better data loader
+	 * Get array of possible source directories:
+	 * (depends on the type of the file)
 	*/
-	ret = "./data/";
-	ret.append(fname);
+	switch (type)
+	{
+		case DATALOADER_TYPE_IMG:
+			datasource_c = 2;
+			datasources = new std::string[datasource_c];
+			/*
+			 * Source #1:
+			 * UNIX: /usr/share/@PROJECTNAME@/data/img/
+			 * WINDOWS: FIXME: add windows-specific default path
+			*/
+#if defined(__unix__)
+			datasources[0] = "/usr/share/";
+			datasources[0].append(PROJECTNAME);
+			datasources[0].append("/data/img/");
+#elif defined(_WIN32)
+			datasources[0] = "/"; // FIXME: add windows-specific default path
+#endif
+			/*
+			 * Source #2:
+			 * ./data/img/
+			*/
+			datasources[1] = "./data/img/";
+			break;
+		case DATALOADER_TYPE_FONT:
+			datasource_c = 2;
+			datasources = new std::string[datasource_c];
+			/*
+			 * Source #1:
+			 * UNIX: /usr/share/fonts/TTF/
+			 * WINDOWS: FIXME: add windows font path
+			*/
+#if defined(__unix__)
+			datasources[0] = "/usr/share/fonts/TTF/";
+#elif defined(_WIN32)
+			datasources[0] = "/"; // FIXME: add windows font path
+#endif
+			/*
+			 * Source #2:
+			 * ./data/fonts/
+			*/
+			datasources[1] = "./data/fonts/";
+			break;
+		default:
+			datasource_c = 0;
+	}
+	/*
+	 * Run through the datasources:
+	*/
+	ret = "";
+	for (i=0; i < datasource_c; i++)
+	{
+		/*
+		 * Put the full filename together:
+		*/
+		ret = datasources[i];
+		ret.append(fname);
+		/*
+		 * Check if the file is readable:
+		*/
+		testfile.open(ret.c_str());
+		if (testfile.is_open())
+		{
+			/*
+			 * It is readable, so take this directory:
+			*/
+#ifdef DATALOADER_VERBOSE
+			std::cout << "Dataloader: '" << fname << "' found in '" << datasources[i] << "', returning." << std::endl;
+#endif // DATALOADER_VERBOSE
+			testfile.close();
+			break;
+		}
+		else
+		{
+#ifdef DATALOADER_VERBOSE
+			std::cout << "Dataloader: '" << fname << "' not found in '" << datasources[i] << "'." << std::endl;
+#endif // DATALOADER_VERBOSE
+		};
+	}
+	/*
+	 * IMPORTANT: Call delete[] to prevent memory leaks:
+	*/
+	delete[] datasources;
 	/*
 	 * Return:
 	*/

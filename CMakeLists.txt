@@ -12,6 +12,10 @@ project(sf-game)
 set(GAME_VERSION_MAJOR 0)
 set(GAME_VERSION_MINOR 1)
 # 
+# debug settings:
+# 
+#set(DATALOADER_VERBOSE 1)
+# 
 # find custom modules:
 # 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")

@@ -37,10 +37,11 @@
 	*/
 #	define PROJECTNAME "@CMAKE_PROJECT_NAME@"
 	/*
-	 * Existing functions:
+	 * Defines:
 	*/
 	#cmakedefine HAVE_PUTENV
 	#cmakedefine HAVE_SETENV
+	#cmakedefine DATALOADER_VERBOSE
 	/*
 	 * ============================
 	 * === FUNCTION DEFINITIONS ===

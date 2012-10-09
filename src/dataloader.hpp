@@ -24,6 +24,13 @@
 #	define DATALOADER_HPP
 	
 #	include <string>
+#	include <iostream>
+#	include <fstream>
+#	include <sstream>
+#	include "globals.hpp"
+
+#	define DATALOADER_TYPE_IMG 1
+#	define DATALOADER_TYPE_FONT 2
 	
-	std::string get_data_path(std::string fname);
+	std::string get_data_path(int type, std::string fname);
 #endif // DATALOADER_HPP

@@ -35,12 +35,12 @@ int Cursor::init(void)
 	/*
 	 * Load cursor1:
 	*/
-	if (!m_cursor1_texture.loadFromFile(get_data_path("img/cursor.png")))
+	if (!m_cursor1_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "cursor.png")))
 		return 1;
 	/*
 	 * Load cursor2:
 	*/
-	if (!m_cursor2_texture.loadFromFile(get_data_path("img/cursor_active.png")))
+	if (!m_cursor2_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "cursor_active.png")))
 		return 1;
 	/*
 	 * Init sprite:

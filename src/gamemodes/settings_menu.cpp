@@ -35,12 +35,12 @@ int SettingsMenu::init(void)
 	/*
 	 * Load fonts:
 	*/
-	if (!m_font1.loadFromFile(get_data_path("fonts/Vollkorn-Bold.ttf")))
+	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Bold.ttf")))
 		return 1;
 	/*
 	 * Init creeper:
 	*/
-	if (!m_img1.loadFromFile(get_data_path("img/creeper.png")))
+	if (!m_img1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "creeper.png")))
 		return 1;
 	m_img1_sprite.setTexture(m_img1);
 	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));

@@ -28,7 +28,7 @@
 #	include <fstream>
 #	include <sstream>
 #	include <stdlib.h>
-#	include <sys/stat.h> // for mkdir
-#	include <sys/types.h> // for mkdir
+#	include <sys/stat.h>
+#	include <sys/types.h>
 #	include "config_common.hpp"
 #endif // CONFIG_UNIX_HPP
