@@ -65,12 +65,12 @@ std::string get_data_path(int type, std::string fname)
 			/*
 			 * Source #1:
 			 * UNIX: /usr/share/fonts/TTF/
-			 * WINDOWS: FIXME: add windows font path
+			 * WINDOWS: C:/WINDOWS/Fonts/
 			*/
 #if defined(__unix__)
 			datasources[0] = "/usr/share/fonts/TTF/";
 #elif defined(_WIN32)
-			datasources[0] = "/"; // FIXME: add windows font path
+			datasources[0] = "C:/WINDOWS/Fonts/";
 #endif
 			/*
 			 * Source #2:
