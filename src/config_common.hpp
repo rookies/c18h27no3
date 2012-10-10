@@ -69,11 +69,11 @@
 			/*
 			 * Load config:
 			*/
-			int load(void);
+			bool load(void);
 			/*
 			 * Write config:
 			*/
-			int write(void);
+			bool write(void);
 			/*
 			 * Dump config:
 			*/
@@ -82,7 +82,7 @@
 			 * Get / set variable:
 			*/
 			ConfigVariable get(std::string index);
-			void set(std::string index, ConfigVariable value);
+			bool set(ConfigVariable var);
 		private:
 			ConfigVariable m_vars[CONFIGVAR_COUNT];
 	};

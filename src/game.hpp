@@ -74,7 +74,7 @@
 			/*
 			 * Set language:
 			*/
-			int set_language(std::string lang);
+			int set_language(std::string lang, bool reload=true);
 			/*
 			 * Wait for focus:
 			*/

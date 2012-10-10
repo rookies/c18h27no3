@@ -105,8 +105,9 @@ ConfigVariable Config::get(std::string index)
 			return m_vars[i];
 	}
 }
-void Config::set(std::string index, ConfigVariable value)
+bool Config::set(ConfigVariable var)
 {
+	std::cout << "Setting ConfigVariable '" << var.index << "'...";
 	/*
 	 * Variable declarations:
 	*/
@@ -116,7 +117,16 @@ void Config::set(std::string index, ConfigVariable value)
 	*/
 	for (i=0; i < CONFIGVAR_COUNT; i++)
 	{
-		if (m_vars[i].index.compare(index) == 0)
-			m_vars[i] = value;
+		if (m_vars[i].index.compare(var.index) == 0)
+		{
+			m_vars[i] = var;
+			std::cout << "[DONE]" << std::endl;
+			return true;
+		};
 	}
+	/*
+	 * Fallback:
+	*/
+	std::cout << "[FAIL]" << std::endl;
+	return false;
 }

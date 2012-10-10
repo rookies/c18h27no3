@@ -43,7 +43,7 @@ int Game::init(void)
 	*/
 	m_config.load();
 	m_config.dump();
-	if (m_config.write() == 1)
+	if (!m_config.write())
 		return 1;
 	/*
 	 * Get video info:
@@ -348,7 +348,7 @@ int Game::init_locale(void)
 	textdomain(PROJECTNAME);
 	return 0;
 }
-int Game::set_language(std::string lang)
+int Game::set_language(std::string lang, bool reload)
 {
 	/*
 	 * Set environment variable:
@@ -365,8 +365,9 @@ int Game::set_language(std::string lang)
 	/*
 	 * Reload menu:
 	*/
-	if (set_gamemode(m_gamemode) == 1)
-		return 1;
+	if (reload)
+		if (set_gamemode(m_gamemode) == 1)
+			return 1;
 	return 0;
 }
 int Game::wait_for_focus(void)
@@ -581,17 +582,18 @@ int Game::process_events(void)
 		if (event_processor_return.are_confvars_initialized())
 		{
 			for (i=0; i < event_processor_return.get_confvars_count(); i++)
-				m_config.set(
-					event_processor_return.get_confvar(i).index,
-					event_processor_return.get_confvar(i)
-				);
-			m_config.write();
+			{
+				if (!m_config.set(event_processor_return.get_confvar(i)))
+					return 1; // setting configvar failed, exit
+			}
+			if (!m_config.write())
+				return 1; // writing config failed, exit
 		};
 		/*
 		 * Set language?
 		*/
 		if (event_processor_return.get_language().compare("") != 0)
-			if (set_language(event_processor_return.get_language()) == 1)
+			if (set_language(event_processor_return.get_language(), false) == 1)
 				return 1; // setting language failed, exit
 		/*
 		 * Change GameMode?

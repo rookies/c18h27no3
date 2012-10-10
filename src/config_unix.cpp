@@ -22,7 +22,7 @@
  */
 #include "config_unix.hpp"
 
-int Config::load(void)
+bool Config::load(void)
 {
 	std::cout << "Loading config... ";
 	/*
@@ -48,7 +48,7 @@ int Config::load(void)
 	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;
-		return 1;
+		return false;
 	};
 	/*
 	 * ... read it:
@@ -106,9 +106,9 @@ int Config::load(void)
 	 * Return success:
 	*/
 	std::cout << "[DONE]" << std::endl;
-	return 0;
+	return true;
 }
-int Config::write(void)
+bool Config::write(void)
 {
 	std::cout << "Writing config... ";
 	/*
@@ -143,7 +143,7 @@ int Config::write(void)
 			if (res != 0)
 			{
 				std::cout << "[FAIL]" << std::endl;
-				return 1;
+				return false;
 			};
 		};
 	};
@@ -153,7 +153,7 @@ int Config::write(void)
 		 * It's not a directory, but it exists
 		*/
 		std::cout << "[FAIL]" << std::endl;
-		return 1;
+		return false;
 	};
 	/*
 	 * At this point, the directory should exist, so we can write:
@@ -163,7 +163,7 @@ int Config::write(void)
 	if (!file.is_open())
 	{
 		std::cout << "[FAIL]" << std::endl;
-		return 1;
+		return false;
 	};
 	/*
 	 * ... write into it:
@@ -195,5 +195,5 @@ int Config::write(void)
 	 * Return success:
 	*/
 	std::cout << "[DONE]" << std::endl;
-	return 0;
+	return true;
 }

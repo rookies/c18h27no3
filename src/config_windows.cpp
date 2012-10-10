@@ -22,7 +22,7 @@
  */
 #include "config_windows.hpp"
 
-int Config::load(void)
+bool Config::load(void)
 {
 	std::cout << "Loading config...";
 	/*
@@ -45,7 +45,7 @@ int Config::load(void)
 	if (RegOpenKey(HKEY_CURRENT_USER, keyname.c_str(), &hkey) != ERROR_SUCCESS)
 	{
 		std::cout << "[FAIL]" << std::endl;
-		return 1;
+		return false;
 	};
 	/*
 	 * Read values:
@@ -91,9 +91,9 @@ int Config::load(void)
 	 * Return success:
 	*/
 	std::cout << "[DONE]" << std::endl;
-	return 0;
+	return true;
 }
-int Config::write(void)
+bool Config::write(void)
 {
 	std::cout << "Writing config... ";
 	/*
@@ -126,7 +126,7 @@ int Config::write(void)
 	) != ERROR_SUCCESS)
 	{
 		std::cout << "[FAIL]" << std::endl;
-		return 1;
+		return false;
 	};
 	if (status == REG_CREATED_NEW_KEY)
 		std::cout << "Registry key created." << std::endl;
@@ -163,7 +163,7 @@ int Config::write(void)
 		{
 			std::cout << "Failed to write " << m_vars[i].index << "!" << std::endl;
 			std::cout << "[FAIL]" << std::endl;
-			return 1;
+			return false;
 		};
 	}
 	/*
@@ -174,5 +174,5 @@ int Config::write(void)
 	 * Return success:
 	*/
 	std::cout << "[DONE]" << std::endl;
-	return 0;
+	return false;
 }
