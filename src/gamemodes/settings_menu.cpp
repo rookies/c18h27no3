@@ -142,7 +142,6 @@ EventProcessorReturn SettingsMenu::process_event(sf::Event event, int mouse_x, i
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					
 					ret.set_gamemode(1); // back to gamemode 1 (main menu)
 					break;
 			}

@@ -27,6 +27,8 @@
 #	include <SFML/Graphics.hpp>
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
+#	include "../dataloader.hpp"
+#	include "../widestring.hpp"
 	
 	class SettingsControlMenu
 	{
@@ -52,6 +54,15 @@
 			*/
 			UniversalDrawableArray get_drawables(void);
 		private:
-			
+			sf::Font m_font1;
+			sf::RectangleShape m_menuitem1;
+			sf::RectangleShape m_menuitem2;
+			sf::RectangleShape m_menuitem3;
+			sf::RectangleShape m_menuitem4;
+			sf::RectangleShape m_menuitem5;
+			sf::RectangleShape m_menuitem7;
+			sf::RectangleShape m_menuitem8;
+			sf::Text m_menuitem7_txt;
+			sf::Text m_menuitem8_txt;
 	};
 #endif // SETTINGS_CONTROL_MENU_HPP

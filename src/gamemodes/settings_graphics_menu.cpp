@@ -60,8 +60,8 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	/*
 	 * Init textfield texts:
 	*/
-	m_textfield1_1_txt.setString(m_textfield1_1_buffer.get_string());
-	m_textfield1_2_txt.setString(m_textfield1_2_buffer.get_string());
+	m_textfield1_1_txt.setString((m_textfield1_1_buffer.get_int()==0)?"auto":m_textfield1_1_buffer.get_string());
+	m_textfield1_2_txt.setString((m_textfield1_2_buffer.get_int()==0)?"auto":m_textfield1_2_buffer.get_string());
 	m_textfield1_1_txt.setColor(sf::Color::Black);
 	m_textfield1_2_txt.setColor(sf::Color::Black);
 	m_textfield1_1_txt.setFont(m_font2);
@@ -229,13 +229,13 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 			if (m_textfield1_1_over)
 			{
 				m_textfield1_1_buffer.handle_keypress(event);
-				m_textfield1_1_txt.setString(m_textfield1_1_buffer.get_string());
+				m_textfield1_1_txt.setString((m_textfield1_1_buffer.get_int()==0)?"auto":m_textfield1_1_buffer.get_string());
 				calculate_sizes(m_w, m_h);
 			}
 			else if (m_textfield1_2_over)
 			{
 				m_textfield1_2_buffer.handle_keypress(event);
-				m_textfield1_2_txt.setString(m_textfield1_2_buffer.get_string());
+				m_textfield1_2_txt.setString((m_textfield1_2_buffer.get_int()==0)?"auto":m_textfield1_2_buffer.get_string());
 				calculate_sizes(m_w, m_h);
 			};
 			break;
