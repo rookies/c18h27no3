@@ -35,7 +35,11 @@
 		public:
 			SettingsControlMenu();
 			virtual ~SettingsControlMenu();
-			
+
+			/*
+			 * Get string for keycode:
+			*/
+			std::string keycode2string(sf::Keyboard::Key code);
 			/*
 			 * (Un)init:
 			*/
@@ -50,6 +54,10 @@
 			*/
 			EventProcessorReturn process_event(sf::Event event, int mouse_x, int mouse_y); /* Called in Game::process_events() */
 			/*
+			 * Reset *_over variables:
+			*/
+			void reset_menuitem_over(void);
+			/*
 			 * Get drawable items:
 			*/
 			UniversalDrawableArray get_drawables(void);
@@ -60,9 +68,17 @@
 			sf::RectangleShape m_menuitem3;
 			sf::RectangleShape m_menuitem4;
 			sf::RectangleShape m_menuitem5;
+			sf::RectangleShape m_menuitem6;
 			sf::RectangleShape m_menuitem7;
 			sf::RectangleShape m_menuitem8;
 			sf::Text m_menuitem7_txt;
 			sf::Text m_menuitem8_txt;
+			bool m_menuitem1_over;
+			bool m_menuitem2_over;
+			bool m_menuitem3_over;
+			bool m_menuitem4_over;
+			bool m_menuitem5_over;
+			bool m_menuitem7_over;
+			bool m_menuitem8_over;
 	};
 #endif // SETTINGS_CONTROL_MENU_HPP
