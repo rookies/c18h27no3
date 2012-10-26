@@ -6,10 +6,8 @@ sf-game
 ### Linux
  * *git clone git://github.com/rookies/sf-game.git*
  * *cd sf-game*
- * *./build.sh* (creates build directory and runs cmake & make)
- * *./build-mo.sh* (compiles the language files, needs gettext)
- * *./build/game*
- * or: *ln -s build/game game* and *./game*
+ * *./build.sh all*
+ * *./game*
 
 ### Windows
  * Get the source code
