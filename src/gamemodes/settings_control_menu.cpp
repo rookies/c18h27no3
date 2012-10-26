@@ -246,7 +246,7 @@ int SettingsControlMenu::init(void)
 	 * Init menuitem texts:
 	*/
 	m_menuitem7_txt.setString(get_wstring(_("settings_control_menu_entry_save")));
-	m_menuitem8_txt.setString(get_wstring(_("settings_menu_entry_abort")));
+	m_menuitem8_txt.setString(get_wstring(_("settings_control_menu_entry_abort")));
 	m_menuitem7_txt.setColor(sf::Color::Black);
 	m_menuitem8_txt.setColor(sf::Color::Black);
 	m_menuitem7_txt.setFont(m_font1);
