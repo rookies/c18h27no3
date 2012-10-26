@@ -57,6 +57,12 @@ build_mo()
 		fi
 	done
 }
+build_countlines()
+{
+	echo -n " ==> Counting lines ... "
+	cd "`dirname $0`"
+	find src -type f -exec cat {} + | wc -l
+}
 
 case $1 in
 	all)
@@ -77,7 +83,18 @@ case $1 in
 	build)
 		build_default
 		;;
+	countlines)
+		build_countlines
+		;;
 	*)
-		echo "Usage: $0 {all,update,build,mo,clean}"
+		echo "Usage: $0 {clean,build,mo,countlines,all,update}"
+		echo ""
+		echo "  clean:      remove build directory and game symlink"
+		echo "  build:      create build directory, run CMake, make and create game symlink"
+		echo "  mo:         create *.mo language files"
+		echo "  countlines: count source code lines"
+		echo ""
+		echo "  all         = clean+build+mo"
+		echo "  update      = build+mo"
 		;;
 esac
