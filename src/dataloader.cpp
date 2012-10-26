@@ -78,6 +78,17 @@ std::string get_data_path(int type, std::string fname)
 			*/
 			datasources[1] = "./data/fonts/";
 			break;
+		case DATALOADER_TYPE_LOCALE:
+			datasource_c = 2;
+			datasources = new std::string[datasource_c];
+#if defined(__unix)
+			datasources[0] = "/usr/share/locale/";
+			datasources[1] = "./locale/";
+#elif defined(_WIN32)
+			datasources[0] = "./locale/";
+			datasources[1] = "/"; // FIXME: add windows-specific locale path
+#endif
+			break;
 		default:
 			datasource_c = 0;
 	}

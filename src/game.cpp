@@ -344,7 +344,7 @@ int Game::init_locale(void)
 	if (set_envvar("LANGUAGE", m_config.get("GENERAL__LANGUAGE").value_string) == 1)
 		return 1;
 	setlocale(LC_ALL, "");
-	bindtextdomain(PROJECTNAME, "./locale");
+	bindtextdomain(PROJECTNAME, get_data_path(DATALOADER_TYPE_LOCALE, "").c_str());
 	textdomain(PROJECTNAME);
 	return 0;
 }
