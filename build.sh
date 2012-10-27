@@ -65,6 +65,11 @@ build_countlines()
 	cd "`dirname $0`"
 	find src -type f -exec cat {} + | wc -l
 }
+build_pot()
+{
+	cd "`dirname $0`"
+	xgettext --language=C++ --keyword=_ --output=- `find ./src -name "*.cpp" | xargs`
+}
 
 case $1 in
 	all)
@@ -82,6 +87,9 @@ case $1 in
 	mo)
 		build_mo
 		;;
+	pot)
+		build_pot
+		;;
 	build)
 		build_default
 		;;
@@ -89,11 +97,12 @@ case $1 in
 		build_countlines
 		;;
 	*)
-		echo "Usage: $0 {clean,build,mo,countlines,all,update}"
+		echo "Usage: $0 {clean,build,mo,pot,countlines,all,update}"
 		echo ""
 		echo "  clean:      remove build directory and game symlink"
 		echo "  build:      create build directory, run CMake, make and create game symlink"
 		echo "  mo:         create *.mo language files"
+		echo "  pot:        create *.pot language template (writes to stdout)"
 		echo "  countlines: count source code lines"
 		echo ""
 		echo "  all         = clean+build+mo"
