@@ -93,9 +93,11 @@
 			*/
 			UniversalDrawableArray get_drawables(void);
 		private:
+			int m_w, m_h;
 			ControlKeySetting *m_controlkeys;
 			int m_controlkeys_offset;
 			int m_controlkeys_showc;
+			int m_controlkeys_editable;
 			sf::Font m_font1;
 			sf::Font m_font2;
 			sf::RectangleShape m_menuitem1;

@@ -298,16 +298,17 @@ int SettingsControlMenu::init(int key_goleft, int key_goright, int key_jump)
 	 * Init control key settings array:
 	*/
 	m_controlkeys_offset = 0;
+	m_controlkeys_editable = -1;
 	m_controlkeys = new ControlKeySetting[CONFIGVAR_CONTROL_KEY_COUNT];
 	m_controlkeys[0].set_config_key("CONTROL__KEY_GOLEFT");
 	m_controlkeys[0].set_value(key_goleft);
-	m_controlkeys[0].set_caption(_("settings_graphics_menu_entry_caption_goleft"));
+	m_controlkeys[0].set_caption(_("settings_control_menu_entry_caption_goleft"));
 	m_controlkeys[1].set_config_key("CONTROL__KEY_GORIGHT");
 	m_controlkeys[1].set_value(key_goright);
-	m_controlkeys[1].set_caption(_("settings_graphics_menu_entry_caption_goright"));
+	m_controlkeys[1].set_caption(_("settings_control_menu_entry_caption_goright"));
 	m_controlkeys[2].set_config_key("CONTROL__KEY_JUMP");
 	m_controlkeys[2].set_value(key_jump);
-	m_controlkeys[2].set_caption(_("settings_graphics_menu_entry_caption_jump"));
+	m_controlkeys[2].set_caption(_("settings_control_menu_entry_caption_jump"));
 	init_controlkey_settings();
 	/*
 	 * Load fonts:
@@ -376,6 +377,8 @@ int SettingsControlMenu::uninit(void)
 }
 int SettingsControlMenu::calculate_sizes(int w, int h)
 {
+	m_w = w;
+	m_h = h;
 	/*
 	 * Variable definitions:
 	*/
@@ -460,13 +463,32 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
-			std::cout << "KEY: " << event.key.code << " => " << keycode2string(event.key.code) << std::endl;
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret.set_gamemode(2); // back to settings menu
+					if (m_controlkeys_editable > -1)
+					{
+						/*
+						 * Exit edit mode!
+						*/
+						m_controlkeys_editable = -1;
+						init_controlkey_settings();
+						calculate_sizes(m_w, m_h);
+					}
+					else
+						ret.set_gamemode(2); // back to settings menu
 					break;
 			}
+			if (m_controlkeys_editable > -1 && keycode2string(event.key.code).length() > 0)
+			{
+				/*
+				 * The user has typed a new key, so save it temporarily:
+				*/
+				m_controlkeys[m_controlkeys_editable].set_value(event.key.code);
+				m_controlkeys_editable = -1;
+				init_controlkey_settings();
+				calculate_sizes(m_w, m_h);
+			};
 			break;
 		case sf::Event::MouseMoved:
 			reset_menuitem_over();
@@ -489,11 +511,68 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 			switch (event.mouseButton.button)
 			{
 				case sf::Mouse::Left:
-					if (m_menuitem7_over)
+					if (m_menuitem1_over && m_controlkeys_editable == -1)
+					{
+						m_controlkeys_editable = 0;
+						m_menuitem1_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_menuitem2_over && m_controlkeys_editable == -1)
+					{
+						m_controlkeys_editable = 1;
+						m_menuitem2_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_menuitem3_over && m_controlkeys_editable == -1)
+					{
+						m_controlkeys_editable = 2;
+						m_menuitem3_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_menuitem4_over && m_controlkeys_editable == -1)
+					{
+						m_controlkeys_editable = 3;
+						m_menuitem4_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_menuitem5_over && m_controlkeys_editable == -1)
+					{
+						m_controlkeys_editable = 4;
+						m_menuitem5_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_menuitem7_over)
 					{
 						/*
 						 * Save!
 						*/
+						ConfigVariable var1, var2, var3;
+						ret.init_confvars(CONFIGVAR_CONTROL_KEY_COUNT);
+						/*
+						 * GoLeft:
+						*/
+						var1.type = CONFIGVAR_TYPE_INTEGER;
+						var1.index = "CONTROL__KEY_GOLEFT";
+						var1.value_int = m_controlkeys[0].get_value();
+						ret.add_confvar(var1);
+						/*
+						 * GoRight:
+						*/
+						var2.type = CONFIGVAR_TYPE_INTEGER;
+						var2.index = "CONTROL__KEY_GORIGHT";
+						var2.value_int = m_controlkeys[1].get_value();
+						ret.add_confvar(var2);
+						/*
+						 * Jump:
+						*/
+						var3.type = CONFIGVAR_TYPE_INTEGER;
+						var3.index = "CONTROL__KEY_JUMP";
+						var3.value_int = m_controlkeys[2].get_value();
+						ret.add_confvar(var3);
+						/*
+						 * Back to settings menu:
+						*/
+						ret.set_gamemode(2);
 					}
 					else if (m_menuitem8_over)
 						ret.set_gamemode(2); // back to settings menu
