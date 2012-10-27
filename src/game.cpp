@@ -341,10 +341,26 @@ int Game::set_envvar(std::string name, std::string value)
 }
 int Game::init_locale(void)
 {
+	/*
+	 * Variable declarations:
+	*/
+	std::string fname;
+	/*
+	 * Set language & locale:
+	*/
 	if (set_envvar("LANGUAGE", m_config.get("GENERAL__LANGUAGE").value_string) == 1)
 		return 1;
 	setlocale(LC_ALL, "");
-	bindtextdomain(PROJECTNAME, get_data_path(DATALOADER_TYPE_LOCALE, "").c_str());
+	/*
+	 * Bind domain:
+	*/
+	fname = "en/LC_MESSAGES/";
+	fname.append(PROJECTNAME);
+	fname.append(".mo");
+	bindtextdomain(PROJECTNAME, get_data_path(DATALOADER_TYPE_LOCALE, fname, false).c_str());
+	/*
+	 * Set domain:
+	*/
 	textdomain(PROJECTNAME);
 	return 0;
 }

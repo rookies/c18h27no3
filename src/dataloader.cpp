@@ -22,7 +22,7 @@
  */
 #include "dataloader.hpp"
 
-std::string get_data_path(int type, std::string fname)
+std::string get_data_path(int type, std::string fname, bool append_fname)
 {
 	/*
 	 * Variable declarations:
@@ -30,7 +30,7 @@ std::string get_data_path(int type, std::string fname)
 	int datasource_c;
 	std::string *datasources;
 	int i;
-	std::string ret;
+	std::string ret_nofname, ret;
 	std::ifstream testfile;
 	/*
 	 * Get array of possible source directories:
@@ -81,13 +81,21 @@ std::string get_data_path(int type, std::string fname)
 		case DATALOADER_TYPE_LOCALE:
 			datasource_c = 2;
 			datasources = new std::string[datasource_c];
+			/*
+			 * Source #1:
+			 * UNIX: /usr/share/locale/
+			 * WINDOWS: FIXME: add windows-specific locale path
+			*/
 #if defined(__unix)
 			datasources[0] = "/usr/share/locale/";
-			datasources[1] = "./locale/";
 #elif defined(_WIN32)
-			datasources[0] = "./locale/";
-			datasources[1] = "/"; // FIXME: add windows-specific locale path
+			datasources[0] = "/"; // FIXME: add windows-specific locale path
 #endif
+			/*
+			 * Source #2:
+			 * ./locale/
+			*/
+			datasources[1] = "./locale/";
 			break;
 		default:
 			datasource_c = 0;
@@ -95,12 +103,14 @@ std::string get_data_path(int type, std::string fname)
 	/*
 	 * Run through the datasources:
 	*/
+	ret_nofname = "";
 	ret = "";
 	for (i=0; i < datasource_c; i++)
 	{
 		/*
 		 * Put the full filename together:
 		*/
+		ret_nofname = datasources[i];
 		ret = datasources[i];
 		ret.append(fname);
 		/*
@@ -136,5 +146,8 @@ std::string get_data_path(int type, std::string fname)
 	/*
 	 * Return:
 	*/
-	return ret;
+	if (append_fname)
+		return ret;
+	else
+		return ret_nofname;
 }

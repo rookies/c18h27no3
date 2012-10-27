@@ -1,10 +1,10 @@
-sf-game
+c18h27no3
 =======
 
 ## Installation
 
 ### Linux
- * *git clone git://github.com/rookies/sf-game.git*
+ * *git clone git://github.com/rookies/c18h27no3.git*
  * *cd sf-game*
  * *./build.sh all*
  * *./game*
@@ -24,7 +24,7 @@ sf-game
  * CMake the game
  * make the game
  * copy *game.exe* from build dir to source dir
- * create .mo files ({GAME_SOURCEDIR}/locale/$lang.po => {GAME_SOURCEDIR}/locale/$lang/LC_MESSAGES/sf-game.mo)
+ * create .mo files ({GAME_SOURCEDIR}/locale/$lang.po => {GAME_SOURCEDIR}/locale/$lang/LC_MESSAGES/c18h27no3.mo)
  * Start the game and hope that it works!
 
 ## License

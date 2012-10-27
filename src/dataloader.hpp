@@ -33,5 +33,5 @@
 #	define DATALOADER_TYPE_FONT 2
 #	define DATALOADER_TYPE_LOCALE 3
 	
-	std::string get_data_path(int type, std::string fname);
+	std::string get_data_path(int type, std::string fname, bool append_fname=true);
 #endif // DATALOADER_HPP
