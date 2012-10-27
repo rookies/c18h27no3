@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-27 22:11+0200\n"
-"PO-Revision-Date: 2012-10-27 22:12+0100\n"
+"POT-Creation-Date: 2012-10-27 22:27+0200\n"
+"PO-Revision-Date: 2012-10-27 22:28+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: en\n"
@@ -197,18 +197,22 @@ msgid "settings_control_menu_entry_caption_jump"
 msgstr "Jump"
 
 #: src/gamemodes/settings_control_menu.cpp:338
+msgid "settings_control_menu_warning_keyused"
+msgstr "Key already used!"
+
+#: src/gamemodes/settings_control_menu.cpp:339
 msgid "settings_control_menu_entry_save"
 msgstr "Save"
 
-#: src/gamemodes/settings_control_menu.cpp:339
+#: src/gamemodes/settings_control_menu.cpp:340
 msgid "settings_control_menu_entry_abort"
 msgstr "Abort"
 
-#: src/gamemodes/settings_control_menu.cpp:524
-#: src/gamemodes/settings_control_menu.cpp:530
-#: src/gamemodes/settings_control_menu.cpp:536
-#: src/gamemodes/settings_control_menu.cpp:542
-#: src/gamemodes/settings_control_menu.cpp:548
+#: src/gamemodes/settings_control_menu.cpp:554
+#: src/gamemodes/settings_control_menu.cpp:560
+#: src/gamemodes/settings_control_menu.cpp:566
+#: src/gamemodes/settings_control_menu.cpp:572
+#: src/gamemodes/settings_control_menu.cpp:578
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Press key-"
 

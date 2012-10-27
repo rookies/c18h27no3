@@ -98,6 +98,8 @@
 			int m_controlkeys_offset;
 			int m_controlkeys_showc;
 			int m_controlkeys_editable;
+			bool m_warning_keyused;
+			sf::Clock m_warning_keyused_clock;
 			sf::Font m_font1;
 			sf::Font m_font2;
 			sf::RectangleShape m_menuitem1;
@@ -119,6 +121,7 @@
 			sf::Text m_menuitem4_value;
 			sf::Text m_menuitem5_value;
 			sf::Text m_menuitem6_txt;
+			sf::Text m_menuitem6_txt_alt;
 			sf::Text m_menuitem7_txt;
 			sf::Text m_menuitem8_txt;
 			bool m_menuitem1_over;

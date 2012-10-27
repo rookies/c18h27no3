@@ -55,7 +55,7 @@ void ControlKeySetting::set_caption(std::string caption)
 }
 SettingsControlMenu::SettingsControlMenu()
 {
-	
+	m_warning_keyused = false;
 }
 SettingsControlMenu::~SettingsControlMenu()
 {
@@ -335,12 +335,15 @@ int SettingsControlMenu::init(int key_goleft, int key_goright, int key_jump)
 	/*
 	 * Init menuitem texts:
 	*/
+	m_menuitem6_txt_alt.setString(get_wstring(_("settings_control_menu_warning_keyused")));
 	m_menuitem7_txt.setString(get_wstring(_("settings_control_menu_entry_save")));
 	m_menuitem8_txt.setString(get_wstring(_("settings_control_menu_entry_abort")));
 	m_menuitem6_txt.setColor(sf::Color::Black);
+	m_menuitem6_txt_alt.setColor(sf::Color::Red);
 	m_menuitem7_txt.setColor(sf::Color::Black);
 	m_menuitem8_txt.setColor(sf::Color::Black);
 	m_menuitem6_txt.setFont(m_font2);
+	m_menuitem6_txt_alt.setFont(m_font2);
 	m_menuitem7_txt.setFont(m_font1);
 	m_menuitem8_txt.setFont(m_font1);
 	/*
@@ -427,9 +430,11 @@ int SettingsControlMenu::calculate_sizes(int w, int h)
 	 * Update menuitem text size & positions:
 	*/
 	m_menuitem6_txt.setCharacterSize(menuitem_height/2);
+	m_menuitem6_txt_alt.setCharacterSize(menuitem_height/2);
 	m_menuitem7_txt.setCharacterSize(menuitem_height/2);
 	m_menuitem8_txt.setCharacterSize(menuitem_height/2);
 	m_menuitem6_txt.setPosition((w-(int)m_menuitem6_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*m_controlkeys_showc+text_gap+menuitem_gap);
+	m_menuitem6_txt_alt.setPosition((w-(int)m_menuitem6_txt_alt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*m_controlkeys_showc+text_gap+menuitem_gap);
 	m_menuitem7_txt.setPosition((w-(int)m_menuitem7_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*(m_controlkeys_showc+1)+text_gap+menuitem_gap);
 	m_menuitem8_txt.setPosition((w-(int)m_menuitem8_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*(m_controlkeys_showc+2)+text_gap+menuitem_gap);
 	/*
@@ -466,6 +471,8 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 	 * Variable declarations:
 	*/
 	EventProcessorReturn ret;
+	bool already_used;
+	int i;
 	
 	switch (event.type)
 	{
@@ -489,12 +496,35 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 			if (m_controlkeys_editable > -1 && keycode2string(event.key.code).length() > 0)
 			{
 				/*
-				 * The user has typed a new key, so save it temporarily:
+				 * The user has typed a new key, so check if it is already used:
 				*/
-				m_controlkeys[m_controlkeys_editable].set_value(event.key.code);
-				m_controlkeys_editable = -1;
-				init_controlkey_settings();
-				calculate_sizes(m_w, m_h);
+				already_used = false;
+				for (i=0; i < CONFIGVAR_CONTROL_KEY_COUNT; i++)
+				{
+					if (m_controlkeys[i].get_value() == event.key.code && i != m_controlkeys_editable)
+					{
+						already_used = true;
+						break;
+					};
+				}
+				if (already_used)
+				{
+					/*
+					 * And show an error message:
+					*/
+					m_warning_keyused = true;
+					m_warning_keyused_clock.restart();
+				}
+				else
+				{
+					/*
+					 * ... or save it temporarily:
+					*/
+					m_controlkeys[m_controlkeys_editable].set_value(event.key.code);
+					m_controlkeys_editable = -1;
+					init_controlkey_settings();
+					calculate_sizes(m_w, m_h);
+				};
 			};
 			break;
 		case sf::Event::MouseMoved:
@@ -606,6 +636,11 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 	*/
 	UniversalDrawableArray arr;
 	/*
+	 * Check if we should hide the warning message:
+	*/
+	if (m_warning_keyused && m_warning_keyused_clock.getElapsedTime().asSeconds() >= 2)
+		m_warning_keyused = false;
+	/*
 	 * Init UniversalDrawableArray:
 	*/
 	arr.init(6+(m_controlkeys_showc*3));
@@ -614,7 +649,10 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 	*/
 	arr.set_rectshape(0, m_menuitem6);
 	//
-	arr.set_text(1, m_menuitem6_txt);
+	if (m_warning_keyused)
+		arr.set_text(1, m_menuitem6_txt_alt);
+	else
+		arr.set_text(1, m_menuitem6_txt);
 	//
 	if (m_menuitem7_over)
 		m_menuitem7.setFillColor(COLOR_MENU_ELEMENT_HOVER);
