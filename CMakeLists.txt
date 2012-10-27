@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.8)
 # 
 # project name:
 # 
-project(sf-game)
+project(c18h27no3)
 # 
 # project version:
 # 

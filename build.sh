@@ -1,4 +1,6 @@
 #!/bin/bash
+PROJECTNAME="c18h27no3"
+
 build_default()
 {
 	## Create build directory:
@@ -48,7 +50,7 @@ build_mo()
 			mkdir "$lang/LC_MESSAGES" || exit 1
 		fi
 		## Create .mo file:
-		msgfmt -o "$lang/LC_MESSAGES/sf-game.mo" "$langf"
+		msgfmt -o "$lang/LC_MESSAGES/$PROJECTNAME.mo" "$langf"
 		## Print status on console:
 		if [[ $? -eq 0 ]]; then
 			echo "[DONE]"
