@@ -81,7 +81,7 @@ build_countlines()
 build_pot()
 {
 	cd "`dirname $0`"
-	xgettext --language=C++ --keyword=_ --output=- `find ./src -type f -name "*.cpp" | xargs`
+	xgettext --language=C++ --keyword=_ --keyword=__ --output=- `find ./src -type f -name "*.cpp" | xargs`
 }
 
 case $1 in

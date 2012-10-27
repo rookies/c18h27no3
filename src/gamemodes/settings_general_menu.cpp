@@ -49,8 +49,8 @@ int SettingsGeneralMenu::init(std::string language, bool fpscounter)
 	 * Init ConfigChooser instance for fps counter:
 	*/
 	m_config_chooser2.init(CONFIGVAR_TYPE_BOOLEAN, 2);
-	m_config_chooser2.add_bool("settings_general_menu_entry_value_fpscounter_enabled", true);
-	m_config_chooser2.add_bool("settings_general_menu_entry_value_fpscounter_disabled", false);
+	m_config_chooser2.add_bool(__("settings_general_menu_entry_value_fpscounter_enabled"), true);
+	m_config_chooser2.add_bool(__("settings_general_menu_entry_value_fpscounter_disabled"), false);
 	m_config_chooser2.set_actual_bool(fpscounter);
 	/*
 	 * Init arrows:

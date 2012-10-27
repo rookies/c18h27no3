@@ -49,8 +49,8 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	 * Init ConfigChooser instance for fullscreen:
 	*/
 	m_config_chooser2.init(CONFIGVAR_TYPE_BOOLEAN, 2);
-	m_config_chooser2.add_bool("settings_graphics_menu_entry_value_fullscreen_enabled", true);
-	m_config_chooser2.add_bool("settings_graphics_menu_entry_value_fullscreen_disabled", false);
+	m_config_chooser2.add_bool(__("settings_graphics_menu_entry_value_fullscreen_enabled"), true);
+	m_config_chooser2.add_bool(__("settings_graphics_menu_entry_value_fullscreen_disabled"), false);
 	m_config_chooser2.set_actual_bool(fullscreen);
 	/*
 	 * Init textfields:

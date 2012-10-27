@@ -50,6 +50,7 @@
 	 * _() = gettext():
 	*/
 #	define _(String) gettext(String)
+#	define __(String) (String)
 	/*
 	 * =========================
 	 * === OTHER DEFINITIONS ===

@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the main package.
 # Robert Knauer
 # Robert Knauer <robert@privatdemail.net>, 2012.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
-"Report-Msgid-Bugs-To: Robert Knauer <robert@privatdemail.net>\n"
-"POT-Creation-Date: 2012-09-23 17:50+0200\n"
-"PO-Revision-Date: 2012-09-30 20:04+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-27 19:07+0200\n"
+"PO-Revision-Date: 2012-10-27 19:10+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -17,71 +16,198 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "main_menu_entry_newgame"
-msgstr "Neues Spiel"
-
-msgid "main_menu_entry_loadgame"
-msgstr "Spiel Laden"
-
-msgid "main_menu_entry_leveleditor"
-msgstr "Level-Editor"
-
-msgid "main_menu_entry_settings"
-msgstr "Einstellungen"
-
-msgid "main_menu_entry_credits"
-msgstr "Credits"
-
-msgid "main_menu_entry_exit"
-msgstr "Spiel Beenden"
-
-msgid "settings_menu_entry_general"
-msgstr "Allgemein"
-
-msgid "settings_menu_entry_graphics"
-msgstr "Grafik"
-
-msgid "settings_menu_entry_control"
-msgstr "Steuerung"
-
-msgid "settings_menu_entry_sound"
-msgstr "Sound"
-
-msgid "settings_menu_entry_back"
-msgstr "Zurück zum Hauptmenü"
-
-msgid "settings_general_menu_entry_header_language"
-msgstr "Sprache"
-
-msgid "settings_general_menu_entry_header_fpscounter"
-msgstr "FPS-Anzeige"
-
-msgid "settings_general_menu_entry_abort"
-msgstr "Abbrechen"
-
-msgid "settings_general_menu_entry_save"
-msgstr "Speichern"
-
-msgid "settings_graphics_menu_entry_header_resolution"
-msgstr "Bildschirmauflösung"
-
-msgid "settings_graphics_menu_entry_header_fullscreen"
-msgstr "Vollbild"
-
-msgid "settings_graphics_menu_entry_value_fullscreen_enabled"
-msgstr "aktiviert"
-
-msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
-msgstr "deaktiviert"
-
+#: src/gamemodes/settings_general_menu.cpp:52
 msgid "settings_general_menu_entry_value_fpscounter_enabled"
 msgstr "anzeigen"
 
+#: src/gamemodes/settings_general_menu.cpp:53
 msgid "settings_general_menu_entry_value_fpscounter_disabled"
 msgstr "nicht anzeigen"
 
+#: src/gamemodes/settings_general_menu.cpp:82
+msgid "settings_general_menu_entry_header_language"
+msgstr "Sprache"
+
+#: src/gamemodes/settings_general_menu.cpp:83
+msgid "settings_general_menu_entry_header_fpscounter"
+msgstr "FPS-Anzeige"
+
+#: src/gamemodes/settings_general_menu.cpp:100
+msgid "settings_general_menu_entry_save"
+msgstr "Speichern"
+
+#: src/gamemodes/settings_general_menu.cpp:101
+msgid "settings_general_menu_entry_abort"
+msgstr "Abbrechen"
+
+#: src/gamemodes/settings_menu.cpp:58
+msgid "settings_menu_entry_general"
+msgstr "Allgemein"
+
+#: src/gamemodes/settings_menu.cpp:59
+msgid "settings_menu_entry_graphics"
+msgstr "Grafik"
+
+#: src/gamemodes/settings_menu.cpp:60
+msgid "settings_menu_entry_control"
+msgstr "Steuerung"
+
+#: src/gamemodes/settings_menu.cpp:61
+msgid "settings_menu_entry_sound"
+msgstr "Sound"
+
+#: src/gamemodes/settings_menu.cpp:62
+msgid "settings_menu_entry_back"
+msgstr "Zurück zum Hauptmenü"
+
+#: src/gamemodes/settings_graphics_menu.cpp:52
+msgid "settings_graphics_menu_entry_value_fullscreen_enabled"
+msgstr "aktiviert"
+
+#: src/gamemodes/settings_graphics_menu.cpp:53
+msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
+msgstr "deaktiviert"
+
+#: src/gamemodes/settings_graphics_menu.cpp:92
+msgid "settings_graphics_menu_entry_header_resolution"
+msgstr "Bildschirmauflösung"
+
+#: src/gamemodes/settings_graphics_menu.cpp:93
+msgid "settings_graphics_menu_entry_header_fullscreen"
+msgstr "Vollbild"
+
+#: src/gamemodes/settings_graphics_menu.cpp:110
+msgid "settings_graphics_menu_entry_save"
+msgstr "Speichern"
+
+#: src/gamemodes/settings_graphics_menu.cpp:111
 msgid "settings_graphics_menu_entry_abort"
 msgstr "Abbrechen"
 
-msgid "settings_graphics_menu_entry_save"
+#: src/gamemodes/settings_control_menu.cpp:129
+msgid "key_LControl"
+msgstr "StrgL"
+
+#: src/gamemodes/settings_control_menu.cpp:131
+msgid "key_LShift"
+msgstr "UmschL"
+
+#: src/gamemodes/settings_control_menu.cpp:133
+msgid "key_LAlt"
+msgstr "AltL"
+
+#: src/gamemodes/settings_control_menu.cpp:135
+msgid "key_LSystem"
+msgstr "SystemL"
+
+#: src/gamemodes/settings_control_menu.cpp:137
+msgid "key_RControl"
+msgstr "StrgR"
+
+#: src/gamemodes/settings_control_menu.cpp:139
+msgid "key_RShift"
+msgstr "UmschR"
+
+#: src/gamemodes/settings_control_menu.cpp:141
+msgid "key_RAlt"
+msgstr "AltR"
+
+#: src/gamemodes/settings_control_menu.cpp:143
+msgid "key_RSystem"
+msgstr "SystemR"
+
+#: src/gamemodes/settings_control_menu.cpp:145
+msgid "key_Menu"
+msgstr "Menü"
+
+#: src/gamemodes/settings_control_menu.cpp:147
+msgid "key_Space"
+msgstr "Leertaste"
+
+#: src/gamemodes/settings_control_menu.cpp:149
+msgid "key_Return"
+msgstr "Enter"
+
+#: src/gamemodes/settings_control_menu.cpp:151
+msgid "key_Back"
+msgstr "Löschen"
+
+#: src/gamemodes/settings_control_menu.cpp:153
+msgid "key_Tab"
+msgstr "Tabulator"
+
+#: src/gamemodes/settings_control_menu.cpp:155
+msgid "key_PageUp"
+msgstr "Bild auf"
+
+#: src/gamemodes/settings_control_menu.cpp:157
+msgid "key_PageDown"
+msgstr "Bild ab"
+
+#: src/gamemodes/settings_control_menu.cpp:159
+msgid "key_End"
+msgstr "Ende"
+
+#: src/gamemodes/settings_control_menu.cpp:161
+msgid "key_Home"
+msgstr "Pos 1"
+
+#: src/gamemodes/settings_control_menu.cpp:163
+msgid "key_Insert"
+msgstr "Einfg"
+
+#: src/gamemodes/settings_control_menu.cpp:165
+msgid "key_Delete"
+msgstr "Entf"
+
+#: src/gamemodes/settings_control_menu.cpp:167
+msgid "key_Left"
+msgstr "Pfeil links"
+
+#: src/gamemodes/settings_control_menu.cpp:169
+msgid "key_Right"
+msgstr "Pfeil rechts"
+
+#: src/gamemodes/settings_control_menu.cpp:171
+msgid "key_Up"
+msgstr "Pfeil hoch"
+
+#: src/gamemodes/settings_control_menu.cpp:173
+msgid "key_Down"
+msgstr "Pfeil runter"
+
+#: src/gamemodes/settings_control_menu.cpp:175
+msgid "key_Pause"
+msgstr "Pause"
+
+#: src/gamemodes/settings_control_menu.cpp:248
+msgid "settings_control_menu_entry_save"
 msgstr "Speichern"
+
+#: src/gamemodes/settings_control_menu.cpp:249
+msgid "settings_control_menu_entry_abort"
+msgstr "Abbrechen"
+
+#: src/gamemodes/main_menu.cpp:59
+msgid "main_menu_entry_newgame"
+msgstr "Neues Spiel"
+
+#: src/gamemodes/main_menu.cpp:60
+msgid "main_menu_entry_loadgame"
+msgstr "Spiel Laden"
+
+#: src/gamemodes/main_menu.cpp:61
+msgid "main_menu_entry_leveleditor"
+msgstr "Level-Editor"
+
+#: src/gamemodes/main_menu.cpp:62
+msgid "main_menu_entry_settings"
+msgstr "Einstellungen"
+
+#: src/gamemodes/main_menu.cpp:63
+msgid "main_menu_entry_credits"
+msgstr "Credits"
+
+#: src/gamemodes/main_menu.cpp:64
+msgid "main_menu_entry_exit"
+msgstr "Spiel Beenden"
