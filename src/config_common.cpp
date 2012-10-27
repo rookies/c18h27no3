@@ -54,6 +54,18 @@ Config::Config()
 	m_vars[4].index = "GRAPHICS__FULLSCREEN";
 	m_vars[4].type = CONFIGVAR_TYPE_BOOLEAN;
 	m_vars[4].value_bool = true;
+	
+	m_vars[5].index = "CONTROL__KEY_GOLEFT";
+	m_vars[5].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[5].value_int = sf::Keyboard::Left;
+	
+	m_vars[6].index = "CONTROL__KEY_GORIGHT";
+	m_vars[6].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[6].value_int = sf::Keyboard::Right;
+	
+	m_vars[7].index = "CONTROL__KEY_JUMP";
+	m_vars[7].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[7].value_int = sf::Keyboard::Space;
 }
 Config::~Config()
 {

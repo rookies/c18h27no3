@@ -25,6 +25,7 @@
 	
 #	include <iostream>
 #	include <string>
+#	include <SFML/Window/Keyboard.hpp>
 #	include "globals.hpp"
 	
 #	define CONFIGVAR_TYPE_INTEGER 1

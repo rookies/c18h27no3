@@ -94,7 +94,7 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	/*
 	 * Update creeper position & size:
 	*/
-	m_img1_sprite.setPosition((w-creeper_height)/2, creeper_yoffset);
+	m_img1_sprite.setPosition((w-m_img1_sprite.getGlobalBounds().width)/2, creeper_yoffset);
 	m_img1_sprite.setScale(creeper_height/98, creeper_height/98);
 	/*
 	 * Update menuitem positions & sizes:

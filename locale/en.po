@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-27 19:07+0200\n"
-"PO-Revision-Date: 2012-10-27 19:14+0100\n"
+"POT-Creation-Date: 2012-10-27 21:14+0200\n"
+"PO-Revision-Date: 2012-10-27 21:26+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: en\n"
@@ -83,107 +83,119 @@ msgstr "Save"
 msgid "settings_graphics_menu_entry_abort"
 msgstr "Abort"
 
-#: src/gamemodes/settings_control_menu.cpp:129
+#: src/gamemodes/settings_control_menu.cpp:161
 msgid "key_LControl"
 msgstr "CtrlL"
 
-#: src/gamemodes/settings_control_menu.cpp:131
+#: src/gamemodes/settings_control_menu.cpp:163
 msgid "key_LShift"
 msgstr "ShiftL"
 
-#: src/gamemodes/settings_control_menu.cpp:133
+#: src/gamemodes/settings_control_menu.cpp:165
 msgid "key_LAlt"
 msgstr "AltL"
 
-#: src/gamemodes/settings_control_menu.cpp:135
+#: src/gamemodes/settings_control_menu.cpp:167
 msgid "key_LSystem"
 msgstr "SystemL"
 
-#: src/gamemodes/settings_control_menu.cpp:137
+#: src/gamemodes/settings_control_menu.cpp:169
 msgid "key_RControl"
 msgstr "CtrlR"
 
-#: src/gamemodes/settings_control_menu.cpp:139
+#: src/gamemodes/settings_control_menu.cpp:171
 msgid "key_RShift"
 msgstr "ShiftR"
 
-#: src/gamemodes/settings_control_menu.cpp:141
+#: src/gamemodes/settings_control_menu.cpp:173
 msgid "key_RAlt"
 msgstr "AltR"
 
-#: src/gamemodes/settings_control_menu.cpp:143
+#: src/gamemodes/settings_control_menu.cpp:175
 msgid "key_RSystem"
 msgstr "SystemR"
 
-#: src/gamemodes/settings_control_menu.cpp:145
+#: src/gamemodes/settings_control_menu.cpp:177
 msgid "key_Menu"
 msgstr "Menu"
 
-#: src/gamemodes/settings_control_menu.cpp:147
+#: src/gamemodes/settings_control_menu.cpp:179
 msgid "key_Space"
 msgstr "Space"
 
-#: src/gamemodes/settings_control_menu.cpp:149
+#: src/gamemodes/settings_control_menu.cpp:181
 msgid "key_Return"
 msgstr "Return"
 
-#: src/gamemodes/settings_control_menu.cpp:151
+#: src/gamemodes/settings_control_menu.cpp:183
 msgid "key_Back"
 msgstr "Backspace"
 
-#: src/gamemodes/settings_control_menu.cpp:153
+#: src/gamemodes/settings_control_menu.cpp:185
 msgid "key_Tab"
 msgstr "Tab"
 
-#: src/gamemodes/settings_control_menu.cpp:155
+#: src/gamemodes/settings_control_menu.cpp:187
 msgid "key_PageUp"
 msgstr "Page up"
 
-#: src/gamemodes/settings_control_menu.cpp:157
+#: src/gamemodes/settings_control_menu.cpp:189
 msgid "key_PageDown"
 msgstr "Page down"
 
-#: src/gamemodes/settings_control_menu.cpp:159
+#: src/gamemodes/settings_control_menu.cpp:191
 msgid "key_End"
 msgstr "End"
 
-#: src/gamemodes/settings_control_menu.cpp:161
+#: src/gamemodes/settings_control_menu.cpp:193
 msgid "key_Home"
 msgstr "Home"
 
-#: src/gamemodes/settings_control_menu.cpp:163
+#: src/gamemodes/settings_control_menu.cpp:195
 msgid "key_Insert"
 msgstr "Insert"
 
-#: src/gamemodes/settings_control_menu.cpp:165
+#: src/gamemodes/settings_control_menu.cpp:197
 msgid "key_Delete"
 msgstr "Delete"
 
-#: src/gamemodes/settings_control_menu.cpp:167
+#: src/gamemodes/settings_control_menu.cpp:199
 msgid "key_Left"
 msgstr "Arrow left"
 
-#: src/gamemodes/settings_control_menu.cpp:169
+#: src/gamemodes/settings_control_menu.cpp:201
 msgid "key_Right"
 msgstr "Arrow right"
 
-#: src/gamemodes/settings_control_menu.cpp:171
+#: src/gamemodes/settings_control_menu.cpp:203
 msgid "key_Up"
 msgstr "Arrow up"
 
-#: src/gamemodes/settings_control_menu.cpp:173
+#: src/gamemodes/settings_control_menu.cpp:205
 msgid "key_Down"
 msgstr "Arrow down"
 
-#: src/gamemodes/settings_control_menu.cpp:175
+#: src/gamemodes/settings_control_menu.cpp:207
 msgid "key_Pause"
 msgstr "Pause"
 
-#: src/gamemodes/settings_control_menu.cpp:248
+#: src/gamemodes/settings_control_menu.cpp:304
+msgid "settings_graphics_menu_entry_caption_goleft"
+msgstr "Run left"
+
+#: src/gamemodes/settings_control_menu.cpp:307
+msgid "settings_graphics_menu_entry_caption_goright"
+msgstr "Run right"
+
+#: src/gamemodes/settings_control_menu.cpp:310
+msgid "settings_graphics_menu_entry_caption_jump"
+msgstr "Jump"
+
+#: src/gamemodes/settings_control_menu.cpp:334
 msgid "settings_control_menu_entry_save"
 msgstr "Save"
 
-#: src/gamemodes/settings_control_menu.cpp:249
+#: src/gamemodes/settings_control_menu.cpp:335
 msgid "settings_control_menu_entry_abort"
 msgstr "Abort"
 

@@ -29,6 +29,33 @@
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
 #	include "../widestring.hpp"
+
+	class ControlKeySetting
+	{
+		public:
+			ControlKeySetting();
+			virtual ~ControlKeySetting();
+
+			/*
+			 * Get / Set config key:
+			*/
+			std::string get_config_key(void);
+			void set_config_key(std::string key);
+			/*
+			 * Get / Set value:
+			*/
+			int get_value(void);
+			void set_value(int value);
+			/*
+			 * Get / Set caption:
+			*/
+			std::string get_caption(void);
+			void set_caption(std::string caption);
+		private:
+			std::string m_config_key;
+			int m_value;
+			std::string m_caption;
+	};
 	
 	class SettingsControlMenu
 	{
@@ -39,11 +66,15 @@
 			/*
 			 * Get string for keycode:
 			*/
-			std::string keycode2string(sf::Keyboard::Key code);
+			std::string keycode2string(int code);
+			/*
+			 * (Re)init control key settings:
+			*/
+			void init_controlkey_settings(void);
 			/*
 			 * (Un)init:
 			*/
-			int init(void); /* Called in Game::init_gamemode() */
+			int init(int key_goleft, int key_goright, int key_jump); /* Called in Game::init_gamemode() */
 			int uninit(void); /* Called in Game::uninit_gamemode() */
 			/*
 			 * Calculate sizes:
@@ -62,7 +93,11 @@
 			*/
 			UniversalDrawableArray get_drawables(void);
 		private:
+			ControlKeySetting *m_controlkeys;
+			int m_controlkeys_offset;
+			int m_controlkeys_showc;
 			sf::Font m_font1;
+			sf::Font m_font2;
 			sf::RectangleShape m_menuitem1;
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;
@@ -71,6 +106,16 @@
 			sf::RectangleShape m_menuitem6;
 			sf::RectangleShape m_menuitem7;
 			sf::RectangleShape m_menuitem8;
+			sf::Text m_menuitem1_caption;
+			sf::Text m_menuitem2_caption;
+			sf::Text m_menuitem3_caption;
+			sf::Text m_menuitem4_caption;
+			sf::Text m_menuitem5_caption;
+			sf::Text m_menuitem1_value;
+			sf::Text m_menuitem2_value;
+			sf::Text m_menuitem3_value;
+			sf::Text m_menuitem4_value;
+			sf::Text m_menuitem5_value;
 			sf::Text m_menuitem7_txt;
 			sf::Text m_menuitem8_txt;
 			bool m_menuitem1_over;
