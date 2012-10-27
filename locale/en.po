@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-27 21:37+0200\n"
-"PO-Revision-Date: 2012-10-27 21:38+0100\n"
+"POT-Creation-Date: 2012-10-27 22:11+0200\n"
+"PO-Revision-Date: 2012-10-27 22:12+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: en\n"
@@ -179,31 +179,36 @@ msgstr "Arrow down"
 msgid "key_Pause"
 msgstr "Pause"
 
-#: src/gamemodes/settings_control_menu.cpp:305
+#: src/gamemodes/settings_control_menu.cpp:295
+#, c-format
+msgid "settings_control_menu_entry_pagecount %d %d"
+msgstr "Page %d of %d"
+
+#: src/gamemodes/settings_control_menu.cpp:308
 msgid "settings_control_menu_entry_caption_goleft"
 msgstr "Run left"
 
-#: src/gamemodes/settings_control_menu.cpp:308
+#: src/gamemodes/settings_control_menu.cpp:311
 msgid "settings_control_menu_entry_caption_goright"
 msgstr "Run right"
 
-#: src/gamemodes/settings_control_menu.cpp:311
+#: src/gamemodes/settings_control_menu.cpp:314
 msgid "settings_control_menu_entry_caption_jump"
 msgstr "Jump"
 
-#: src/gamemodes/settings_control_menu.cpp:335
+#: src/gamemodes/settings_control_menu.cpp:338
 msgid "settings_control_menu_entry_save"
 msgstr "Save"
 
-#: src/gamemodes/settings_control_menu.cpp:336
+#: src/gamemodes/settings_control_menu.cpp:339
 msgid "settings_control_menu_entry_abort"
 msgstr "Abort"
 
-#: src/gamemodes/settings_control_menu.cpp:505
-#: src/gamemodes/settings_control_menu.cpp:510
-#: src/gamemodes/settings_control_menu.cpp:515
-#: src/gamemodes/settings_control_menu.cpp:520
-#: src/gamemodes/settings_control_menu.cpp:525
+#: src/gamemodes/settings_control_menu.cpp:524
+#: src/gamemodes/settings_control_menu.cpp:530
+#: src/gamemodes/settings_control_menu.cpp:536
+#: src/gamemodes/settings_control_menu.cpp:542
+#: src/gamemodes/settings_control_menu.cpp:548
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Press key-"
 

@@ -118,6 +118,7 @@
 			sf::Text m_menuitem3_value;
 			sf::Text m_menuitem4_value;
 			sf::Text m_menuitem5_value;
+			sf::Text m_menuitem6_txt;
 			sf::Text m_menuitem7_txt;
 			sf::Text m_menuitem8_txt;
 			bool m_menuitem1_over;
