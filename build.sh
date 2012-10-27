@@ -61,14 +61,33 @@ build_mo()
 }
 build_countlines()
 {
-	echo -n " ==> Counting lines ... "
+	echo " ==> Counting lines ..."
 	cd "`dirname $0`"
-	find src -type f -exec cat {} + | wc -l
+	## Counting lines:
+	LINES_CPP=`find ./src -type f -name "*.cpp" -exec cat {} + | wc -l`
+	LINES_CPP_=`expr $LINES_CPP \* 100`
+	LINES_HPP=`find ./src -type f \( -name "*.hpp" -o -name "*.hpp.in" \) -exec cat {} + | wc -l`
+	LINES_HPP_=`expr $LINES_HPP \* 100`
+	LINES_PO=`find ./locale -type f -name "*.po" -exec cat {} + | wc -l`
+	LINES_PO_=`expr $LINES_PO \* 100`
+	LINES_SH=`find . -type f -name "*.sh" -exec cat {} + | wc -l`
+	LINES_SH_=`expr $LINES_SH \* 100`
+	LINES_CMAKE=`find . -type f \( -name "*.cmake" -o -name "CMakeLists.txt" \) -exec cat {} + | wc -l`
+	LINES_CMAKE_=`expr $LINES_CMAKE \* 100`
+	LINES_ALL=`expr $LINES_CPP + $LINES_HPP + $LINES_PO + $LINES_SH + $LINES_CMAKE`
+	## Writing to stdout:
+	echo "   C++ Source Files ..... `printf '%0.4d' $LINES_CPP`  (`expr $LINES_CPP_ / $LINES_ALL`%)"
+	echo "   C++ Header Files ..... `printf '%0.4d' $LINES_HPP`  (`expr $LINES_HPP_ / $LINES_ALL`%)"
+	echo "   Language Files ....... `printf '%0.4d' $LINES_PO`  (`expr $LINES_PO_ / $LINES_ALL`%)"
+	echo "   Shell Scripts ........ `printf '%0.4d' $LINES_SH`  (`expr $LINES_SH_ / $LINES_ALL`%)"
+	echo "   CMake Files .......... `printf '%0.4d' $LINES_CMAKE`  (`expr $LINES_CMAKE_ / $LINES_ALL`%)"
+	echo "   ..........................."
+	echo "   Everything ........... `printf '%0.4d' $LINES_ALL`"
 }
 build_pot()
 {
 	cd "`dirname $0`"
-	xgettext --language=C++ --keyword=_ --output=- `find ./src -name "*.cpp" | xargs`
+	xgettext --language=C++ --keyword=_ --output=- `find ./src -type f -name "*.cpp" | xargs`
 }
 
 case $1 in
