@@ -795,11 +795,14 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Control Menu
 			*/
 			m_settings_control_menu = new SettingsControlMenu;
-			if (m_settings_control_menu->init(
-				m_config.get("CONTROL__KEY_GOLEFT").value_int,
-				m_config.get("CONTROL__KEY_GORIGHT").value_int,
-				m_config.get("CONTROL__KEY_JUMP").value_int
-			) == 1)
+			int conf[CONFIGVAR_CONTROL_KEY_COUNT];
+			conf[0] = m_config.get("CONTROL__KEY_GOLEFT").value_int;
+			conf[1] = m_config.get("CONTROL__KEY_GORIGHT").value_int;
+			conf[2] = m_config.get("CONTROL__KEY_JUMP").value_int;
+			conf[3] = m_config.get("CONTROL__KEY_SCREENSHOT").value_int;
+			conf[4] = m_config.get("CONTROL__KEY_SHOOT").value_int;
+			conf[5] = m_config.get("CONTROL__KEY_WEAPONCHANGE").value_int;
+			if (m_settings_control_menu->init(conf) == 1)
 				return 1;
 			break;
 		case 6:

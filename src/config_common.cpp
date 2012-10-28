@@ -66,6 +66,18 @@ Config::Config()
 	m_vars[7].index = "CONTROL__KEY_JUMP";
 	m_vars[7].type = CONFIGVAR_TYPE_INTEGER;
 	m_vars[7].value_int = sf::Keyboard::Space;
+
+	m_vars[8].index = "CONTROL__KEY_SCREENSHOT";
+	m_vars[8].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[8].value_int = sf::Keyboard::F1;
+
+	m_vars[9].index = "CONTROL__KEY_SHOOT";
+	m_vars[9].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[9].value_int = sf::Keyboard::LControl;
+
+	m_vars[10].index = "CONTROL__KEY_WEAPONCHANGE";
+	m_vars[10].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[10].value_int = sf::Keyboard::Tab;
 }
 Config::~Config()
 {

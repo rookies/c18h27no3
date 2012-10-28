@@ -263,6 +263,10 @@ void SettingsControlMenu::init_controlkey_settings(void)
 	int i;
 	char tmp_pagecount[255];
 	/*
+	 * Exit edit mode:
+	*/
+	m_controlkeys_editable = -1;
+	/*
 	 * Calculate how many items we have to show:
 	*/
 	m_controlkeys_showc = ((CONFIGVAR_CONTROL_KEY_COUNT-m_controlkeys_offset)>=5)?5:(CONFIGVAR_CONTROL_KEY_COUNT-m_controlkeys_offset);
@@ -292,26 +296,55 @@ void SettingsControlMenu::init_controlkey_settings(void)
 				break;
 		}
 	}
-	sprintf(tmp_pagecount, _("settings_control_menu_entry_pagecount %d %d"), (m_controlkeys_offset/5)+1, int((CONFIGVAR_CONTROL_KEY_COUNT/5.0)+0.5));
+	sprintf(tmp_pagecount, _("settings_control_menu_entry_pagecount %d %d"), (m_controlkeys_offset/5)+1, int((CONFIGVAR_CONTROL_KEY_COUNT/5.0)+1.0));
 	m_menuitem6_txt.setString(get_wstring(tmp_pagecount));
 }
-int SettingsControlMenu::init(int key_goleft, int key_goright, int key_jump)
+int SettingsControlMenu::init(int *keys)
 {
+	/*
+	 * Variable declarations:
+	*/
+	int i;
+	std::string confkey;
+	std::string caption;
 	/*
 	 * Init control key settings array:
 	*/
 	m_controlkeys_offset = 0;
 	m_controlkeys_editable = -1;
 	m_controlkeys = new ControlKeySetting[CONFIGVAR_CONTROL_KEY_COUNT];
-	m_controlkeys[0].set_config_key("CONTROL__KEY_GOLEFT");
-	m_controlkeys[0].set_value(key_goleft);
-	m_controlkeys[0].set_caption(_("settings_control_menu_entry_caption_goleft"));
-	m_controlkeys[1].set_config_key("CONTROL__KEY_GORIGHT");
-	m_controlkeys[1].set_value(key_goright);
-	m_controlkeys[1].set_caption(_("settings_control_menu_entry_caption_goright"));
-	m_controlkeys[2].set_config_key("CONTROL__KEY_JUMP");
-	m_controlkeys[2].set_value(key_jump);
-	m_controlkeys[2].set_caption(_("settings_control_menu_entry_caption_jump"));
+	for (i=0; i < CONFIGVAR_CONTROL_KEY_COUNT; i++)
+	{
+		switch (i)
+		{
+			case 0:
+				confkey = "CONTROL__KEY_GOLEFT";
+				caption = _("settings_control_menu_entry_caption_goleft");
+				break;
+			case 1:
+				confkey = "CONTROL__KEY_GORIGHT";
+				caption = _("settings_control_menu_entry_caption_goright");
+				break;
+			case 2:
+				confkey = "CONTROL__KEY_JUMP";
+				caption = _("settings_control_menu_entry_caption_jump");
+				break;
+			case 3:
+				confkey = "CONTROL__KEY_SCREENSHOT";
+				caption = _("settings_control_menu_entry_caption_screenshot");
+				break;
+			case 4:
+				confkey = "CONTROL__KEY_SHOOT";
+				caption = _("settings_control_menu_entry_caption_shoot");
+				break;
+			case 5:
+				confkey = "CONTROL__KEY_WEAPONCHANGE";
+				caption = _("settings_control_menu_entry_caption_weaponchange");
+		}
+		m_controlkeys[i].set_value(keys[i]);
+		m_controlkeys[i].set_config_key(confkey);
+		m_controlkeys[i].set_caption(caption);
+	}
 	init_controlkey_settings();
 	/*
 	 * Load fonts:
@@ -560,6 +593,10 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 				m_menuitem4_over = true;
 			else if (m_menuitem5.getGlobalBounds().contains(mouse_x, mouse_y) && m_controlkeys_showc >= 5)
 				m_menuitem5_over = true;
+			else if (m_arrow_left6_sprite.getGlobalBounds().contains(mouse_x, mouse_y) && m_controlkeys_offset > 0)
+				m_arrow_left6_over = true;
+			else if (m_arrow_right6_sprite.getGlobalBounds().contains(mouse_x, mouse_y) && CONFIGVAR_CONTROL_KEY_COUNT > m_controlkeys_offset+5)
+				m_arrow_right6_over = true;
 			else if (m_menuitem7.getGlobalBounds().contains(mouse_x, mouse_y))
 				m_menuitem7_over = true;
 			else if (m_menuitem8.getGlobalBounds().contains(mouse_x, mouse_y))
@@ -571,62 +608,61 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 				case sf::Mouse::Left:
 					if (m_menuitem1_over && m_controlkeys_editable == -1)
 					{
-						m_controlkeys_editable = 0;
+						m_controlkeys_editable = 0+m_controlkeys_offset;
 						m_menuitem1_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
 						calculate_sizes(m_w, m_h);
 					}
 					else if (m_menuitem2_over && m_controlkeys_editable == -1)
 					{
-						m_controlkeys_editable = 1;
+						m_controlkeys_editable = 1+m_controlkeys_offset;
 						m_menuitem2_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
 						calculate_sizes(m_w, m_h);
 					}
 					else if (m_menuitem3_over && m_controlkeys_editable == -1)
 					{
-						m_controlkeys_editable = 2;
+						m_controlkeys_editable = 2+m_controlkeys_offset;
 						m_menuitem3_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
 						calculate_sizes(m_w, m_h);
 					}
 					else if (m_menuitem4_over && m_controlkeys_editable == -1)
 					{
-						m_controlkeys_editable = 3;
+						m_controlkeys_editable = 3+m_controlkeys_offset;
 						m_menuitem4_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
 						calculate_sizes(m_w, m_h);
 					}
 					else if (m_menuitem5_over && m_controlkeys_editable == -1)
 					{
-						m_controlkeys_editable = 4;
+						m_controlkeys_editable = 4+m_controlkeys_offset;
 						m_menuitem5_value.setString(get_wstring(_("settings_control_menu_entry_value_wait")));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_arrow_left6_over)
+					{
+						m_controlkeys_offset -= 5;
+						init_controlkey_settings();
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_arrow_right6_over)
+					{
+						m_controlkeys_offset += 5;
+						init_controlkey_settings();
 						calculate_sizes(m_w, m_h);
 					}
 					else if (m_menuitem7_over)
 					{
+						ConfigVariable var[CONFIGVAR_CONTROL_KEY_COUNT];
+						int i;
 						/*
 						 * Save!
 						*/
-						ConfigVariable var1, var2, var3;
 						ret.init_confvars(CONFIGVAR_CONTROL_KEY_COUNT);
-						/*
-						 * GoLeft:
-						*/
-						var1.type = CONFIGVAR_TYPE_INTEGER;
-						var1.index = "CONTROL__KEY_GOLEFT";
-						var1.value_int = m_controlkeys[0].get_value();
-						ret.add_confvar(var1);
-						/*
-						 * GoRight:
-						*/
-						var2.type = CONFIGVAR_TYPE_INTEGER;
-						var2.index = "CONTROL__KEY_GORIGHT";
-						var2.value_int = m_controlkeys[1].get_value();
-						ret.add_confvar(var2);
-						/*
-						 * Jump:
-						*/
-						var3.type = CONFIGVAR_TYPE_INTEGER;
-						var3.index = "CONTROL__KEY_JUMP";
-						var3.value_int = m_controlkeys[2].get_value();
-						ret.add_confvar(var3);
+						for (i=0; i < CONFIGVAR_CONTROL_KEY_COUNT; i++)
+						{
+							var[i].type = CONFIGVAR_TYPE_INTEGER;
+							var[i].index = m_controlkeys[i].get_config_key();
+							var[i].value_int = m_controlkeys[i].get_value();
+							ret.add_confvar(var[i]);
+						}
 						/*
 						 * Back to settings menu:
 						*/
@@ -647,6 +683,8 @@ void SettingsControlMenu::reset_menuitem_over(void)
 	m_menuitem3_over = false;
 	m_menuitem4_over = false;
 	m_menuitem5_over = false;
+	m_arrow_left6_over = false;
+	m_arrow_right6_over = false;
 	m_menuitem7_over = false;
 	m_menuitem8_over = false;
 }

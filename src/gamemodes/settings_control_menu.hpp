@@ -74,7 +74,7 @@
 			/*
 			 * (Un)init:
 			*/
-			int init(int key_goleft, int key_goright, int key_jump); /* Called in Game::init_gamemode() */
+			int init(int *keys); /* Called in Game::init_gamemode() */
 			int uninit(void); /* Called in Game::uninit_gamemode() */
 			/*
 			 * Calculate sizes:
@@ -135,5 +135,7 @@
 			bool m_menuitem5_over;
 			bool m_menuitem7_over;
 			bool m_menuitem8_over;
+			bool m_arrow_left6_over;
+			bool m_arrow_right6_over;
 	};
 #endif // SETTINGS_CONTROL_MENU_HPP

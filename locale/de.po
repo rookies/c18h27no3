@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-27 22:27+0200\n"
-"PO-Revision-Date: 2012-10-27 22:28+0100\n"
+"POT-Creation-Date: 2012-10-28 10:24+0100\n"
+"PO-Revision-Date: 2012-10-28 10:25+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -185,35 +185,47 @@ msgstr "Pause"
 msgid "settings_control_menu_entry_pagecount %d %d"
 msgstr "Seite %d von %d"
 
-#: src/gamemodes/settings_control_menu.cpp:308
+#: src/gamemodes/settings_control_menu.cpp:318
 msgid "settings_control_menu_entry_caption_goleft"
 msgstr "nach links laufen"
 
-#: src/gamemodes/settings_control_menu.cpp:311
+#: src/gamemodes/settings_control_menu.cpp:322
 msgid "settings_control_menu_entry_caption_goright"
 msgstr "nach rechts laufen"
 
-#: src/gamemodes/settings_control_menu.cpp:314
+#: src/gamemodes/settings_control_menu.cpp:326
 msgid "settings_control_menu_entry_caption_jump"
 msgstr "hüpfen"
 
+#: src/gamemodes/settings_control_menu.cpp:330
+msgid "settings_control_menu_entry_caption_screenshot"
+msgstr "Screenshot"
+
+#: src/gamemodes/settings_control_menu.cpp:334
+msgid "settings_control_menu_entry_caption_shoot"
+msgstr "schießen"
+
 #: src/gamemodes/settings_control_menu.cpp:338
+msgid "settings_control_menu_entry_caption_weaponchange"
+msgstr "Waffe wechseln"
+
+#: src/gamemodes/settings_control_menu.cpp:378
 msgid "settings_control_menu_warning_keyused"
 msgstr "Taste schon verwendet!"
 
-#: src/gamemodes/settings_control_menu.cpp:339
+#: src/gamemodes/settings_control_menu.cpp:379
 msgid "settings_control_menu_entry_save"
 msgstr "Speichern"
 
-#: src/gamemodes/settings_control_menu.cpp:340
+#: src/gamemodes/settings_control_menu.cpp:380
 msgid "settings_control_menu_entry_abort"
 msgstr "Abbrechen"
 
-#: src/gamemodes/settings_control_menu.cpp:554
-#: src/gamemodes/settings_control_menu.cpp:560
-#: src/gamemodes/settings_control_menu.cpp:566
-#: src/gamemodes/settings_control_menu.cpp:572
-#: src/gamemodes/settings_control_menu.cpp:578
+#: src/gamemodes/settings_control_menu.cpp:608
+#: src/gamemodes/settings_control_menu.cpp:614
+#: src/gamemodes/settings_control_menu.cpp:620
+#: src/gamemodes/settings_control_menu.cpp:626
+#: src/gamemodes/settings_control_menu.cpp:632
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Taste drücken-"
 
