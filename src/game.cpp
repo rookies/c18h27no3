@@ -772,10 +772,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings General Menu
 			*/
 			m_settings_general_menu = new SettingsGeneralMenu;
-			if (m_settings_general_menu->init(
-				m_config.get("GENERAL__LANGUAGE").value_string,
-				m_config.get("GENERAL__FPSCOUNTER").value_bool
-			) == 1)
+			if (m_settings_general_menu->init(m_config) == 1)
 				return 1;
 			break;
 		case 4:
@@ -783,11 +780,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Graphics Menu
 			*/
 			m_settings_graphics_menu = new SettingsGraphicsMenu;
-			if (m_settings_graphics_menu->init(
-				m_config.get("GRAPHICS__FULLSCREEN").value_bool,
-				m_config.get("GRAPHICS__RESOLUTION_X").value_int,
-				m_config.get("GRAPHICS__RESOLUTION_Y").value_int
-			) == 1)
+			if (m_settings_graphics_menu->init(m_config) == 1)
 				return 1;
 			break;
 		case 5:
@@ -795,14 +788,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Control Menu
 			*/
 			m_settings_control_menu = new SettingsControlMenu;
-			int conf[CONFIGVAR_CONTROL_KEY_COUNT];
-			conf[0] = m_config.get("CONTROL__KEY_GOLEFT").value_int;
-			conf[1] = m_config.get("CONTROL__KEY_GORIGHT").value_int;
-			conf[2] = m_config.get("CONTROL__KEY_JUMP").value_int;
-			conf[3] = m_config.get("CONTROL__KEY_SCREENSHOT").value_int;
-			conf[4] = m_config.get("CONTROL__KEY_SHOOT").value_int;
-			conf[5] = m_config.get("CONTROL__KEY_WEAPONCHANGE").value_int;
-			if (m_settings_control_menu->init(conf) == 1)
+			if (m_settings_control_menu->init(m_config) == 1)
 				return 1;
 			break;
 		case 6:
@@ -810,7 +796,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Sound Menu
 			*/
 			m_settings_sound_menu = new SettingsSoundMenu;
-			if (m_settings_sound_menu->init() == 1)
+			if (m_settings_sound_menu->init(m_config) == 1)
 				return 1;
 			break;
 		default:

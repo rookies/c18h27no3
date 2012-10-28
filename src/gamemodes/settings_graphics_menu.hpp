@@ -43,7 +43,7 @@
 			/*
 			 * (Un)init:
 			*/
-			int init(bool fullscreen, int screenw, int screenh); /* Called in Game::init_gamemode() */
+			int init(Config conf); /* Called in Game::init_gamemode() */
 			int uninit(void); /* Called in Game::uninit_gamemode() */
 			/*
 			 * Calculate sizes:

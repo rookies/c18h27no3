@@ -29,7 +29,7 @@ SettingsGeneralMenu::~SettingsGeneralMenu()
 {
 	
 }
-int SettingsGeneralMenu::init(std::string language, bool fpscounter)
+int SettingsGeneralMenu::init(Config conf)
 {
 	/*
 	 * Load fonts:
@@ -44,14 +44,14 @@ int SettingsGeneralMenu::init(std::string language, bool fpscounter)
 	m_config_chooser1.init(CONFIGVAR_TYPE_STRING, CONFIGVAR_LANGUAGE_COUNT);
 	m_config_chooser1.add_string("English", "en");
 	m_config_chooser1.add_string("Deutsch", "de");
-	m_config_chooser1.set_actual_string(language);
+	m_config_chooser1.set_actual_string(conf.get("GENERAL__LANGUAGE").value_string);
 	/*
 	 * Init ConfigChooser instance for fps counter:
 	*/
 	m_config_chooser2.init(CONFIGVAR_TYPE_BOOLEAN, 2);
 	m_config_chooser2.add_bool(__("settings_general_menu_entry_value_fpscounter_enabled"), true);
 	m_config_chooser2.add_bool(__("settings_general_menu_entry_value_fpscounter_disabled"), false);
-	m_config_chooser2.set_actual_bool(fpscounter);
+	m_config_chooser2.set_actual_bool(conf.get("GENERAL__FPSCOUNTER").value_bool);
 	/*
 	 * Init arrows:
 	*/

@@ -29,7 +29,7 @@ SettingsGraphicsMenu::~SettingsGraphicsMenu()
 {
 	
 }
-int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
+int SettingsGraphicsMenu::init(Config conf)
 {
 	/*
 	 * Load fonts:
@@ -42,16 +42,16 @@ int SettingsGraphicsMenu::init(bool fullscreen, int screenw, int screenh)
 	 * Init NumericalTextfieldBuffer instances for resolution:
 	*/
 	m_textfield1_1_buffer.init(4);
-	m_textfield1_1_buffer.set(screenw);
+	m_textfield1_1_buffer.set(conf.get("GRAPHICS__RESOLUTION_X").value_int);
 	m_textfield1_2_buffer.init(4);
-	m_textfield1_2_buffer.set(screenh);
+	m_textfield1_2_buffer.set(conf.get("GRAPHICS__RESOLUTION_Y").value_int);
 	/*
 	 * Init ConfigChooser instance for fullscreen:
 	*/
 	m_config_chooser2.init(CONFIGVAR_TYPE_BOOLEAN, 2);
 	m_config_chooser2.add_bool(__("settings_graphics_menu_entry_value_fullscreen_enabled"), true);
 	m_config_chooser2.add_bool(__("settings_graphics_menu_entry_value_fullscreen_disabled"), false);
-	m_config_chooser2.set_actual_bool(fullscreen);
+	m_config_chooser2.set_actual_bool(conf.get("GRAPHICS__FULLSCREEN").value_bool);
 	/*
 	 * Init textfields:
 	*/

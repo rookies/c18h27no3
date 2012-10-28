@@ -29,7 +29,7 @@ SettingsSoundMenu::~SettingsSoundMenu()
 {
 	
 }
-int SettingsSoundMenu::init(void)
+int SettingsSoundMenu::init(Config conf)
 {
 	return 0;
 }

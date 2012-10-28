@@ -299,7 +299,7 @@ void SettingsControlMenu::init_controlkey_settings(void)
 	sprintf(tmp_pagecount, _("settings_control_menu_entry_pagecount %d %d"), (m_controlkeys_offset/5)+1, int((CONFIGVAR_CONTROL_KEY_COUNT/5.0)+1.0));
 	m_menuitem6_txt.setString(get_wstring(tmp_pagecount));
 }
-int SettingsControlMenu::init(int *keys)
+int SettingsControlMenu::init(Config conf)
 {
 	/*
 	 * Variable declarations:
@@ -341,7 +341,7 @@ int SettingsControlMenu::init(int *keys)
 				confkey = "CONTROL__KEY_WEAPONCHANGE";
 				caption = _("settings_control_menu_entry_caption_weaponchange");
 		}
-		m_controlkeys[i].set_value(keys[i]);
+		m_controlkeys[i].set_value(conf.get(confkey).value_int);
 		m_controlkeys[i].set_config_key(confkey);
 		m_controlkeys[i].set_caption(caption);
 	}
