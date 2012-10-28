@@ -33,12 +33,12 @@ int main(int argc, char **argv)
 	/*
 	 * Startup:
 	*/
-	cout << "Game v" << VERSION << endl;
+	cout << "c18h27no3 v" << VERSION << endl;
 	/*
 	 * Init game:
 	*/
 	if (game.init() == 1)
-		return 1;
+		return EXIT_FAILURE;
 	/*
 	 * Start event loop:
 	*/
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 		game.uninit();
 		if (game.init() == 1)
 		{
-			return 1;
+			return EXIT_FAILURE;
 		};
 	}
 	/*
@@ -55,5 +55,5 @@ int main(int argc, char **argv)
 	*/
 	game.uninit();
 	cout << "Shutting down." << endl;
-	return 0;
+	return EXIT_SUCCESS;
 }

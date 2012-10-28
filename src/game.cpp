@@ -153,7 +153,7 @@ int Game::uninit(void)
 {
 	uninit_gamemode(m_gamemode);
 	m_window.close();
-	return EXIT_SUCCESS;
+	return 0;
 }
 void Game::draw(void)
 {
