@@ -62,10 +62,11 @@
 			/*
 			 * Shortcuts:
 			*/
-			void set_text(int index, sf::Text value);
-			void set_rectshape(int index, sf::RectangleShape value);
-			void set_sprite(int index, sf::Sprite value);
+			void add_text(sf::Text value);
+			void add_rectshape(sf::RectangleShape value);
+			void add_sprite(sf::Sprite value);
 		private:
+			int m_pos;
 			int m_count;
 			UniversalDrawable *m_values;
 			bool m_values_initialized;

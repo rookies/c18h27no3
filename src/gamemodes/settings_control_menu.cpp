@@ -321,6 +321,17 @@ int SettingsControlMenu::init(int key_goleft, int key_goright, int key_jump)
 	if (!m_font2.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Regular.ttf")))
 		return 1;
 	/*
+	 * Init arrows:
+	*/
+	if (!m_arrow_left.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow_left.png")))
+		return 1;
+	if (!m_arrow_right.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow_right.png")))
+		return 1;
+	m_arrow_left6_sprite.setTexture(m_arrow_left);
+	m_arrow_right6_sprite.setTexture(m_arrow_right);
+	m_arrow_left6_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_arrow_right6_sprite.setColor(sf::Color(255, 255, 255, 255));
+	/*
 	 * Init menuitem shapes:
 	*/
 	m_menuitem1.setOutlineColor(sf::Color::Black);
@@ -394,6 +405,9 @@ int SettingsControlMenu::calculate_sizes(int w, int h)
 	int menuitem_height = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	int menuitem_first_yoffset = h*(SIZE_SETTINGS_SUBMENUS_FIRST_ELEMENT_YOFFSET/100.0);
 	int menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
+	int arrow_height = h*(SIZE_MENU_CONFIG_ARROW_HEIGHT/100.0);
+	int arrow_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_ARROW_XGAP)/100.0;
+	int arrow_ygap = h*(SIZE_MENU_CONFIG_ELEMENT_ARROW_YGAP_CONTROL)/100.0;
 	int menuitem_xoffset = (w-menuitem_width)/2.0;
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
@@ -463,6 +477,13 @@ int SettingsControlMenu::calculate_sizes(int w, int h)
 	m_menuitem3_value.setPosition(menuitem_xoffset+menuitem_width-text_xgap-m_menuitem3_value.getGlobalBounds().width, menuitem_first_yoffset+text_gap+(menuitem_height+menuitem_gap)*2);
 	m_menuitem4_value.setPosition(menuitem_xoffset+menuitem_width-text_xgap-m_menuitem4_value.getGlobalBounds().width, menuitem_first_yoffset+text_gap+(menuitem_height+menuitem_gap)*3);
 	m_menuitem5_value.setPosition(menuitem_xoffset+menuitem_width-text_xgap-m_menuitem5_value.getGlobalBounds().width, menuitem_first_yoffset+text_gap+(menuitem_height+menuitem_gap)*4);
+	/*
+	 * Update arrow positions & sizes:
+	*/
+	m_arrow_left6_sprite.setPosition(menuitem_xoffset+arrow_xgap, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*m_controlkeys_showc+arrow_ygap+menuitem_gap);
+	m_arrow_right6_sprite.setPosition(menuitem_xoffset+menuitem_width-arrow_xgap-arrow_height, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*m_controlkeys_showc+arrow_ygap+menuitem_gap);
+	m_arrow_left6_sprite.setScale(arrow_height/7, arrow_height/7);
+	m_arrow_right6_sprite.setScale(arrow_height/7, arrow_height/7);
 	return 0;
 }
 EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
@@ -643,42 +664,19 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(6+(m_controlkeys_showc*3));
+	arr.init(6+(m_controlkeys_showc*3)+((m_controlkeys_offset > 0)?1:0)+((CONFIGVAR_CONTROL_KEY_COUNT > m_controlkeys_offset+5)?1:0));
 	/*
 	 * Add elements:
 	*/
-	arr.set_rectshape(0, m_menuitem6);
-	//
-	if (m_warning_keyused)
-		arr.set_text(1, m_menuitem6_txt_alt);
-	else
-		arr.set_text(1, m_menuitem6_txt);
-	//
-	if (m_menuitem7_over)
-		m_menuitem7.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem7.setFillColor(COLOR_MENU_ELEMENT);
-	arr.set_rectshape(2, m_menuitem7);
-	//
-	if (m_menuitem8_over)
-		m_menuitem8.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem8.setFillColor(COLOR_MENU_ELEMENT);
-	arr.set_rectshape(3, m_menuitem8);
-	//
-	arr.set_text(4, m_menuitem7_txt);
-	//
-	arr.set_text(5, m_menuitem8_txt);
-	//
 	if (m_controlkeys_showc >= 1)
 	{
 		if (m_menuitem1_over)
 			m_menuitem1.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 		else
 			m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
-		arr.set_rectshape(6, m_menuitem1);
-		arr.set_text(7, m_menuitem1_caption);
-		arr.set_text(8, m_menuitem1_value);
+		arr.add_rectshape(m_menuitem1);
+		arr.add_text(m_menuitem1_caption);
+		arr.add_text(m_menuitem1_value);
 	};
 	//
 	if (m_controlkeys_showc >= 2)
@@ -687,9 +685,9 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 			m_menuitem2.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 		else
 			m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
-		arr.set_rectshape(9, m_menuitem2);
-		arr.set_text(10, m_menuitem2_caption);
-		arr.set_text(11, m_menuitem2_value);
+		arr.add_rectshape(m_menuitem2);
+		arr.add_text(m_menuitem2_caption);
+		arr.add_text(m_menuitem2_value);
 	};
 	//
 	if (m_controlkeys_showc >= 3)
@@ -698,9 +696,9 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 			m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 		else
 			m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
-		arr.set_rectshape(12, m_menuitem3);
-		arr.set_text(13, m_menuitem3_caption);
-		arr.set_text(14, m_menuitem3_value);
+		arr.add_rectshape(m_menuitem3);
+		arr.add_text(m_menuitem3_caption);
+		arr.add_text(m_menuitem3_value);
 	};
 	//
 	if (m_controlkeys_showc >= 4)
@@ -709,9 +707,9 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 			m_menuitem4.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 		else
 			m_menuitem4.setFillColor(COLOR_MENU_ELEMENT);
-		arr.set_rectshape(15, m_menuitem4);
-		arr.set_text(16, m_menuitem4_caption);
-		arr.set_text(17, m_menuitem4_value);
+		arr.add_rectshape(m_menuitem4);
+		arr.add_text(m_menuitem4_caption);
+		arr.add_text(m_menuitem4_value);
 	};
 	//
 	if (m_controlkeys_showc >= 5)
@@ -720,10 +718,39 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 			m_menuitem5.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 		else
 			m_menuitem5.setFillColor(COLOR_MENU_ELEMENT);
-		arr.set_rectshape(18, m_menuitem5);
-		arr.set_text(19, m_menuitem5_caption);
-		arr.set_text(20, m_menuitem5_value);
+		arr.add_rectshape(m_menuitem5);
+		arr.add_text(m_menuitem5_caption);
+		arr.add_text(m_menuitem5_value);
 	};
+	//
+	arr.add_rectshape(m_menuitem6);
+	//
+	if (m_controlkeys_offset > 0)
+		arr.add_sprite(m_arrow_left6_sprite);
+	//
+	if (CONFIGVAR_CONTROL_KEY_COUNT > m_controlkeys_offset+5)
+		arr.add_sprite(m_arrow_right6_sprite);
+	//
+	if (m_warning_keyused)
+		arr.add_text(m_menuitem6_txt_alt);
+	else
+		arr.add_text(m_menuitem6_txt);
+	//
+	if (m_menuitem7_over)
+		m_menuitem7.setFillColor(COLOR_MENU_ELEMENT_HOVER);
+	else
+		m_menuitem7.setFillColor(COLOR_MENU_ELEMENT);
+	arr.add_rectshape(m_menuitem7);
+	//
+	arr.add_text(m_menuitem7_txt);
+	//
+	if (m_menuitem8_over)
+		m_menuitem8.setFillColor(COLOR_MENU_ELEMENT_HOVER);
+	else
+		m_menuitem8.setFillColor(COLOR_MENU_ELEMENT);
+	arr.add_rectshape(m_menuitem8);
+	//
+	arr.add_text(m_menuitem8_txt);
 	/*
 	 * Return:
 	*/

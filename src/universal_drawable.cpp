@@ -44,6 +44,7 @@ void UniversalDrawableArray::init(int count)
 	m_count = count;
 	m_values = new UniversalDrawable[count];
 	m_values_initialized = true;
+	m_pos = 0;
 }
 void UniversalDrawableArray::uninit(void)
 {
@@ -60,26 +61,31 @@ int UniversalDrawableArray::get_count(void)
 }
 void UniversalDrawableArray::set(int index, UniversalDrawable value)
 {
+	if (index >= m_count)
+		return;
 	m_values[index] = value;
 }
-void UniversalDrawableArray::set_text(int index, sf::Text value)
+void UniversalDrawableArray::add_text(sf::Text value)
 {
 	UniversalDrawable el;
 	el.type = UNIVERSAL_DRAWABLE_TYPE_TEXT;
 	el.value_text = value;
-	set(index, el);
+	set(m_pos, el);
+	m_pos++;
 }
-void UniversalDrawableArray::set_rectshape(int index, sf::RectangleShape value)
+void UniversalDrawableArray::add_rectshape(sf::RectangleShape value)
 {
 	UniversalDrawable el;
 	el.type = UNIVERSAL_DRAWABLE_TYPE_RECTSHAPE;
 	el.value_rectshape = value;
-	set(index, el);
+	set(m_pos, el);
+	m_pos++;
 }
-void UniversalDrawableArray::set_sprite(int index, sf::Sprite value)
+void UniversalDrawableArray::add_sprite(sf::Sprite value)
 {
 	UniversalDrawable el;
 	el.type = UNIVERSAL_DRAWABLE_TYPE_SPRITE;
 	el.value_sprite = value;
-	set(index, el);
+	set(m_pos, el);
+	m_pos++;
 }

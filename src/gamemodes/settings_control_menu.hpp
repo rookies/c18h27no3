@@ -102,6 +102,10 @@
 			sf::Clock m_warning_keyused_clock;
 			sf::Font m_font1;
 			sf::Font m_font2;
+			sf::Texture m_arrow_left;
+			sf::Texture m_arrow_right;
+			sf::Sprite m_arrow_left6_sprite;
+			sf::Sprite m_arrow_right6_sprite;
 			sf::RectangleShape m_menuitem1;
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;
