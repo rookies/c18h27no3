@@ -436,7 +436,7 @@ int Game::process_events(void)
 				return 1; // exit
 				break;
 			case sf::Event::KeyPressed:
-				std::cout << "KeyPressed " << event.key.code << std::endl;
+				//std::cout << "KeyPressed " << event.key.code << std::endl;
 				switch (event.key.code)
 				{
 					case sf::Keyboard::F1:

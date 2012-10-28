@@ -38,9 +38,7 @@ int main(int argc, char **argv)
 	 * Init game:
 	*/
 	if (game.init() == 1)
-	{
 		return 1;
-	};
 	/*
 	 * Start event loop:
 	*/
@@ -55,6 +53,7 @@ int main(int argc, char **argv)
 	/*
 	 * Shutdown:
 	*/
+	game.uninit();
 	cout << "Shutting down." << endl;
 	return 0;
 }
