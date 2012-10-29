@@ -210,20 +210,15 @@ int SettingsGraphicsMenu::calculate_sizes(int w, int h)
 	m_arrow_right2_sprite.setScale(arrow_height/7, arrow_height/7);
 	return 0;
 }
-EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+void SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
-	/*
-	 * Variable declarations:
-	*/
-	EventProcessorReturn ret;
-	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret.set_gamemode(2); // back to settings menu
+					ret->set_gamemode(2); // back to settings menu
 					break;
 			}
 			if (m_textfield1_1_over)
@@ -282,37 +277,36 @@ EventProcessorReturn SettingsGraphicsMenu::process_event(sf::Event event, int mo
 						 * Save!
 						*/
 						ConfigVariable var1, var2, var3;
-						ret.init_confvars(3);
+						ret->init_confvars(3);
 						/*
 						 * Resolution:
 						*/
 						var1.type = CONFIGVAR_TYPE_INTEGER;
 						var1.index = "GRAPHICS__RESOLUTION_X";
 						var1.value_int = m_textfield1_1_buffer.get_int();
-						ret.add_confvar(var1);
+						ret->add_confvar(var1);
 						var2.type = CONFIGVAR_TYPE_INTEGER;
 						var2.index = "GRAPHICS__RESOLUTION_Y";
 						var2.value_int = m_textfield1_2_buffer.get_int();
-						ret.add_confvar(var2);
+						ret->add_confvar(var2);
 						/*
 						 * Fullscreen:
 						*/
 						var3.type = CONFIGVAR_TYPE_BOOLEAN;
 						var3.index = "GRAPHICS__FULLSCREEN";
 						var3.value_bool = m_config_chooser2.get_actual_bool();
-						ret.add_confvar(var3);
+						ret->add_confvar(var3);
 						/*
 						 * Reload:
 						*/
-						ret.set_reload(true); // reload
+						ret->set_reload(true); // reload
 					}
 					else if (m_menuitem4_over == 1)
-						ret.set_gamemode(2); // back to settings menu
+						ret->set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
 	}
-	return ret;
 }
 void SettingsGraphicsMenu::reset_menuitem_over(void)
 {

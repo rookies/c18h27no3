@@ -50,7 +50,7 @@
 			/*
 			 * Process events:
 			*/
-			EventProcessorReturn process_event(sf::Event event, int mouse_x, int mouse_y); /* Called in Game::process_events() */
+			void process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret); /* Called in Game::process_events() */
 			/*
 			 * Reset menuitemX_over variables:
 			*/

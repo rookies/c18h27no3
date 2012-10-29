@@ -519,12 +519,11 @@ int SettingsControlMenu::calculate_sizes(int w, int h)
 	m_arrow_right6_sprite.setScale(arrow_height/7, arrow_height/7);
 	return 0;
 }
-EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+void SettingsControlMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
 	/*
 	 * Variable declarations:
 	*/
-	EventProcessorReturn ret;
 	bool already_used;
 	int i;
 	
@@ -544,7 +543,7 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 						calculate_sizes(m_w, m_h);
 					}
 					else
-						ret.set_gamemode(2); // back to settings menu
+						ret->set_gamemode(2); // back to settings menu
 					break;
 			}
 			if (m_controlkeys_editable > -1 && keycode2string(event.key.code).length() > 0)
@@ -655,26 +654,25 @@ EventProcessorReturn SettingsControlMenu::process_event(sf::Event event, int mou
 						/*
 						 * Save!
 						*/
-						ret.init_confvars(CONFIGVAR_CONTROL_KEY_COUNT);
+						ret->init_confvars(CONFIGVAR_CONTROL_KEY_COUNT);
 						for (i=0; i < CONFIGVAR_CONTROL_KEY_COUNT; i++)
 						{
 							var[i].type = CONFIGVAR_TYPE_INTEGER;
 							var[i].index = m_controlkeys[i].get_config_key();
 							var[i].value_int = m_controlkeys[i].get_value();
-							ret.add_confvar(var[i]);
+							ret->add_confvar(var[i]);
 						}
 						/*
 						 * Back to settings menu:
 						*/
-						ret.set_gamemode(2);
+						ret->set_gamemode(2);
 					}
 					else if (m_menuitem8_over)
-						ret.set_gamemode(2); // back to settings menu
+						ret->set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
 	}
-	return ret;
 }
 void SettingsControlMenu::reset_menuitem_over(void)
 {

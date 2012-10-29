@@ -41,25 +41,19 @@ int SettingsSoundMenu::calculate_sizes(int w, int h)
 {
 	return 0;
 }
-EventProcessorReturn SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+void SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
-	/*
-	 * Variable declarations:
-	*/
-	EventProcessorReturn ret;
-	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret.set_gamemode(2); // back to settings menu
+					ret->set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
 	}
-	return ret;
 }
 UniversalDrawableArray SettingsSoundMenu::get_drawables(void)
 {

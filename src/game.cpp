@@ -535,60 +535,66 @@ int Game::process_events(void)
 				/*
 				 * Main Menu
 				*/
-				event_processor_return = m_main_menu->process_event(
+				m_main_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y()
+					m_cursor.get_mouse_position_y(),
+					&event_processor_return
 				);
 				break;
 			case 2:
 				/*
 				 * Settings Menu
 				*/
-				event_processor_return = m_settings_menu->process_event(
+				m_settings_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y()
+					m_cursor.get_mouse_position_y(),
+					&event_processor_return
 				);
 				break;
 			case 3:
 				/*
 				 * Settings General Menu
 				*/
-				event_processor_return = m_settings_general_menu->process_event(
+				m_settings_general_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y()
+					m_cursor.get_mouse_position_y(),
+					&event_processor_return
 				);
 				break;
 			case 4:
 				/*
 				 * Settings Graphics Menu
 				*/
-				event_processor_return = m_settings_graphics_menu->process_event(
+				m_settings_graphics_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y()
+					m_cursor.get_mouse_position_y(),
+					&event_processor_return
 				);
 				break;
 			case 5:
 				/*
 				 * Settings Control Menu
 				*/
-				event_processor_return = m_settings_control_menu->process_event(
+				m_settings_control_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y()
+					m_cursor.get_mouse_position_y(),
+					&event_processor_return
 				);
 				break;
 			case 6:
 				/*
 				 * Settings Sound Menu
 				*/
-				event_processor_return = m_settings_sound_menu->process_event(
+				m_settings_sound_menu->process_event(
 					event,
 					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y()
+					m_cursor.get_mouse_position_y(),
+					&event_processor_return
 				);
 				break;
 		}

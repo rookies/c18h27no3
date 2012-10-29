@@ -129,20 +129,15 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	m_menuitem5_txt.setPosition((w-(int)m_menuitem5_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*4+text_gap+menuitem_gap);
 	return 0;
 }
-EventProcessorReturn SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+void SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
-	/*
-	 * Variable declarations:
-	*/
-	EventProcessorReturn ret;
-	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret.set_gamemode(1); // back to gamemode 1 (main menu)
+					ret->set_gamemode(1); // back to gamemode 1 (main menu)
 					break;
 			}
 			break;
@@ -164,20 +159,19 @@ EventProcessorReturn SettingsMenu::process_event(sf::Event event, int mouse_x, i
 			{
 				case sf::Mouse::Left:
 					if (m_menuitem1_over == 1)
-						ret.set_gamemode(3); // go to settings general menu
+						ret->set_gamemode(3); // go to settings general menu
 					else if (m_menuitem2_over == 1)
-						ret.set_gamemode(4); // go to settings graphics menu
+						ret->set_gamemode(4); // go to settings graphics menu
 					else if (m_menuitem3_over == 1)
-						ret.set_gamemode(5); // go to settings control menu
+						ret->set_gamemode(5); // go to settings control menu
 					else if (m_menuitem4_over == 1)
-						ret.set_gamemode(6); // go to settings sound menu
+						ret->set_gamemode(6); // go to settings sound menu
 					else if (m_menuitem5_over == 1)
-						ret.set_gamemode(1); // back to main menu
+						ret->set_gamemode(1); // back to main menu
 					break;
 			}
 			break;
 	}
-	return ret;
 }
 void SettingsMenu::reset_menuitem_over(void)
 {

@@ -181,20 +181,15 @@ int SettingsGeneralMenu::calculate_sizes(int w, int h)
 	m_arrow_right2_sprite.setScale(arrow_height/7, arrow_height/7);
 	return 0;
 }
-EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+void SettingsGeneralMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
-	/*
-	 * Variable declarations:
-	*/
-	EventProcessorReturn ret;
-	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret.set_gamemode(2); // back to settings menu
+					ret->set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
@@ -259,34 +254,33 @@ EventProcessorReturn SettingsGeneralMenu::process_event(sf::Event event, int mou
 						 * Save!
 						*/
 						ConfigVariable var1, var2;
-						ret.init_confvars(2);
+						ret->init_confvars(2);
 						/*
 						 * Language:
 						*/
-						ret.set_language(m_config_chooser1.get_actual_string());
+						ret->set_language(m_config_chooser1.get_actual_string());
 						var1.type = CONFIGVAR_TYPE_STRING;
 						var1.index = "GENERAL__LANGUAGE";
 						var1.value_string = m_config_chooser1.get_actual_string();
-						ret.add_confvar(var1);
+						ret->add_confvar(var1);
 						/*
 						 * FPScounter:
 						*/
 						var2.type = CONFIGVAR_TYPE_BOOLEAN;
 						var2.index = "GENERAL__FPSCOUNTER";
 						var2.value_bool = m_config_chooser2.get_actual_bool();
-						ret.add_confvar(var2);
+						ret->add_confvar(var2);
 						/*
 						 * Back to settings menu:
 						*/
-						ret.set_gamemode(2);
+						ret->set_gamemode(2);
 					}
 					else if (m_menuitem4_over == 1)
-						ret.set_gamemode(2); // back to settings menu
+						ret->set_gamemode(2); // back to settings menu
 					break;
 			}
 			break;
 	}
-	return ret;
 }
 void SettingsGeneralMenu::reset_menuitem_over(void)
 {

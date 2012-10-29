@@ -46,9 +46,7 @@ int main(int argc, char **argv)
 	{
 		game.uninit();
 		if (game.init() == 1)
-		{
 			return EXIT_FAILURE;
-		};
 	}
 	/*
 	 * Shutdown:

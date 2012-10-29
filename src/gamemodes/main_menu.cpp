@@ -138,20 +138,15 @@ int MainMenu::calculate_sizes(int w, int h)
 	m_menuitem6_txt.setPosition((w-(int)m_menuitem6_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*5+text_gap+menuitem_gap);
 	return 0;
 }
-EventProcessorReturn MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y)
+void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
-	/*
-	 * Variable declarations:
-	*/
-	EventProcessorReturn ret;
-	
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret.set_exit(1); // exit
+					ret->set_exit(1); // exit
 					break;
 			}
 			break;
@@ -175,14 +170,13 @@ EventProcessorReturn MainMenu::process_event(sf::Event event, int mouse_x, int m
 			{
 				case sf::Mouse::Left:
 					if (m_menuitem6_over == 1)
-						ret.set_exit(true); // exit
+						ret->set_exit(true); // exit
 					else if (m_menuitem4_over == 1)
-						ret.set_gamemode(2); // go to settings menu
+						ret->set_gamemode(2); // go to settings menu
 					break;
 			}
 			break;
 	}
-	return ret;
 }
 void MainMenu::reset_menuitem_over(void)
 {
