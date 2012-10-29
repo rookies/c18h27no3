@@ -34,29 +34,10 @@ build() {
   cmake -DCMAKE_INSTALL_PREFIX:string="/usr" ..
   # Build:
   make
-  # Create language files:
-  mkdir "locale"
-  cd "${srcdir}/${_gitname}/locale"
-  for _langf in *.po; do
-    _lang=`echo $_langf | cut -d'.' -f1`
-    msg "Compiling language file for [$_lang]... "
-    if [[ ! -d "${srcdir}/${_gitname}/build/locale/$_lang" ]]; then
-      mkdir "${srcdir}/${_gitname}/build/locale/$_lang" || exit 1
-    fi
-    if [[ ! -d "${srcdir}/${_gitname}/build/locale/$_lang/LC_MESSAGES" ]]; then
-      mkdir "${srcdir}/${_gitname}/build/locale/$_lang/LC_MESSAGES" || exit 1
-    fi
-    msgfmt -o "${srcdir}/${_gitname}/build/locale/$_lang/LC_MESSAGES/${_pkgname}.mo" "$_langf"
-  done
 }
 
 package() {
   cd "${srcdir}/${_gitname}/build"
   # Install:
   make DESTDIR="${pkgdir}" install
-  # Install language files:
-  for _f in locale/*; do
-    install -m755 -Dd "${pkgdir}/usr/share/locale/`basename $_f`/LC_MESSAGES"
-    install -m644 "$_f/LC_MESSAGES/${_pkgname}.mo" "${pkgdir}/usr/share/locale/`basename $_f`/LC_MESSAGES/"
-  done
 }

@@ -107,12 +107,25 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBINTL_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBAVUTIL_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBSWSCALE_LIBRARIES})
 # .
-# add install targets:
+# add gettext target:
 # .
 if (UNIX)
-	install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION "bin")
+	add_custom_target(gettext ALL COMMAND "${CMAKE_SOURCE_DIR}/cmake/scripts/gettext.sh" "${CMAKE_SOURCE_DIR}/locale" "${CMAKE_BINARY_DIR}/locale" "${CMAKE_PROJECT_NAME}")
+elseif (WIN32)
+	# FIXME: add windows-specific gettext target
+endif ()
+# .
+# add install target:
+# .
+if (UNIX)
+	# bin:
+	install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION "bin/")
+	# img:
 	file(GLOB files "${CMAKE_SOURCE_DIR}/data/img/*")
-	install(FILES ${files} DESTINATION "share/${CMAKE_PROJECT_NAME}/data/img")
+	install(FILES ${files} DESTINATION "share/${CMAKE_PROJECT_NAME}/data/img/")
+	# lang files:
+	file(GLOB files "${CMAKE_BINARY_DIR}/locale/*")
+	install(DIRECTORY ${files} DESTINATION "share/locale/")
 elseif (WIN32)
 	# FIXME: add windows-specific install target
 endif ()
