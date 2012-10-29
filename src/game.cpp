@@ -91,7 +91,7 @@ int Game::init(void)
 	else
 		m_window.create(sf::VideoMode(m_screen_w, m_screen_h, m_screen_bits), "Game");
 	std::cout << "[DONE]" << std::endl;
-	m_window_has_focus = 1;
+	m_window_has_focus = true;
 	/*
 	 * Set window icon:
 	*/
@@ -285,7 +285,7 @@ int Game::loop(void)
 		/*
 		 * Check if we have to draw the stuff:
 		*/
-		if (m_window_has_focus == 1)
+		if (m_window_has_focus)
 		{
 			draw();
 		}
@@ -401,7 +401,7 @@ int Game::wait_for_focus(void)
 		{
 			case sf::Event::GainedFocus:
 				std::cout << "GainedFocus" << std::endl;
-				m_window_has_focus = 1;
+				m_window_has_focus = true;
 				m_fps_counter.restart();
 				return 0;
 				break;
@@ -518,11 +518,11 @@ int Game::process_events(void)
 				break;
 			case sf::Event::LostFocus:
 				std::cout << "LostFocus" << std::endl;
-				m_window_has_focus = 0;
+				m_window_has_focus = false;
 				break;
 			case sf::Event::GainedFocus:
 				std::cout << "GainedFocus" << std::endl;
-				m_window_has_focus = 1;
+				m_window_has_focus = true;
 				m_fps_counter.restart();
 				break;
 		}
