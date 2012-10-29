@@ -19,8 +19,8 @@ build_default()
 	## Create symlink:
 	cd ..
 	if [[ ! -e game ]]; then
-		echo " ==> Creating symlink game -> build/game ..."
-		ln -s build/game game || exit 1
+		echo " ==> Creating symlink $PROJECTNAME -> build/$PROJECTNAME ..."
+		ln -s build/$PROJECTNAME $PROJECTNAME || exit 1
 	fi
 }
 build_clean()
@@ -28,7 +28,7 @@ build_clean()
 	echo " ==> Removing build directory ..."
 	rm -rf build
 	echo " ==> Removing game symlink ..."
-	rm -f game
+	rm -f $PROJECTNAME
 }
 build_mo()
 {
