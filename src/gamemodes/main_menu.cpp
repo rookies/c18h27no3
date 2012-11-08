@@ -58,7 +58,7 @@ int MainMenu::init(void)
 	*/
 	m_menuitem1_txt.setString(get_wstring(_("main_menu_entry_newgame")));
 	m_menuitem2_txt.setString(get_wstring(_("main_menu_entry_loadgame")));
-	m_menuitem3_txt.setString(get_wstring(_("main_menu_entry_leveleditor")));
+	m_menuitem3_txt.setString(get_wstring(_("main_menu_entry_highscore")));
 	m_menuitem4_txt.setString(get_wstring(_("main_menu_entry_settings")));
 	m_menuitem5_txt.setString(get_wstring(_("main_menu_entry_credits")));
 	m_menuitem6_txt.setString(get_wstring(_("main_menu_entry_exit")));
