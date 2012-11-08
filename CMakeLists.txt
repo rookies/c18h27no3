@@ -110,7 +110,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBINTL_LIBRARIES})
 # add gettext target:
 # .
 if (UNIX)
-	add_custom_target(gettext ALL COMMAND "${CMAKE_SOURCE_DIR}/cmake/scripts/gettext.sh" "${CMAKE_SOURCE_DIR}/locale" "${CMAKE_BINARY_DIR}/locale" "${CMAKE_PROJECT_NAME}")
+	add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD COMMAND "${CMAKE_SOURCE_DIR}/cmake/scripts/gettext.sh" "${CMAKE_SOURCE_DIR}/locale" "${CMAKE_BINARY_DIR}/locale")
 elseif (WIN32)
 	# FIXME: add windows-specific gettext target
 endif ()
@@ -125,7 +125,10 @@ if (UNIX)
 	install(FILES ${files} DESTINATION "share/${CMAKE_PROJECT_NAME}/data/img/")
 	# lang files:
 	file(GLOB files "${CMAKE_BINARY_DIR}/locale/*")
-	install(DIRECTORY ${files} DESTINATION "share/locale/")
+	foreach(lang ${files})
+		get_filename_component(lang_ ${lang} NAME_WE)
+		install(FILES "${CMAKE_BINARY_DIR}/locale/${lang_}.mo" DESTINATION "share/locale/${lang_}/LC_MESSAGES/" RENAME "${CMAKE_PROJECT_NAME}.mo")
+	endforeach()
 elseif (WIN32)
 	# FIXME: add windows-specific install target
 endif ()

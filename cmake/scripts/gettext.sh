@@ -8,16 +8,8 @@ for langf in "$1/"*".po"; do
 	lang=`basename $langf | cut -d'.' -f1`
 	## Print status on console:
 	echo -n "Compiling language file for [$lang]... "
-	## Create directory "locale/$lang"
-	if [[ ! -d "$2/$lang" ]]; then
-		mkdir "$2/$lang" || exit 1
-	fi
-	## Create directory "locale/$lang/LC_MESSAGES"
-	if [[ ! -d "$2/$lang/LC_MESSAGES" ]]; then
-		mkdir "$2/$lang/LC_MESSAGES" || exit 1
-	fi
 	## Create .mo file:
-	msgfmt -o "$2/$lang/LC_MESSAGES/$3.mo" "$langf"
+	msgfmt -o "$2/$lang.mo" "$langf"
 	## Print status on console:
 	if [[ $? -eq 0 ]]; then
 		echo "[DONE]"
