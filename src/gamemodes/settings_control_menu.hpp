@@ -137,5 +137,7 @@
 			bool m_menuitem8_over;
 			bool m_arrow_left6_over;
 			bool m_arrow_right6_over;
+			sf::Texture m_test_texture;
+			sf::Sprite m_test_sprite;
 	};
 #endif // SETTINGS_CONTROL_MENU_HPP

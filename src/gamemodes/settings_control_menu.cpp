@@ -365,6 +365,13 @@ int SettingsControlMenu::init(Config conf)
 	m_arrow_left6_sprite.setColor(sf::Color(255, 255, 255, 255));
 	m_arrow_right6_sprite.setColor(sf::Color(255, 255, 255, 255));
 	/*
+	 * FIXME: ===== Test =====
+	*/
+	if (!m_test_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "test.png")))
+		return 1;
+	m_test_sprite.setTexture(m_test_texture);
+	m_test_sprite.setColor(sf::Color(255, 255, 255, 255));
+	/*
 	 * Init menuitem shapes:
 	*/
 	m_menuitem1.setOutlineColor(sf::Color::Black);
@@ -517,6 +524,12 @@ int SettingsControlMenu::calculate_sizes(int w, int h)
 	m_arrow_right6_sprite.setPosition(menuitem_xoffset+menuitem_width-arrow_xgap-arrow_height, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*m_controlkeys_showc+arrow_ygap+menuitem_gap);
 	m_arrow_left6_sprite.setScale(arrow_height/7, arrow_height/7);
 	m_arrow_right6_sprite.setScale(arrow_height/7, arrow_height/7);
+	/*
+	 * FIXME: ===== TEST =====
+	*/
+	// shall/is
+	m_test_sprite.setScale(int((h/20.0)/16), int((h/20.0)/16));
+	m_test_sprite.setPosition(5, 5);
 	return 0;
 }
 void SettingsControlMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -700,7 +713,7 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(6+(m_controlkeys_showc*3)+((m_controlkeys_offset > 0)?1:0)+((CONFIGVAR_CONTROL_KEY_COUNT > m_controlkeys_offset+5)?1:0));
+	arr.init(6+(m_controlkeys_showc*3)+((m_controlkeys_offset > 0)?1:0)+((CONFIGVAR_CONTROL_KEY_COUNT > m_controlkeys_offset+5)?1:0)+1);
 	/*
 	 * Add elements:
 	*/
@@ -787,6 +800,8 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 	arr.add_rectshape(m_menuitem8);
 	//
 	arr.add_text(m_menuitem8_txt);
+	//
+	arr.add_sprite(m_test_sprite);
 	/*
 	 * Return:
 	*/
