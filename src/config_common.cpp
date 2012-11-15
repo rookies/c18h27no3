@@ -131,7 +131,7 @@ ConfigVariable Config::get(std::string index)
 }
 bool Config::set(ConfigVariable var)
 {
-	std::cout << "Setting ConfigVariable '" << var.index << "'...";
+	std::cout << "Setting ConfigVariable '" << var.index << "'... ";
 	/*
 	 * Variable declarations:
 	*/

@@ -48,7 +48,7 @@ int Game::init(void)
 	/*
 	 * Get video info:
 	*/
-	std::cout << "Getting video mode...";
+	std::cout << "Getting video mode... ";
 	videomode = sf::VideoMode::getDesktopMode();
 	std::cout << "[DONE]" << std::endl;
 	std::cout << "  Screen Resolution: " << videomode.width << "x" << videomode.height << "x" << videomode.bitsPerPixel << std::endl;
@@ -286,9 +286,7 @@ int Game::loop(void)
 		 * Check if we have to draw the stuff:
 		*/
 		if (m_window_has_focus)
-		{
 			draw();
-		}
 		else
 		{
 			/*
