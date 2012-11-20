@@ -33,8 +33,9 @@
 #	include "../numerical_textfield_buffer.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
+#	include "../gamemode.hpp"
 	
-	class SettingsGraphicsMenu
+	class SettingsGraphicsMenu : public Gamemode
 	{
 		public:
 			SettingsGraphicsMenu();

@@ -30,7 +30,7 @@ SettingsMenu::~SettingsMenu()
 {
 	
 }
-int SettingsMenu::init(void)
+int SettingsMenu::init(Config conf)
 {
 	/*
 	 * Load fonts:

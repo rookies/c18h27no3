@@ -30,7 +30,7 @@ MainMenu::~MainMenu()
 {
 	
 }
-int MainMenu::init(void)
+int MainMenu::init(Config conf)
 {
 	/*
 	 * Load fonts:

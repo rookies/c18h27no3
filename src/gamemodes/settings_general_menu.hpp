@@ -33,8 +33,9 @@
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
+#	include "../gamemode.hpp"
 	
-	class SettingsGeneralMenu
+	class SettingsGeneralMenu : public Gamemode
 	{
 		public:
 			SettingsGeneralMenu();

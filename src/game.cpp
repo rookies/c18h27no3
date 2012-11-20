@@ -151,7 +151,7 @@ int Game::init(void)
 }
 int Game::uninit(void)
 {
-	uninit_gamemode(m_gamemode);
+	uninit_gamemode();
 	m_window.close();
 	return 0;
 }
@@ -172,45 +172,7 @@ void Game::draw(void)
 	/*
 	 * Get drawables from the GameMode classes:
 	*/
-	switch (m_gamemode)
-	{
-		case 1:
-			/*
-			 * Main Menu
-			*/
-			drawables = m_main_menu->get_drawables();
-			break;
-		case 2:
-			/*
-			 * Settings Menu
-			*/
-			drawables = m_settings_menu->get_drawables();
-			break;
-		case 3:
-			/*
-			 * Settings General Menu
-			*/
-			drawables = m_settings_general_menu->get_drawables();
-			break;
-		case 4:
-			/*
-			 * Settings Graphics Menu
-			*/
-			drawables = m_settings_graphics_menu->get_drawables();
-			break;
-		case 5:
-			/*
-			 * Settings Control Menu
-			*/
-			drawables = m_settings_control_menu->get_drawables();
-			break;
-		case 6:
-			/*
-			 * Settings Sound Menu
-			*/
-			drawables = m_settings_sound_menu->get_drawables();
-			break;
-	}
+	drawables = m_gamemode_class->get_drawables();
 	/*
 	 * Run through drawables:
 	*/
@@ -527,75 +489,12 @@ int Game::process_events(void)
 		/*
 		 * And then let the gamemode classes handle them:
 		*/
-		switch (m_gamemode)
-		{
-			case 1:
-				/*
-				 * Main Menu
-				*/
-				m_main_menu->process_event(
-					event,
-					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y(),
-					&event_processor_return
-				);
-				break;
-			case 2:
-				/*
-				 * Settings Menu
-				*/
-				m_settings_menu->process_event(
-					event,
-					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y(),
-					&event_processor_return
-				);
-				break;
-			case 3:
-				/*
-				 * Settings General Menu
-				*/
-				m_settings_general_menu->process_event(
-					event,
-					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y(),
-					&event_processor_return
-				);
-				break;
-			case 4:
-				/*
-				 * Settings Graphics Menu
-				*/
-				m_settings_graphics_menu->process_event(
-					event,
-					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y(),
-					&event_processor_return
-				);
-				break;
-			case 5:
-				/*
-				 * Settings Control Menu
-				*/
-				m_settings_control_menu->process_event(
-					event,
-					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y(),
-					&event_processor_return
-				);
-				break;
-			case 6:
-				/*
-				 * Settings Sound Menu
-				*/
-				m_settings_sound_menu->process_event(
-					event,
-					m_cursor.get_mouse_position_x(),
-					m_cursor.get_mouse_position_y(),
-					&event_processor_return
-				);
-				break;
-		}
+		m_gamemode_class->process_event(
+			event,
+			m_cursor.get_mouse_position_x(),
+			m_cursor.get_mouse_position_y(),
+			&event_processor_return
+		);
 		/*
 		 * Set config variables?
 		*/
@@ -660,69 +559,11 @@ int Game::calculate_sizes(void)
 	/*
 	 * Game Modes:
 	*/
-	switch (m_gamemode)
-	{
-		case 1:
-			/*
-			 * Main Menu
-			*/
-			if (m_main_menu->calculate_sizes(
-				m_padding_data_calculator.get_usable_w(),
-				m_padding_data_calculator.get_usable_h()
-			) == 1)
-				return 1;
-			break;
-		case 2:
-			/*
-			 * Settings Menu
-			*/
-			if (m_settings_menu->calculate_sizes(
-				m_padding_data_calculator.get_usable_w(),
-				m_padding_data_calculator.get_usable_h()
-			) == 1)
-				return 1;
-			break;
-		case 3:
-			/*
-			 * Settings General Menu
-			*/
-			if (m_settings_general_menu->calculate_sizes(
-				m_padding_data_calculator.get_usable_w(),
-				m_padding_data_calculator.get_usable_h()
-			) == 1)
-				return 1;
-			break;
-		case 4:
-			/*
-			 * Settings Graphics Menu
-			*/
-			if (m_settings_graphics_menu->calculate_sizes(
-				m_padding_data_calculator.get_usable_w(),
-				m_padding_data_calculator.get_usable_h()
-			) == 1)
-				return 1;
-			break;
-		case 5:
-			/*
-			 * Settings Control Menu
-			*/
-			if (m_settings_control_menu->calculate_sizes(
-				m_padding_data_calculator.get_usable_w(),
-				m_padding_data_calculator.get_usable_h()
-			) == 1)
-				return 1;
-			break;
-		case 6:
-			/*
-			 * Settings Sound Menu
-			*/
-			if (m_settings_sound_menu->calculate_sizes(
-				m_padding_data_calculator.get_usable_w(),
-				m_padding_data_calculator.get_usable_h()
-			) == 1)
-				return 1;
-			break;
-	}
+	if (m_gamemode_class->calculate_sizes(
+		m_padding_data_calculator.get_usable_w(),
+		m_padding_data_calculator.get_usable_h()
+	) == 1)
+		return 1;
 	return 0;
 }
 int Game::set_gamemode(int gamemode)
@@ -731,7 +572,7 @@ int Game::set_gamemode(int gamemode)
 	/*
 	 * Uninit old game mode:
 	*/
-	if (uninit_gamemode(m_gamemode) == 1)
+	if (uninit_gamemode() == 1)
 		return 1;
 	/*
 	 * Init new game mode:
@@ -759,112 +600,53 @@ int Game::init_gamemode(int gamemode)
 			/*
 			 * Main Menu
 			*/
-			m_main_menu = new MainMenu;
-			if (m_main_menu->init() == 1)
-				return 1;
+			m_gamemode_class = new MainMenu;
 			break;
 		case 2:
 			/*
 			 * Settings Menu
 			*/
-			m_settings_menu = new SettingsMenu;
-			if (m_settings_menu->init() == 1)
-				return 1;
+			m_gamemode_class = new SettingsMenu;
 			break;
 		case 3:
 			/*
 			 * Settings General Menu
 			*/
-			m_settings_general_menu = new SettingsGeneralMenu;
-			if (m_settings_general_menu->init(m_config) == 1)
-				return 1;
+			m_gamemode_class = new SettingsGeneralMenu;
 			break;
 		case 4:
 			/*
 			 * Settings Graphics Menu
 			*/
-			m_settings_graphics_menu = new SettingsGraphicsMenu;
-			if (m_settings_graphics_menu->init(m_config) == 1)
-				return 1;
+			m_gamemode_class = new SettingsGraphicsMenu;
 			break;
 		case 5:
 			/*
 			 * Settings Control Menu
 			*/
-			m_settings_control_menu = new SettingsControlMenu;
-			if (m_settings_control_menu->init(m_config) == 1)
-				return 1;
+			m_gamemode_class = new SettingsControlMenu;
 			break;
 		case 6:
 			/*
 			 * Settings Sound Menu
 			*/
-			m_settings_sound_menu = new SettingsSoundMenu;
-			if (m_settings_sound_menu->init(m_config) == 1)
-				return 1;
+			m_gamemode_class = new SettingsSoundMenu;
 			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
 			break;
 	}
+	if (m_gamemode_class->init(m_config) == 1)
+		return 1;
 	return 0;
 }
-int Game::uninit_gamemode(int gamemode)
+int Game::uninit_gamemode(void)
 {
-	switch (gamemode)
-	{
-		case 1:
-			/*
-			 * Main Menu
-			*/
-			if (m_main_menu->uninit() == 1)
-				return 1;
-			delete m_main_menu;
-			break;
-		case 2:
-			/*
-			 * Settings Menu
-			*/
-			if (m_settings_menu->uninit() == 1)
-				return 1;
-			delete m_settings_menu;
-			break;
-		case 3:
-			/*
-			 * Settings General Menu
-			*/
-			if (m_settings_general_menu->uninit() == 1)
-				return 1;
-			delete m_settings_general_menu;
-			break;
-		case 4:
-			/*
-			 * Settings Graphics Menu
-			*/
-			if (m_settings_graphics_menu->uninit() == 1)
-				return 1;
-			delete m_settings_graphics_menu;
-			break;
-		case 5:
-			/*
-			 * Settings Control Menu
-			*/
-			if (m_settings_control_menu->uninit() == 1)
-				return 1;
-			delete m_settings_control_menu;
-			break;
-		case 6:
-			/*
-			 * Settings Sound Menu
-			*/
-			if (m_settings_sound_menu->uninit() == 1)
-				return 1;
-			delete m_settings_sound_menu;
-			break;
-		default:
-			std::cout << "Invalid gamemode passed to uninit_gamemode(): " << gamemode << std::endl;
-			break;
-	}
+	if (m_gamemode == 0)
+		return 0;
+	if (m_gamemode_class->uninit() == 1)
+		return 1;
+	delete m_gamemode_class;
 	return 0;
 }

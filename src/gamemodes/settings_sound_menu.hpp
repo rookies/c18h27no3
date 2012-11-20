@@ -27,8 +27,9 @@
 #	include <SFML/Graphics.hpp>
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
+#	include "../gamemode.hpp"
 	
-	class SettingsSoundMenu
+	class SettingsSoundMenu : public Gamemode
 	{
 		public:
 			SettingsSoundMenu();

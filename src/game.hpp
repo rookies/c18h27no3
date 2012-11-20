@@ -42,6 +42,7 @@
 #	include "gamemodes/settings_sound_menu.hpp"
 #	include "event_processor_return.hpp"
 #	include "universal_drawable.hpp"
+#	include "gamemode.hpp"
 	
 	class Game
 	{
@@ -95,7 +96,7 @@
 			 * (Un)init game mode:
 			*/
 			int init_gamemode(int gamemode);
-			int uninit_gamemode(int gamemode);
+			int uninit_gamemode(void);
 			
 			/*
 			 * Internal variables:
@@ -111,12 +112,7 @@
 			Cursor m_cursor;
 			Config m_config;
 			FPScounter m_fps_counter;
-			MainMenu *m_main_menu;
-			SettingsMenu *m_settings_menu;
-			SettingsGeneralMenu *m_settings_general_menu;
-			SettingsGraphicsMenu *m_settings_graphics_menu;
-			SettingsControlMenu *m_settings_control_menu;
-			SettingsSoundMenu *m_settings_sound_menu;
+			Gamemode *m_gamemode_class;
 			/*
 			 * Game mode:
 			 *  0 - undefined

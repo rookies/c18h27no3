@@ -31,8 +31,9 @@
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
+#	include "../gamemode.hpp"
 	
-	class MainMenu
+	class MainMenu : public Gamemode
 	{
 		public:
 			MainMenu();
@@ -41,7 +42,7 @@
 			/*
 			 * (Un)init:
 			*/
-			int init(void); /* Called in Game::init_gamemode() */
+			int init(Config conf); /* Called in Game::init_gamemode() */
 			int uninit(void); /* Called in Game::uninit_gamemode() */
 			/*
 			 * Calculate sizes:
