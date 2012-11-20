@@ -40,7 +40,7 @@ int MainMenu::init(Config conf)
 	/*
 	 * Init grassblock:
 	*/
-	if (!m_img1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "grass.png")))
+	if (!m_img1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "c18h27no3.png")))
 		return 1;
 	m_img1_sprite.setTexture(m_img1);
 	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
@@ -90,16 +90,16 @@ int MainMenu::calculate_sizes(int w, int h)
 	int menuitem_height = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	int menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
 	int menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
-	int grassblock_height = h*(SIZE_MAINMENU_GRASSBLOCK_HEIGHT/100.0);
+	int logo_height = h*(SIZE_MAINMENU_LOGO_HEIGHT/100.0);
 	int menuitem_xoffset = (w-menuitem_width)/2.0;
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
-	int grassblock_yoffset = h*(SIZE_MAINMENU_GRASSBLOCK_YOFFSET/100.0);
+	int logo_yoffset = h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0);
 	/*
-	 * Update grassblock position & size:
+	 * Update logo position & size:
 	*/
-	m_img1_sprite.setPosition((w-grassblock_height)/2, grassblock_yoffset);
-	m_img1_sprite.setScale(grassblock_height/20, grassblock_height/20);
+	m_img1_sprite.setScale(logo_height/47, logo_height/47);
+	m_img1_sprite.setPosition((w-m_img1_sprite.getGlobalBounds().width)/2, logo_yoffset);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
