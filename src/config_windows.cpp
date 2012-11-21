@@ -174,5 +174,5 @@ bool Config::write(void)
 	 * Return success:
 	*/
 	std::cout << "[DONE]" << std::endl;
-	return false;
+	return true;
 }
