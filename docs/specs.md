@@ -1,6 +1,6 @@
 # Configuration
 
-## Keys
+## Keys (specification not finished)
  * GENERAL__LANGUAGE:string
   * Language of the game
   * **Default:** en
@@ -20,9 +20,24 @@
  * GRAPHICS__FULLSCREEN:bool
   * Enable fullscreen mode
   * **Default:** true
- * CONTROL__...
- * SOUND__...
- * ...
+ * CONTROL__KEY_GOLEFT:int
+  * Keycode for walking left
+  * **Default:** sf::Keyboard::Left
+ * CONTROL__KEY_GORIGHT:int
+  * Keycode for walking right
+  * **Default:** sf::Keyboard::Right
+ * CONTROL__KEY_JUMP:int
+  * Keycode for jumping
+  * **Default:** sf::Keyboard::Space
+ * CONTROL__KEY_SCREENSHOT:int
+  * Keycode for taking a screenshot
+  * **Default:** sf::Keyboard::F1
+ * CONTROL__KEY_SHOOT:int
+  * Keycode for shooting
+  * **Default:** sf::Keyboard::LControl
+ * CONTROL__KEY_WEAPONCHANGE:int
+  * Keycode for changing the weapon
+  * **Default:** sf::Keyboard::Tab
 
 ## Unix
 **File:** ~/.@GAME@/config.txt
@@ -31,7 +46,7 @@
 ```
 @KEY@#@VALUE@
 @KEY@#@VALUE@
-...
+[...]
 ```
 
 ## Windows
@@ -41,5 +56,5 @@
 ```
 @KEY@:REG_SZ = @VALUE@
 @KEY@:REG_SZ = @VALUE@
-...
+[...]
 ```
