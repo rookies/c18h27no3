@@ -50,7 +50,7 @@ int FPScounter::calculate_sizes(int w, int h)
 }
 sf::Text FPScounter::get_drawable(void)
 {
-	if (m_frames == 500)
+	if (m_frames == 100)
 	{
 		/*
 		 * Build the string for showing:
