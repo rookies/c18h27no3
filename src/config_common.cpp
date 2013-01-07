@@ -81,7 +81,7 @@ Config::Config()
 
 	m_vars[11].index = "SOUND__MENU_MUSIC_VOLUME";
 	m_vars[11].type = CONFIGVAR_TYPE_INTEGER;
-	m_vars[11].value_bool = 100;
+	m_vars[11].value_int = 100;
 }
 Config::~Config()
 {
