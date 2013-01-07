@@ -32,6 +32,7 @@
 #	define DATALOADER_TYPE_IMG 1
 #	define DATALOADER_TYPE_FONT 2
 #	define DATALOADER_TYPE_LOCALE 3
+#	define DATALOADER_TYPE_SOUND 4
 	
 	std::string get_data_path(int type, std::string fname, bool append_fname=true);
 #endif // DATALOADER_HPP

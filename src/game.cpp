@@ -22,7 +22,7 @@
  */
 #include "game.hpp"
 
-Game::Game()
+Game::Game() : m_menusound_state(false), m_menusound_initialized(false)
 {
 	
 }
@@ -151,6 +151,7 @@ int Game::init(void)
 }
 int Game::uninit(void)
 {
+	set_menusound(false);
 	uninit_gamemode();
 	m_window.close();
 	return 0;
@@ -603,36 +604,54 @@ int Game::init_gamemode(int gamemode)
 			 * Main Menu
 			*/
 			m_gamemode_class = new MainMenu;
+			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+				if (!set_menusound(true))
+					return 1;
 			break;
 		case 2:
 			/*
 			 * Settings Menu
 			*/
 			m_gamemode_class = new SettingsMenu;
+			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+				if (!set_menusound(true))
+					return 1;
 			break;
 		case 3:
 			/*
 			 * Settings General Menu
 			*/
 			m_gamemode_class = new SettingsGeneralMenu;
+			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+				if (!set_menusound(true))
+					return 1;
 			break;
 		case 4:
 			/*
 			 * Settings Graphics Menu
 			*/
 			m_gamemode_class = new SettingsGraphicsMenu;
+			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+				if (!set_menusound(true))
+					return 1;
 			break;
 		case 5:
 			/*
 			 * Settings Control Menu
 			*/
 			m_gamemode_class = new SettingsControlMenu;
+			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+				if (!set_menusound(true))
+					return 1;
 			break;
 		case 6:
 			/*
 			 * Settings Sound Menu
 			*/
 			m_gamemode_class = new SettingsSoundMenu;
+			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+				if (!set_menusound(true))
+					return 1;
 			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
@@ -651,4 +670,50 @@ int Game::uninit_gamemode(void)
 		return 1;
 	delete m_gamemode_class;
 	return 0;
+}
+bool Game::set_menusound(bool state)
+{
+	/*
+	 * Check if we have to do something:
+	*/
+	if (state == m_menusound_state) // state already there
+		return true;
+	if (!state && !m_menusound_initialized) // we shall turn off sound & sound isn't initialized
+		return true;
+	/*
+	 * Init sound if necessary:
+	*/
+	if (!m_menusound_initialized)
+	{
+		/*
+		 * Load file:
+		*/
+		std::cout << "Loading menu sound... ";
+		if (!m_menusound_buffer.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, "menu_background.ogg", true)))
+		{
+			std::cout << "[FAIL]" << std::endl;
+			return false;
+		};
+		std::cout << "[DONE]" << std::endl;
+		/*
+		 * Set sound parameters:
+		*/
+		m_menusound.setBuffer(m_menusound_buffer);
+		m_menusound.setLoop(true);
+		/*
+		 * Mark is initialized:
+		*/
+		m_menusound_initialized = true;
+	};
+	if (state)
+	{
+		m_menusound.play();
+		m_menusound_state = true;
+	}
+	else
+	{
+		m_menusound.pause();
+		m_menusound_state = false;
+	};
+	return true;
 }

@@ -25,6 +25,7 @@
 	
 #	include <iostream>
 #	include <SFML/Window.hpp>
+#	include <SFML/Audio.hpp>
 #	ifdef _WIN32
 #		include <windows.h>
 #	endif // _WIN32
@@ -97,6 +98,10 @@
 			*/
 			int init_gamemode(int gamemode);
 			int uninit_gamemode(void);
+			/*
+			 * Toggle menu sound:
+			*/
+			bool set_menusound(bool state);
 			
 			/*
 			 * Internal variables:
@@ -124,5 +129,9 @@
 			 *  6 - settings sound menu
 			*/
 			int m_gamemode;
+			bool m_menusound_state;
+			bool m_menusound_initialized;
+			sf::SoundBuffer m_menusound_buffer;
+			sf::Sound m_menusound;
 	};
 #endif // GAME_HPP

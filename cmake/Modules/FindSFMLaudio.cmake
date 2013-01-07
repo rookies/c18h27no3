@@ -1,0 +1,26 @@
+# Find include file & library:
+IF (UNIX)
+	find_path(SFMLaudio_INCLUDE_DIR SFML/Audio.hpp)
+	find_library(SFMLaudio_LIBRARIES NAMES sfml-audio)
+ELSEIF (WIN32)
+	set(SFMLaudio_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/)
+	set(SFMLaudio_LIBRARIES ${CMAKE_SOURCE_DIR}/sfml-audio-2.dll)
+ENDIF (UNIX)
+# Set success status:
+IF (SFMLaudio_LIBRARIES AND SFMLaudio_INCLUDE_DIR)
+	set(SFMLaudio_FOUND "YES")
+ELSE (SFMLaudio_LIBRARIES AND SFMLaudio_INCLUDE_DIR)
+	set(SFMLaudio_FOUND "NO")
+ENDIF (SFMLaudio_LIBRARIES AND SFMLaudio_INCLUDE_DIR)
+
+IF (SFMLaudio_FOUND)
+	IF (NOT SFMLaudio_FIND_QUIETLY)
+		message(STATUS "Found SFML-audio: ${SFMLaudio_LIBRARIES}")
+	ENDIF (NOT SFMLaudio_FIND_QUIETLY)
+ELSE (SFMLaudio_FOUND)
+	IF (SFMLaudio_FIND_REQUIRED)
+		message(FATAL_ERROR "Could not find SFML-audio library")
+	ENDIF (SFMLaudio_FIND_REQUIRED)
+ENDIF (SFMLaudio_FOUND)
+
+mark_as_advanced(SFMLaudio_LIBRARIES SFMLaudio_INCLUDE_DIR)

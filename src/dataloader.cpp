@@ -97,6 +97,27 @@ std::string get_data_path(int type, std::string fname, bool append_fname)
 			*/
 			datasources[1] = "./locale/";
 			break;
+		case DATALOADER_TYPE_SOUND:
+			datasource_c = 2;
+			datasources = new std::string[datasource_c];
+			/*
+			 * Source #1:
+			 * UNIX: /usr/share/@PROJECTNAME@/data/sound/
+			 * WINDOWS: FIXME: add windows-specific default path
+			*/
+#if defined(__unix__)
+			datasources[0] = "/usr/share/";
+			datasources[0].append(PROJECTNAME);
+			datasources[0].append("/data/sound/");
+#elif defined(_WIN32)
+			datasources[0] = "/"; // FIXME: add windows-specific default path
+#endif
+			/*
+			 * Source #2:
+			 * ./data/sound/
+			*/
+			datasources[1] = "./data/sound/";
+			break;
 		default:
 			datasource_c = 0;
 	}

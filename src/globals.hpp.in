@@ -65,7 +65,7 @@
 	/*
 	 * Number of configuration variables:
 	*/
-#	define CONFIGVAR_COUNT 5+CONFIGVAR_CONTROL_KEY_COUNT
+#	define CONFIGVAR_COUNT 6+CONFIGVAR_CONTROL_KEY_COUNT
 	/*
 	 * Number of languages:
 	*/

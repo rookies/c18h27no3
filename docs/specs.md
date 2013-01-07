@@ -38,6 +38,9 @@
  * CONTROL__KEY_WEAPONCHANGE:int
   * Keycode for changing the weapon
   * **Default:** sf::Keyboard::Tab
+ * SOUND__ENABLE_MENU_MUSIC:bool
+  * Enable menu background music
+  * **Default:** true
 
 ## Unix
 **File:** ~/.@GAME@/config.txt
