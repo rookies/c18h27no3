@@ -604,7 +604,7 @@ int Game::init_gamemode(int gamemode)
 			 * Main Menu
 			*/
 			m_gamemode_class = new MainMenu;
-			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
 			break;
@@ -613,7 +613,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Menu
 			*/
 			m_gamemode_class = new SettingsMenu;
-			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
 			break;
@@ -622,7 +622,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings General Menu
 			*/
 			m_gamemode_class = new SettingsGeneralMenu;
-			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
 			break;
@@ -631,7 +631,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Graphics Menu
 			*/
 			m_gamemode_class = new SettingsGraphicsMenu;
-			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
 			break;
@@ -640,7 +640,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Control Menu
 			*/
 			m_gamemode_class = new SettingsControlMenu;
-			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
 			break;
@@ -649,7 +649,7 @@ int Game::init_gamemode(int gamemode)
 			 * Settings Sound Menu
 			*/
 			m_gamemode_class = new SettingsSoundMenu;
-			if (m_config.get("SOUND__ENABLE_MENU_MUSIC").value_bool)
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
 			break;
@@ -700,6 +700,7 @@ bool Game::set_menusound(bool state)
 		*/
 		m_menusound.setBuffer(m_menusound_buffer);
 		m_menusound.setLoop(true);
+		m_menusound.setVolume(m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int);
 		/*
 		 * Mark is initialized:
 		*/

@@ -79,9 +79,9 @@ Config::Config()
 	m_vars[10].type = CONFIGVAR_TYPE_INTEGER;
 	m_vars[10].value_int = sf::Keyboard::Tab;
 
-	m_vars[11].index = "SOUND__ENABLE_MENU_MUSIC";
-	m_vars[11].type = CONFIGVAR_TYPE_BOOLEAN;
-	m_vars[11].value_bool = true;
+	m_vars[11].index = "SOUND__MENU_MUSIC_VOLUME";
+	m_vars[11].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[11].value_bool = 100;
 }
 Config::~Config()
 {
