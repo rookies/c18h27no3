@@ -22,6 +22,7 @@ int SinglePlayer::init(Config conf)
 	*/
 	if (!m_testblock_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "grass.png")))
 		return 1;
+	m_testblock.setTexture(m_testblock_texture);
 	/*
 	 * Load player textures:
 	*/
@@ -80,6 +81,8 @@ int SinglePlayer::calculate_sizes(int w, int h)
 		m_testblocks[i].setPosition(sf::Vector2f(i*block_width, m_startpos_y));
 		m_testblocks[i].setScale(block_width/32., block_height/16.);
 	}
+	m_testblock.setPosition(sf::Vector2f(block_width*3, m_startpos_y-block_height*1.5));
+	m_testblock.setScale(block_width/32., block_height/16.);
 	/*
 	 * Set player properties:
 	*/
@@ -151,9 +154,10 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	arr.init(m_testblock_num+1);
+	arr.init(m_testblock_num+2);
 	for (i=0; i < m_testblock_num; i++)
 		arr.add_sprite(m_testblocks[i]);
+	arr.add_sprite(m_testblock);
 	arr.add_sprite(m_player);
 	return arr;
 }

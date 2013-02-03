@@ -41,6 +41,7 @@
 			
 			sf::Texture m_testblock_texture;
 			sf::Sprite *m_testblocks;
+			sf::Sprite m_testblock;
 			int m_testblock_num;
 			sf::Texture m_player_texture1;
 			sf::Texture m_player_texture2;
