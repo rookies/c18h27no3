@@ -19,6 +19,13 @@ int SinglePlayer::init(Config conf)
 	int i;
 	std::string fname;
 	/*
+	 * Load player textures:
+	*/
+	if (!m_player_texture1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_frame1.png")))
+		return 1;
+	if (!m_player_texture2.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_frame2.png")))
+		return 1;
+	/*
 	 * Set player properties:
 	*/
 	m_player.setTexture(m_player_texture1);
@@ -33,7 +40,7 @@ int SinglePlayer::init(Config conf)
 	if (!m_level.load_from_file("level1.dat"))
 		return 1;
 	/*
-	 * Load textures:
+	 * Load block textures:
 	*/
 	m_block_textures = new sf::Texture[m_level.get_blockdefs_number()];
 	for (i=0; i < m_level.get_blockdefs_number(); i++)
@@ -109,15 +116,8 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	/*
 	 * Set block properties:
 	*/
-	/*m_startpos_x = block_width/2.;
+	m_startpos_x = block_width/2.;
 	m_startpos_y = h-(block_height/2.);
-	for (i=0; i < m_testblock_num; i++)
-	{
-		m_testblocks[i].setPosition(sf::Vector2f(i*block_width, m_startpos_y));
-		m_testblocks[i].setScale(block_width/32., block_height/16.);
-	}
-	m_testblock.setPosition(sf::Vector2f(block_width*3, m_startpos_y-block_height*1.5));
-	m_testblock.setScale(block_width/32., block_height/16.);*/
 	/*
 	 * Set player properties:
 	*/
