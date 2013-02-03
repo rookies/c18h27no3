@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ##################################
 ### CAPSAICIN v1 Level Creator ###
 ##################################
