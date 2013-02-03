@@ -52,8 +52,8 @@ int FPScounter::calculate_sizes(int w, int h)
 {
 	m_txt.setCharacterSize((int)(h*(SIZE_FPS_COUNTER_TEXT/100.0)));
 	m_txt.setPosition((int)(w*(SIZE_FPS_COUNTER_XGAP/100.0)), (int)(h-h*(SIZE_FPS_COUNTER_YGAP/100.0)-m_txt.getGlobalBounds().height));
-	m_bg.setSize(sf::Vector2f(m_txt.getGlobalBounds().width+2, m_txt.getGlobalBounds().height+2));
 	m_bg.setPosition(sf::Vector2f(m_txt.getGlobalBounds().left-1, m_txt.getGlobalBounds().top-1));
+	m_bg.setSize(sf::Vector2f(m_txt.getGlobalBounds().width+2, m_txt.getGlobalBounds().height+2));
 }
 sf::Text FPScounter::get_drawable(void)
 {
@@ -82,6 +82,7 @@ sf::Text FPScounter::get_drawable(void)
 	}
 	else
 		m_frames++;
+	m_bg.setSize(sf::Vector2f(m_txt.getGlobalBounds().width+2, m_txt.getGlobalBounds().height+2));
 	return m_txt;
 }
 sf::RectangleShape FPScounter::get_drawable_bg(void)
