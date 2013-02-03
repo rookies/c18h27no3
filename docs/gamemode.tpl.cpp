@@ -34,14 +34,27 @@ int CLASSNAME::calculate_sizes(int w, int h)
 }
 void CLASSNAME::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
-	/*
-	 * ...
-	*/
+	switch (event.type)
+	{
+		case sf::Event::KeyPressed:
+			switch (event.key.code)
+			{
+				case sf::Keyboard::Escape:
+					//ret->set_gamemode(1);
+					break;
+			}
+			break;
+	}
 }
 UniversalDrawableArray CLASSNAME::get_drawables(void)
 {
-
+	/*
+	 * Variable declarations:
+	*/
+	UniversalDrawableArray arr;
 	/*
 	 * ...
 	*/
+	arr.init(0);
+	return arr;
 }
