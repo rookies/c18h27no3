@@ -38,6 +38,11 @@ int FPScounter::init(void)
 	m_txt.setColor(sf::Color::Black);
 	m_txt.setString("0 fps");
 	/*
+	 * Set bg properties:
+	*/
+	m_bg.setFillColor(COLOR_MENU_BACKGROUND);
+	m_bg.setOutlineThickness(0);
+	/*
 	 * Reset clock:
 	*/
 	m_clock.restart();
@@ -47,6 +52,8 @@ int FPScounter::calculate_sizes(int w, int h)
 {
 	m_txt.setCharacterSize((int)(h*(SIZE_FPS_COUNTER_TEXT/100.0)));
 	m_txt.setPosition((int)(w*(SIZE_FPS_COUNTER_XGAP/100.0)), (int)(h-h*(SIZE_FPS_COUNTER_YGAP/100.0)-m_txt.getGlobalBounds().height));
+	m_bg.setSize(sf::Vector2f(m_txt.getGlobalBounds().width+2, m_txt.getGlobalBounds().height+2));
+	m_bg.setPosition(sf::Vector2f(m_txt.getGlobalBounds().left-1, m_txt.getGlobalBounds().top-1));
 }
 sf::Text FPScounter::get_drawable(void)
 {
@@ -76,6 +83,10 @@ sf::Text FPScounter::get_drawable(void)
 	else
 		m_frames++;
 	return m_txt;
+}
+sf::RectangleShape FPScounter::get_drawable_bg(void)
+{
+	return m_bg;
 }
 void FPScounter::restart(void)
 {

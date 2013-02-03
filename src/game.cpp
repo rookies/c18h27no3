@@ -211,7 +211,10 @@ void Game::draw(void)
 	 * Draw FPS counter:
 	*/
 	if (m_config.get("GENERAL__FPSCOUNTER").value_bool)
+	{
+		m_texture.draw(m_fps_counter.get_drawable_bg());
 		m_texture.draw(m_fps_counter.get_drawable());
+	}
 	/*
 	 * Show everything on padded texture:
 	*/

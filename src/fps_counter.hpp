@@ -46,9 +46,10 @@
 			*/
 			int calculate_sizes(int w, int h);
 			/*
-			 * Get drawable:
+			 * Get drawables:
 			*/
 			sf::Text get_drawable(void);
+			sf::RectangleShape get_drawable_bg(void);
 			/*
 			 * Restart clock:
 			*/
@@ -59,5 +60,6 @@
 			std::ostringstream m_txt_float;
 			sf::Clock m_clock;
 			int m_frames;
+			sf::RectangleShape m_bg;
 	};
 #endif // FPS_COUNTER_HPP

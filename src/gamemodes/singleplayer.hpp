@@ -7,6 +7,7 @@
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
+#	include "../dataloader.hpp"
 	
 	class SinglePlayer : public Gamemode
 	{
@@ -32,6 +33,7 @@
 			*/
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
-			
+			sf::Texture m_testblock_texture;
+			sf::Sprite m_testblock;
 	};
 #endif // SINGLEPLAYER_HPP
