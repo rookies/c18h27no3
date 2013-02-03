@@ -80,6 +80,39 @@ std::string LevelBlockdef::get_arg(void)
 	return m_arg;
 }
 
+LevelColumn::LevelColumn() : m_offset(-1)
+{
+
+}
+LevelColumn::~LevelColumn()
+{
+	if (m_offset >= 0)
+		delete[] m_blocks;
+}
+void LevelColumn::set_blocknumber(unsigned short number)
+{
+	if (m_offset >= 0)
+	{
+		m_blocknumber = number;
+		m_blocks = new LevelBlock[m_blocknumber];
+		m_offset = 0;
+	};
+}
+void LevelColumn::add_block(LevelBlock block)
+{
+	if (m_offset < 0)
+		return;
+	m_blocks[m_offset] = block;
+	m_offset++;
+}
+void LevelColumn::add_block(unsigned short position, unsigned short blockdef)
+{
+	LevelBlock block;
+	block.position = position;
+	block.blockdef = blockdef;
+	add_block(block);
+}
+
 Level::Level()
 {
 
@@ -93,10 +126,10 @@ bool Level::load_from_file(std::string file)
 	/*
 	 * Variable declarations:
 	*/
-	int i;
+	unsigned short i, j;
 	std::ifstream f;
 	char *buf;
-	unsigned short tmp;
+	unsigned short tmp, tmp2;
 	/*
 	 * Open file:
 	*/
@@ -258,4 +291,51 @@ bool Level::load_from_file(std::string file)
 	/*
 	 * Finally: Read columns
 	*/
+	m_columns = new LevelColumn[m_levelwidth];
+	i = 0;
+	while (i < m_levelwidth-1)
+	{
+		/*
+		 * Read X coordinate:
+		*/
+		buf = new char[2];
+		f.read(buf, 2);
+		i = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+		delete[] buf;
+		/*
+		 * Read Y number:
+		*/
+		buf = new char[1];
+		f.read(buf, 1);
+		tmp = (unsigned short)buf[0];
+		delete[] buf;
+		/*
+		 * Run through Y blocks:
+		*/
+		m_columns[i].set_blocknumber(tmp);
+		for (j=0; j < tmp-1; j++)
+		{
+			/*
+			 * Read Y coordinate:
+			*/
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp = (unsigned short)buf[0];
+			delete[] buf;
+			/*
+			 * Read blockdef ID:
+			*/
+			buf = new char[2];
+			f.read(buf, 2);
+			tmp2 = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			delete[] buf;
+			/*
+			 * Write into array:
+			*/
+			m_columns[i].add_block(tmp, tmp2);
+#ifdef LVL_DEBUG
+			std::cerr << "LevelLoader: Block x=" << i << "; y=" << tmp << "; blockdef=" << tmp2 << std::endl;
+#endif
+		}
+	}
 }

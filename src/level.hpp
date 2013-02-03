@@ -59,6 +59,27 @@
 			std::string m_arg;
 	};
 
+	class LevelBlock
+	{
+		public:
+			unsigned short position;
+			unsigned short blockdef;
+	};
+
+	class LevelColumn
+	{
+		public:
+			LevelColumn();
+			virtual ~LevelColumn();
+			void set_blocknumber(unsigned short number);
+			void add_block(LevelBlock block);
+			void add_block(unsigned short position, unsigned short blockdef);
+		private:
+			unsigned short m_blocknumber;
+			int m_offset;
+			LevelBlock *m_blocks;
+	};
+
 	class Level
 	{
 		public:
@@ -74,5 +95,6 @@
 			LevelMetadata *m_metadata;
 			unsigned short m_blockdefs_number;
 			LevelBlockdef *m_blockdefs;
+			LevelColumn *m_columns;
 	};
 #endif // LEVEL_HPP
