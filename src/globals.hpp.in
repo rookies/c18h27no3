@@ -32,6 +32,7 @@
 #	define VERSION_MAJOR @GAME_VERSION_MAJOR@
 #	define VERSION_MINOR @GAME_VERSION_MINOR@
 #	define VERSION @GAME_VERSION_MAJOR@.@GAME_VERSION_MINOR@
+#	define VERSION_LEVELFORMAT 1
 	/*
 	 * Project name:
 	*/
@@ -43,6 +44,7 @@
 	#cmakedefine HAVE_SETENV
 	#cmakedefine DATALOADER_DEBUG
 	#cmakedefine DATALOADER_VERBOSE
+	#define LVL_DEBUG
 	/*
 	 * ============================
 	 * === FUNCTION DEFINITIONS ===

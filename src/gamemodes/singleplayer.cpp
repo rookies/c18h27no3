@@ -20,9 +20,11 @@ int SinglePlayer::init(Config conf)
 	/*
 	 * Load grass block texture:
 	*/
-	if (!m_testblock_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "grass.png")))
+	if (!m_testblock_texture1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "blocks/grass.png")))
 		return 1;
-	m_testblock.setTexture(m_testblock_texture);
+	if (!m_testblock_texture2.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "blocks/dirt.png")))
+		return 1;
+	m_testblock.setTexture(m_testblock_texture2);
 	/*
 	 * Load player textures:
 	*/
@@ -39,6 +41,11 @@ int SinglePlayer::init(Config conf)
 	*/
 	m_key_goleft = conf.get("CONTROL__KEY_GOLEFT").value_int;
 	m_key_goright = conf.get("CONTROL__KEY_GORIGHT").value_int;
+	/*
+	 * Load level from file:
+	*/
+	if (!m_level.load_from_file("level1.dat"))
+		return false;
 	return 0;
 }
 int SinglePlayer::uninit(void)
@@ -70,7 +77,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Create grass block sprites (should be in init(), but we need the screen width):
 	*/
 	for (i=0; i < m_testblock_num; i++)
-		m_testblocks[i].setTexture(m_testblock_texture);
+		m_testblocks[i].setTexture(m_testblock_texture1);
 	/*
 	 * Set block properties:
 	*/

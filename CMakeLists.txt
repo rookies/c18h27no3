@@ -74,6 +74,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/event_processor_return.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/numerical_textfield_buffer.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/universal_drawable.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/dataloader.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/level.cpp)
 # .
 # add operating system specific source files:
 # .
@@ -113,26 +114,26 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBINTL_LIBRARIES})
 # .
 # add gettext target:
 # .
-if (UNIX)
-	add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD COMMAND "${CMAKE_SOURCE_DIR}/cmake/scripts/gettext.sh" "${CMAKE_SOURCE_DIR}/locale" "${CMAKE_BINARY_DIR}/locale")
-elseif (WIN32)
-	# FIXME: add windows-specific gettext target
-endif ()
+#if (UNIX)
+#	add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD COMMAND "${CMAKE_SOURCE_DIR}/cmake/scripts/gettext.sh" "${CMAKE_SOURCE_DIR}/locale" "${CMAKE_BINARY_DIR}/locale")
+#elseif (WIN32)
+#	# FIXME: add windows-specific gettext target
+#endif ()
 # .
 # add install target:
 # .
-if (UNIX)
-	# bin:
-	install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION "bin/")
-	# img:
-	file(GLOB files "${CMAKE_SOURCE_DIR}/data/img/*")
-	install(FILES ${files} DESTINATION "share/${CMAKE_PROJECT_NAME}/data/img/")
-	# lang files:
-	file(GLOB files "${CMAKE_BINARY_DIR}/locale/*")
-	foreach(lang ${files})
-		get_filename_component(lang_ ${lang} NAME_WE)
-		install(FILES "${CMAKE_BINARY_DIR}/locale/${lang_}.mo" DESTINATION "share/locale/${lang_}/LC_MESSAGES/" RENAME "${CMAKE_PROJECT_NAME}.mo")
-	endforeach()
-elseif (WIN32)
-	# FIXME: add windows-specific install target
-endif ()
+#if (UNIX)
+#	# bin:
+#	install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION "bin/")
+#	# img:
+#	file(GLOB files "${CMAKE_SOURCE_DIR}/data/img/*")
+#	install(FILES ${files} DESTINATION "share/${CMAKE_PROJECT_NAME}/data/img/")
+#	# lang files:
+#	file(GLOB files "${CMAKE_BINARY_DIR}/locale/*")
+#	foreach(lang ${files})
+#		get_filename_component(lang_ ${lang} NAME_WE)
+#		install(FILES "${CMAKE_BINARY_DIR}/locale/${lang_}.mo" DESTINATION "share/locale/${lang_}/LC_MESSAGES/" RENAME "${CMAKE_PROJECT_NAME}.mo")
+#	endforeach()
+#elseif (WIN32)
+#	# FIXME: add windows-specific install target
+#endif ()

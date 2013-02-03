@@ -12,6 +12,7 @@
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
 #	include "../dataloader.hpp"
+#	include "../level.hpp"
 	
 	class SinglePlayer : public Gamemode
 	{
@@ -39,7 +40,8 @@
 		private:
 			void toggle_playertexture(void);
 			
-			sf::Texture m_testblock_texture;
+			sf::Texture m_testblock_texture1;
+			sf::Texture m_testblock_texture2;
 			sf::Sprite *m_testblocks;
 			sf::Sprite m_testblock;
 			int m_testblock_num;
@@ -55,5 +57,6 @@
 			int m_key_goleft;
 			int m_key_goright;
 			float m_stepwidth;
+			Level m_level;
 	};
 #endif // SINGLEPLAYER_HPP

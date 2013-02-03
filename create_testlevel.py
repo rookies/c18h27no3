@@ -4,8 +4,8 @@
 ##################################
 ### LEVEL FORMAT ###
 # Header:						CAPSAICIN[version,16b][level_width,16b]
+# Metadata Start:				[metadata_number,8b]
 # Loop through Metadata:		[len_key,16b][key][len_value,16b][value]
-# Metadata End:					00
 # Blockdefs Start:				[len_blockdefs,16b]
 # Loop through Blockdefs:		[id,16b][type,8b][arg_len,8b][arg]
 # Loop through colums (x):		[x_coord,16b][y_number,8b]
@@ -47,12 +47,12 @@ blocks_per_col = 2
 output.write(b"CAPSAICIN")
 output.write(struct.pack("<hh", version, levelwidth))
 ### METADATA ###
+output.write(struct.pack("<B", len(metadata)))
 for key, value in metadata.items():
 	output.write(struct.pack("<h", len(key)))
 	output.write(bytes(key, "ascii"))
 	output.write(struct.pack("<h", len(value)))
 	output.write(bytes(value, "ascii"))
-output.write(struct.pack("<h", 0))
 ### BLOCK DEFINITIONS ###
 output.write(struct.pack("<h", len(blockdefs)))
 i = 0
