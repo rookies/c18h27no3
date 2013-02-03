@@ -23,6 +23,10 @@
 #ifndef LEVEL_HPP
 #	define LEVEL_HPP
 
+#	define BLOCKDEF_TYPE_BUILTIN 1
+#	define BLOCKDEF_TYPE_BUILTIN_SPECIAL 2
+#	define BLOCKDEF_TYPE_SPECIAL 3
+
 #	include <string>
 #	include <fstream>
 #	include <iostream>
@@ -72,8 +76,9 @@
 			LevelColumn();
 			virtual ~LevelColumn();
 			void set_blocknumber(unsigned short number);
-			void add_block(LevelBlock block);
 			void add_block(unsigned short position, unsigned short blockdef);
+			unsigned short get_blocknumber(void);
+			LevelBlock *get_block(unsigned short index);
 		private:
 			unsigned short m_blocknumber;
 			int m_offset;
@@ -89,6 +94,9 @@
 			 * Load from file:
 			*/
 			bool load_from_file(std::string file);
+			unsigned short get_blockdefs_number(void);
+			LevelBlockdef get_blockdef(unsigned short index);
+			LevelColumn *get_column(unsigned short index);
 		private:
 			unsigned short m_levelwidth;
 			unsigned short m_metadata_number;

@@ -39,12 +39,11 @@
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
 			void toggle_playertexture(void);
-			
-			sf::Texture m_testblock_texture1;
-			sf::Texture m_testblock_texture2;
-			sf::Sprite *m_testblocks;
-			sf::Sprite m_testblock;
-			int m_testblock_num;
+
+			sf::Texture *m_block_textures;
+			sf::Sprite *m_blocks;
+			int m_visible_block_number;
+			int m_width_in_blocks;
 			sf::Texture m_player_texture1;
 			sf::Texture m_player_texture2;
 			bool m_player_texture2_en;

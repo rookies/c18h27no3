@@ -64,5 +64,5 @@ for block in blockdefs:
 for i in range(levelwidth):
 	output.write(struct.pack("<hB", i, blocks_per_col))
 	for j in range(blocks_per_col):
-		y_coord = 3
+		y_coord = random.randrange(0, 30)
 		output.write(struct.pack("<Bh", y_coord, random.randint(0, len(blockdefs)-1)))

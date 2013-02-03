@@ -91,26 +91,28 @@ LevelColumn::~LevelColumn()
 }
 void LevelColumn::set_blocknumber(unsigned short number)
 {
-	if (m_offset >= 0)
+	if (m_offset < 0)
 	{
 		m_blocknumber = number;
 		m_blocks = new LevelBlock[m_blocknumber];
 		m_offset = 0;
 	};
 }
-void LevelColumn::add_block(LevelBlock block)
+void LevelColumn::add_block(unsigned short position, unsigned short blockdef)
 {
 	if (m_offset < 0)
 		return;
-	m_blocks[m_offset] = block;
+	m_blocks[m_offset].position = position;
+	m_blocks[m_offset].blockdef = blockdef;
 	m_offset++;
 }
-void LevelColumn::add_block(unsigned short position, unsigned short blockdef)
+unsigned short LevelColumn::get_blocknumber(void)
 {
-	LevelBlock block;
-	block.position = position;
-	block.blockdef = blockdef;
-	add_block(block);
+	return m_blocknumber;
+}
+LevelBlock *LevelColumn::get_block(unsigned short index)
+{
+	return &m_blocks[index];
 }
 
 Level::Level()
@@ -129,7 +131,7 @@ bool Level::load_from_file(std::string file)
 	unsigned short i, j;
 	std::ifstream f;
 	char *buf;
-	unsigned short tmp, tmp2;
+	unsigned short tmp, tmp2, tmp3;
 	/*
 	 * Open file:
 	*/
@@ -313,29 +315,42 @@ bool Level::load_from_file(std::string file)
 		 * Run through Y blocks:
 		*/
 		m_columns[i].set_blocknumber(tmp);
-		for (j=0; j < tmp-1; j++)
+		for (j=0; j < tmp; j++)
 		{
 			/*
 			 * Read Y coordinate:
 			*/
 			buf = new char[1];
 			f.read(buf, 1);
-			tmp = (unsigned short)buf[0];
+			tmp2 = (unsigned short)buf[0];
 			delete[] buf;
 			/*
 			 * Read blockdef ID:
 			*/
 			buf = new char[2];
 			f.read(buf, 2);
-			tmp2 = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			tmp3 = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
 			delete[] buf;
 			/*
 			 * Write into array:
 			*/
-			m_columns[i].add_block(tmp, tmp2);
+			m_columns[i].add_block(tmp2, tmp3);
 #ifdef LVL_DEBUG
-			std::cerr << "LevelLoader: Block x=" << i << "; y=" << tmp << "; blockdef=" << tmp2 << std::endl;
+			std::cerr << "LevelLoader: Block x=" << i << "; y=" << tmp2 << "; blockdef=" << tmp3 << std::endl;
 #endif
 		}
 	}
+	return true;
+}
+unsigned short Level::get_blockdefs_number(void)
+{
+	return m_blockdefs_number;
+}
+LevelBlockdef Level::get_blockdef(unsigned short index)
+{
+	return m_blockdefs[index];
+}
+LevelColumn *Level::get_column(unsigned short index)
+{
+	return &m_columns[index];
 }
