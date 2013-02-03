@@ -653,6 +653,13 @@ int Game::init_gamemode(int gamemode)
 				if (!set_menusound(true))
 					return 1;
 			break;
+		case 7:
+			/*
+			 * Singleplayer
+			*/
+			m_gamemode_class = new SinglePlayer;
+			set_menusound(false);
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
@@ -714,6 +721,7 @@ bool Game::set_menusound(bool state)
 	else
 	{
 		m_menusound.pause();
+		m_menusound.setPlayingOffset(sf::Time::Zero);
 		m_menusound_state = false;
 	};
 	return true;

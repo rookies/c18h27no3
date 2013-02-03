@@ -169,10 +169,12 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 			switch (event.mouseButton.button)
 			{
 				case sf::Mouse::Left:
-					if (m_menuitem6_over == 1)
-						ret->set_exit(true); // exit
+					if (m_menuitem1_over == 1)
+						ret->set_gamemode(7); // go to singleplayer
 					else if (m_menuitem4_over == 1)
 						ret->set_gamemode(2); // go to settings menu
+					else if (m_menuitem6_over == 1)
+						ret->set_exit(true); // exit
 					break;
 			}
 			break;
