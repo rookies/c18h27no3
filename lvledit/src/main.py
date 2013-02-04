@@ -233,13 +233,13 @@ class LevelEditor (object):
 			self.builder.get_object("messagedialog1").set_markup("Ungültiger Schlüssel!")
 			self.builder.get_object("messagedialog1").format_secondary_text("Dieser Schlüssel wird bereits verwendet!")
 			self.builder.get_object("messagedialog1").set_visible(True)
-		elif len(key) > 255 or len(key) == 0:
+		elif len(key) > 65535 or len(key) == 0:
 			self.builder.get_object("messagedialog1").set_markup("Ungültiger Schlüssel!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Der Schlüssel entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 255 Zeichen)")
+			self.builder.get_object("messagedialog1").format_secondary_text("Der Schlüssel entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)")
 			self.builder.get_object("messagedialog1").set_visible(True)
-		elif len(value) > 255 or len(value) == 0:
+		elif len(value) > 65535 or len(value) == 0:
 			self.builder.get_object("messagedialog1").set_markup("Ungültiger Wert!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 255 Zeichen)")
+			self.builder.get_object("messagedialog1").format_secondary_text("Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)")
 			self.builder.get_object("messagedialog1").set_visible(True)
 		else:
 			self.level.set_metadata(key, value)
@@ -261,9 +261,9 @@ class LevelEditor (object):
 		# submit button pressed
 		key = self.builder.get_object("entry4").get_text()
 		value = self.builder.get_object("entry5").get_text().strip()
-		if len(value) > 255 or len(value) == 0:
+		if len(value) > 65535 or len(value) == 0:
 			self.builder.get_object("messagedialog1").set_markup("Ungültiger Wert!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 255 Zeichen)")
+			self.builder.get_object("messagedialog1").format_secondary_text("Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)")
 			self.builder.get_object("messagedialog1").set_visible(True)
 		else:
 			self.level.set_metadata(key, value)
