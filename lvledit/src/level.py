@@ -112,4 +112,24 @@ class Level (object):
 			f.write(struct.pack("<hB", col["position"], len(col["blocks"])))
 			for blk in col["blocks"]:
 				f.write(struct.pack("<Bh", blk["position"], blk["blockdef"]))
-
+	## VERSION:
+	def get_version(self):
+		return self.LEVEL_VERSION
+	## LEVEL WIDTH:
+	def set_level_width(self, width):
+		self.level_width = width
+	def get_level_width(self):
+		return self.level_width
+	## METADATA:
+	def set_metadata(self, key, value):
+		self.metadata[key] = value
+	def get_metadata(self, key):
+		return self.metadata[key]
+	def get_all_metadata(self):
+		return self.metadata
+	## BLOCKDEFS:
+	def get_blockdefs(self):
+		return self.blockdefs
+	## COLUMNS:
+	def get_columns(self):
+		return self.columns
