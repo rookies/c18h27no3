@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+#################### !!! IMPORTANT !!! #########################
+## This script is not supported anymore, please use level.py! ##
+#################### !!! IMPORTANT !!! #########################
+
 ##################################
 ### CAPSAICIN v1 Level Creator ###
 ##################################

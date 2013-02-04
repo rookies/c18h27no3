@@ -24,7 +24,12 @@ import struct
 class Level (object):
 	LEVEL_VERSION = 1
 	level_width = 0
-	metadata = {}
+	metadata = {
+		"name": "",
+		"creator": "",
+		"creator_mail": "",
+		"creator_www": ""
+	}
 	blockdefs = []
 	columns = []
 	
@@ -95,9 +100,14 @@ class Level (object):
 		# Write header:
 		f.write(b"CAPSAICIN")
 		f.write(struct.pack("<hh", self.LEVEL_VERSION, self.level_width))
+		# Clean metadata (remove empty values):
+		cleaned_metadata = self.metadata
+		for key, value in cleaned_metadata.items():
+			if len(value) == 0:
+				del cleaned_metadata[key]
 		# Write metadata:
-		f.write(struct.pack("<B", len(self.metadata)))
-		for key, value in self.metadata.items():
+		f.write(struct.pack("<B", len(cleaned_metadata)))
+		for key, value in cleaned_metadata.items():
 			f.write(struct.pack("<h", len(key)))
 			f.write(bytes(key, "ascii"))
 			f.write(struct.pack("<h", len(value)))
@@ -124,9 +134,15 @@ class Level (object):
 	def set_metadata(self, key, value):
 		self.metadata[key] = value
 	def get_metadata(self, key):
-		return self.metadata[key]
+		if key in self.metadata:
+			return self.metadata[key]
+		else:
+			return None
 	def get_all_metadata(self):
 		return self.metadata
+	def delete_metadata(self, key):
+		if key in self.metadata:
+			del self.metadata[key]
 	## BLOCKDEFS:
 	def get_blockdefs(self):
 		return self.blockdefs

@@ -27,6 +27,8 @@ class LevelEditor (object):
 	builder = None
 	metadata_store = None
 	level = level.Level()
+	changed = False
+	opened_file = None
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -54,8 +56,10 @@ class LevelEditor (object):
 		self.metadata_store = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
 		## Assign the model to the TreeView:
 		self.builder.get_object("treeview1").set_model(self.metadata_store)
-		
-		self.builder.get_object("window1").show_all()
+		### FILL THE METADATA TREEVIEW ###
+		self.update_metadata_store()
+		### SET THE WINDOW TITLE ###
+		self.update_window_title()
 	def run(self):
 		try:
 			Gtk.main()
@@ -67,6 +71,21 @@ class LevelEditor (object):
 		self.metadata_store.clear()
 		for key, value in self.level.get_all_metadata().items():
 			self.metadata_store.append([key, value])
+	def update_window_title(self):
+		## Check for unsaved file:
+		if self.changed:
+			t = "*"
+		else:
+			t = ""
+		## Check for the filename:
+		if self.opened_file is None:
+			t += "unnamed"
+		else:
+			t += str(self.opened_file)
+		## Append the program name & version:
+		t += " - CAPSAICIN LevelEditor v0.1"
+		## Set title:
+		self.builder.get_object("window1").set_title(t)
 	### window1 EVENTS ###
 	def on_window1_delete_event(self, *args):
 		# closed
@@ -100,6 +119,9 @@ class LevelEditor (object):
 		self.builder.get_object("dialog2").set_visible(True)
 	def on_button2_clicked(self, *args):
 		# edit pressed
+		row = self.builder.get_object("treeview-selection1").get_selected_rows()
+		self.builder.get_object("entry4").set_text(row[0].get_value(row[0].get_iter(row[1][0]), 0))
+		self.builder.get_object("entry5").set_text(row[0].get_value(row[0].get_iter(row[1][0]), 1))
 		self.builder.get_object("dialog3").set_visible(True)
 	def on_button3_clicked(self, *args):
 		# delete pressed
@@ -129,6 +151,13 @@ class LevelEditor (object):
 		return True
 	def on_button4_clicked(self, *args):
 		# no button pressed
+		self.builder.get_object("dialog1").set_visible(False)
+	def on_button5_clicked(self, *args):
+		# yes button pressed
+		rows = self.builder.get_object("treeview-selection1").get_selected_rows()
+		for item in rows[1]:
+			self.level.delete_metadata(rows[0].get_value(rows[0].get_iter(item), 0))
+		self.update_metadata_store()
 		self.builder.get_object("dialog1").set_visible(False)
 	### filechooserdialog1 (save) EVENTS ###
 	def on_filechooserdialog1_delete_event(self, *args):
@@ -186,6 +215,20 @@ class LevelEditor (object):
 	def on_button12_clicked(self, *args):
 		# abort button pressed
 		self.builder.get_object("dialog3").set_visible(False)
+	def on_button13_clicked(self, *args):
+		# submit button pressed
+		key = self.builder.get_object("entry4").get_text()
+		value = self.builder.get_object("entry5").get_text().strip()
+		if len(value) > 255 or len(value) == 0:
+			self.builder.get_object("messagedialog1").set_markup("Ungültiger Wert!")
+			self.builder.get_object("messagedialog1").format_secondary_text("Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 255 Zeichen)")
+			self.builder.get_object("messagedialog1").set_visible(True)
+		else:
+			self.level.set_metadata(key, value)
+			self.update_metadata_store()
+			self.builder.get_object("dialog3").set_visible(False)
+			self.builder.get_object("entry4").set_text("")
+			self.builder.get_object("entry5").set_text("")
 	### messagedialog1 EVENTS ###
 	def on_messagedialog1_delete_event(self, *args):
 		# closed
