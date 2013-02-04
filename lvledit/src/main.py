@@ -20,13 +20,14 @@
 #  
 #  
 import level
-from gi.repository import Gtk, GObject # python-gobject
+from gi.repository import Gtk, GObject, cairo # python-gobject
 from gi.repository.Gtk import Builder
 import os.path
 
 class LevelEditor (object):
 	builder = None
 	metadata_store = None
+	blockdefs_store = None
 	level = level.Level()
 	changed = False
 	opened_file = None
@@ -60,6 +61,36 @@ class LevelEditor (object):
 		self.builder.get_object("treeview1").set_model(self.metadata_store)
 		### FILL THE METADATA TREEVIEW ###
 		self.update_metadata_store()
+		### CREATE STUFF FOR THE BLOCKDEF TREEVIEW ###
+		## Create the ident column:
+		ident = Gtk.TreeViewColumn()
+		ident.set_title("ID")
+		ident_cell = Gtk.CellRendererText()
+		ident.pack_start(ident_cell, True)
+		## Create the deftype column:
+		deftype = Gtk.TreeViewColumn()
+		deftype.set_title("Typ")
+		deftype_cell = Gtk.CellRendererText()
+		deftype.pack_start(deftype_cell, True)
+		## Create the arg column:
+		arg = Gtk.TreeViewColumn()
+		arg.set_title("Argument")
+		arg_cell = Gtk.CellRendererText()
+		arg.pack_start(arg_cell, True)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview2").append_column(ident)
+		self.builder.get_object("treeview2").append_column(deftype)
+		self.builder.get_object("treeview2").append_column(arg)
+		## Tell the renderers which items in the model they have to display:
+		ident.add_attribute(ident_cell, "text", 0)
+		deftype.add_attribute(deftype_cell, "text", 1)
+		arg.add_attribute(arg_cell, "text", 2)
+		## Create the model:
+		self.blockdefs_store = Gtk.ListStore(GObject.TYPE_UINT, GObject.TYPE_STRING, GObject.TYPE_STRING)
+		## Assign the model to the TreeView:
+		self.builder.get_object("treeview2").set_model(self.blockdefs_store)
+		### FILL THE BLOCKDEFS TREEVIEW ###
+		self.update_blockdefs_store()
 		### SET THE WINDOW TITLE ###
 		self.update_window_title()
 	def run(self):
@@ -73,6 +104,22 @@ class LevelEditor (object):
 		self.metadata_store.clear()
 		for key, value in self.level.get_all_metadata().items():
 			self.metadata_store.append([key, value])
+	def update_blockdefs_store(self):
+		self.blockdefs_store.clear()
+		for bdef in self.level.get_blockdefs():
+			if bdef["type"] == 1:
+				t = "Standard"
+			elif bdef["type"] == 2:
+				t = "Spezial"
+			elif bdef["type"] == 3:
+				t = "level-spezifisch"
+			else:
+				t = "unbekannt"
+			self.blockdefs_store.append([
+				bdef["id"],
+				t,
+				str(bdef["arg"])
+			])
 	def update_window_title(self):
 		## Check for unsaved file:
 		if self.changed:
@@ -122,6 +169,10 @@ class LevelEditor (object):
 	def on_imagemenuitem10_activate(self, *args):
 		# help -> about
 		self.builder.get_object("aboutdialog1").set_visible(True)
+	def on_window1_size_allocate(self, *args):
+		# size changed
+		#print(self.builder.get_object("drawingarea1").get_size_request())
+		self.builder.get_object("drawingarea1").set_size_request(args[1].width*0.8, -1)
 	### aboutdialog1 EVENTS ###
 	def on_aboutdialog1_delete_event(self, *args):
 		# closed
@@ -161,6 +212,18 @@ class LevelEditor (object):
 			self.builder.get_object("button2").set_sensitive(False)
 			# Disable deleting:
 			self.builder.get_object("button3").set_sensitive(False)
+	### window1/tab3 EVENTS ###
+	def on_drawingarea1_draw(self, widget, cr):
+		# we need to redraw the DrawingArea
+		# cr is cairo.Context
+		### TODO: get size of the DrawingArea and draw all the stuff
+		cr.scale(100, 100)
+		cr.rectangle(5, 5, 10, 10)
+		#p = cairo.LinearGradient(0.0, 0.0, 0.0, 1.0)
+		#p.add_color_rgba(1, 0.7, 0, 0, 0.5)
+		#p.add_color_rgba(0, 0.9, 0.7, 0.2, 1)
+		#cr.set_source(p)
+		cr.fill()
 	### dialog1 (delete metadata) EVENTS ###
 	def on_dialog1_delete_event(self, *args):
 		# closed
@@ -213,6 +276,7 @@ class LevelEditor (object):
 			self.opened_file = os.path.basename(fname)
 			self.opened_filepath = fname
 			self.update_metadata_store()
+			self.update_blockdefs_store()
 			self.update_window_title()
 			self.builder.get_object("filechooserdialog2").set_visible(False)
 	### dialog2 (add metadata) EVENTS ###
