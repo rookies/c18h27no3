@@ -35,7 +35,18 @@ class Level (object):
 	
 	def __init__(self):
 		pass
+	def cleanup(self):
+		self.level_width = 0
+		self.metadata = {
+			"name": "",
+			"creator": "",
+			"creator_mail": "",
+			"creator_www": ""
+		}
+		self.blockdefs = []
+		self.columns = []
 	def read(self, filepath):
+		self.cleanup()
 		# Open file:
 		f = open(filepath, "rb")
 		# Read CAPSAICIN header:

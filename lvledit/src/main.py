@@ -22,6 +22,7 @@
 import level
 from gi.repository import Gtk, GObject # python-gobject
 from gi.repository.Gtk import Builder
+import os.path
 
 class LevelEditor (object):
 	builder = None
@@ -29,6 +30,7 @@ class LevelEditor (object):
 	level = level.Level()
 	changed = False
 	opened_file = None
+	opened_filepath = ""
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -86,10 +88,24 @@ class LevelEditor (object):
 		t += " - CAPSAICIN LevelEditor v0.1"
 		## Set title:
 		self.builder.get_object("window1").set_title(t)
+	def ask_for_discarding_changes(self):
+		dlg = Gtk.MessageDialog(parent=self.builder.get_object("window1"))
+		dlg.add_buttons(Gtk.STOCK_CANCEL, 1, Gtk.STOCK_OK, 2)
+		dlg.set_markup("Ungespeicherte Änderungen")
+		dlg.format_secondary_text("Die aktuelle Datei wurde seit der letzten Änderung nicht gespeichert. Änderungen verwerfen?")
+		res = dlg.run()
+		dlg.destroy()
+		if res == 1:
+			return False
+		else:
+			return True
 	### window1 EVENTS ###
 	def on_window1_delete_event(self, *args):
 		# closed
-		self.quit()
+		if not self.changed or self.ask_for_discarding_changes():
+			self.quit()
+			return False
+		return True
 	def on_imagemenuitem2_activate(self, *args):
 		# file -> open
 		self.builder.get_object("filechooserdialog2").set_visible(True)
@@ -101,7 +117,8 @@ class LevelEditor (object):
 		self.builder.get_object("filechooserdialog1").set_visible(True)
 	def on_imagemenuitem5_activate(self, *args):
 		# file -> quit
-		self.quit()
+		if not self.changed or self.ask_for_discarding_changes():
+			self.quit()
 	def on_imagemenuitem10_activate(self, *args):
 		# help -> about
 		self.builder.get_object("aboutdialog1").set_visible(True)
@@ -157,7 +174,9 @@ class LevelEditor (object):
 		rows = self.builder.get_object("treeview-selection1").get_selected_rows()
 		for item in rows[1]:
 			self.level.delete_metadata(rows[0].get_value(rows[0].get_iter(item), 0))
+		self.changed = True
 		self.update_metadata_store()
+		self.update_window_title()
 		self.builder.get_object("dialog1").set_visible(False)
 	### filechooserdialog1 (save) EVENTS ###
 	def on_filechooserdialog1_delete_event(self, *args):
@@ -175,6 +194,27 @@ class LevelEditor (object):
 	def on_button8_clicked(self, *args):
 		# abort pressed
 		self.builder.get_object("filechooserdialog2").set_visible(False)
+	def on_button9_clicked(self, *args):
+		# open pressed
+		if self.changed:
+			if not self.ask_for_discarding_changes():
+				self.builder.get_object("filechooserdialog2").set_visible(False)
+				return
+		fname = self.builder.get_object("filechooserdialog2").get_filename()
+		try:
+			self.level.read(fname)
+		except Exception:
+			self.builder.get_object("messagedialog1").set_markup("Ungültige Datei!")
+			self.builder.get_object("messagedialog1").format_secondary_text("Die ausgewählte Datei ist in einem nicht-unterstützten Format!")
+			self.builder.get_object("messagedialog1").set_visible(True)
+		else:
+			### IMPORTANT: update all stuff ###
+			self.changed = False
+			self.opened_file = os.path.basename(fname)
+			self.opened_filepath = fname
+			self.update_metadata_store()
+			self.update_window_title()
+			self.builder.get_object("filechooserdialog2").set_visible(False)
 	### dialog2 (add metadata) EVENTS ###
 	def on_dialog2_delete_event(self, *args):
 		# closed
@@ -203,7 +243,9 @@ class LevelEditor (object):
 			self.builder.get_object("messagedialog1").set_visible(True)
 		else:
 			self.level.set_metadata(key, value)
+			self.changed = True
 			self.update_metadata_store()
+			self.update_window_title()
 			self.builder.get_object("dialog2").set_visible(False)
 			self.builder.get_object("entry2").set_text("")
 			self.builder.get_object("entry3").set_text("")
@@ -225,7 +267,9 @@ class LevelEditor (object):
 			self.builder.get_object("messagedialog1").set_visible(True)
 		else:
 			self.level.set_metadata(key, value)
+			self.changed = True
 			self.update_metadata_store()
+			self.update_window_title()
 			self.builder.get_object("dialog3").set_visible(False)
 			self.builder.get_object("entry4").set_text("")
 			self.builder.get_object("entry5").set_text("")
