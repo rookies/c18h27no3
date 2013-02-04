@@ -93,7 +93,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Calculate visible block number:
 	*/
 	m_visible_block_number = 0;
-	for (i=0; i < m_width_in_blocks; i++)
+	for (i=0; i < m_width_in_blocks*2; i++)
 	{
 		m_visible_block_number += m_level.get_column(i)->get_blocknumber();
 	}
@@ -103,11 +103,11 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	*/
 	m_blocks = new sf::Sprite[m_visible_block_number];
 	k = 0;
-	for (i=0; i < m_width_in_blocks; i++)
+	for (i=0; i < m_width_in_blocks*2; i++)
 	{
 		for (j=0; j < m_level.get_column(i)->get_blocknumber(); j++)
 		{
-			m_blocks[k].setPosition(sf::Vector2f(i*block_width, h-(((m_level.get_column(i)->get_block(j)->position/2.)+0.5)*block_height)));
+			m_blocks[k].setPosition(sf::Vector2f(i*block_width/2., h-(((m_level.get_column(i)->get_block(j)->position/2.)+0.5)*block_height)));
 			m_blocks[k].setScale(block_width/32., block_height/16.);
 			m_blocks[k].setTexture(m_block_textures[m_level.get_column(i)->get_block(j)->blockdef]);
 			k++;

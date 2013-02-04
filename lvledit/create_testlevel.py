@@ -44,6 +44,18 @@ blockdefs = [
 	{
 		"type": 1,
 		"argument": "dirt"
+	},
+	{
+		"type": 1,
+		"argument": "ice"
+	},
+	{
+		"type": 1,
+		"argument": "lava"
+	},
+	{
+		"type": 1,
+		"argument": "stone"
 	}
 ]
 blocks_per_col = 2
