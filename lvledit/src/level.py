@@ -23,7 +23,7 @@ import struct
 
 class Level (object):
 	LEVEL_VERSION = 1
-	level_width = 0
+	level_width = 2
 	metadata = {
 		"name": "",
 		"creator": "",
@@ -157,6 +157,11 @@ class Level (object):
 	## BLOCKDEFS:
 	def get_blockdefs(self):
 		return self.blockdefs
+	def get_blockdef_by_id(self, ident):
+		for bdef in self.blockdefs:
+			if bdef["id"] == ident:
+				return (bdef["type"], bdef["arg"])
+		return None
 	## COLUMNS:
 	def get_columns(self):
 		return self.columns

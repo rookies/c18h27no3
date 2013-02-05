@@ -20,18 +20,22 @@
 #  
 #  
 import level
-from gi.repository import Gtk, GObject, cairo # python-gobject
+from gi.repository import Gtk, Gdk, GdkPixbuf, GObject, cairo # python-gobject
 from gi.repository.Gtk import Builder
 import os.path
 
 class LevelEditor (object):
+	IMGPATH = "../data/img/"
 	builder = None
 	metadata_store = None
 	blockdefs_store = None
+	blockdefs_store2 = None
 	level = level.Level()
 	changed = False
 	opened_file = None
 	opened_filepath = ""
+	level_pixmap = None
+	block_images = []
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -39,58 +43,48 @@ class LevelEditor (object):
 		self.builder.add_from_file("gui.glade")
 		self.builder.connect_signals(self)
 		### CREATE STUFF FOR THE METADATA TREEVIEW ###
-		## Create the key column:
-		key = Gtk.TreeViewColumn()
-		key.set_title("Schlüssel")
-		key_cell = Gtk.CellRendererText()
-		key.pack_start(key_cell, True)
-		## Create the value column:
-		value = Gtk.TreeViewColumn()
-		value.set_title("Wert")
-		value_cell = Gtk.CellRendererText()
-		value.pack_start(value_cell, True)
+		key = Gtk.TreeViewColumn("Schlüssel", Gtk.CellRendererText(), text=0)
+		value = Gtk.TreeViewColumn("Wert", Gtk.CellRendererText(), text=1)
 		## Add the columns to the TreeView:
 		self.builder.get_object("treeview1").append_column(key)
 		self.builder.get_object("treeview1").append_column(value)
-		## Tell the renderers which items in the model they have to display:
-		key.add_attribute(key_cell, "text", 0)
-		value.add_attribute(value_cell, "text", 1)
 		## Create the model:
 		self.metadata_store = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
 		## Assign the model to the TreeView:
 		self.builder.get_object("treeview1").set_model(self.metadata_store)
-		### FILL THE METADATA TREEVIEW ###
+		## Fill the model:
 		self.update_metadata_store()
-		### CREATE STUFF FOR THE BLOCKDEF TREEVIEW ###
-		## Create the ident column:
-		ident = Gtk.TreeViewColumn()
-		ident.set_title("ID")
-		ident_cell = Gtk.CellRendererText()
-		ident.pack_start(ident_cell, True)
-		## Create the deftype column:
-		deftype = Gtk.TreeViewColumn()
-		deftype.set_title("Typ")
-		deftype_cell = Gtk.CellRendererText()
-		deftype.pack_start(deftype_cell, True)
-		## Create the arg column:
-		arg = Gtk.TreeViewColumn()
-		arg.set_title("Argument")
-		arg_cell = Gtk.CellRendererText()
-		arg.pack_start(arg_cell, True)
+		### CREATE STUFF FOR THE BLOCKDEFS TREEVIEW #1 ###
+		ident = Gtk.TreeViewColumn("ID", Gtk.CellRendererText(), text=0)
+		deftype = Gtk.TreeViewColumn("Typ", Gtk.CellRendererText(), text=1)
+		arg = Gtk.TreeViewColumn("Argument", Gtk.CellRendererText(), text=2)
+		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=3)
 		## Add the columns to the TreeView:
 		self.builder.get_object("treeview2").append_column(ident)
 		self.builder.get_object("treeview2").append_column(deftype)
 		self.builder.get_object("treeview2").append_column(arg)
-		## Tell the renderers which items in the model they have to display:
-		ident.add_attribute(ident_cell, "text", 0)
-		deftype.add_attribute(deftype_cell, "text", 1)
-		arg.add_attribute(arg_cell, "text", 2)
+		self.builder.get_object("treeview2").append_column(img)
 		## Create the model:
-		self.blockdefs_store = Gtk.ListStore(GObject.TYPE_UINT, GObject.TYPE_STRING, GObject.TYPE_STRING)
+		self.blockdefs_store = Gtk.ListStore(GObject.TYPE_UINT, GObject.TYPE_STRING, GObject.TYPE_STRING, GdkPixbuf.Pixbuf)
 		## Assign the model to the TreeView:
 		self.builder.get_object("treeview2").set_model(self.blockdefs_store)
-		### FILL THE BLOCKDEFS TREEVIEW ###
+		## Fill the model:
 		self.update_blockdefs_store()
+		### CREATE STUFF FOR THE BLOCKDEFS TREEVIEW #2 ###
+		## Create the ident column:
+		ident = Gtk.TreeViewColumn("ID", Gtk.CellRendererText(), text=0)
+		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview3").append_column(ident)
+		self.builder.get_object("treeview3").append_column(img)
+		## Create the model:
+		self.blockdefs_store2 = Gtk.ListStore(GObject.TYPE_UINT, GdkPixbuf.Pixbuf)
+		## Assign the model to the TreeView:
+		self.builder.get_object("treeview3").set_model(self.blockdefs_store2)
+		## Fill the model:
+		self.update_blockdefs_store2()
+		### RESIZE LEVEL LAYOUT ###
+		self.resize_level_layout()
 		### SET THE WINDOW TITLE ###
 		self.update_window_title()
 	def run(self):
@@ -100,6 +94,18 @@ class LevelEditor (object):
 			self.quit()
 	def quit(self):
 		Gtk.main_quit()
+	def update_everything(self):
+		## Metadata Store:
+		self.update_metadata_store()
+		## Blockdefs Stores:
+		self.update_blockdefs_store()
+		self.update_blockdefs_store2()
+		## Level layout:
+		self.fill_block_images()
+		## Window Title:
+		self.update_window_title()
+		## Level Width Scale:
+		self.builder.get_object("adjustment1").set_value(self.level.get_level_width())
 	def update_metadata_store(self):
 		self.metadata_store.clear()
 		for key, value in self.level.get_all_metadata().items():
@@ -107,19 +113,44 @@ class LevelEditor (object):
 	def update_blockdefs_store(self):
 		self.blockdefs_store.clear()
 		for bdef in self.level.get_blockdefs():
+			img = Gtk.Image()
+			fname = self.IMGPATH + "blocks/" + bdef["arg"] + ".png"
+			fname_alt = self.IMGPATH + "block_not_found.png"
 			if bdef["type"] == 1:
 				t = "Standard"
+				if not os.path.exists(fname):
+					fname = fname_alt
 			elif bdef["type"] == 2:
 				t = "Spezial"
+				fname = fname_alt
 			elif bdef["type"] == 3:
 				t = "level-spezifisch"
+				fname = fname_alt
 			else:
 				t = "unbekannt"
+				fname = fname_alt
+			img.set_from_file(fname)
 			self.blockdefs_store.append([
 				bdef["id"],
 				t,
-				str(bdef["arg"])
+				str(bdef["arg"]),
+				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
 			])
+			img.clear()
+	def update_blockdefs_store2(self):
+		self.blockdefs_store2.clear()
+		for bdef in self.level.get_blockdefs():
+			img = Gtk.Image()
+			fname = self.IMGPATH + "blocks/" + bdef["arg"] + ".png"
+			if bdef["type"] == 1 and os.path.exists(fname):
+				img.set_from_file(fname)
+			else:
+				img.set_from_file(self.IMGPATH + "block_not_found.png")
+			self.blockdefs_store2.append([
+				bdef["id"],
+				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
+			])
+			img.clear()
 	def update_window_title(self):
 		## Check for unsaved file:
 		if self.changed:
@@ -146,6 +177,34 @@ class LevelEditor (object):
 			return False
 		else:
 			return True
+	def get_block_height(self):
+		return (self.builder.get_object("layout1").get_allocation().height)/20.
+	def resize_level_layout(self):
+		layout = self.builder.get_object("layout1")
+		layout.set_size((self.level.get_level_width()+1)*self.get_block_height(), layout.get_size()[1])
+	def fill_block_images(self):
+		layout = self.builder.get_object("layout1")
+		height = layout.get_allocation().height
+		block_height = height/20.
+		self.resize_level_layout()
+		del self.block_images[:]
+		i = 0
+		for col in self.level.get_columns():
+			for blk in col["blocks"]:
+				self.block_images.append(Gtk.Image())
+				bdef = self.level.get_blockdef_by_id(blk["blockdef"])
+				if bdef is None or bdef[0] != 1:
+					fname = self.IMGPATH + "block_not_found.png"
+				else:
+					if os.path.exists(self.IMGPATH + "blocks/" + bdef[1] + ".png"):
+						fname = self.IMGPATH + "blocks/" + bdef[1] + ".png"
+					else:
+						fname = self.IMGPATH + "block_not_found.png"
+				self.block_images[i].set_from_file(fname)
+				self.block_images[i].set_from_pixbuf(self.block_images[i].get_pixbuf().scale_simple(block_height*2, block_height, GdkPixbuf.InterpType.NEAREST))
+				layout.put(self.block_images[i], col["position"]*block_height, height-(((blk["position"]/2.)+0.5)*block_height))
+				i += 1
+		self.builder.get_object("layout1").show_all()
 	### window1 EVENTS ###
 	def on_window1_delete_event(self, *args):
 		# closed
@@ -153,6 +212,14 @@ class LevelEditor (object):
 			self.quit()
 			return False
 		return True
+	def on_imagemenuitem1_activate(self, *args):
+		# file -> new
+		if not self.changed or self.ask_for_discarding_changes():
+			self.level.cleanup()
+			self.changed = False
+			self.opened_file = None
+			self.opened_filepath = ""
+			self.update_everything()
 	def on_imagemenuitem2_activate(self, *args):
 		# file -> open
 		self.builder.get_object("filechooserdialog2").set_visible(True)
@@ -171,8 +238,8 @@ class LevelEditor (object):
 		self.builder.get_object("aboutdialog1").set_visible(True)
 	def on_window1_size_allocate(self, *args):
 		# size changed
-		#print(self.builder.get_object("drawingarea1").get_size_request())
-		self.builder.get_object("drawingarea1").set_size_request(args[1].width*0.8, -1)
+		self.builder.get_object("scrolledwindow1").set_size_request(args[1].width*0.75, -1)
+		self.resize_level_layout()
 	### aboutdialog1 EVENTS ###
 	def on_aboutdialog1_delete_event(self, *args):
 		# closed
@@ -213,17 +280,14 @@ class LevelEditor (object):
 			# Disable deleting:
 			self.builder.get_object("button3").set_sensitive(False)
 	### window1/tab3 EVENTS ###
-	def on_drawingarea1_draw(self, widget, cr):
-		# we need to redraw the DrawingArea
-		# cr is cairo.Context
-		### TODO: get size of the DrawingArea and draw all the stuff
-		cr.scale(100, 100)
-		cr.rectangle(5, 5, 10, 10)
-		#p = cairo.LinearGradient(0.0, 0.0, 0.0, 1.0)
-		#p.add_color_rgba(1, 0.7, 0, 0, 0.5)
-		#p.add_color_rgba(0, 0.9, 0.7, 0.2, 1)
-		#cr.set_source(p)
-		cr.fill()
+	def on_scale1_format_value(self, widget, value):
+		return "%d" % value
+	def on_scale1_change_value(self, widget, scroll, value):
+		self.level.set_level_width(value)
+		if not self.changed:
+			self.changed = True
+			self.update_window_title()
+		self.resize_level_layout()
 	### dialog1 (delete metadata) EVENTS ###
 	def on_dialog1_delete_event(self, *args):
 		# closed
@@ -238,8 +302,7 @@ class LevelEditor (object):
 		for item in rows[1]:
 			self.level.delete_metadata(rows[0].get_value(rows[0].get_iter(item), 0))
 		self.changed = True
-		self.update_metadata_store()
-		self.update_window_title()
+		self.update_everything()
 		self.builder.get_object("dialog1").set_visible(False)
 	### filechooserdialog1 (save) EVENTS ###
 	def on_filechooserdialog1_delete_event(self, *args):
@@ -275,9 +338,7 @@ class LevelEditor (object):
 			self.changed = False
 			self.opened_file = os.path.basename(fname)
 			self.opened_filepath = fname
-			self.update_metadata_store()
-			self.update_blockdefs_store()
-			self.update_window_title()
+			self.update_everything()
 			self.builder.get_object("filechooserdialog2").set_visible(False)
 	### dialog2 (add metadata) EVENTS ###
 	def on_dialog2_delete_event(self, *args):
@@ -308,8 +369,7 @@ class LevelEditor (object):
 		else:
 			self.level.set_metadata(key, value)
 			self.changed = True
-			self.update_metadata_store()
-			self.update_window_title()
+			self.update_everything()
 			self.builder.get_object("dialog2").set_visible(False)
 			self.builder.get_object("entry2").set_text("")
 			self.builder.get_object("entry3").set_text("")
@@ -332,8 +392,7 @@ class LevelEditor (object):
 		else:
 			self.level.set_metadata(key, value)
 			self.changed = True
-			self.update_metadata_store()
-			self.update_window_title()
+			self.update_everything()
 			self.builder.get_object("dialog3").set_visible(False)
 			self.builder.get_object("entry4").set_text("")
 			self.builder.get_object("entry5").set_text("")
