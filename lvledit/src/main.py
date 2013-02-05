@@ -299,6 +299,8 @@ class LevelEditor (object):
 	def on_scale1_format_value(self, widget, value):
 		return "%d" % value
 	def on_scale1_change_value(self, widget, scroll, value):
+		if int(value) < 0:
+			value = 0
 		self.level.set_level_width(value)
 		if not self.changed:
 			self.changed = True
