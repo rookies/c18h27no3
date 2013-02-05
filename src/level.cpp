@@ -108,6 +108,8 @@ void LevelColumn::add_block(unsigned short position, unsigned short blockdef)
 }
 unsigned short LevelColumn::get_blocknumber(void)
 {
+	if (m_offset < 0)
+		return 0;
 	return m_blocknumber;
 }
 LevelBlock *LevelColumn::get_block(unsigned short index)
