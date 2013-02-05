@@ -36,7 +36,7 @@ class Level (object):
 	def __init__(self):
 		pass
 	def cleanup(self):
-		self.level_width = 0
+		self.level_width = 50
 		self.metadata = {
 			"name": "",
 			"creator": "",
