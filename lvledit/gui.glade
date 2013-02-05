@@ -1063,7 +1063,9 @@
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="treeview-selection"/>
+                          <object class="GtkTreeSelection" id="treeview-selection2">
+                            <signal name="changed" handler="on_treeview_selection2_changed" swapped="no"/>
+                          </object>
                         </child>
                       </object>
                     </child>
