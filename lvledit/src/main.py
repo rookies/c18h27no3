@@ -418,7 +418,9 @@ class LevelEditor (object):
 		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
 		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
 		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
-			print("ERROR!")
+			self.builder.get_object("messagedialog1").set_markup("Fehler beim Platzieren des Blocks!")
+			self.builder.get_object("messagedialog1").format_secondary_text("Der Block kann nicht außerhalb des Level-Bereichs abgelegt werden!")
+			self.builder.get_object("messagedialog1").set_visible(True)
 		else:
 			self.level.add_block(x_trans, y_trans, bdef)
 			self.changed = True
