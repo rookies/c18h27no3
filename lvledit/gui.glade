@@ -1200,6 +1200,7 @@
                           <object class="GtkLayout" id="layout1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <signal name="draw" handler="on_layout1_draw" swapped="no"/>
                             <signal name="drag-data-received" handler="on_layout1_drag_data_received" swapped="no"/>
                           </object>
                         </child>

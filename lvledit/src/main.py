@@ -20,7 +20,7 @@
 #  
 #  
 import level
-from gi.repository import Gtk, Gdk, GdkPixbuf, GObject, cairo # python-gobject
+from gi.repository import Gtk, Gdk, GdkPixbuf, GObject # python-gobject
 from gi.repository.Gtk import Builder
 import os.path
 import math
@@ -327,12 +327,23 @@ class LevelEditor (object):
 		x_trans = math.floor(x/self.get_block_height())
 		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
 		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
-		if x_trans >= self.level.get_level_width()-1:
+		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
 			print("ERROR!")
 		else:
 			self.level.add_block(x_trans, y_trans, bdef)
 			self.changed = True
 			self.update_everything()
+	def on_layout1_draw(self, widget, ctx):
+		#print("draw!")
+		#print(widget.get_size())
+		#ctx.set_source_rgb(255, 255, 255)
+		#ctx.set_source_rgb(0, 0, 0)
+		#ctx.rectangle(10, 10, 100, 100)
+		#ctx.paint()
+		#gc = GC()
+		#gc.set_foreground(Gdk.Color.red)
+		#widget.get_bin_window().draw_rectangle(gc, True, 10, 10, 100, 100)
+		pass
 	### dialog1 (delete metadata) EVENTS ###
 	def on_dialog1_delete_event(self, *args):
 		# closed

@@ -23,7 +23,7 @@ import struct
 
 class Level (object):
 	LEVEL_VERSION = 1
-	level_width = 2
+	level_width = 50
 	metadata = {
 		"name": "",
 		"creator": "",
