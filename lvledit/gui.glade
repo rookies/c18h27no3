@@ -36,9 +36,8 @@
     </child>
   </object>
   <object class="GtkAdjustment" id="adjustment1">
-    <property name="lower">2</property>
     <property name="upper">65535</property>
-    <property name="value">2</property>
+    <property name="value">50</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -412,6 +411,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_button7_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1080,6 +1080,19 @@
                         <property name="position">1</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-delete</property>
+                        <property name="icon-size">5</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1105,6 +1118,9 @@
                               <object class="GtkTreeView" id="treeview3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <signal name="drag-data-get" handler="on_treeview3_drag_data_get" swapped="no"/>
+                                <signal name="drag-end" handler="on_treeview3_drag_end" swapped="no"/>
+                                <signal name="drag-begin" handler="on_treeview3_drag_begin" swapped="no"/>
                                 <child internal-child="selection">
                                   <object class="GtkTreeSelection" id="treeview-selection3"/>
                                 </child>
@@ -1184,6 +1200,7 @@
                           <object class="GtkLayout" id="layout1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <signal name="drag-data-received" handler="on_layout1_drag_data_received" swapped="no"/>
                           </object>
                         </child>
                       </object>

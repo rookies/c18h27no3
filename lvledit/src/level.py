@@ -111,14 +111,9 @@ class Level (object):
 		# Write header:
 		f.write(b"CAPSAICIN")
 		f.write(struct.pack("<hh", self.LEVEL_VERSION, self.level_width))
-		# Clean metadata (remove empty values):
-		cleaned_metadata = self.metadata
-		for key, value in cleaned_metadata.items():
-			if len(value) == 0:
-				del cleaned_metadata[key]
 		# Write metadata:
-		f.write(struct.pack("<B", len(cleaned_metadata)))
-		for key, value in cleaned_metadata.items():
+		f.write(struct.pack("<B", len(self.metadata)))
+		for key, value in self.metadata.items():
 			f.write(struct.pack("<h", len(key)))
 			f.write(bytes(key, "ascii"))
 			f.write(struct.pack("<h", len(value)))
@@ -128,6 +123,16 @@ class Level (object):
 		for block in self.blockdefs:
 			f.write(struct.pack("<hBB", block["id"], block["type"], len(block["arg"])))
 			f.write(bytes(block["arg"], "ascii"))
+		# Fill data according to level width:
+		while len(self.columns) < self.level_width:
+			if len(self.columns) == 0:
+				pos = 0
+			else:
+				pos = self.columns[len(self.columns)-1]["position"]+1
+			self.columns.append({
+				"position": pos,
+				"blocks": []
+			})
 		# Write data:
 		for col in self.columns:
 			f.write(struct.pack("<hB", col["position"], len(col["blocks"])))
@@ -138,7 +143,7 @@ class Level (object):
 		return self.LEVEL_VERSION
 	## LEVEL WIDTH:
 	def set_level_width(self, width):
-		self.level_width = width
+		self.level_width = int(width)
 	def get_level_width(self):
 		return self.level_width
 	## METADATA:
@@ -162,6 +167,41 @@ class Level (object):
 			if bdef["id"] == ident:
 				return (bdef["type"], bdef["arg"])
 		return None
-	## COLUMNS:
+	## BLOCKS:
 	def get_columns(self):
 		return self.columns
+	def add_block(self, x, y, bdef):
+		# 1. check if the column exists:
+		pos = None
+		i = 0
+		for col in self.columns:
+			if col["position"] == x:
+				pos = i
+				break
+			else:
+				i += 1
+		# 2. if not, create it:
+		if pos is None:
+			pos = len(self.columns)
+			self.columns.append({
+				"position": x,
+				"blocks": []
+			})
+		# 3. check if the block exists:
+		pos2 = None
+		i = 0
+		for blk in self.columns[pos]["blocks"]:
+			if blk["position"] == y:
+				pos2 = i
+				break
+			else:
+				i += 1
+		if pos2 is None:
+			# 4a. if not, create a new block:
+			self.columns[pos]["blocks"].append({
+				"position": y,
+				"blockdef": bdef
+			})
+		else:
+			# 4b. if it exists, overwrite the old:
+			self.columns[pos]["blocks"][pos2]["blockdef"] = bdef

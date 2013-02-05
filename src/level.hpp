@@ -97,6 +97,7 @@
 			unsigned short get_blockdefs_number(void);
 			LevelBlockdef get_blockdef(unsigned short index);
 			LevelColumn *get_column(unsigned short index);
+			unsigned short get_levelwidth(void);
 		private:
 			unsigned short m_levelwidth;
 			unsigned short m_metadata_number;

@@ -354,3 +354,7 @@ LevelColumn *Level::get_column(unsigned short index)
 {
 	return &m_columns[index];
 }
+unsigned short Level::get_levelwidth(void)
+{
+	return m_levelwidth;
+}

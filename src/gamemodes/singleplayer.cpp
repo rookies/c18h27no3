@@ -89,6 +89,8 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Calculate width in blocks:
 	*/
 	m_width_in_blocks = ceil(w/float(block_width));
+	if (m_width_in_blocks > m_level.get_levelwidth())
+		m_width_in_blocks = floor(m_level.get_levelwidth()/2.);
 	/*
 	 * Calculate visible block number:
 	*/

@@ -29,7 +29,7 @@ import struct, sys, random
 ### SETTINGS (Important: no utf-8 support!) ###
 output = open("/dev/stdout", "wb")
 version = 1
-levelwidth = 100
+levelwidth = 0
 metadata = {
 	"name": "Testlevel",
 	"creator": "Robert Knauer",
@@ -77,8 +77,8 @@ for block in blockdefs:
 	output.write(bytes(block["argument"], "ascii"))
 	i += 1
 ### DATA ###
-for i in range(levelwidth):
-	output.write(struct.pack("<hB", i, blocks_per_col))
-	for j in range(blocks_per_col):
-		y_coord = random.randrange(0, 30)
-		output.write(struct.pack("<Bh", y_coord, random.randint(0, len(blockdefs)-1)))
+#for i in range(levelwidth):
+#	output.write(struct.pack("<hB", i, blocks_per_col))
+#	for j in range(blocks_per_col):
+#		y_coord = random.randrange(0, 30)
+#		output.write(struct.pack("<Bh", y_coord, random.randint(0, len(blockdefs)-1)))

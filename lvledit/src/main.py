@@ -23,6 +23,7 @@ import level
 from gi.repository import Gtk, Gdk, GdkPixbuf, GObject, cairo # python-gobject
 from gi.repository.Gtk import Builder
 import os.path
+import math
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
@@ -85,6 +86,13 @@ class LevelEditor (object):
 		self.update_blockdefs_store2()
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
+		### ENABLE DRAG & DROP FOR THE LEVEL EDITOR ###
+		self.builder.get_object("treeview3").drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.COPY)
+		self.builder.get_object("treeview3").drag_source_add_text_targets()
+		self.builder.get_object("layout1").drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
+		self.builder.get_object("layout1").drag_dest_add_text_targets()
+		self.builder.get_object("image1").drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.MOVE)
+		self.builder.get_object("image1").drag_dest_add_text_targets()
 		### SET THE WINDOW TITLE ###
 		self.update_window_title()
 	def run(self):
@@ -113,23 +121,15 @@ class LevelEditor (object):
 	def update_blockdefs_store(self):
 		self.blockdefs_store.clear()
 		for bdef in self.level.get_blockdefs():
-			img = Gtk.Image()
-			fname = self.IMGPATH + "blocks/" + bdef["arg"] + ".png"
-			fname_alt = self.IMGPATH + "block_not_found.png"
+			img = self.get_image_from_blockdef_id(bdef["id"])
 			if bdef["type"] == 1:
 				t = "Standard"
-				if not os.path.exists(fname):
-					fname = fname_alt
 			elif bdef["type"] == 2:
 				t = "Spezial"
-				fname = fname_alt
 			elif bdef["type"] == 3:
 				t = "level-spezifisch"
-				fname = fname_alt
 			else:
 				t = "unbekannt"
-				fname = fname_alt
-			img.set_from_file(fname)
 			self.blockdefs_store.append([
 				bdef["id"],
 				t,
@@ -140,12 +140,7 @@ class LevelEditor (object):
 	def update_blockdefs_store2(self):
 		self.blockdefs_store2.clear()
 		for bdef in self.level.get_blockdefs():
-			img = Gtk.Image()
-			fname = self.IMGPATH + "blocks/" + bdef["arg"] + ".png"
-			if bdef["type"] == 1 and os.path.exists(fname):
-				img.set_from_file(fname)
-			else:
-				img.set_from_file(self.IMGPATH + "block_not_found.png")
+			img = self.get_image_from_blockdef_id(bdef["id"])
 			self.blockdefs_store2.append([
 				bdef["id"],
 				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
@@ -177,8 +172,22 @@ class LevelEditor (object):
 			return False
 		else:
 			return True
+	def get_image_from_blockdef_id(self, ident):
+		img = Gtk.Image()
+		bdef = self.level.get_blockdef_by_id(ident)
+		if bdef is None or bdef[0] != 1:
+			fname = self.IMGPATH + "block_not_found.png"
+		else:
+			if os.path.exists(self.IMGPATH + "blocks/" + bdef[1] + ".png"):
+				fname = self.IMGPATH + "blocks/" + bdef[1] + ".png"
+			else:
+				fname = self.IMGPATH + "block_not_found.png"
+		img.set_from_file(fname)
+		return img
+	def get_level_layout_height(self):
+		return self.builder.get_object("layout1").get_allocation().height
 	def get_block_height(self):
-		return (self.builder.get_object("layout1").get_allocation().height)/20.
+		return self.get_level_layout_height()/20.
 	def resize_level_layout(self):
 		layout = self.builder.get_object("layout1")
 		layout.set_size((self.level.get_level_width()+1)*self.get_block_height(), layout.get_size()[1])
@@ -187,22 +196,18 @@ class LevelEditor (object):
 		height = layout.get_allocation().height
 		block_height = height/20.
 		self.resize_level_layout()
+		for img in self.block_images:
+			img.clear()
 		del self.block_images[:]
 		i = 0
 		for col in self.level.get_columns():
 			for blk in col["blocks"]:
-				self.block_images.append(Gtk.Image())
-				bdef = self.level.get_blockdef_by_id(blk["blockdef"])
-				if bdef is None or bdef[0] != 1:
-					fname = self.IMGPATH + "block_not_found.png"
-				else:
-					if os.path.exists(self.IMGPATH + "blocks/" + bdef[1] + ".png"):
-						fname = self.IMGPATH + "blocks/" + bdef[1] + ".png"
-					else:
-						fname = self.IMGPATH + "block_not_found.png"
-				self.block_images[i].set_from_file(fname)
+				self.block_images.append(self.get_image_from_blockdef_id(blk["blockdef"]))
 				self.block_images[i].set_from_pixbuf(self.block_images[i].get_pixbuf().scale_simple(block_height*2, block_height, GdkPixbuf.InterpType.NEAREST))
 				layout.put(self.block_images[i], col["position"]*block_height, height-(((blk["position"]/2.)+0.5)*block_height))
+				### Create the drag&drop source: ###
+				self.block_images[i].drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)
+				self.block_images[i].drag_source_add_text_targets()
 				i += 1
 		self.builder.get_object("layout1").show_all()
 	### window1 EVENTS ###
@@ -225,7 +230,18 @@ class LevelEditor (object):
 		self.builder.get_object("filechooserdialog2").set_visible(True)
 	def on_imagemenuitem3_activate(self, *args):
 		# file -> save
-		self.builder.get_object("filechooserdialog1").set_visible(True)
+		if self.opened_file is None:
+			self.builder.get_object("filechooserdialog1").set_visible(True)
+		else:
+			try:
+				self.level.write(self.opened_filepath)
+			except BaseException as e:
+				self.builder.get_object("messagedialog1").set_markup("Fehler beim Speichern!")
+				self.builder.get_object("messagedialog1").format_secondary_text(str(e))
+				self.builder.get_object("messagedialog1").set_visible(True)
+			else:
+				self.changed = False
+				self.update_everything()
 	def on_imagemenuitem4_activate(self, *args):
 		# file -> save as
 		self.builder.get_object("filechooserdialog1").set_visible(True)
@@ -288,6 +304,33 @@ class LevelEditor (object):
 			self.changed = True
 			self.update_window_title()
 		self.resize_level_layout()
+	def on_treeview3_drag_begin(self, widget, dragctx):
+		row = self.builder.get_object("treeview-selection3").get_selected()
+		if row[1] is not None:
+			img = self.get_image_from_blockdef_id(row[0].get_value(row[1], 0))
+			widget.drag_source_set_icon_pixbuf(img.get_pixbuf().scale_simple(64, 32, GdkPixbuf.InterpType.NEAREST))
+			img.clear()
+	def on_treeview3_drag_data_get(self, widget, dragctx, selection, info, time):
+		row = self.builder.get_object("treeview-selection3").get_selected()
+		if row[1] is not None:
+			selection.set_text(str(row[0].get_value(row[1], 0)), 1)
+	def on_treeview3_drag_end(self, widget, dragctx):
+		widget.drag_source_set_icon_stock("")
+	#def on_layout1_drag_motion(self, widget, dragctx, x, y, time):
+	#	print("layout1 drag motion")
+	#def on_layout1_drag_drop(self, widget, dragctx, x, y, time):
+	#	print("layout1 drag drop")
+	def on_layout1_drag_data_received(self, widget, dragctx, x, y, selection, info, time):
+		bdef = int(selection.get_text())
+		x_trans = math.floor(x/self.get_block_height())
+		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
+		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
+		if x_trans >= self.level.get_level_width()-1:
+			print("ERROR!")
+		else:
+			self.level.add_block(x_trans, y_trans, bdef)
+			self.changed = True
+			self.update_everything()
 	### dialog1 (delete metadata) EVENTS ###
 	def on_dialog1_delete_event(self, *args):
 		# closed
@@ -312,6 +355,26 @@ class LevelEditor (object):
 	def on_button6_clicked(self, *args):
 		# abort pressed
 		self.builder.get_object("filechooserdialog1").set_visible(False)
+	def on_button7_clicked(self, *args):
+		# save pressed
+		fname = self.builder.get_object("filechooserdialog1").get_filename()
+		if fname is None:
+			self.builder.get_object("messagedialog1").set_markup("Keine Datei ausgewählt!")
+			self.builder.get_object("messagedialog1").format_secondary_text("Zum Speichern muss eine Datei ausgewählt werden!")
+			self.builder.get_object("messagedialog1").set_visible(True)
+		else:
+			try:
+				self.level.write(fname)
+			except BaseException as e:
+				self.builder.get_object("messagedialog1").set_markup("Fehler beim Speichern!")
+				self.builder.get_object("messagedialog1").format_secondary_text(str(e))
+				self.builder.get_object("messagedialog1").set_visible(True)
+			else:
+				self.changed = False
+				self.opened_file = os.path.basename(fname)
+				self.opened_filepath = fname
+				self.update_everything()
+			self.builder.get_object("filechooserdialog1").set_visible(False)
 	### filechooserdialog2 (open) EVENTS ###
 	def on_filechooserdialog2_delete_event(self, *args):
 		# closed
