@@ -167,6 +167,40 @@ class Level (object):
 			if bdef["id"] == ident:
 				return (bdef["type"], bdef["arg"])
 		return None
+	def add_blockdef(self, t, arg):
+		# get lowest unused ID:
+		for i in range(65536):
+			used = False
+			for bdef in self.blockdefs:
+				if bdef["id"] == i:
+					used = True
+					break
+			if not used:
+				break
+		# add the blockdef:
+		self.blockdefs.append({
+			"id": i,
+			"type": int(t),
+			"arg": arg
+		})
+	def del_blockdef(self, ident):
+		i = 0
+		for bdef in self.blockdefs:
+			if bdef["id"] == ident:
+				del self.blockdefs[i]
+				break
+			i += 1
+	def update_blockdef(self, ident, t, arg):
+		## get the list key:
+		i = 0
+		for bdef in self.blockdefs:
+			if bdef["id"] == ident:
+				break
+			else:
+				i += 1
+		## update:
+		self.blockdefs[i]["type"] = int(t)
+		self.blockdefs[i]["arg"] = arg
 	## BLOCKS:
 	def get_columns(self):
 		return self.columns

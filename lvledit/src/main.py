@@ -24,6 +24,7 @@ from gi.repository import Gtk, Gdk, GdkPixbuf, GObject # python-gobject
 from gi.repository.Gtk import Builder
 import os.path
 import math
+import glob
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
@@ -31,6 +32,7 @@ class LevelEditor (object):
 	metadata_store = None
 	blockdefs_store = None
 	blockdefs_store2 = None
+	standard_blocks_store = None
 	level = level.Level()
 	changed = False
 	opened_file = None
@@ -72,7 +74,6 @@ class LevelEditor (object):
 		## Fill the model:
 		self.update_blockdefs_store()
 		### CREATE STUFF FOR THE BLOCKDEFS TREEVIEW #2 ###
-		## Create the ident column:
 		ident = Gtk.TreeViewColumn("ID", Gtk.CellRendererText(), text=0)
 		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
 		## Add the columns to the TreeView:
@@ -84,6 +85,18 @@ class LevelEditor (object):
 		self.builder.get_object("treeview3").set_model(self.blockdefs_store2)
 		## Fill the model:
 		self.update_blockdefs_store2()
+		### CREATE STUFF FOR THE STANDARD BLOCKS TREEVIEW ###
+		name = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=0)
+		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview4").append_column(name)
+		self.builder.get_object("treeview4").append_column(img)
+		## Create the model:
+		self.standard_blocks_store = Gtk.ListStore(GObject.TYPE_STRING, GdkPixbuf.Pixbuf)
+		## Assign the model to the TreeView:
+		self.builder.get_object("treeview4").set_model(self.standard_blocks_store)
+		## Fill the model:
+		self.update_standard_blocks_store()
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
 		### ENABLE DRAG & DROP FOR THE LEVEL EDITOR ###
@@ -114,6 +127,15 @@ class LevelEditor (object):
 		self.update_window_title()
 		## Level Width Scale:
 		self.builder.get_object("adjustment1").set_value(self.level.get_level_width())
+	def update_standard_blocks_store(self):
+		for f in glob.glob(self.IMGPATH + "blocks/*.png"):
+			name = os.path.basename(f).split(".", 2)[0]
+			img = Gtk.Image()
+			img.set_from_file(f)
+			self.standard_blocks_store.append([
+				name,
+				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
+			])
 	def update_metadata_store(self):
 		self.metadata_store.clear()
 		for key, value in self.level.get_all_metadata().items():
@@ -134,7 +156,7 @@ class LevelEditor (object):
 				bdef["id"],
 				t,
 				str(bdef["arg"]),
-				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
+				img.get_pixbuf().scale_simple(64, 32, GdkPixbuf.InterpType.NEAREST)
 			])
 			img.clear()
 	def update_blockdefs_store2(self):
@@ -206,8 +228,8 @@ class LevelEditor (object):
 				self.block_images[i].set_from_pixbuf(self.block_images[i].get_pixbuf().scale_simple(block_height*2, block_height, GdkPixbuf.InterpType.NEAREST))
 				layout.put(self.block_images[i], col["position"]*block_height, height-(((blk["position"]/2.)+0.5)*block_height))
 				### Create the drag&drop source: ###
-				self.block_images[i].drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)
-				self.block_images[i].drag_source_add_text_targets()
+				#self.block_images[i].drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)
+				#self.block_images[i].drag_source_add_text_targets()
 				i += 1
 		self.builder.get_object("layout1").show_all()
 	### window1 EVENTS ###
@@ -295,6 +317,74 @@ class LevelEditor (object):
 			self.builder.get_object("button2").set_sensitive(False)
 			# Disable deleting:
 			self.builder.get_object("button3").set_sensitive(False)
+	### window1/tab2 EVENTS ###
+	def on_treeview_selection2_changed(self, widget):
+		## blockdefs
+		if widget.count_selected_rows() == 1:
+			# allow deleting
+			self.builder.get_object("button17").set_sensitive(True)
+			if self.builder.get_object("treeview-selection4").count_selected_rows() == 1:
+				# allow editing
+				self.builder.get_object("button16").set_sensitive(True)
+			else:
+				# deny editing
+				self.builder.get_object("button16").set_sensitive(False)
+		else:
+			# deny deleting
+			self.builder.get_object("button17").set_sensitive(False)
+			# deny editing
+			self.builder.get_object("button16").set_sensitive(False)
+	def on_treeview_selection4_changed(self, widget):
+		## standard blocks
+		if widget.count_selected_rows() == 1:
+			# allow adding
+			self.builder.get_object("button15").set_sensitive(True)
+			if self.builder.get_object("treeview-selection2").count_selected_rows() == 1:
+				# allow editing
+				self.builder.get_object("button16").set_sensitive(True)
+			else:
+				# deny editing
+				self.builder.get_object("button16").set_sensitive(False)
+		else:
+			# deny adding
+			self.builder.get_object("button15").set_sensitive(False)
+			# deny editing
+			self.builder.get_object("button16").set_sensitive(False)
+	def on_button15_clicked(self, widget, *args):
+		## add
+		row = self.builder.get_object("treeview-selection4").get_selected()
+		block = row[0].get_value(row[1], 0)
+		self.level.add_blockdef(1, block)
+		self.update_everything()
+	def on_button16_clicked(self, widget, *args):
+		## edit
+		row_block = self.builder.get_object("treeview-selection4").get_selected()
+		row_bdef = self.builder.get_object("treeview-selection2").get_selected()
+		block = row_block[0].get_value(row_block[1], 0)
+		bdef = int(row_bdef[0].get_value(row_bdef[1], 0))
+		self.level.update_blockdef(bdef, 1, block)
+		self.update_everything()
+	def on_button17_clicked(self, widget, *args):
+		## delete
+		row = self.builder.get_object("treeview-selection2").get_selected()
+		bdef = int(row[0].get_value(row[1], 0))
+		# check if the blockdef is used:
+		used = False
+		for col in self.level.get_columns():
+			for blk in col["blocks"]:
+				if blk["blockdef"] == bdef:
+					used = True
+					break
+			if used is True:
+				break
+		if used:
+			self.builder.get_object("messagedialog1").set_markup("Fehler beim Löschen!")
+			self.builder.get_object("messagedialog1").format_secondary_text("Die Blockdefinition kann nicht gelöscht werden, da sie noch von Blöcken verwendet wird!")
+			self.builder.get_object("messagedialog1").set_visible(True)
+		else:
+			self.level.del_blockdef(bdef)
+			self.update_everything()
+		
 	### window1/tab3 EVENTS ###
 	def on_scale1_format_value(self, widget, value):
 		return "%d" % value
