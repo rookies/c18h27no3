@@ -39,6 +39,7 @@ class LevelEditor (object):
 	opened_filepath = ""
 	level_pixmap = None
 	block_images = []
+	messagedialog1_parent_dialog = None
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -115,6 +116,16 @@ class LevelEditor (object):
 			self.quit()
 	def quit(self):
 		Gtk.main_quit()
+	def open_messagedialog1(self, text1, text2, parent_dlg):
+		self.builder.get_object("messagedialog1").set_markup(text1)
+		self.builder.get_object("messagedialog1").format_secondary_text(text2)
+		self.builder.get_object("messagedialog1").set_visible(True)
+		if parent_dlg is None:
+			self.messagedialog1_parent_dialog = None
+			self.builder.get_object("window1").set_sensitive(False)
+		else:
+			self.messagedialog1_parent_dialog = parent_dlg
+			parent_dlg.set_sensitive(False)
 	def update_everything(self):
 		## Metadata Store:
 		self.update_metadata_store()
@@ -258,9 +269,7 @@ class LevelEditor (object):
 			try:
 				self.level.write(self.opened_filepath)
 			except BaseException as e:
-				self.builder.get_object("messagedialog1").set_markup("Fehler beim Speichern!")
-				self.builder.get_object("messagedialog1").format_secondary_text(str(e))
-				self.builder.get_object("messagedialog1").set_visible(True)
+				self.open_messagedialog1("Fehler beim Speichern!", str(e), None)
 			else:
 				self.changed = False
 				self.update_everything()
@@ -290,15 +299,18 @@ class LevelEditor (object):
 	def on_button1_clicked(self, *args):
 		# new pressed
 		self.builder.get_object("dialog2").set_visible(True)
+		self.builder.get_object("window1").set_sensitive(False)
 	def on_button2_clicked(self, *args):
 		# edit pressed
 		row = self.builder.get_object("treeview-selection1").get_selected_rows()
 		self.builder.get_object("entry4").set_text(row[0].get_value(row[0].get_iter(row[1][0]), 0))
 		self.builder.get_object("entry5").set_text(row[0].get_value(row[0].get_iter(row[1][0]), 1))
 		self.builder.get_object("dialog3").set_visible(True)
+		self.builder.get_object("window1").set_sensitive(False)
 	def on_button3_clicked(self, *args):
 		# delete pressed
 		self.builder.get_object("dialog1").set_visible(True)
+		self.builder.get_object("window1").set_sensitive(False)
 	def on_treeview_selection1_changed(self, *args):
 		# treeview selection changed
 		selected = self.builder.get_object("treeview-selection1").count_selected_rows()
@@ -378,9 +390,7 @@ class LevelEditor (object):
 			if used is True:
 				break
 		if used:
-			self.builder.get_object("messagedialog1").set_markup("Fehler beim Löschen!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Die Blockdefinition kann nicht gelöscht werden, da sie noch von Blöcken verwendet wird!")
-			self.builder.get_object("messagedialog1").set_visible(True)
+			self.open_messagedialog1("Fehler beim Löschen!", "Die Blockdefinition kann nicht gelöscht werden, da sie noch von Blöcken verwendet wird!", None)
 		else:
 			self.level.del_blockdef(bdef)
 			self.update_everything()
@@ -418,14 +428,17 @@ class LevelEditor (object):
 		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
 		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
 		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
-			self.builder.get_object("messagedialog1").set_markup("Fehler beim Platzieren des Blocks!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Der Block kann nicht außerhalb des Level-Bereichs abgelegt werden!")
-			self.builder.get_object("messagedialog1").set_visible(True)
+			self.open_messagedialog1("Fehler beim Platzieren des Blocks!", "Der Block kann nicht außerhalb des Level-Bereichs abgelegt werden!", None)
 		else:
 			self.level.add_block(x_trans, y_trans, bdef)
 			self.changed = True
 			self.update_everything()
 	def on_layout1_draw(self, widget, ctx):
+		#ctx.set_line_width(0.1)
+		#ctx.set_source_rgb(0, 0, 0)
+		#ctx.rectangle(0.25, 0.25, 0.5, 0.5)
+		#ctx.stroke()
+		#return False
 		#print("draw!")
 		#print(widget.get_size())
 		#ctx.set_source_rgb(255, 255, 255)
@@ -440,10 +453,12 @@ class LevelEditor (object):
 	def on_dialog1_delete_event(self, *args):
 		# closed
 		self.builder.get_object("dialog1").set_visible(False)
+		self.builder.get_object("window1").set_sensitive(True)
 		return True
 	def on_button4_clicked(self, *args):
 		# no button pressed
 		self.builder.get_object("dialog1").set_visible(False)
+		self.builder.get_object("window1").set_sensitive(True)
 	def on_button5_clicked(self, *args):
 		# yes button pressed
 		rows = self.builder.get_object("treeview-selection1").get_selected_rows()
@@ -452,6 +467,7 @@ class LevelEditor (object):
 		self.changed = True
 		self.update_everything()
 		self.builder.get_object("dialog1").set_visible(False)
+		self.builder.get_object("window1").set_sensitive(True)
 	### filechooserdialog1 (save) EVENTS ###
 	def on_filechooserdialog1_delete_event(self, *args):
 		# closed
@@ -464,16 +480,12 @@ class LevelEditor (object):
 		# save pressed
 		fname = self.builder.get_object("filechooserdialog1").get_filename()
 		if fname is None:
-			self.builder.get_object("messagedialog1").set_markup("Keine Datei ausgewählt!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Zum Speichern muss eine Datei ausgewählt werden!")
-			self.builder.get_object("messagedialog1").set_visible(True)
+			self.open_messagedialog1("Keine Datei ausgewählt!", "Zum Speichern muss eine Datei ausgewählt werden!", None)
 		else:
 			try:
 				self.level.write(fname)
 			except BaseException as e:
-				self.builder.get_object("messagedialog1").set_markup("Fehler beim Speichern!")
-				self.builder.get_object("messagedialog1").format_secondary_text(str(e))
-				self.builder.get_object("messagedialog1").set_visible(True)
+				self.open_messagedialog1("Fehler beim Speichern!", str(e), None)
 			else:
 				self.changed = False
 				self.opened_file = os.path.basename(fname)
@@ -497,10 +509,8 @@ class LevelEditor (object):
 		fname = self.builder.get_object("filechooserdialog2").get_filename()
 		try:
 			self.level.read(fname)
-		except Exception:
-			self.builder.get_object("messagedialog1").set_markup("Ungültige Datei!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Die ausgewählte Datei ist in einem nicht-unterstützten Format!")
-			self.builder.get_object("messagedialog1").set_visible(True)
+		except Exception as e:
+			self.open_messagedialog1("Ungültige Datei!", str(e), None)
 		else:
 			### IMPORTANT: update all stuff ###
 			self.changed = False
@@ -512,28 +522,24 @@ class LevelEditor (object):
 	def on_dialog2_delete_event(self, *args):
 		# closed
 		self.builder.get_object("dialog2").set_visible(False)
+		self.builder.get_object("window1").set_sensitive(True)
 		return True
 	def on_button10_clicked(self, *args):
 		# abort button pressed
 		self.builder.get_object("dialog2").set_visible(False)
 		self.builder.get_object("entry2").set_text("")
 		self.builder.get_object("entry3").set_text("")
+		self.builder.get_object("window1").set_sensitive(True)
 	def on_button11_clicked(self, *args):
 		# add button pressed
 		key = self.builder.get_object("entry2").get_text().strip()
 		value = self.builder.get_object("entry3").get_text().strip()
 		if key in self.level.get_all_metadata():
-			self.builder.get_object("messagedialog1").set_markup("Ungültiger Schlüssel!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Dieser Schlüssel wird bereits verwendet!")
-			self.builder.get_object("messagedialog1").set_visible(True)
+			self.open_messagedialog1("Ungültiger Schlüssel!", "Dieser Schlüssel wird bereits verwendet!", self.builder.get_object("dialog2"))
 		elif len(key) > 65535 or len(key) == 0:
-			self.builder.get_object("messagedialog1").set_markup("Ungültiger Schlüssel!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Der Schlüssel entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)")
-			self.builder.get_object("messagedialog1").set_visible(True)
+			self.open_messagedialog1("Ungültiger Schlüssel!", "Der Schlüssel entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)", self.builder.get_object("dialog2"))
 		elif len(value) > 65535 or len(value) == 0:
-			self.builder.get_object("messagedialog1").set_markup("Ungültiger Wert!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)")
-			self.builder.get_object("messagedialog1").set_visible(True)
+			self.open_messagedialog1("Ungültiger Wert!", "Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)", self.builder.get_object("dialog2"))
 		else:
 			self.level.set_metadata(key, value)
 			self.changed = True
@@ -541,22 +547,23 @@ class LevelEditor (object):
 			self.builder.get_object("dialog2").set_visible(False)
 			self.builder.get_object("entry2").set_text("")
 			self.builder.get_object("entry3").set_text("")
+			self.builder.get_object("window1").set_sensitive(True)
 	### dialog3 (edit metadata) EVENTS ###
 	def on_dialog3_delete_event(self, *args):
 		# closed
 		self.builder.get_object("dialog3").set_visible(False)
+		self.builder.get_object("window1").set_sensitive(True)
 		return True
 	def on_button12_clicked(self, *args):
 		# abort button pressed
 		self.builder.get_object("dialog3").set_visible(False)
+		self.builder.get_object("window1").set_sensitive(True)
 	def on_button13_clicked(self, *args):
 		# submit button pressed
 		key = self.builder.get_object("entry4").get_text()
 		value = self.builder.get_object("entry5").get_text().strip()
 		if len(value) > 65535 or len(value) == 0:
-			self.builder.get_object("messagedialog1").set_markup("Ungültiger Wert!")
-			self.builder.get_object("messagedialog1").format_secondary_text("Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)")
-			self.builder.get_object("messagedialog1").set_visible(True)
+			self.open_messagedialog1("Ungültiger Wert!", "Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)", self.builder.get_object("dialog3"))
 		else:
 			self.level.set_metadata(key, value)
 			self.changed = True
@@ -564,14 +571,23 @@ class LevelEditor (object):
 			self.builder.get_object("dialog3").set_visible(False)
 			self.builder.get_object("entry4").set_text("")
 			self.builder.get_object("entry5").set_text("")
+			self.builder.get_object("window1").set_sensitive(True)
 	### messagedialog1 EVENTS ###
 	def on_messagedialog1_delete_event(self, *args):
 		# closed
 		self.builder.get_object("messagedialog1").set_visible(False)
+		if self.messagedialog1_parent_dialog is None:
+			self.builder.get_object("window1").set_sensitive(True)
+		else:
+			self.messagedialog1_parent_dialog.set_sensitive(True)
 		return True
 	def on_button14_clicked(self, *args):
 		# okay button pressed
 		self.builder.get_object("messagedialog1").set_visible(False)
+		if self.messagedialog1_parent_dialog is None:
+			self.builder.get_object("window1").set_sensitive(True)
+		else:
+			self.messagedialog1_parent_dialog.set_sensitive(True)
 
 if __name__ == "__main__":
 	app = LevelEditor()
