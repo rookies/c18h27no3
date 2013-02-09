@@ -132,6 +132,8 @@ class LevelEditor (object):
 		## Blockdefs Stores:
 		self.update_blockdefs_store()
 		self.update_blockdefs_store2()
+		## Standard blocks Store:
+		self.update_standard_blocks_store()
 		## Level layout:
 		self.fill_block_images()
 		## Window Title:
@@ -139,6 +141,7 @@ class LevelEditor (object):
 		## Level Width Scale:
 		self.builder.get_object("adjustment1").set_value(self.level.get_level_width())
 	def update_standard_blocks_store(self):
+		self.standard_blocks_store.clear()
 		for f in glob.glob(self.IMGPATH + "blocks/*.png"):
 			name = os.path.basename(f).split(".", 2)[0]
 			img = Gtk.Image()
@@ -362,6 +365,9 @@ class LevelEditor (object):
 			self.builder.get_object("button15").set_sensitive(False)
 			# deny editing
 			self.builder.get_object("button16").set_sensitive(False)
+	def on_button18_clicked(self, widget, *args):
+		## reload
+		self.update_everything()
 	def on_button15_clicked(self, widget, *args):
 		## add
 		row = self.builder.get_object("treeview-selection4").get_selected()
