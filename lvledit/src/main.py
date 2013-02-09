@@ -500,16 +500,30 @@ class LevelEditor (object):
 		if fname is None:
 			self.open_messagedialog1("Keine Datei ausgewählt!", "Zum Speichern muss eine Datei ausgewählt werden!", None)
 		else:
-			try:
-				self.level.write(fname)
-			except BaseException as e:
-				self.open_messagedialog1("Fehler beim Speichern!", str(e), None)
+			if os.path.exists(fname):
+				dlg = Gtk.MessageDialog(parent=self.builder.get_object("window1"))
+				dlg.add_buttons(Gtk.STOCK_CANCEL, 1, Gtk.STOCK_OK, 2)
+				dlg.set_markup("Datei existiert bereits")
+				dlg.format_secondary_text("Der ausgewählte Dateiname existiert bereits! Trotzdem speichern?")
+				res = dlg.run()
+				dlg.destroy()
+				if res == 1:
+					okay = False
+				else:
+					okay = True
 			else:
-				self.changed = False
-				self.opened_file = os.path.basename(fname)
-				self.opened_filepath = fname
-				self.update_everything()
-			self.builder.get_object("filechooserdialog1").set_visible(False)
+				okay = True
+			if okay:
+				try:
+					self.level.write(fname)
+				except BaseException as e:
+					self.open_messagedialog1("Fehler beim Speichern!", str(e), None)
+				else:
+					self.changed = False
+					self.opened_file = os.path.basename(fname)
+					self.opened_filepath = fname
+					self.update_everything()
+				self.builder.get_object("filechooserdialog1").set_visible(False)
 	### filechooserdialog2 (open) EVENTS ###
 	def on_filechooserdialog2_delete_event(self, *args):
 		# closed
