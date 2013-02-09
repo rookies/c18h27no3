@@ -140,6 +140,17 @@ class LevelEditor (object):
 		self.update_window_title()
 		## Level Width Scale:
 		self.builder.get_object("adjustment1").set_value(self.level.get_level_width())
+		self.update_levelwidth_scale_lower()
+	def update_levelwidth_scale_lower(self):
+		## get biggest block position:
+		cols = self.level.get_columns()
+		biggest = 0
+		if len(cols) is not 0:
+			for col in cols:
+				if len(col["blocks"]) is not 0 and col["position"] > biggest:
+					biggest = col["position"]
+		## set lower:
+		self.builder.get_object("adjustment1").set_lower(biggest+2)
 	def update_standard_blocks_store(self):
 		self.standard_blocks_store.clear()
 		for f in glob.glob(self.IMGPATH + "blocks/*.png"):
@@ -405,8 +416,9 @@ class LevelEditor (object):
 	def on_scale1_format_value(self, widget, value):
 		return "%d" % value
 	def on_scale1_change_value(self, widget, scroll, value):
-		if int(value) < 0:
-			value = 0
+		lower = self.builder.get_object("adjustment1").get_lower()
+		if int(value) < lower:
+			value = lower
 		self.level.set_level_width(value)
 		if not self.changed:
 			self.changed = True
