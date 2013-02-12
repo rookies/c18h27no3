@@ -30,6 +30,8 @@ int main(int argc, char **argv)
 	 * Variable declarations:
 	*/
 	Game game;
+	int gamemode;
+	string arg;
 	/*
 	 * Startup:
 	*/
@@ -37,7 +39,17 @@ int main(int argc, char **argv)
 	/*
 	 * Init game:
 	*/
-	if (game.init() == 1)
+	gamemode = 1;
+	arg = "";
+	if (argc >= 3)
+	{
+		if (string(argv[1]).compare("load") == 0)
+		{
+			gamemode = 7;
+			arg = argv[2];
+		};
+	};
+	if (game.init(gamemode, arg) == 1)
 		return EXIT_FAILURE;
 	/*
 	 * Start event loop:

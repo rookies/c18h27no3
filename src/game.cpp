@@ -30,7 +30,7 @@ Game::~Game()
 {
 	
 }
-int Game::init(void)
+int Game::init(int gamemode, std::string arg)
 {
 	std::cout << "========== INIT START ==========" << std::endl;
 	/*
@@ -141,7 +141,7 @@ int Game::init(void)
 	 * Show main menu:
 	*/
 	m_gamemode = 0;
-	if (set_gamemode(1) == 1)
+	if (set_gamemode(gamemode) == 1)
 		return 1;
 	/*
 	 * Finish successful:

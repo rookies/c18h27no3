@@ -55,7 +55,7 @@
 			/*
 			 * (Un)Init game:
 			*/
-			int init(void);
+			int init(int gamemode=1, std::string arg="");
 			int uninit(void);
 			/*
 			 * Draw everything:
