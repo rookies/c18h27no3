@@ -11,7 +11,7 @@ SinglePlayer::~SinglePlayer()
 {
 	delete[] m_block_textures;
 }
-int SinglePlayer::init(Config conf)
+int SinglePlayer::init(Config conf, std::string arg)
 {
 	/*
 	 * Variable declarations:
@@ -37,8 +37,17 @@ int SinglePlayer::init(Config conf)
 	/*
 	 * Load level from file:
 	*/
-	if (!m_level.load_from_file("level1.dat"))
-		return 1;
+	std::cout << arg << std::endl;
+	if (arg.compare("") == 0)
+	{
+		if (!m_level.load_from_file("level1.dat"))
+			return 1;
+	}
+	else
+	{
+		if (!m_level.load_from_file(arg))
+			return 1;
+	};
 	/*
 	 * Load block textures:
 	*/

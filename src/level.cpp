@@ -144,7 +144,7 @@ bool Level::load_from_file(std::string file)
 		return false;
 	};
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Opened level file!" << std::endl;
+	std::cerr << "LevelLoader: Opened level file '" << file << "'!" << std::endl;
 #endif
 	/*
 	 * Read CAPSAICIN header:

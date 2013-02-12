@@ -30,7 +30,7 @@ MainMenu::~MainMenu()
 {
 	
 }
-int MainMenu::init(Config conf)
+int MainMenu::init(Config conf, std::string arg)
 {
 	/*
 	 * Load fonts:

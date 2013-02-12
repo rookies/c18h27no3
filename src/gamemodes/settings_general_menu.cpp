@@ -29,7 +29,7 @@ SettingsGeneralMenu::~SettingsGeneralMenu()
 {
 	
 }
-int SettingsGeneralMenu::init(Config conf)
+int SettingsGeneralMenu::init(Config conf, std::string arg)
 {
 	/*
 	 * Load fonts:

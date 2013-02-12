@@ -29,7 +29,7 @@ SettingsGraphicsMenu::~SettingsGraphicsMenu()
 {
 	
 }
-int SettingsGraphicsMenu::init(Config conf)
+int SettingsGraphicsMenu::init(Config conf, std::string arg)
 {
 	/*
 	 * Load fonts:

@@ -93,11 +93,11 @@
 			/*
 			 * Set game mode:
 			*/
-			int set_gamemode(int gamemode);
+			int set_gamemode(int gamemode, std::string arg="");
 			/*
 			 * (Un)init game mode:
 			*/
-			int init_gamemode(int gamemode);
+			int init_gamemode(int gamemode, std::string arg);
 			int uninit_gamemode(void);
 			/*
 			 * Toggle menu sound:

@@ -29,7 +29,7 @@ SettingsSoundMenu::~SettingsSoundMenu()
 {
 	
 }
-int SettingsSoundMenu::init(Config conf)
+int SettingsSoundMenu::init(Config conf, std::string arg)
 {
 	return 0;
 }

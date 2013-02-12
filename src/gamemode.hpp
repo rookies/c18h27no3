@@ -33,7 +33,7 @@
 			virtual UniversalDrawableArray get_drawables(void) = 0;
 			virtual void process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret) = 0;
 			virtual int calculate_sizes(int w, int h) = 0;
-			virtual int init(Config conf) = 0;
+			virtual int init(Config conf, std::string arg) = 0;
 			virtual int uninit(void) = 0;
 	};
 #endif // GAMEMODE_HPP

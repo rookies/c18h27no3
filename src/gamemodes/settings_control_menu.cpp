@@ -299,7 +299,7 @@ void SettingsControlMenu::init_controlkey_settings(void)
 	sprintf(tmp_pagecount, _("settings_control_menu_entry_pagecount %d %d"), (m_controlkeys_offset/5)+1, int((CONFIGVAR_CONTROL_KEY_COUNT/5.0)+1.0));
 	m_menuitem6_txt.setString(get_wstring(tmp_pagecount));
 }
-int SettingsControlMenu::init(Config conf)
+int SettingsControlMenu::init(Config conf, std::string arg)
 {
 	/*
 	 * Variable declarations:

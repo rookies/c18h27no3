@@ -141,7 +141,7 @@ int Game::init(int gamemode, std::string arg)
 	 * Show main menu:
 	*/
 	m_gamemode = 0;
-	if (set_gamemode(gamemode) == 1)
+	if (set_gamemode(gamemode, arg) == 1)
 		return 1;
 	/*
 	 * Finish successful:
@@ -572,7 +572,7 @@ int Game::calculate_sizes(void)
 		return 1;
 	return 0;
 }
-int Game::set_gamemode(int gamemode)
+int Game::set_gamemode(int gamemode, std::string arg)
 {
 	std::cout << ">>>> ENTERING GAMEMODE [" << gamemode << "]" << std::endl;
 	/*
@@ -583,7 +583,7 @@ int Game::set_gamemode(int gamemode)
 	/*
 	 * Init new game mode:
 	*/
-	if (init_gamemode(gamemode) == 1)
+	if (init_gamemode(gamemode, arg) == 1)
 		return 1;
 	/*
 	 * Set new game mode variable:
@@ -598,7 +598,7 @@ int Game::set_gamemode(int gamemode)
 	*/
 	std::cout << ">>>> ENTERED GAMEMODE  [" << m_gamemode << "]" << std::endl;
 }
-int Game::init_gamemode(int gamemode)
+int Game::init_gamemode(int gamemode, std::string arg)
 {
 	switch (gamemode)
 	{
@@ -668,7 +668,7 @@ int Game::init_gamemode(int gamemode)
 			return 1;
 			break;
 	}
-	if (m_gamemode_class->init(m_config) == 1)
+	if (m_gamemode_class->init(m_config, arg) == 1)
 		return 1;
 	return 0;
 }
