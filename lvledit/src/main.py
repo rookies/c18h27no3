@@ -297,6 +297,12 @@ class LevelEditor (object):
 	def on_imagemenuitem10_activate(self, *args):
 		# help -> about
 		self.builder.get_object("aboutdialog1").set_visible(True)
+	def on_imagemenuitem11_activate(self, *args):
+		# view -> open in game
+		if self.opened_file is None or self.changed:
+			self.open_messagedialog1("Level nicht gespeichert!", "Um das Level im Spiel zu öffnen muss es vorher gespeichert werden!", None)
+		else:
+			### TODO: open game with c18h27no3 load <file>
 	def on_window1_size_allocate(self, *args):
 		# size changed
 		self.builder.get_object("scrolledwindow1").set_size_request(args[1].width*0.75, -1)

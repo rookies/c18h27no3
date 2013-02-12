@@ -502,6 +502,11 @@
       <action-widget response="0">button9</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-quit</property>
+  </object>
   <object class="GtkMessageDialog" id="messagedialog1">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -689,6 +694,22 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Ansicht</property>
                 <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="imagemenuitem11">
+                        <property name="label" translatable="yes">Level im Spiel öffnen</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">image2</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_imagemenuitem11_activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
