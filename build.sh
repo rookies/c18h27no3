@@ -68,8 +68,9 @@ build_countlines()
 	LINES_PO=`find ./locale -type f -name "*.po" -exec cat {} + | wc -l`
 	LINES_SH=`find . -type f -name "*.sh" -exec cat {} + | wc -l`
 	LINES_CMAKE=`find . -type f \( -name "*.cmake" -o -name "CMakeLists.txt" \) -exec cat {} + | wc -l`
+	LINES_PYTHON=`find . -type f -name "*.py" -exec cat {} + | wc -l`
 	LINES_CPPA=`expr $LINES_CPP + $LINES_HPP`
-	LINES_ALL=`expr $LINES_CPP + $LINES_HPP + $LINES_PO + $LINES_SH + $LINES_CMAKE`
+	LINES_ALL=`expr $LINES_CPP + $LINES_HPP + $LINES_PO + $LINES_SH + $LINES_CMAKE + $LINES_PYTHON`
 	## Write to stdout:
 	echo "C++ Source Files ..... $(printf '%4d' $LINES_CPP) lines ($(printf '%3d' $(expr $(expr $LINES_CPP \* 100) / $LINES_ALL))%)"
 	echo "C++ Header Files ..... $(printf '%4d' $LINES_HPP) lines ($(printf '%3d' $(expr $(expr $LINES_HPP \* 100) / $LINES_ALL))%)"
@@ -77,6 +78,7 @@ build_countlines()
 	echo "Language Files ....... $(printf '%4d' $LINES_PO) lines ($(printf '%3d' $(expr $(expr $LINES_PO \* 100) / $LINES_ALL))%)"
 	echo "Shell Scripts ........ $(printf '%4d' $LINES_SH) lines ($(printf '%3d' $(expr $(expr $LINES_SH \* 100) / $LINES_ALL))%)"
 	echo "CMake Files .......... $(printf '%4d' $LINES_CMAKE) lines ($(printf '%3d' $(expr $(expr $LINES_CMAKE \* 100) / $LINES_ALL))%)"
+	echo "Python Files ......... $(printf '%4d' $LINES_PYTHON) lines ($(printf '%3d' $(expr $(expr $LINES_PYTHON \* 100) / $LINES_ALL))%)"
 	echo ""
 	echo "Everything ........... $(printf '%4d' $LINES_ALL) lines"
 }
