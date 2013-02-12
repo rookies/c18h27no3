@@ -25,6 +25,7 @@ from gi.repository.Gtk import Builder
 import os.path
 import math
 import glob
+import subprocess
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
@@ -303,6 +304,11 @@ class LevelEditor (object):
 			self.open_messagedialog1("Level nicht gespeichert!", "Um das Level im Spiel zu öffnen muss es vorher gespeichert werden!", None)
 		else:
 			### TODO: open game with c18h27no3 load <file>
+			subprocess.call([
+				"../c18h27no3",
+				"load",
+				self.opened_filepath
+			])
 	def on_window1_size_allocate(self, *args):
 		# size changed
 		self.builder.get_object("scrolledwindow1").set_size_request(args[1].width*0.75, -1)
