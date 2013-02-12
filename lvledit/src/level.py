@@ -123,21 +123,16 @@ class Level (object):
 		for block in self.blockdefs:
 			f.write(struct.pack("<hBB", block["id"], block["type"], len(block["arg"])))
 			f.write(bytes(block["arg"], "ascii"))
-		# Fill data according to level width:
-		while len(self.columns) < self.level_width:
-			if len(self.columns) == 0:
-				pos = 0
-			else:
-				pos = self.columns[len(self.columns)-1]["position"]+1
-			self.columns.append({
-				"position": pos,
-				"blocks": []
-			})
 		# Write data:
-		for col in self.columns:
-			f.write(struct.pack("<hB", col["position"], len(col["blocks"])))
-			for blk in col["blocks"]:
-				f.write(struct.pack("<Bh", blk["position"], blk["blockdef"]))
+		for i in range(self.level_width):
+			f.write(struct.pack("<h", i))
+			col = self.get_column_by_pos(i)
+			if col is None:
+				f.write(struct.pack("<B", 0))
+			else:
+				f.write(struct.pack("<B", len(col["blocks"])))
+				for blk in col["blocks"]:
+					f.write(struct.pack("<Bh", blk["position"], blk["blockdef"]))
 	## VERSION:
 	def get_version(self):
 		return self.LEVEL_VERSION
@@ -239,3 +234,8 @@ class Level (object):
 		else:
 			# 4b. if it exists, overwrite the old:
 			self.columns[pos]["blocks"][pos2]["blockdef"] = bdef
+	def get_column_by_pos(self, pos):
+		for col in self.columns:
+			if col["position"] == pos:
+				return col
+		return None
