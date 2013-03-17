@@ -57,5 +57,7 @@
 			int m_key_goright;
 			float m_stepwidth;
 			Level m_level;
+			sf::Clock m_actiontimer;
+			sf::Clock m_playertimer;
 	};
 #endif // SINGLEPLAYER_HPP

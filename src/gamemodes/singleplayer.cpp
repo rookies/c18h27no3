@@ -72,6 +72,11 @@ int SinglePlayer::init(Config conf, std::string arg)
 				return 1;
 		};
 	}
+	/*
+	 * Init timers:
+	*/
+	m_actiontimer.restart();
+	m_playertimer.restart();
 	return 0;
 }
 int SinglePlayer::uninit(void)
@@ -98,7 +103,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Calculate width in blocks:
 	*/
 	m_width_in_blocks = ceil(w/float(block_width));
-	if (m_width_in_blocks > m_level.get_levelwidth())
+	if (m_width_in_blocks > m_level.get_levelwidth()*2)
 		m_width_in_blocks = floor(m_level.get_levelwidth()/2.);
 	/*
 	 * Calculate visible block number:
@@ -176,27 +181,31 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Perform player actions:
 	*/
-	switch (m_player_action)
+	if (m_actiontimer.getElapsedTime().asMilliseconds() >= 10)
 	{
-		case PLAYER_RUNNING_LEFT:
-			if (m_player.getGlobalBounds().left >= m_startpos_x)
-			{
-				m_player.move(sf::Vector2f(-m_stepwidth, 0));
-				toggle_playertexture();
-			}
-			else
-				m_player_action = 0;
-			break;
-		case PLAYER_RUNNING_RIGHT:
-			if (m_player.getGlobalBounds().left <= m_endpos_x)
-			{
-				m_player.move(sf::Vector2f(m_stepwidth, 0));
-				toggle_playertexture();
-			}
-			else
-				m_player_action = 0;
-			break;
-	}
+		switch (m_player_action)
+		{
+			case PLAYER_RUNNING_LEFT:
+				if (m_player.getGlobalBounds().left >= m_startpos_x)
+				{
+					m_player.move(sf::Vector2f(-m_stepwidth, 0));
+					toggle_playertexture();
+				}
+				else
+					m_player_action = 0;
+				break;
+			case PLAYER_RUNNING_RIGHT:
+				if (m_player.getGlobalBounds().left <= m_endpos_x)
+				{
+					m_player.move(sf::Vector2f(m_stepwidth, 0));
+					toggle_playertexture();
+				}
+				else
+					m_player_action = 0;
+				break;
+		}
+		m_actiontimer.restart();
+	};
 	/*
 	 * Fill array:
 	*/
@@ -210,6 +219,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 }
 void SinglePlayer::toggle_playertexture(void)
 {
+	if (m_playertimer.getElapsedTime().asMilliseconds() < 100)
+		return;
 	if (m_player_texturecounter < 5)
 	{
 		m_player_texturecounter++;
@@ -226,4 +237,5 @@ void SinglePlayer::toggle_playertexture(void)
 		m_player_texture2_en = true;
 	};
 	m_player_texturecounter = 0;
+	m_playertimer.restart();
 }
