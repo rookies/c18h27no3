@@ -66,7 +66,7 @@ void NumericalTextfieldBuffer::handle_keypress(sf::Event event)
 	/*
 	 * Check if backspace is pressed:
 	*/
-	if (event.key.code == sf::Keyboard::Back)
+	if (event.key.code == sf::Keyboard::BackSpace)
 	{
 		/*
 		 * Check if we have an empty buffer:

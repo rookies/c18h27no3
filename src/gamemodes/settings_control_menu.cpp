@@ -179,8 +179,8 @@ std::string SettingsControlMenu::keycode2string(int code)
 			return _("key_Space");
 		case sf::Keyboard::Return:
 			return _("key_Return");
-		case sf::Keyboard::Back:
-			return _("key_Back");
+		case sf::Keyboard::BackSpace:
+			return _("key_BackSpace");
 		case sf::Keyboard::Tab:
 			return _("key_Tab");
 		case sf::Keyboard::PageUp:

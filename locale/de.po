@@ -129,7 +129,7 @@ msgid "key_Return"
 msgstr "Enter"
 
 #: src/gamemodes/settings_control_menu.cpp:183
-msgid "key_Back"
+msgid "key_BackSpace"
 msgstr "Löschen"
 
 #: src/gamemodes/settings_control_menu.cpp:185
