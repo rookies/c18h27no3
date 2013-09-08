@@ -67,20 +67,9 @@
 			int m_menuitem4_over;
 			int m_menuitem5_over;
 			int m_menuitem6_over;
-			sf::Font m_font1;
-			sf::RectangleShape m_menuitem1;
-			sf::RectangleShape m_menuitem2;
-			sf::RectangleShape m_menuitem3;
-			sf::RectangleShape m_menuitem4;
-			sf::RectangleShape m_menuitem5;
-			sf::RectangleShape m_menuitem6;
-			sf::Text m_menuitem1_txt;
-			sf::Text m_menuitem2_txt;
-			sf::Text m_menuitem3_txt;
-			sf::Text m_menuitem4_txt;
-			sf::Text m_menuitem5_txt;
-			sf::Text m_menuitem6_txt;
 			sf::Texture m_img1;
+			sf::Texture m_img2;
 			sf::Sprite m_img1_sprite;
+			sf::Sprite m_img2_sprite;
 	};
 #endif // MAIN_MENU_HPP
