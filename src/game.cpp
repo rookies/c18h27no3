@@ -22,7 +22,7 @@
  */
 #include "game.hpp"
 
-Game::Game() : m_menusound_state(false), m_menusound_initialized(false)
+Game::Game() : m_menusound_state(false), m_menusound_initialized(false), m_cursor_state(false)
 {
 	
 }
@@ -203,10 +203,13 @@ void Game::draw(void)
 	/*
 	 * Draw cursor:
 	*/
-	m_texture.draw(m_cursor.get_drawable(
-		m_padding_data_calculator.get_usable_w(),
-		m_padding_data_calculator.get_usable_h()
-	));
+	if (m_cursor_state)
+	{
+		m_texture.draw(m_cursor.get_drawable(
+			m_padding_data_calculator.get_usable_w(),
+			m_padding_data_calculator.get_usable_h()
+		));
+	};
 	/*
 	 * Draw FPS counter:
 	*/
@@ -610,6 +613,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
+			set_cursor(true);
 			break;
 		case 2:
 			/*
@@ -619,6 +623,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
+			set_cursor(true);
 			break;
 		case 3:
 			/*
@@ -628,6 +633,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
+			set_cursor(true);
 			break;
 		case 4:
 			/*
@@ -637,6 +643,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
+			set_cursor(true);
 			break;
 		case 5:
 			/*
@@ -646,6 +653,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
+			set_cursor(true);
 			break;
 		case 6:
 			/*
@@ -655,6 +663,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
+			set_cursor(true);
 			break;
 		case 7:
 			/*
@@ -662,6 +671,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			*/
 			m_gamemode_class = new SinglePlayer;
 			set_menusound(false);
+			set_cursor(false);
 			break;
 		case 8:
 			/*
@@ -671,6 +681,7 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
 				if (!set_menusound(true))
 					return 1;
+			set_cursor(true);
 			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
@@ -737,4 +748,8 @@ bool Game::set_menusound(bool state)
 		m_menusound_state = false;
 	};
 	return true;
+}
+bool Game::set_cursor(bool state)
+{
+	m_cursor_state = state;
 }

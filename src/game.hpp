@@ -104,7 +104,11 @@
 			 * Toggle menu sound:
 			*/
 			bool set_menusound(bool state);
-			
+			/*
+			 * Toggle cursor:
+			*/
+			bool set_cursor(bool state);
+				
 			/*
 			 * Internal variables:
 			*/
@@ -135,6 +139,7 @@
 			int m_gamemode;
 			bool m_menusound_state;
 			bool m_menusound_initialized;
+			bool m_cursor_state;
 			sf::SoundBuffer m_menusound_buffer;
 			sf::Sound m_menusound;
 	};
