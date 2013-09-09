@@ -22,13 +22,14 @@
  */
 #include "singleplayer.hpp"
 
-SinglePlayer::SinglePlayer() : m_player_action(0), m_player_texture2_en(false), m_player_texturecounter(0)
+SinglePlayer::SinglePlayer() : m_player_action(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false)
 {
 
 }
 SinglePlayer::~SinglePlayer()
 {
-	delete[] m_block_textures;
+	if (m_initialized)
+		delete[] m_block_textures;
 }
 int SinglePlayer::init(Config conf, std::string arg)
 {
@@ -70,6 +71,7 @@ int SinglePlayer::init(Config conf, std::string arg)
 	 * Load block textures:
 	*/
 	m_block_textures = new sf::Texture[m_level.get_blockdefs_number()];
+	m_initialized = true;
 	for (i=0; i < m_level.get_blockdefs_number(); i++)
 	{
 		if (m_level.get_blockdef(i).get_type() == BLOCKDEF_TYPE_BUILTIN)

@@ -59,6 +59,7 @@
 		private:
 			void toggle_playertexture(void);
 
+			bool m_initialized;
 			sf::Texture *m_block_textures;
 			sf::Sprite *m_blocks;
 			int m_visible_block_number;
