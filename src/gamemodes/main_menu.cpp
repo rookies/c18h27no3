@@ -44,9 +44,10 @@ int MainMenu::init(Config conf, std::string arg)
 	*/
 	if (!m_img2.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "mainmenu_active.png")))
 		return 1;
-	m_img1_sprite.setTexture(m_img1);
-	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
-	reset_menuitem_over();
+	m_img2_sprite.setTexture(m_img2);
+	m_img2_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_menuitem_over = -1;
+	m_menuitem_loaded = -1;
 	return 0;
 }
 int MainMenu::uninit(void)
@@ -55,6 +56,9 @@ int MainMenu::uninit(void)
 }
 int MainMenu::calculate_sizes(int w, int h)
 {
+	m_w = w;
+	m_h = h;
+	unsigned int i;
 	/*
 	 * Variable definitions:
 	*/
@@ -66,16 +70,37 @@ int MainMenu::calculate_sizes(int w, int h)
 	int menuitem_xoffset = (w-menuitem_width)/2.0;
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
-	int logo_yoffset = h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0);
+	m_logo_yoffset = h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0);
 	/*
 	 * Update logo position & size:
 	*/
-	m_img1_sprite.setScale(logo_height/1080, logo_height/1080);
-	m_img1_sprite.setPosition((w-m_img1_sprite.getGlobalBounds().width)/2, logo_yoffset);
+	m_img1_sprite.setScale(logo_height/1080.0, logo_height/1080.0);
+	m_logo_xoffset = (w-m_img1_sprite.getGlobalBounds().width)/2;
+	m_img1_sprite.setPosition(m_logo_xoffset, m_logo_yoffset);
+	/*
+	 * Calculate sizes for coloured menu image:
+	*/
+	for (i=0; i < MAINMENU_COUNT; i++)
+	{
+		m_menuc_a[i] = (m_menu_a[i]/1920.0)*w;
+		m_menuc_x[i] = (m_menu_x[i]/1920.0)*w;
+		m_menuc_y[i] = (m_menu_y[i]/1920.0)*w;
+		m_menuc_h[i] = (m_menu_h[i]/1920.0)*w;
+	}
 	return 0;
+}
+void MainMenu::load_menuitem(int i)
+{
+	if (m_menuitem_loaded == i)
+		return;
+	m_img2_sprite.setTextureRect(sf::IntRect(0, m_menu_a[i], MAINMENU_ACTIVEWIDTH, (m_menu_a[i+1]-m_menu_a[i])));
+	m_img2_sprite.setScale(m_w/1920.0, m_w/1920.0);
+	m_img2_sprite.setPosition((m_logo_xoffset+m_menuc_x[i]), (m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i]));
+	m_menuitem_loaded = i;
 }
 void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
+	unsigned int i;
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
@@ -87,43 +112,35 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 			}
 			break;
 		case sf::Event::MouseMoved:
-			reset_menuitem_over();
-			/*if (m_menuitem1.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem1_over = 1;
-			else if (m_menuitem2.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem2_over = 1;
-			else if (m_menuitem3.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem3_over = 1;
-			else if (m_menuitem4.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem4_over = 1;
-			else if (m_menuitem5.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem5_over = 1;
-			else if (m_menuitem6.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem6_over = 1;*/
+			m_menuitem_over = -1;
+			for (i=0; i < MAINMENU_COUNT; i++)
+			{
+				if (mouse_x >= m_logo_xoffset+m_menuc_x[i] &&
+					mouse_x <= m_logo_xoffset+m_menuc_x[i]+MAINMENU_ACTIVEWIDTH &&
+					mouse_y >= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i] &&
+					mouse_y <= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i]+m_menuc_h[i])
+				{
+					m_menuitem_over = i;
+					break;
+				};
+			}
+			if (m_menuitem_over != m_menuitem_loaded)
+				load_menuitem(m_menuitem_over);
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
 			{
 				case sf::Mouse::Left:
-					if (m_menuitem1_over == 1)
+					if (m_menuitem_over == 0)
 						ret->set_gamemode(7); // go to singleplayer
-					else if (m_menuitem4_over == 1)
+					else if (m_menuitem_over == 3)
 						ret->set_gamemode(2); // go to settings menu
-					else if (m_menuitem6_over == 1)
+					else if (m_menuitem_over == 5)
 						ret->set_exit(true); // exit
 					break;
 			}
 			break;
 	}
-}
-void MainMenu::reset_menuitem_over(void)
-{
-	m_menuitem1_over = 0;
-	m_menuitem2_over = 0;
-	m_menuitem3_over = 0;
-	m_menuitem4_over = 0;
-	m_menuitem5_over = 0;
-	m_menuitem6_over = 0;
 }
 UniversalDrawableArray MainMenu::get_drawables(void)
 {
@@ -134,59 +151,16 @@ UniversalDrawableArray MainMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(1);
+	if (m_menuitem_over > -1)
+		arr.init(2);
+	else
+		arr.init(1);
 	/*
 	 * Add elements:
 	*/
 	arr.add_sprite(m_img1_sprite);
-	//
-	/*if (m_menuitem1_over == 1)
-		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
-	arr.add_rectshape(m_menuitem1);
-	//
-	if (m_menuitem2_over == 1)
-		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
-	arr.add_rectshape(m_menuitem2);
-	//
-	if (m_menuitem3_over == 1)
-		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
-	arr.add_rectshape(m_menuitem3);
-	//
-	if (m_menuitem4_over == 1)
-		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT);
-	arr.add_rectshape(m_menuitem4);
-	//
-	if (m_menuitem5_over == 1)
-		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT);
-	arr.add_rectshape(m_menuitem5);
-	//
-	if (m_menuitem6_over == 1)
-		m_menuitem6.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem6.setFillColor(COLOR_MENU_ELEMENT);
-	arr.add_rectshape(m_menuitem6);
-	//
-	arr.add_text(m_menuitem1_txt);
-	//
-	arr.add_text(m_menuitem2_txt);
-	//
-	arr.add_text(m_menuitem3_txt);
-	//
-	arr.add_text(m_menuitem4_txt);
-	//
-	arr.add_text(m_menuitem5_txt);
-	//
-	arr.add_text(m_menuitem6_txt);*/
+	if (m_menuitem_over > -1)
+		arr.add_sprite(m_img2_sprite);
 	/*
 	 * Return:
 	*/

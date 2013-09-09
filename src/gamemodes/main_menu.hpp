@@ -49,27 +49,35 @@
 			*/
 			int calculate_sizes(int w, int h); /* Called in Game::calculate_sizes() */
 			/*
+			 * Load menuitem:
+			*/
+			void load_menuitem(int i);
+			/*
 			 * Process events:
 			*/
 			void process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret); /* Called in Game::process_events() */
-			/*
-			 * Reset menuitemX_over variables:
-			*/
-			void reset_menuitem_over(void);
 			/*
 			 * Get drawable items:
 			*/
 			UniversalDrawableArray get_drawables(void);
 		private:
-			int m_menuitem1_over;
-			int m_menuitem2_over;
-			int m_menuitem3_over;
-			int m_menuitem4_over;
-			int m_menuitem5_over;
-			int m_menuitem6_over;
+			int m_w;
+			int m_h;
+			int m_menuitem_over;
+			int m_menuitem_loaded;
 			sf::Texture m_img1;
 			sf::Texture m_img2;
 			sf::Sprite m_img1_sprite;
 			sf::Sprite m_img2_sprite;
+			unsigned int m_menu_a[MAINMENU_COUNT+1] = {0,62,121,203,270,330,404};
+			unsigned int m_menu_x[MAINMENU_COUNT] = {82,82,85,69,51,36};
+			unsigned int m_menu_y[MAINMENU_COUNT] = {369,359,355,329,339,407};
+			unsigned int m_menu_h[MAINMENU_COUNT] = {62,59,56,67,60,74};
+			unsigned int m_menuc_a[MAINMENU_COUNT+1];
+			unsigned int m_menuc_x[MAINMENU_COUNT];
+			unsigned int m_menuc_y[MAINMENU_COUNT];
+			unsigned int m_menuc_h[MAINMENU_COUNT];
+			int m_logo_xoffset;
+			int m_logo_yoffset;
 	};
 #endif // MAIN_MENU_HPP

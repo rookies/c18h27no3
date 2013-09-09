@@ -77,6 +77,14 @@
 	*/
 #	define WINDOWS_CONFIG_BUFLEN 255
 	/*
+	 * Number of main menu items:
+	*/
+#	define MAINMENU_COUNT 6
+	/*
+	 * Width of the mainmenu active image:
+	*/
+#	define MAINMENU_ACTIVEWIDTH 231
+	/*
 	 * Colors:
 	*/
 #	define COLOR_MENU_BACKGROUND sf::Color(170, 217, 152)
