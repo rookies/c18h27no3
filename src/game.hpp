@@ -42,6 +42,7 @@
 #	include "gamemodes/settings_control_menu.hpp"
 #	include "gamemodes/settings_sound_menu.hpp"
 #	include "gamemodes/singleplayer.hpp"
+#	include "gamemodes/credits.hpp"
 #	include "event_processor_return.hpp"
 #	include "universal_drawable.hpp"
 #	include "gamemode.hpp"
@@ -129,6 +130,7 @@
 			 *  5 - settings control menu
 			 *  6 - settings sound menu
 			 *  7 - singleplayer
+			 *  8 - credits
 			*/
 			int m_gamemode;
 			bool m_menusound_state;

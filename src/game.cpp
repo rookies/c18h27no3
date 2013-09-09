@@ -663,6 +663,15 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			m_gamemode_class = new SinglePlayer;
 			set_menusound(false);
 			break;
+		case 8:
+			/*
+			 * Credits
+			*/
+			m_gamemode_class = new Credits;
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
+				if (!set_menusound(true))
+					return 1;
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;

@@ -135,6 +135,8 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 						ret->set_gamemode(7); // go to singleplayer
 					else if (m_menuitem_over == 3)
 						ret->set_gamemode(2); // go to settings menu
+					else if (m_menuitem_over == 4)
+						ret->set_gamemode(8); // go to credits
 					else if (m_menuitem_over == 5)
 						ret->set_exit(true); // exit
 					break;
