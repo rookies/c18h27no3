@@ -1178,6 +1178,7 @@
                         <property name="can_focus">False</property>
                         <property name="stock">gtk-delete</property>
                         <property name="icon-size">5</property>
+                        <signal name="drag-drop" handler="on_image1_drag_drop" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1295,6 +1296,7 @@
                             <property name="can_focus">False</property>
                             <signal name="draw" handler="on_layout1_draw" swapped="no"/>
                             <signal name="drag-data-received" handler="on_layout1_drag_data_received" swapped="no"/>
+                            <signal name="drag-begin" handler="on_layout1_drag_begin" swapped="no"/>
                           </object>
                         </child>
                       </object>

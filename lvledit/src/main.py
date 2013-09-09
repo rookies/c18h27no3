@@ -42,6 +42,7 @@ class LevelEditor (object):
 	level_pixmap = None
 	block_images = []
 	messagedialog1_parent_dialog = None
+	trashcoords = (0, 0)
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -107,6 +108,8 @@ class LevelEditor (object):
 		self.builder.get_object("treeview3").drag_source_add_text_targets()
 		self.builder.get_object("layout1").drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
 		self.builder.get_object("layout1").drag_dest_add_text_targets()
+		self.builder.get_object("layout1").drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)
+		self.builder.get_object("layout1").drag_source_add_text_targets()
 		self.builder.get_object("image1").drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.MOVE)
 		self.builder.get_object("image1").drag_dest_add_text_targets()
 		### SET THE WINDOW TITLE ###
@@ -118,6 +121,10 @@ class LevelEditor (object):
 			self.quit()
 	def quit(self):
 		Gtk.main_quit()
+	def translate_coords(self, x, y):
+		x_trans = math.floor(x/self.get_block_height())
+		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
+		return (x_trans, y_trans)
 	def open_messagedialog1(self, text1, text2, parent_dlg):
 		self.builder.get_object("messagedialog1").set_markup(text1)
 		self.builder.get_object("messagedialog1").format_secondary_text(text2)
@@ -254,9 +261,6 @@ class LevelEditor (object):
 				self.block_images.append(self.get_image_from_blockdef_id(blk["blockdef"]))
 				self.block_images[i].set_from_pixbuf(self.block_images[i].get_pixbuf().scale_simple(block_height*2, block_height, GdkPixbuf.InterpType.NEAREST))
 				layout.put(self.block_images[i], col["position"]*block_height, height-(((blk["position"]/2.)+0.5)*block_height))
-				### Create the drag&drop source: ###
-				#self.block_images[i].drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)
-				#self.block_images[i].drag_source_add_text_targets()
 				i += 1
 		self.builder.get_object("layout1").show_all()
 	### window1 EVENTS ###
@@ -449,15 +453,10 @@ class LevelEditor (object):
 			selection.set_text(str(row[0].get_value(row[1], 0)), 1)
 	def on_treeview3_drag_end(self, widget, dragctx):
 		widget.drag_source_set_icon_stock("")
-	#def on_layout1_drag_motion(self, widget, dragctx, x, y, time):
-	#	print("layout1 drag motion")
-	#def on_layout1_drag_drop(self, widget, dragctx, x, y, time):
-	#	print("layout1 drag drop")
 	def on_layout1_drag_data_received(self, widget, dragctx, x, y, selection, info, time):
 		bdef = int(selection.get_text())
 		x += self.builder.get_object("adjustment2").get_value()
-		x_trans = math.floor(x/self.get_block_height())
-		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
+		x_trans, y_trans = self.translate_coords(x,y)
 		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
 		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
 			self.open_messagedialog1("Fehler beim Platzieren des Blocks!", "Der Block kann nicht außerhalb des Level-Bereichs abgelegt werden!", None)
@@ -500,6 +499,17 @@ class LevelEditor (object):
 			ctx.line_to((((i/2.)+0.5)*block_width)-offset, 5*block_height)
 			ctx.stroke()
 		ctx.paint_with_alpha(0)
+	def on_layout1_drag_begin(self, widget, dragctx):
+		m = widget.get_pointer()
+		x_trans, y_trans = self.translate_coords(m[0],m[1])
+		self.trashcoords = (x_trans, y_trans)
+	def on_image1_drag_drop(self, *args):
+		if self.trashcoords[1] < 30:
+			if self.level.remove_block(self.trashcoords[0], self.trashcoords[1]):
+				self.changed = True
+				self.update_everything()
+				print("Block deleted on x_trans=%d; y_trans=%d" % self.trashcoords)
+		self.trashcoords = (0,0)
 	### scrolledwindow1 EVENTS ###
 	def on_adjustment2_value_changed(self, widget):
 		#print(self.builder.get_object("adjustment2").get_value())

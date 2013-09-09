@@ -239,3 +239,31 @@ class Level (object):
 			if col["position"] == pos:
 				return col
 		return None
+	def remove_block(self, x, y):
+		# 1. check if the column exists:
+		pos = None
+		i = 0
+		for col in self.columns:
+			if col["position"] == x:
+				pos = i
+				break
+			else:
+				i += 1
+		if pos is None:
+			return False
+		# 2. check if the block exists:
+		pos2 = None
+		i = 0
+		for blk in self.columns[pos]["blocks"]:
+			if blk["position"] == y:
+				pos2 = i
+				break
+			else:
+				i += 1
+		if pos2 is None:
+			return False
+		else:
+			del self.columns[pos]["blocks"][pos2]
+			if len(self.columns[pos]["blocks"]) is 0:
+				del self.columns[pos]
+			return True
