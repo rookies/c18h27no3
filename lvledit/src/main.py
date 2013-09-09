@@ -29,6 +29,7 @@ import subprocess
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
+	NUMBLOCKSY = 20.	
 	builder = None
 	metadata_store = None
 	blockdefs_store = None
@@ -242,7 +243,7 @@ class LevelEditor (object):
 	def fill_block_images(self):
 		layout = self.builder.get_object("layout1")
 		height = layout.get_allocation().height
-		block_height = height/20.
+		block_height = height/self.NUMBLOCKSY
 		self.resize_level_layout()
 		for img in self.block_images:
 			img.clear()
@@ -464,20 +465,44 @@ class LevelEditor (object):
 			self.changed = True
 			self.update_everything()
 	def on_layout1_draw(self, widget, ctx):
-		#ctx.set_line_width(0.1)
-		#ctx.set_source_rgb(0, 0, 0)
-		#ctx.rectangle(0.25, 0.25, 0.5, 0.5)
-		#ctx.stroke()
-		#return False
-		#print("draw!")
-		#print(widget.get_size())
-		#ctx.set_source_rgb(255, 255, 255)
-		#ctx.set_source_rgb(0, 0, 0)
-		#ctx.rectangle(10, 10, 100, 100)
-		#ctx.paint()
-		#gc = GC()
-		#gc.set_foreground(Gdk.Color.red)
-		#widget.get_bin_window().draw_rectangle(gc, True, 10, 10, 100, 100)
+		s = widget.get_allocation()
+		block_height = s.height/self.NUMBLOCKSY
+		block_width = 2*block_height
+		ctx.set_source_rgb(1,1,1)
+		ctx.paint()
+		# Horizontal lines:
+		ctx.set_source_rgb(0,0,0)
+		ctx.set_line_width(1)
+		for i in range(15):
+			ctx.move_to(0, s.height-((i+1)*block_height))
+			ctx.line_to(s.width, s.height-((i+1)*block_height))
+			ctx.stroke()
+		ctx.set_source_rgb(0.5,0.5,0.5)
+		ctx.set_line_width(0.5)
+		for i in range(29):
+			ctx.move_to(0, s.height-(((i/2.)+0.5)*block_height))
+			ctx.line_to(s.width, s.height-(((i/2.)+0.5)*block_height))
+			ctx.stroke()
+		# Vertical lines:
+		ctx.set_source_rgb(0,0,0)
+		ctx.set_line_width(1)
+		offset = self.builder.get_object("adjustment2").get_value()
+		offset -= block_width*int(offset/block_width)
+		for i in range(int(s.width/(block_width)+1)):
+			ctx.move_to(((i+1)*block_width)-offset, 5*block_height)
+			ctx.line_to(((i+1)*block_width)-offset, s.height)
+			ctx.stroke()
+		ctx.set_source_rgb(0.5,0.5,0.5)
+		ctx.set_line_width(0.5)
+		for i in range(int(s.width/(block_width/2.))+1):
+			ctx.move_to((((i/2.)+0.5)*block_width)-offset, s.height)
+			ctx.line_to((((i/2.)+0.5)*block_width)-offset, 5*block_height)
+			ctx.stroke()
+		ctx.paint_with_alpha(0)
+	### scrolledwindow1 EVENTS ###
+	def on_adjustment2_value_changed(self, widget):
+		#print(self.builder.get_object("adjustment2").get_value())
+		#print(widget.get_upper())
 		pass
 	### dialog1 (delete metadata) EVENTS ###
 	def on_dialog1_delete_event(self, *args):
