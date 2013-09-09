@@ -70,7 +70,7 @@
 			sf::Sprite m_img1_sprite;
 			sf::Sprite m_img2_sprite;
 			unsigned int m_menu_a[MAINMENU_COUNT+1] = {0,62,121,203,270,330,404};
-			unsigned int m_menu_x[MAINMENU_COUNT] = {82,82,85,69,51,36};
+			unsigned int m_menu_x[MAINMENU_COUNT] = {82,82,85,69,51,37};
 			unsigned int m_menu_y[MAINMENU_COUNT] = {369,359,355,329,339,407};
 			unsigned int m_menu_h[MAINMENU_COUNT] = {62,59,56,67,60,74};
 			unsigned int m_menuc_a[MAINMENU_COUNT+1];
