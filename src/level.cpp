@@ -133,6 +133,7 @@ bool Level::load_from_file(std::string file)
 	unsigned short i, j;
 	std::ifstream f;
 	char *buf;
+	std::string buf_;
 	unsigned short tmp, tmp2, tmp3;
 	/*
 	 * Open file:
@@ -151,7 +152,9 @@ bool Level::load_from_file(std::string file)
 	*/
 	buf = new char[9];
 	f.read(buf, 9);
-	if (std::string(buf).compare("CAPSAICIN") != 0)
+	buf_ = std::string(buf).substr(0,9);
+	std::cout << buf_ << std::endl;
+	if (buf_.compare("CAPSAICIN") != 0)
 	{
 		std::cerr << "LevelLoader: CAPSAICIN header not found!" << std::endl;
 		return false;
