@@ -455,6 +455,7 @@ class LevelEditor (object):
 	#	print("layout1 drag drop")
 	def on_layout1_drag_data_received(self, widget, dragctx, x, y, selection, info, time):
 		bdef = int(selection.get_text())
+		x += self.builder.get_object("adjustment2").get_value()
 		x_trans = math.floor(x/self.get_block_height())
 		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
 		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
