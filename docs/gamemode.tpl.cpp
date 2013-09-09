@@ -11,7 +11,7 @@ CLASSNAME::~CLASSNAME()
 {
 
 }
-int CLASSNAME::init(Config conf)
+int CLASSNAME::init(Config conf, std::string arg)
 {
 	/*
 	 * ...
