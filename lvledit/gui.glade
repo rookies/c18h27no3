@@ -1295,6 +1295,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <signal name="draw" handler="on_layout1_draw" swapped="no"/>
+                            <signal name="button-press-event" handler="on_layout1_button_press_event" swapped="no"/>
                             <signal name="drag-data-received" handler="on_layout1_drag_data_received" swapped="no"/>
                             <signal name="drag-begin" handler="on_layout1_drag_begin" swapped="no"/>
                           </object>

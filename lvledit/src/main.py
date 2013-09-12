@@ -135,12 +135,13 @@ class LevelEditor (object):
 		else:
 			self.messagedialog1_parent_dialog = parent_dlg
 			parent_dlg.set_sensitive(False)
-	def update_everything(self):
+	def update_everything(self, blockdefs=True):
 		## Metadata Store:
 		self.update_metadata_store()
 		## Blockdefs Stores:
-		self.update_blockdefs_store()
-		self.update_blockdefs_store2()
+		if blockdefs:
+			self.update_blockdefs_store()
+			self.update_blockdefs_store2()
 		## Standard blocks Store:
 		self.update_standard_blocks_store()
 		## Level layout:
@@ -263,6 +264,25 @@ class LevelEditor (object):
 				layout.put(self.block_images[i], col["position"]*block_height, height-(((blk["position"]/2.)+0.5)*block_height))
 				i += 1
 		self.builder.get_object("layout1").show_all()
+	def add_block(self, x, y, bdef):
+		x += self.builder.get_object("adjustment2").get_value()
+		x_trans, y_trans = self.translate_coords(x,y)
+		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
+		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
+			self.open_messagedialog1("Fehler beim Platzieren des Blocks!", "Der Block kann nicht außerhalb des Level-Bereichs abgelegt werden!", None)
+		else:
+			self.level.add_block(x_trans, y_trans, bdef)
+			self.changed = True
+			self.update_everything(False)
+	def rm_block_raw(self, x, y):
+		x_trans, y_trans = self.translate_coords(x,y)
+		self.rm_block(x_trans, y_trans)
+	def rm_block(self, x, y):
+		if y < 30:
+			if self.level.remove_block(x, y):
+				self.changed = True
+				self.update_everything()
+				print("Block deleted on x_trans=%d; y_trans=%d" % (x,y))
 	### window1 EVENTS ###
 	def on_window1_delete_event(self, *args):
 		# closed
@@ -455,15 +475,16 @@ class LevelEditor (object):
 		widget.drag_source_set_icon_stock("")
 	def on_layout1_drag_data_received(self, widget, dragctx, x, y, selection, info, time):
 		bdef = int(selection.get_text())
-		x += self.builder.get_object("adjustment2").get_value()
-		x_trans, y_trans = self.translate_coords(x,y)
-		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
-		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
-			self.open_messagedialog1("Fehler beim Platzieren des Blocks!", "Der Block kann nicht außerhalb des Level-Bereichs abgelegt werden!", None)
-		else:
-			self.level.add_block(x_trans, y_trans, bdef)
-			self.changed = True
-			self.update_everything()
+		self.add_block(x,y,bdef)
+	def on_layout1_button_press_event(self, widget, ev):
+		if ev.button is 1:
+			# left click -> add
+			row = self.builder.get_object("treeview-selection3").get_selected()
+			if row[1] is not None:
+				self.add_block(ev.x, ev.y, row[0].get_value(row[1], 0))
+		elif ev.button is 3:
+			# right click -> remove
+			self.rm_block_raw(ev.x, ev.y)
 	def on_layout1_draw(self, widget, ctx):
 		s = widget.get_allocation()
 		block_height = s.height/self.NUMBLOCKSY
@@ -504,11 +525,7 @@ class LevelEditor (object):
 		x_trans, y_trans = self.translate_coords(m[0],m[1])
 		self.trashcoords = (x_trans, y_trans)
 	def on_image1_drag_drop(self, *args):
-		if self.trashcoords[1] < 30:
-			if self.level.remove_block(self.trashcoords[0], self.trashcoords[1]):
-				self.changed = True
-				self.update_everything()
-				print("Block deleted on x_trans=%d; y_trans=%d" % self.trashcoords)
+		self.rm_block(self.trashcoords[0], self.trashcoords[1])
 		self.trashcoords = (0,0)
 	### scrolledwindow1 EVENTS ###
 	def on_adjustment2_value_changed(self, widget):
