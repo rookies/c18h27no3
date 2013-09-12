@@ -265,7 +265,6 @@ class LevelEditor (object):
 				i += 1
 		self.builder.get_object("layout1").show_all()
 	def add_block(self, x, y, bdef):
-		x += self.builder.get_object("adjustment2").get_value()
 		x_trans, y_trans = self.translate_coords(x,y)
 		print("Blockdef #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (bdef, x, y, x_trans, y_trans))
 		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
@@ -281,7 +280,7 @@ class LevelEditor (object):
 		if y < 30:
 			if self.level.remove_block(x, y):
 				self.changed = True
-				self.update_everything()
+				self.update_everything(False)
 				print("Block deleted on x_trans=%d; y_trans=%d" % (x,y))
 	### window1 EVENTS ###
 	def on_window1_delete_event(self, *args):
@@ -474,6 +473,7 @@ class LevelEditor (object):
 	def on_treeview3_drag_end(self, widget, dragctx):
 		widget.drag_source_set_icon_stock("")
 	def on_layout1_drag_data_received(self, widget, dragctx, x, y, selection, info, time):
+		x += self.builder.get_object("adjustment2").get_value()
 		bdef = int(selection.get_text())
 		self.add_block(x,y,bdef)
 	def on_layout1_button_press_event(self, widget, ev):
