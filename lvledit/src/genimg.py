@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-#  main.py
+#  genimg.py
 #  
 #  Copyright 2013 Robert Knauer <robert@privatdemail.net>
 #  
@@ -22,6 +22,7 @@
 import level
 from PIL import Image
 import os.path
+import sys
 
 class ImgGenerator (object):
 	IMGPATH = "../data/img/"
@@ -75,6 +76,9 @@ class ImgGenerator (object):
 		self.image.save(path)
 
 if __name__ == "__main__":
-	app = ImgGenerator("../testlevel.dat")
+	if len(sys.argv) < 3:
+		print("Usage: %s input.dat output.png" % sys.argv[0], file=sys.stderr)
+		sys.exit(1)
+	app = ImgGenerator(sys.argv[1])
 	app.generate(1080)
-	app.save("output.png")
+	app.save(sys.argv[2])
