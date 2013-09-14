@@ -22,7 +22,7 @@
  */
 #include "singleplayer.hpp"
 
-SinglePlayer::SinglePlayer() : m_player_action(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false)
+SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false)
 {
 
 }
@@ -112,17 +112,15 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Variable declarations:
 	*/
 	int i, j, k;
-	int block_height;
-	int block_width;
 	/*
 	 * Calculate block sizes:
 	*/
-	block_height = h/VERTICAL_BLOCK_NUMBER;
-	block_width = 2*block_height;
+	m_blockh = h/VERTICAL_BLOCK_NUMBER;
+	m_blockw = 2*m_blockh;
 	/*
 	 * Calculate width in blocks:
 	*/
-	m_width_in_blocks = ceil(w/float(block_width));
+	m_width_in_blocks = ceil(w/float(m_blockw));
 	if (m_width_in_blocks > m_level.get_levelwidth()*2)
 		m_width_in_blocks = floor(m_level.get_levelwidth()/2.);
 	/*
@@ -143,27 +141,19 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	{
 		for (j=0; j < m_level.get_column(i)->get_blocknumber(); j++)
 		{
-			m_blocks[k].setPosition(sf::Vector2f(i*block_width/2., h-(((m_level.get_column(i)->get_block(j)->position/2.)+0.5)*block_height)));
-			m_blocks[k].setScale(block_width/32., block_height/16.);
+			m_blocks[k].setPosition(sf::Vector2f(i*m_blockw/2., h-(((m_level.get_column(i)->get_block(j)->position/2.)+0.5)*m_blockh)));
+			m_blocks[k].setScale(m_blockw/32., m_blockh/16.);
 			m_blocks[k].setTexture(m_block_textures[m_level.get_column(i)->get_block(j)->blockdef]);
 			k++;
 		}
 	}
 	/*
-	 * Set block properties:
-	*/
-	m_startpos_x = block_width/2.;
-	m_startpos_y = h-(block_height/2.);
-	/*
 	 * Set player properties:
 	*/
-	m_player.scale((block_width/2.)/16, (block_height*1.5)/24);
-	m_player.setPosition(sf::Vector2f(m_startpos_x, m_startpos_y-block_height*1.5));
-	m_endpos_x = w-m_startpos_x-m_player.getGlobalBounds().width;
-	/*
-	 * Calculate stepwidth:
-	*/
-	m_stepwidth = w/STEPS_PER_SCREENWIDTH;
+	m_player.scale((m_blockw)/16, (m_blockh*3)/24);
+	m_playerx = 1;
+	m_playery = 35;
+	place_player();
 	return 0;
 }
 void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -177,17 +167,17 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 					ret->set_gamemode(1);
 					break;
 				default:
-					if (event.key.code == m_key_goleft && m_player.getGlobalBounds().left >= m_startpos_x)
-						m_player_action = PLAYER_RUNNING_LEFT;
-					else if (event.key.code == m_key_goright && m_player.getGlobalBounds().left <= m_endpos_x)
-						m_player_action = PLAYER_RUNNING_RIGHT;
+					if (event.key.code == m_key_goleft)
+						m_player_xaction = PLAYER_RUNNING_LEFT;
+					else if (event.key.code == m_key_goright)
+						m_player_xaction = PLAYER_RUNNING_RIGHT;
 			}
 			break;
 		case sf::Event::KeyReleased:
-			if (event.key.code == m_key_goleft && m_player_action == PLAYER_RUNNING_LEFT)
-				m_player_action = 0;
-			else if (event.key.code == m_key_goright && m_player_action == PLAYER_RUNNING_RIGHT)
-				m_player_action = 0;
+			if (event.key.code == m_key_goleft && m_player_xaction == PLAYER_RUNNING_LEFT)
+				m_player_xaction = 0;
+			else if (event.key.code == m_key_goright && m_player_xaction == PLAYER_RUNNING_RIGHT)
+				m_player_xaction = 0;
 			break;
 	}
 }
@@ -196,14 +186,16 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Variable declarations:
 	*/
-	int i;
+	int i, j;
 	UniversalDrawableArray arr;
+	LevelColumn *col;
+	double highest;
 	/*
 	 * Perform player actions:
 	*/
 	if (m_actiontimer.getElapsedTime().asMilliseconds() >= 10)
 	{
-		switch (m_player_action)
+		/*switch (m_player_xaction)
 		{
 			case PLAYER_RUNNING_LEFT:
 				if (m_player.getGlobalBounds().left >= m_startpos_x)
@@ -223,7 +215,32 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 				else
 					m_player_action = 0;
 				break;
+		}*/
+		/*
+		 * Check if we're falling:
+		*/
+		highest = 0;
+		for (i=-1; i < 2; i++)
+		{
+			col = m_level.get_column(floor(m_playerx)+i);
+			for (j=0; j < col->get_blocknumber(); j++)
+			{
+				if (col->get_block(j)->position > highest)
+					highest = col->get_block(j)->position;
+			}
 		}
+		highest += 0.5;
+		if (m_playery > highest)
+		{
+			/*
+			 * Too high!
+			*/
+			if (m_playery-highest < 0.1)
+				m_playery -= (m_playery-highest);
+			else
+				m_playery -= 0.1;
+			place_player();
+		};
 		m_actiontimer.restart();
 	};
 	/*
@@ -258,4 +275,8 @@ void SinglePlayer::toggle_playertexture(void)
 	};
 	m_player_texturecounter = 0;
 	m_playertimer.restart();
+}
+void SinglePlayer::place_player(void)
+{
+	m_player.setPosition(sf::Vector2f(m_playerx*m_blockw/2., (VERTICAL_BLOCK_NUMBER-3-(m_playery/2.))*m_blockh));
 }

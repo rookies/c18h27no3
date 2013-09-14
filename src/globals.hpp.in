@@ -133,5 +133,4 @@
 	 * Game settings:
 	*/
 #	define VERTICAL_BLOCK_NUMBER 20
-#	define STEPS_PER_SCREENWIDTH 800.
 #endif // GLOBALS_HPP

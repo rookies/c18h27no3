@@ -56,6 +56,10 @@
 			 * Get drawable items:
 			*/
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
+			/*
+			 * Place player:
+			*/
+			void place_player(void);
 		private:
 			void toggle_playertexture(void);
 
@@ -69,13 +73,13 @@
 			bool m_player_texture2_en;
 			int m_player_texturecounter;
 			sf::Sprite m_player;
-			int m_startpos_x;
-			int m_startpos_y;
-			int m_endpos_x;
-			int m_player_action;
+			int m_player_xaction;
 			int m_key_goleft;
 			int m_key_goright;
-			float m_stepwidth;
+			long double m_playerx;
+			long double m_playery;
+			unsigned int m_blockw;
+			unsigned int m_blockh;
 			Level m_level;
 			sf::Clock m_actiontimer;
 			sf::Clock m_playertimer;
