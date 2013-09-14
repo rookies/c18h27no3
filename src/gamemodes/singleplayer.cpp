@@ -151,7 +151,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Set player properties:
 	*/
 	m_player.scale((m_blockw)/16, (m_blockh*3)/24);
-	m_playerx = 1;
+	m_playerx = 15;
 	m_playery = 35;
 	place_player();
 	return 0;
@@ -201,9 +201,14 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		switch (m_player_xaction)
 		{
 			case PLAYER_RUNNING_LEFT:
-				m_playerx -= 0.1;
-				toggle_playertexture();
-				place_player();
+				if (m_playerx-0.1 > 0)
+				{
+					m_playerx -= 0.1;
+					toggle_playertexture();
+					place_player();
+				}
+				else
+					m_player_xaction = 0;
 				break;
 			case PLAYER_RUNNING_RIGHT:
 				m_playerx += 0.1;
