@@ -195,27 +195,22 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	*/
 	if (m_actiontimer.getElapsedTime().asMilliseconds() >= 10)
 	{
-		/*switch (m_player_xaction)
+		/*
+		 * Perform running:
+		*/
+		switch (m_player_xaction)
 		{
 			case PLAYER_RUNNING_LEFT:
-				if (m_player.getGlobalBounds().left >= m_startpos_x)
-				{
-					m_player.move(sf::Vector2f(-m_stepwidth, 0));
-					toggle_playertexture();
-				}
-				else
-					m_player_action = 0;
+				m_playerx -= 0.1;
+				toggle_playertexture();
+				place_player();
 				break;
 			case PLAYER_RUNNING_RIGHT:
-				if (m_player.getGlobalBounds().left <= m_endpos_x)
-				{
-					m_player.move(sf::Vector2f(m_stepwidth, 0));
-					toggle_playertexture();
-				}
-				else
-					m_player_action = 0;
+				m_playerx += 0.1;
+				toggle_playertexture();
+				place_player();
 				break;
-		}*/
+		}
 		/*
 		 * Check if we're falling:
 		*/
