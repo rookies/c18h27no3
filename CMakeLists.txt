@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.8)
 # .
 # project name:
 # .
-project(c18h27no3)
+project(route94)
 # .
 # project version:
 # .

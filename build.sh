@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJECTNAME="c18h27no3"
+PROJECTNAME="route94"
 
 build_default()
 {

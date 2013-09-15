@@ -59,7 +59,7 @@
 	 * =========================
 	 * Corporation name (for Windows registry):
 	*/
-#	define CORPORATION "rookiesoft"
+#	define CORPORATION "CapsaicinDEV"
 	/*
 	 * Number of control keys:
 	*/
