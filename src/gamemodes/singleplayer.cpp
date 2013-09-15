@@ -127,7 +127,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Set player properties:
 	*/
 	m_player.scale((m_blockw)/16, (m_blockh*3)/24);
-	m_playerx = 15;
+	m_playerx = 1;
 	m_playery = 35;
 	place_player();
 	return 0;
@@ -224,18 +224,18 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		/*
 		 * Check if we're falling:
 		*/
-		highest = 0;
+		highest = -1;
 		for (i=-1; i < 2; i++)
 		{
 			col = m_level.get_column(floor(m_playerx)+i);
 			for (j=0; j < col->get_blocknumber(); j++)
 			{
-				if (col->get_block(j)->position > highest)
+				if (col->get_block(j)->position > highest && m_playery > col->get_block(j)->position)
 					highest = col->get_block(j)->position;
 			}
 		}
 		highest += 0.5;
-		if (m_playery > highest)
+		if (highest < m_playery)
 		{
 			/*
 			 * Too high!
