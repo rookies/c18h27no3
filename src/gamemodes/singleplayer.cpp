@@ -304,6 +304,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 				place_player();
 			};
 			m_player_canjump = false;
+			if (m_playery <= -0.5)
+				std::cout << "GAME OVER :(" << std::endl;
 		}
 		else
 			m_player_canjump = true;
