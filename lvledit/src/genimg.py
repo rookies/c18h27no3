@@ -20,12 +20,14 @@
 #  
 #
 import level
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import os.path
 import sys
 
 class ImgGenerator (object):
-	IMGPATH = "../data/img/"
+	DATADIR = "../data/"
+	IMGPATH = DATADIR+"img/"
+	FONTPATH = DATADIR+"fonts/"
 	NUMBLOCKSY = 20.
 	level = None
 	blk_sizes = (0,0)
@@ -72,6 +74,16 @@ class ImgGenerator (object):
 				img = Image.open(self.blkdef_images[bdef])
 				img = img.resize(self.blk_sizes, Image.NEAREST)
 				self.image.paste(img, (x,y))
+		# Add text:
+		draw = ImageDraw.Draw(self.image)
+		font1 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", int(self.img_sizes[1]/20))
+		font2 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", int(self.img_sizes[1]/25))
+		font3 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", int(self.img_sizes[1]/30))
+		draw.text((int(self.img_sizes[1]/30),10), self.level.get_metadata("name"), (0,0,0), font=font1)
+		draw.text((int(self.img_sizes[1]/20),20+int(self.img_sizes[1]/20)), self.level.get_metadata("creator"), (0,0,0), font=font2)
+		draw.text((int(self.img_sizes[1]/15),30+int(self.img_sizes[1]/20)+int(self.img_sizes[1]/25)), self.level.get_metadata("creator_mail"), (0,0,0), font=font3)
+		draw.text((int(self.img_sizes[1]/15),40+int(self.img_sizes[1]/20)+int(self.img_sizes[1]/25)+int(self.img_sizes[1]/30)), self.level.get_metadata("creator_www"), (0,0,0), font=font3)
+		
 	def save(self, path):
 		self.image.save(path)
 
