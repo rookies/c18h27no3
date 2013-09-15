@@ -194,14 +194,19 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 					m_player_xaction = 0;
 				break;
 			case PLAYER_RUNNING_RIGHT:
-				m_playerx += 0.1;
-				toggle_playertexture();
-				if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
+				if (m_playerx <= m_level.get_levelwidth()-2)
 				{
-					m_offset += 0.1;
-					update_level();
-				};
-				place_player();
+					m_playerx += 0.1;
+					toggle_playertexture();
+					if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
+					{
+						m_offset += 0.1;
+						update_level();
+					};
+					place_player();
+				}
+				else
+					m_player_xaction = 0;
 				break;
 		}
 		/*
