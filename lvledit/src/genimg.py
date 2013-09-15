@@ -76,13 +76,16 @@ class ImgGenerator (object):
 				self.image.paste(img, (x,y))
 		# Add text:
 		draw = ImageDraw.Draw(self.image)
-		font1 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", int(self.img_sizes[1]/20))
-		font2 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", int(self.img_sizes[1]/25))
-		font3 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", int(self.img_sizes[1]/30))
+		s1 = int(self.img_sizes[1]/20)
+		s2 = int(self.img_sizes[1]/25)
+		s3 = int(self.img_sizes[1]/30)
+		font1 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", s1)
+		font2 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Bold.ttf", s2)
+		font3 = ImageFont.truetype(self.FONTPATH+"Vollkorn-Regular.ttf", s3)
 		draw.text((int(self.img_sizes[1]/30),10), self.level.get_metadata("name"), (0,0,0), font=font1)
-		draw.text((int(self.img_sizes[1]/20),20+int(self.img_sizes[1]/20)), self.level.get_metadata("creator"), (0,0,0), font=font2)
-		draw.text((int(self.img_sizes[1]/15),30+int(self.img_sizes[1]/20)+int(self.img_sizes[1]/25)), self.level.get_metadata("creator_mail"), (0,0,0), font=font3)
-		draw.text((int(self.img_sizes[1]/15),40+int(self.img_sizes[1]/20)+int(self.img_sizes[1]/25)+int(self.img_sizes[1]/30)), self.level.get_metadata("creator_www"), (0,0,0), font=font3)
+		draw.text((int(self.img_sizes[1]/20),20+s1), self.level.get_metadata("creator"), (0,0,0), font=font2)
+		draw.text((int(self.img_sizes[1]/15),30+s1+s2), self.level.get_metadata("creator_mail"), (0,0,0), font=font3)
+		draw.text((int(self.img_sizes[1]/15),40+s1+s2+s3), self.level.get_metadata("creator_www"), (0,0,0), font=font3)
 		
 	def save(self, path):
 		self.image.save(path)
