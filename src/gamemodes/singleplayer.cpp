@@ -168,6 +168,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	UniversalDrawableArray arr;
 	LevelColumn *col;
 	double highest;
+	bool barrier;
 	/*
 	 * Perform player actions:
 	*/
@@ -181,14 +182,30 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			case PLAYER_RUNNING_LEFT:
 				if (m_playerx-0.1 >= 0)
 				{
-					m_playerx -= 0.1;
-					toggle_playertexture();
-					if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
+					/*
+					 * Check for barriers:
+					*/
+					barrier = false;
+					col = m_level.get_column(floor(m_playerx)-1);
+					for (i=0; i < col->get_blocknumber(); i++)
 					{
-						m_offset -= 0.1;
-						update_level();
+						if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
+							barrier = true;
+					}
+					if (!barrier)
+					{
+						/*
+						 * Move:
+						*/
+						m_playerx -= 0.1;
+						toggle_playertexture();
+						if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
+						{
+							m_offset -= 0.1;
+							update_level();
+						};
+						place_player();
 					};
-					place_player();
 				}
 				else
 					m_player_xaction = 0;
@@ -196,14 +213,30 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			case PLAYER_RUNNING_RIGHT:
 				if (m_playerx <= m_level.get_levelwidth()-2)
 				{
-					m_playerx += 0.1;
-					toggle_playertexture();
-					if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
+					/*
+					 * Check for barriers:
+					*/
+					barrier = false;
+					col = m_level.get_column(floor(m_playerx)+2);
+					for (i=0; i < col->get_blocknumber(); i++)
 					{
-						m_offset += 0.1;
-						update_level();
+						if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
+							barrier = true;
+					}
+					if (!barrier)
+					{
+						/*
+						 * Move:
+						*/
+						m_playerx += 0.1;
+						toggle_playertexture();
+						if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
+						{
+							m_offset += 0.1;
+							update_level();
+						};
+						place_player();
 					};
-					place_player();
 				}
 				else
 					m_player_xaction = 0;
@@ -217,12 +250,12 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			/*
 			 * We're jumping!
 			*/
-			if (m_player_ystatus == 10)
+			if (m_player_ystatus == 15)
 				m_player_ystatus = 0;
 			else
 			{
 				m_player_ystatus++;
-				m_playery += 0.4;
+				m_playery += 0.5;
 				place_player();
 			};
 		}
