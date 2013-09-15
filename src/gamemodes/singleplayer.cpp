@@ -167,7 +167,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	int i, j;
 	UniversalDrawableArray arr;
 	LevelColumn *col;
-	double highest;
+	double highest, incr, lowest;
 	bool barrier;
 	/*
 	 * Perform player actions:
@@ -249,15 +249,32 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		{
 			/*
 			 * We're jumping!
+			 * Check if it's still possible:
 			*/
-			if (m_player_ystatus == 30)
-				m_player_ystatus = 0;
-			else
+			lowest = 100;
+			for (i=-1; i < 2; i++)
 			{
-				m_player_ystatus++;
-				m_playery += (-(0.6/30)*m_player_ystatus)+0.6; // f(x) = (-(max/steps)*x)+max
-				place_player();
-			};
+				col = m_level.get_column(floor(m_playerx)+i);
+				for (j=0; j < col->get_blocknumber(); j++)
+				{
+					if (col->get_block(j)->position < lowest && m_playery+6 < col->get_block(j)->position)
+						lowest = col->get_block(j)->position;
+				}
+			}
+			lowest += 0.5;
+			if (lowest-2 > m_playery+6)
+			{
+				if (m_player_ystatus == 30)
+					m_player_ystatus = 0;
+				else
+				{
+					m_player_ystatus++;
+					m_playery += (-(0.6/30)*m_player_ystatus)+0.6; // f(x) = (-(max/steps)*x)+max
+					place_player();
+				};
+			}
+			else
+				m_player_ystatus = 0;
 		}
 		/*
 		 * Check if we're falling:
