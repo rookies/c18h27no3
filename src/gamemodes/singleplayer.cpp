@@ -22,7 +22,7 @@
  */
 #include "singleplayer.hpp"
 
-SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_ystatus(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false), m_player_canjump(false), m_offset(0)
+SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_ystatus(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false), m_player_canjump(false), m_offset(0), m_blocks_i(false)
 {
 
 }
@@ -322,7 +322,10 @@ void SinglePlayer::update_level(void)
 	/*
 	 * Create block sprites:
 	*/
+	if (m_blocks_i)
+		delete[] m_blocks;
 	m_blocks = new sf::Sprite[m_visible_block_number];
+	m_blocks_i = true;
 	k = 0;
 	for (i=0; i < m_width_hblk; i++)
 	{

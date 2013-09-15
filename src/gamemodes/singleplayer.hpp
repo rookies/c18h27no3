@@ -71,6 +71,7 @@
 			bool m_initialized;
 			sf::Texture *m_block_textures;
 			sf::Sprite *m_blocks;
+			bool m_blocks_i;
 			int m_visible_block_number;
 			int m_width_hblk;
 			sf::Texture m_player_texture1;
