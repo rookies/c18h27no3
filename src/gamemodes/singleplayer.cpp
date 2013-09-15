@@ -250,12 +250,12 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			/*
 			 * We're jumping!
 			*/
-			if (m_player_ystatus == 15)
+			if (m_player_ystatus == 30)
 				m_player_ystatus = 0;
 			else
 			{
 				m_player_ystatus++;
-				m_playery += 0.5;
+				m_playery += (-(0.6/30)*m_player_ystatus)+0.6; // f(x) = (-(max/steps)*x)+max
 				place_player();
 			};
 		}
