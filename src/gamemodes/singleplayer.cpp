@@ -22,7 +22,7 @@
  */
 #include "singleplayer.hpp"
 
-SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_ystatus(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false), m_player_canjump(false)
+SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_ystatus(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false), m_player_canjump(false), m_offset(0)
 {
 
 }
@@ -109,45 +109,20 @@ int SinglePlayer::uninit(void)
 }
 int SinglePlayer::calculate_sizes(int w, int h)
 {
+	m_w = w;
+	m_h = h;
 	/*
 	 * Variable declarations:
 	*/
-	int i, j, k;
 	/*
 	 * Calculate block sizes:
 	*/
 	m_blockh = h/VERTICAL_BLOCK_NUMBER;
 	m_blockw = 2*m_blockh;
 	/*
-	 * Calculate width in blocks:
+	 * Draw level:
 	*/
-	m_width_in_blocks = ceil(w/float(m_blockw));
-	if (m_width_in_blocks > m_level.get_levelwidth()*2)
-		m_width_in_blocks = floor(m_level.get_levelwidth()/2.);
-	/*
-	 * Calculate visible block number:
-	*/
-	m_visible_block_number = 0;
-	for (i=0; i < m_width_in_blocks*2; i++)
-	{
-		m_visible_block_number += m_level.get_column(i)->get_blocknumber();
-	}
-	std::cout << "Visible block number: " << m_visible_block_number << std::endl;
-	/*
-	 * Create block sprites:
-	*/
-	m_blocks = new sf::Sprite[m_visible_block_number];
-	k = 0;
-	for (i=0; i < m_width_in_blocks*2; i++)
-	{
-		for (j=0; j < m_level.get_column(i)->get_blocknumber(); j++)
-		{
-			m_blocks[k].setPosition(sf::Vector2f(i*m_blockw/2., h-(((m_level.get_column(i)->get_block(j)->position/2.)+0.5)*m_blockh)));
-			m_blocks[k].setScale(m_blockw/32., m_blockh/16.);
-			m_blocks[k].setTexture(m_block_textures[m_level.get_column(i)->get_block(j)->blockdef]);
-			k++;
-		}
-	}
+	update_level();
 	/*
 	 * Set player properties:
 	*/
@@ -204,10 +179,15 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		switch (m_player_xaction)
 		{
 			case PLAYER_RUNNING_LEFT:
-				if (m_playerx-0.1 > 0)
+				if (m_playerx-0.1 >= 0)
 				{
 					m_playerx -= 0.1;
 					toggle_playertexture();
+					if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
+					{
+						m_offset -= 0.1;
+						update_level();
+					};
 					place_player();
 				}
 				else
@@ -216,6 +196,11 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			case PLAYER_RUNNING_RIGHT:
 				m_playerx += 0.1;
 				toggle_playertexture();
+				if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
+				{
+					m_offset += 0.1;
+					update_level();
+				};
 				place_player();
 				break;
 		}
@@ -304,5 +289,49 @@ void SinglePlayer::toggle_playertexture(void)
 }
 void SinglePlayer::place_player(void)
 {
-	m_player.setPosition(sf::Vector2f(m_playerx*m_blockw/2., (VERTICAL_BLOCK_NUMBER-3-(m_playery/2.))*m_blockh));
+	m_player.setPosition(sf::Vector2f((m_playerx-m_offset)*m_blockw/2., (VERTICAL_BLOCK_NUMBER-3-(m_playery/2.))*m_blockh));
+}
+void SinglePlayer::update_level(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	unsigned long i, j, k, offset;
+	double offset_r;
+	/*
+	 * Calculate offset:
+	*/
+	offset = floor(m_offset);
+	if (offset > 0)
+		offset -= 1;
+	offset_r = m_offset-offset;
+	/*
+	 * Calculate width in blocks:
+	*/
+	m_width_hblk = HORIZONTAL_BLOCK_NUMBER;
+	if (m_width_hblk > m_level.get_levelwidth()-offset)
+		m_width_hblk = m_level.get_levelwidth()-offset;
+	/*
+	 * Calculate visible block number:
+	*/
+	m_visible_block_number = 0;
+	for (i=0; i < m_width_hblk; i++)
+	{
+		m_visible_block_number += m_level.get_column(offset+i)->get_blocknumber();
+	}
+	/*
+	 * Create block sprites:
+	*/
+	m_blocks = new sf::Sprite[m_visible_block_number];
+	k = 0;
+	for (i=0; i < m_width_hblk; i++)
+	{
+		for (j=0; j < m_level.get_column(offset+i)->get_blocknumber(); j++)
+		{
+			m_blocks[k].setPosition(sf::Vector2f((i-offset_r)*m_blockw/2., m_h-(((m_level.get_column(offset+i)->get_block(j)->position/2.)+0.5)*m_blockh)));
+			m_blocks[k].setScale(m_blockw/32., m_blockh/16.);
+			m_blocks[k].setTexture(m_block_textures[m_level.get_column(offset+i)->get_block(j)->blockdef]);
+			k++;
+		}
+	}
 }

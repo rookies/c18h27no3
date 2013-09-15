@@ -60,14 +60,19 @@
 			 * Place player:
 			*/
 			void place_player(void);
+			/*
+			 * Update level:
+			*/
+			void update_level(void);
 		private:
 			void toggle_playertexture(void);
 
+			int m_h, m_w;
 			bool m_initialized;
 			sf::Texture *m_block_textures;
 			sf::Sprite *m_blocks;
 			int m_visible_block_number;
-			int m_width_in_blocks;
+			int m_width_hblk;
 			sf::Texture m_player_texture1;
 			sf::Texture m_player_texture2;
 			bool m_player_texture2_en;
@@ -81,6 +86,7 @@
 			int m_key_jump;
 			long double m_playerx;
 			long double m_playery;
+			long double m_offset;
 			unsigned int m_blockw;
 			unsigned int m_blockh;
 			Level m_level;
