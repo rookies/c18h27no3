@@ -22,7 +22,7 @@
  */
 #include "singleplayer.hpp"
 
-SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false)
+SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_ystatus(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false), m_player_canjump(false)
 {
 
 }
@@ -54,6 +54,7 @@ int SinglePlayer::init(Config conf, std::string arg)
 	*/
 	m_key_goleft = conf.get("CONTROL__KEY_GOLEFT").value_int;
 	m_key_goright = conf.get("CONTROL__KEY_GORIGHT").value_int;
+	m_key_jump = conf.get("CONTROL__KEY_JUMP").value_int;
 	/*
 	 * Load level from file:
 	*/
@@ -171,6 +172,8 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 						m_player_xaction = PLAYER_RUNNING_LEFT;
 					else if (event.key.code == m_key_goright)
 						m_player_xaction = PLAYER_RUNNING_RIGHT;
+					else if (event.key.code == m_key_jump && m_player_canjump && m_player_ystatus == 0)
+						m_player_ystatus = 1;
 			}
 			break;
 		case sf::Event::KeyReleased:
@@ -196,7 +199,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	if (m_actiontimer.getElapsedTime().asMilliseconds() >= 10)
 	{
 		/*
-		 * Perform running:
+		 * Perform X actions (running):
 		*/
 		switch (m_player_xaction)
 		{
@@ -217,6 +220,23 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 				break;
 		}
 		/*
+		 * Perform Y actions (jumping, falling):
+		*/
+		if (m_player_ystatus > 0)
+		{
+			/*
+			 * We're jumping!
+			*/
+			if (m_player_ystatus == 10)
+				m_player_ystatus = 0;
+			else
+			{
+				m_player_ystatus++;
+				m_playery += 0.4;
+				place_player();
+			};
+		}
+		/*
 		 * Check if we're falling:
 		*/
 		highest = 0;
@@ -235,12 +255,18 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			/*
 			 * Too high!
 			*/
-			if (m_playery-highest < 0.1)
-				m_playery -= (m_playery-highest);
-			else
-				m_playery -= 0.1;
-			place_player();
-		};
+			if (m_player_ystatus == 0)
+			{
+				if (m_playery-highest < 0.4)
+					m_playery -= (m_playery-highest);
+				else
+					m_playery -= 0.4;
+				place_player();
+			};
+			m_player_canjump = false;
+		}
+		else
+			m_player_canjump = true;
 		m_actiontimer.restart();
 	};
 	/*

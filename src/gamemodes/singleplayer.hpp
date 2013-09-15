@@ -74,8 +74,11 @@
 			int m_player_texturecounter;
 			sf::Sprite m_player;
 			int m_player_xaction;
+			int m_player_ystatus;
+			bool m_player_canjump;
 			int m_key_goleft;
 			int m_key_goright;
+			int m_key_jump;
 			long double m_playerx;
 			long double m_playery;
 			unsigned int m_blockw;
