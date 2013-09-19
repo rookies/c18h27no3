@@ -37,7 +37,7 @@ Config::Config()
 	*/
 	m_vars[0].index = "GENERAL__LANGUAGE";
 	m_vars[0].type = CONFIGVAR_TYPE_STRING;
-	m_vars[0].value_string = "en";
+	m_vars[0].value_string = "de";
 
 	m_vars[1].index = "GENERAL__FPSCOUNTER";
 	m_vars[1].type = CONFIGVAR_TYPE_BOOLEAN;
