@@ -18,7 +18,7 @@ build_default()
 	make || exit 1
 	## Create symlink:
 	cd ..
-	if [[ ! -e game ]]; then
+	if [[ ! -e "$PROJECTNAME" ]]; then
 		echo " ==> Creating symlink $PROJECTNAME -> build/$PROJECTNAME ..."
 		ln -s build/$PROJECTNAME $PROJECTNAME || exit 1
 	fi
