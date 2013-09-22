@@ -30,7 +30,8 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_player_canjump(false),
 								m_offset(0),
 								m_blocks_i(false),
-								m_hearts_num(3)
+								m_hearts_num(3),
+								m_health(100.)
 {
 
 }
@@ -121,6 +122,17 @@ int SinglePlayer::init(Config conf, std::string arg)
 	if (!m_heart_grey.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "heart_grey.png")))
 		return 1;
 	/*
+	 * Load health meter texture:
+	*/
+	if (!m_healthm_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "healthmeter.png")))
+		return 1;
+	m_healthm.setTexture(m_healthm_texture);
+	/*
+	 * Init health meter helper:
+	*/
+	m_healthm_helper.setFillColor(sf::Color::Black);
+	m_healthm_helper.setOutlineThickness(0);
+	/*
 	 * Init hearts:
 	*/
 	update_hearts();
@@ -170,9 +182,22 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	/*
 	 * Set statusframe properties:
 	*/
-	scale = (h*SIZE_STATUSFRAME_HEIGHT/100.)/SIZE_STATUSFRAME_IMGHEIGHT;
-	m_frame.scale(scale, scale);
+	m_sframe_scale = (h*SIZE_STATUSFRAME_HEIGHT/100.)/SIZE_STATUSFRAME_IMGHEIGHT;
+	m_frame.scale(m_sframe_scale, m_sframe_scale);
 	m_frame.setPosition(sf::Vector2f(w*SIZE_STATUSFRAME_XOFFSET/100., h*SIZE_STATUSFRAME_YOFFSET/100.));
+	/*
+	 * Set health meter properties:
+	*/
+	m_healthm.scale(m_sframe_scale, m_sframe_scale);
+	/*
+	 * Init health meter:
+	*/
+	update_healthm();
+	/*
+	 * Set health meter helper properties:
+	*/
+	m_healthm_helper.setSize(sf::Vector2f(m_sframe_scale, 5*m_sframe_scale));
+	m_healthm_helper.setPosition(sf::Vector2f(w*SIZE_HEALTHMETER_HELPER_XOFFSET/100., h*SIZE_HEALTHMETER_HELPER_YOFFSET/100.));
 	/*
 	 * Set heart properties:
 	*/
@@ -366,8 +391,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	//arr.init(6+m_visible_block_number);
-	arr.init(5+m_visible_block_number);
+	//arr.init(8+m_visible_block_number);
+	arr.init(7+m_visible_block_number);
 	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
 	{
@@ -375,6 +400,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	}
 	arr.add_sprite(m_player);
 	arr.add_sprite(m_frame);
+	arr.add_sprite(m_healthm);
+	arr.add_rectshape(m_healthm_helper);
 	for (i=0; i < 3; i++)
 		arr.add_sprite(m_hearts[i]);
 	return arr;
@@ -470,4 +497,15 @@ void SinglePlayer::update_hearts(void)
 		else
 			m_hearts[i].setTexture(m_heart_grey);
 	}
+}
+void SinglePlayer::update_healthm(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	float scale;
+	
+	scale = (100-m_health)/100.;
+	m_healthm.setTextureRect(sf::IntRect(0, 0, ceil(SIZE_HEALTHMETER_IMGWIDTH*(1-scale)), SIZE_HEALTHMETER_IMGHEIGHT));
+	m_healthm.setPosition(sf::Vector2f((m_w*SIZE_HEALTHMETER_XOFFSET/100.)+(SIZE_HEALTHMETER_IMGWIDTH*m_sframe_scale*scale), m_h*SIZE_HEALTHMETER_YOFFSET/100.));
 }

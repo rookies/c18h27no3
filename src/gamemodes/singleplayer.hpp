@@ -68,6 +68,10 @@
 			 * Update hearts:
 			*/
 			void update_hearts(void);
+			/*
+			 * Update health meter:
+			*/
+			void update_healthm(void);
 		private:
 			void toggle_playertexture(void);
 
@@ -101,9 +105,14 @@
 			sf::Sprite m_bg;
 			sf::Texture m_frame_texture;
 			sf::Sprite m_frame;
+			float m_sframe_scale;
 			sf::Texture m_heart;
 			sf::Texture m_heart_grey;
 			sf::Sprite m_hearts[3];
 			unsigned int m_hearts_num;
+			sf::Texture m_healthm_texture;
+			sf::Sprite m_healthm;
+			float m_health;
+			sf::RectangleShape m_healthm_helper;
 	};
 #endif // SINGLEPLAYER_HPP
