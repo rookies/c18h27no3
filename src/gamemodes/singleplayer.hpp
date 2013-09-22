@@ -93,5 +93,7 @@
 			Level m_level;
 			sf::Clock m_actiontimer;
 			sf::Clock m_playertimer;
+			sf::Texture m_bg_texture;
+			sf::Sprite m_bg;
 	};
 #endif // SINGLEPLAYER_HPP

@@ -94,6 +94,12 @@ int SinglePlayer::init(Config conf, std::string arg)
 		};
 	}
 	/*
+	 * Load background texture:
+	*/
+	//if (!m_bg_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "bg1.png")))
+	//	return 1;
+	//m_bg.setTexture(m_bg_texture);
+	/*
 	 * Init timers:
 	*/
 	m_actiontimer.restart();
@@ -130,6 +136,10 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	m_playerx = 1;
 	m_playery = 35;
 	place_player();
+	/*
+	 * Scale background sprite:
+	*/
+	//m_bg.scale(w/1920, h/1080);
 	return 0;
 }
 void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -314,7 +324,9 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
+	//arr.init(2+m_visible_block_number);
 	arr.init(1+m_visible_block_number);
+	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
 	{
 		arr.add_sprite(m_blocks[i]);
@@ -394,4 +406,8 @@ void SinglePlayer::update_level(void)
 			k++;
 		}
 	}
+	/*
+	 * Place background:
+	*/
+	//m_bg.setTextureRect(sf::IntRect(m_offset*m_blockw*2, 0, 1920, 1080));
 }
