@@ -22,7 +22,15 @@
  */
 #include "singleplayer.hpp"
 
-SinglePlayer::SinglePlayer() : m_player_xaction(0), m_player_ystatus(0), m_player_texture2_en(false), m_player_texturecounter(0), m_initialized(false), m_player_canjump(false), m_offset(0), m_blocks_i(false)
+SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
+								m_player_ystatus(0),
+								m_player_texture2_en(false),
+								m_player_texturecounter(0),
+								m_initialized(false),
+								m_player_canjump(false),
+								m_offset(0),
+								m_blocks_i(false),
+								m_hearts_num(3)
 {
 
 }
@@ -100,6 +108,23 @@ int SinglePlayer::init(Config conf, std::string arg)
 	//	return 1;
 	//m_bg.setTexture(m_bg_texture);
 	/*
+	 * Load status frame texture:
+	*/
+	if (!m_frame_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "statusframe.png")))
+		return 1;
+	m_frame.setTexture(m_frame_texture);
+	/*
+	 * Load heart textures:
+	*/
+	if (!m_heart.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "heart.png")))
+		return 1;
+	if (!m_heart_grey.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "heart_grey.png")))
+		return 1;
+	/*
+	 * Init hearts:
+	*/
+	update_hearts();
+	/*
 	 * Init timers:
 	*/
 	m_actiontimer.restart();
@@ -120,6 +145,8 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	/*
 	 * Variable declarations:
 	*/
+	float scale;
+	unsigned int i;
 	/*
 	 * Calculate block sizes:
 	*/
@@ -140,6 +167,21 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Scale background sprite:
 	*/
 	//m_bg.scale(w/1920, h/1080);
+	/*
+	 * Set statusframe properties:
+	*/
+	scale = (h*SIZE_STATUSFRAME_HEIGHT/100.)/SIZE_STATUSFRAME_IMGHEIGHT;
+	m_frame.scale(scale, scale);
+	m_frame.setPosition(sf::Vector2f(w*SIZE_STATUSFRAME_XOFFSET/100., h*SIZE_STATUSFRAME_YOFFSET/100.));
+	/*
+	 * Set heart properties:
+	*/
+	scale = (h*SIZE_HEARTS/100.)/SIZE_HEARTS_IMGSIZE;
+	for (i=0; i < 3; i++)
+	{
+		m_hearts[i].scale(scale, scale);
+		m_hearts[i].setPosition(sf::Vector2f(w*SIZE_HEARTS_XOFFSET/100., (h*SIZE_HEARTS_YOFFSET0/100.)+(i*h*SIZE_HEARTS/100.)+(i*h*SIZE_HEARTS_YGAP/100.)));
+	}
 	return 0;
 }
 void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -324,14 +366,17 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	//arr.init(2+m_visible_block_number);
-	arr.init(1+m_visible_block_number);
+	//arr.init(6+m_visible_block_number);
+	arr.init(5+m_visible_block_number);
 	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
 	{
 		arr.add_sprite(m_blocks[i]);
 	}
 	arr.add_sprite(m_player);
+	arr.add_sprite(m_frame);
+	for (i=0; i < 3; i++)
+		arr.add_sprite(m_hearts[i]);
 	return arr;
 }
 void SinglePlayer::toggle_playertexture(void)
@@ -410,4 +455,19 @@ void SinglePlayer::update_level(void)
 	 * Place background:
 	*/
 	//m_bg.setTextureRect(sf::IntRect(m_offset*m_blockw*2, 0, 1920, 1080));
+}
+void SinglePlayer::update_hearts(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	unsigned int i;
+	
+	for (i=0; i < 3; i++)
+	{
+		if (i < m_hearts_num)
+			m_hearts[i].setTexture(m_heart);
+		else
+			m_hearts[i].setTexture(m_heart_grey);
+	}
 }

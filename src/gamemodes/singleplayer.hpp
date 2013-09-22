@@ -64,6 +64,10 @@
 			 * Update level:
 			*/
 			void update_level(void);
+			/*
+			 * Update hearts:
+			*/
+			void update_hearts(void);
 		private:
 			void toggle_playertexture(void);
 
@@ -95,5 +99,11 @@
 			sf::Clock m_playertimer;
 			sf::Texture m_bg_texture;
 			sf::Sprite m_bg;
+			sf::Texture m_frame_texture;
+			sf::Sprite m_frame;
+			sf::Texture m_heart;
+			sf::Texture m_heart_grey;
+			sf::Sprite m_hearts[3];
+			unsigned int m_hearts_num;
 	};
 #endif // SINGLEPLAYER_HPP
