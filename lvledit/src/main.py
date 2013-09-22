@@ -26,6 +26,7 @@ import os.path
 import math
 import glob
 import subprocess
+import operator
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
@@ -163,8 +164,12 @@ class LevelEditor (object):
 		self.builder.get_object("adjustment1").set_lower(biggest+2)
 	def update_standard_blocks_store(self):
 		self.standard_blocks_store.clear()
+		blocks = []
 		for f in glob.glob(self.IMGPATH + "blocks/*.png"):
 			name = os.path.basename(f).split(".", 2)[0]
+			blocks.append((name, f))
+		blocks.sort(key=operator.itemgetter(0))
+		for name, f in blocks:
 			img = Gtk.Image()
 			img.set_from_file(f)
 			self.standard_blocks_store.append([
