@@ -133,6 +133,7 @@ int Game::init(int gamemode, std::string arg)
 		sf::Mouse::getPosition().x,
 		sf::Mouse::getPosition().y
 	);
+	m_texture_sprite.setTexture(m_texture.getTexture());
 	/*
 	 * Init framecounter:
 	*/
@@ -164,7 +165,6 @@ void Game::draw(void)
 	int i;
 	UniversalDrawableArray drawables;
 	UniversalDrawable drawable;
-	sf::Sprite sprite;
 	/*
 	 * Clean window and padded texture:
 	*/
@@ -225,12 +225,7 @@ void Game::draw(void)
 	/*
 	 * Draw padded texture on window:
 	*/
-	sprite.setTexture(m_texture.getTexture());
-	sprite.setPosition(
-		m_padding_data_calculator.get_padding_x(),
-		m_padding_data_calculator.get_padding_y()
-	);
-	m_window.draw(sprite);
+	m_window.draw(m_texture_sprite);
 	/*
 	 * Show window:
 	*/
@@ -551,6 +546,13 @@ int Game::process_events(void)
 }
 int Game::calculate_sizes(void)
 {
+	/*
+	 * Padded texture:
+	*/
+	m_texture_sprite.setPosition(
+		m_padding_data_calculator.get_padding_x(),
+		m_padding_data_calculator.get_padding_y()
+	);
 	/*
 	 * Cursor:
 	*/

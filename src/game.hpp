@@ -119,6 +119,7 @@
 			bool m_window_has_focus;
 			sf::RenderWindow m_window;
 			sf::RenderTexture m_texture;
+			sf::Sprite m_texture_sprite;
 			PaddingDataCalculator m_padding_data_calculator;
 			Cursor m_cursor;
 			Config m_config;
