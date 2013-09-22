@@ -31,7 +31,9 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_offset(0),
 								m_blocks_i(false),
 								m_hearts_num(3),
-								m_health(100.)
+								m_health(100.),
+								m_playerx(PLAYERPOS_X),
+								m_playery(PLAYERPOS_Y)
 {
 
 }
@@ -172,8 +174,6 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Set player properties:
 	*/
 	m_player.scale((m_blockw)/16, (m_blockh*3)/24);
-	m_playerx = 1;
-	m_playery = 35;
 	place_player();
 	/*
 	 * Scale background sprite:
@@ -382,7 +382,14 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			};
 			m_player_canjump = false;
 			if (m_playery <= -0.5)
-				std::cout << "GAME OVER :(" << std::endl;
+			{
+				m_hearts_num--;
+				update_hearts();
+				if (m_hearts_num == -1)
+					std::cout << "GAME OVER :(" << std::endl;
+				else
+					restart_level();
+			};
 		}
 		else
 			m_player_canjump = true;
@@ -508,4 +515,14 @@ void SinglePlayer::update_healthm(void)
 	scale = (100-m_health)/100.;
 	m_healthm.setTextureRect(sf::IntRect(0, 0, ceil(SIZE_HEALTHMETER_IMGWIDTH*(1-scale)), SIZE_HEALTHMETER_IMGHEIGHT));
 	m_healthm.setPosition(sf::Vector2f((m_w*SIZE_HEALTHMETER_XOFFSET/100.)+(SIZE_HEALTHMETER_IMGWIDTH*m_sframe_scale*scale), m_h*SIZE_HEALTHMETER_YOFFSET/100.));
+}
+void SinglePlayer::restart_level(void)
+{
+	m_offset = 0;
+	m_playerx = PLAYERPOS_X;
+	m_playery = PLAYERPOS_Y;
+	m_player_xaction = 0;
+	m_player_ystatus = 0;
+	update_level();
+	place_player();
 }

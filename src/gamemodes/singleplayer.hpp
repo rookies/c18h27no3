@@ -72,6 +72,10 @@
 			 * Update health meter:
 			*/
 			void update_healthm(void);
+			/*
+			 * Restart level:
+			*/
+			void restart_level(void);
 		private:
 			void toggle_playertexture(void);
 
