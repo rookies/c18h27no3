@@ -72,8 +72,9 @@ class ImgGenerator (object):
 				y = self.img_sizes[1]-int((blk["position"]+1)*self.blk_sizes[1]/2)
 				bdef = blk["blockdef"]
 				img = Image.open(self.blkdef_images[bdef])
+				img = img.convert("RGBA")
 				img = img.resize(self.blk_sizes, Image.NEAREST)
-				self.image.paste(img, (x,y))
+				self.image.paste(img, (x,y), img)
 		# Add text:
 		draw = ImageDraw.Draw(self.image)
 		s1 = int(self.img_sizes[1]/20)
