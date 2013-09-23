@@ -33,7 +33,8 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_hearts_num(3),
 								m_health(100.),
 								m_playerx(PLAYERPOS_X),
-								m_playery(PLAYERPOS_Y)
+								m_playery(PLAYERPOS_Y),
+								m_moving(false)
 {
 
 }
@@ -130,6 +131,17 @@ int SinglePlayer::init(Config conf, std::string arg)
 		return 1;
 	m_healthm.setTexture(m_healthm_texture);
 	/*
+	 * Load portable toilet texture:
+	*/
+	if (!m_ptoilet_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "blocks/ptoilet_green4.png")))
+		return 1;
+	m_ptoilet.setTexture(m_ptoilet_texture);
+	/*
+	 * Init portable toilet base:
+	*/
+	m_ptoiletbase.setFillColor(sf::Color::Black);
+	m_ptoiletbase.setOutlineThickness(0);
+	/*
 	 * Init health meter helper:
 	*/
 	m_healthm_helper.setFillColor(sf::Color::Black);
@@ -207,6 +219,10 @@ int SinglePlayer::calculate_sizes(int w, int h)
 		m_hearts[i].scale(scale, scale);
 		m_hearts[i].setPosition(sf::Vector2f(w*SIZE_HEARTS_XOFFSET/100., (h*SIZE_HEARTS_YOFFSET0/100.)+(i*h*SIZE_HEARTS/100.)+(i*h*SIZE_HEARTS_YGAP/100.)));
 	}
+	/*
+	 * Set portable toilet properties:
+	*/
+	m_ptoilet.setScale(m_blockw/32., m_blockh/16.);
 	return 0;
 }
 void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -251,155 +267,166 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	*/
 	if (m_actiontimer.getElapsedTime().asMilliseconds() >= 10)
 	{
-		/*
-		 * Perform X actions (running):
-		*/
-		switch (m_player_xaction)
-		{
-			case PLAYER_RUNNING_LEFT:
-				if (m_playerx-0.1 >= 0)
-				{
-					/*
-					 * Check for barriers:
-					*/
-					barrier = false;
-					col = m_level.get_column(floor(m_playerx)-1);
-					for (i=0; i < col->get_blocknumber(); i++)
-					{
-						if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
-							barrier = true;
-					}
-					if (!barrier)
-					{
-						/*
-						 * Move:
-						*/
-						m_playerx -= 0.1;
-						toggle_playertexture();
-						if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
-						{
-							m_offset -= 0.1;
-							update_level();
-						};
-						place_player();
-					};
-				}
-				else
-					m_player_xaction = 0;
-				break;
-			case PLAYER_RUNNING_RIGHT:
-				if (m_playerx <= m_level.get_levelwidth()-2)
-				{
-					/*
-					 * Check for barriers:
-					*/
-					barrier = false;
-					col = m_level.get_column(floor(m_playerx)+2);
-					for (i=0; i < col->get_blocknumber(); i++)
-					{
-						if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
-							barrier = true;
-					}
-					if (!barrier)
-					{
-						/*
-						 * Move:
-						*/
-						m_playerx += 0.1;
-						toggle_playertexture();
-						if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
-						{
-							m_offset += 0.1;
-							update_level();
-						};
-						place_player();
-					};
-				}
-				else
-					m_player_xaction = 0;
-				break;
-		}
-		/*
-		 * Perform Y actions (jumping, falling):
-		*/
-		if (m_player_ystatus > 0)
+		if (m_moving)
 		{
 			/*
-			 * We're jumping!
-			 * Check if it's still possible:
+			 * Perform X actions (running):
 			*/
-			lowest = 100;
+			switch (m_player_xaction)
+			{
+				case PLAYER_RUNNING_LEFT:
+					if (m_playerx-0.1 >= 0)
+					{
+						/*
+						 * Check for barriers:
+						*/
+						barrier = false;
+						col = m_level.get_column(floor(m_playerx)-1);
+						for (i=0; i < col->get_blocknumber(); i++)
+						{
+							if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
+								barrier = true;
+						}
+						if (!barrier)
+						{
+							/*
+							 * Move:
+							*/
+							m_playerx -= 0.1;
+							toggle_playertexture();
+							if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
+							{
+								m_offset -= 0.1;
+								update_level();
+							};
+							place_player();
+						};
+					}
+					else
+						m_player_xaction = 0;
+					break;
+				case PLAYER_RUNNING_RIGHT:
+					if (m_playerx <= m_level.get_levelwidth()-2)
+					{
+						/*
+						 * Check for barriers:
+						*/
+						barrier = false;
+						col = m_level.get_column(floor(m_playerx)+2);
+						for (i=0; i < col->get_blocknumber(); i++)
+						{
+							if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
+								barrier = true;
+						}
+						if (!barrier)
+						{
+							/*
+							 * Move:
+							*/
+							m_playerx += 0.1;
+							toggle_playertexture();
+							if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
+							{
+								m_offset += 0.1;
+								update_level();
+							};
+							place_player();
+						};
+					}
+					else
+						m_player_xaction = 0;
+					break;
+			}
+			/*
+			 * Perform Y actions (jumping, falling):
+			*/
+			if (m_player_ystatus > 0)
+			{
+				/*
+				 * We're jumping!
+				 * Check if it's still possible:
+				*/
+				lowest = 100;
+				for (i=-1; i < 2; i++)
+				{
+					col = m_level.get_column(floor(m_playerx)+i);
+					for (j=0; j < col->get_blocknumber(); j++)
+					{
+						if (col->get_block(j)->position < lowest && m_playery+6 < col->get_block(j)->position)
+							lowest = col->get_block(j)->position;
+					}
+				}
+				lowest += 0.5;
+				if (lowest-2 > m_playery+6)
+				{
+					if (m_player_ystatus == 30)
+						m_player_ystatus = 0;
+					else
+					{
+						m_player_ystatus++;
+						m_playery += (-(0.6/30)*m_player_ystatus)+0.6; // f(x) = (-(max/steps)*x)+max
+						place_player();
+					};
+				}
+				else
+					m_player_ystatus = 0;
+			}
+			/*
+			 * Check if we're falling:
+			*/
+			highest = -1;
 			for (i=-1; i < 2; i++)
 			{
 				col = m_level.get_column(floor(m_playerx)+i);
 				for (j=0; j < col->get_blocknumber(); j++)
 				{
-					if (col->get_block(j)->position < lowest && m_playery+6 < col->get_block(j)->position)
-						lowest = col->get_block(j)->position;
+					if (col->get_block(j)->position > highest && m_playery > col->get_block(j)->position)
+						highest = col->get_block(j)->position;
 				}
 			}
-			lowest += 0.5;
-			if (lowest-2 > m_playery+6)
+			highest += 0.5;
+			if (highest < m_playery)
 			{
-				if (m_player_ystatus == 30)
-					m_player_ystatus = 0;
-				else
+				/*
+				 * Too high!
+				*/
+				if (m_player_ystatus == 0)
 				{
-					m_player_ystatus++;
-					m_playery += (-(0.6/30)*m_player_ystatus)+0.6; // f(x) = (-(max/steps)*x)+max
+					if (m_playery-highest < 0.4)
+						m_playery -= (m_playery-highest);
+					else
+						m_playery -= 0.4;
 					place_player();
+				};
+				m_player_canjump = false;
+				if (m_playery <= -0.5)
+				{
+					m_hearts_num--;
+					update_hearts();
+					if (m_hearts_num == -1)
+						std::cout << "GAME OVER :(" << std::endl;
+					else
+						restart_level();
 				};
 			}
 			else
-				m_player_ystatus = 0;
-		}
-		/*
-		 * Check if we're falling:
-		*/
-		highest = -1;
-		for (i=-1; i < 2; i++)
-		{
-			col = m_level.get_column(floor(m_playerx)+i);
-			for (j=0; j < col->get_blocknumber(); j++)
-			{
-				if (col->get_block(j)->position > highest && m_playery > col->get_block(j)->position)
-					highest = col->get_block(j)->position;
-			}
-		}
-		highest += 0.5;
-		if (highest < m_playery)
-		{
-			/*
-			 * Too high!
-			*/
-			if (m_player_ystatus == 0)
-			{
-				if (m_playery-highest < 0.4)
-					m_playery -= (m_playery-highest);
-				else
-					m_playery -= 0.4;
-				place_player();
-			};
-			m_player_canjump = false;
-			if (m_playery <= -0.5)
-			{
-				m_hearts_num--;
-				update_hearts();
-				if (m_hearts_num == -1)
-					std::cout << "GAME OVER :(" << std::endl;
-				else
-					restart_level();
-			};
+				m_player_canjump = true;
+			m_actiontimer.restart();
 		}
 		else
-			m_player_canjump = true;
-		m_actiontimer.restart();
+		{
+			// Not moving, yet.
+			if (m_actiontimer.getElapsedTime().asMilliseconds() <= 450)
+				m_ptoiletbase.setRotation(m_actiontimer.getElapsedTime().asMilliseconds()/5.);
+			else
+				m_moving = true;
+		};
 	};
 	/*
 	 * Fill array:
 	*/
-	//arr.init(8+m_visible_block_number);
-	arr.init(7+m_visible_block_number);
+	//arr.init(9+m_visible_block_number);
+	arr.init(8+m_visible_block_number+((m_offset < PLAYERPOS_X+2)?2:0));
 	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
 	{
@@ -411,6 +438,11 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	arr.add_rectshape(m_healthm_helper);
 	for (i=0; i < 3; i++)
 		arr.add_sprite(m_hearts[i]);
+	if (m_offset < PLAYERPOS_X+2)
+	{
+		arr.add_sprite(m_ptoilet);
+		arr.add_rectshape(m_ptoiletbase);
+	};
 	return arr;
 }
 void SinglePlayer::toggle_playertexture(void)
@@ -489,6 +521,15 @@ void SinglePlayer::update_level(void)
 	 * Place background:
 	*/
 	//m_bg.setTextureRect(sf::IntRect(m_offset*m_blockw*2, 0, 1920, 1080));
+	/*
+	 * Place portable toilet:
+	*/
+	if (m_offset < PLAYERPOS_X+2)
+	{
+		m_ptoilet.setPosition((PLAYERPOS_X-m_offset)*m_blockw/2., 0);
+		m_ptoiletbase.setSize(sf::Vector2f(m_blockw, m_blockh/SIZE_PTOILETBASE_HEIGHT_DIVIDER));
+		m_ptoiletbase.setPosition(sf::Vector2f((PLAYERPOS_X-m_offset)*m_blockw/2., m_blockh));
+	};
 }
 void SinglePlayer::update_hearts(void)
 {

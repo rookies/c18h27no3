@@ -118,5 +118,9 @@
 			sf::Sprite m_healthm;
 			float m_health;
 			sf::RectangleShape m_healthm_helper;
+			sf::Texture m_ptoilet_texture;
+			sf::Sprite m_ptoilet;
+			sf::RectangleShape m_ptoiletbase;
+			bool m_moving;
 	};
 #endif // SINGLEPLAYER_HPP
