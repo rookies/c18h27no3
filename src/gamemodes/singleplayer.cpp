@@ -564,6 +564,9 @@ void SinglePlayer::restart_level(void)
 	m_playery = PLAYERPOS_Y;
 	m_player_xaction = 0;
 	m_player_ystatus = 0;
+	m_moving = false;
+	m_ptoiletbase.setRotation(0);
 	update_level();
 	place_player();
+	m_actiontimer.restart();
 }
