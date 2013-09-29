@@ -86,8 +86,10 @@
 			bool m_blocks_i;
 			int m_visible_block_number;
 			int m_width_hblk;
-			sf::Texture m_player_texture1;
-			sf::Texture m_player_texture2;
+			sf::Texture m_player_f0;
+			sf::Texture m_player_f1;
+			sf::Texture m_player_rf0;
+			sf::Texture m_player_rf1;
 			bool m_player_texture2_en;
 			int m_player_texturecounter;
 			sf::Sprite m_player;
@@ -122,5 +124,6 @@
 			sf::Sprite m_ptoilet;
 			sf::RectangleShape m_ptoiletbase;
 			bool m_moving;
+			bool m_backwards;
 	};
 #endif // SINGLEPLAYER_HPP

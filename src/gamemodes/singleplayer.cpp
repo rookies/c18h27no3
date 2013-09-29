@@ -34,7 +34,8 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_health(100.),
 								m_playerx(PLAYERPOS_X),
 								m_playery(PLAYERPOS_Y),
-								m_moving(false)
+								m_moving(false),
+								m_backwards(false)
 {
 
 }
@@ -53,14 +54,18 @@ int SinglePlayer::init(Config conf, std::string arg)
 	/*
 	 * Load player textures:
 	*/
-	if (!m_player_texture1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_frame1.png")))
+	if (!m_player_f0.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_f0.png")))
 		return 1;
-	if (!m_player_texture2.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_frame2.png")))
+	if (!m_player_f1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_f1.png")))
+		return 1;
+	if (!m_player_rf0.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_rf0.png")))
+		return 1;
+	if (!m_player_rf1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_rf1.png")))
 		return 1;
 	/*
 	 * Set player properties:
 	*/
-	m_player.setTexture(m_player_texture1);
+	m_player.setTexture(m_player_f0);
 	/*
 	 * Set key values:
 	*/
@@ -293,6 +298,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 							 * Move:
 							*/
 							m_playerx -= 0.1;
+							m_backwards = true;
 							toggle_playertexture();
 							if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
 							{
@@ -312,7 +318,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 						 * Check for barriers:
 						*/
 						barrier = false;
-						col = m_level.get_column(floor(m_playerx)+2);
+						col = m_level.get_column(floor(m_playerx)+1);
 						for (i=0; i < col->get_blocknumber(); i++)
 						{
 							if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
@@ -324,6 +330,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 							 * Move:
 							*/
 							m_playerx += 0.1;
+							m_backwards = false;
 							toggle_playertexture();
 							if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
 							{
@@ -456,12 +463,18 @@ void SinglePlayer::toggle_playertexture(void)
 	};
 	if (m_player_texture2_en)
 	{
-		m_player.setTexture(m_player_texture1);
+		if (m_backwards)
+			m_player.setTexture(m_player_rf0);
+		else
+			m_player.setTexture(m_player_f0);
 		m_player_texture2_en = false;
 	}
 	else
 	{
-		m_player.setTexture(m_player_texture2);
+		if (m_backwards)
+			m_player.setTexture(m_player_rf1);
+		else
+			m_player.setTexture(m_player_f1);
 		m_player_texture2_en = true;
 	};
 	m_player_texturecounter = 0;
@@ -526,9 +539,9 @@ void SinglePlayer::update_level(void)
 	*/
 	if (m_offset < PLAYERPOS_X+2)
 	{
-		m_ptoilet.setPosition((PLAYERPOS_X-m_offset)*m_blockw/2., 0);
+		m_ptoilet.setPosition((PLAYERPOS_X-m_offset-0.5)*m_blockw/2., 0);
 		m_ptoiletbase.setSize(sf::Vector2f(m_blockw, m_blockh/SIZE_PTOILETBASE_HEIGHT_DIVIDER));
-		m_ptoiletbase.setPosition(sf::Vector2f((PLAYERPOS_X-m_offset)*m_blockw/2., m_blockh));
+		m_ptoiletbase.setPosition(sf::Vector2f((PLAYERPOS_X-m_offset-0.5)*m_blockw/2., m_blockh));
 	};
 }
 void SinglePlayer::update_hearts(void)
@@ -565,6 +578,8 @@ void SinglePlayer::restart_level(void)
 	m_player_xaction = 0;
 	m_player_ystatus = 0;
 	m_moving = false;
+	m_backwards = false;
+	m_player.setTexture(m_player_f0);
 	m_ptoiletbase.setRotation(0);
 	update_level();
 	place_player();
