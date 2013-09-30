@@ -195,7 +195,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	/*
 	 * Scale background sprite:
 	*/
-	//m_bg.scale(w/1920, h/1080);
+	//m_bg.scale(4*w/1920, 4*h/1080);
 	/*
 	 * Set statusframe properties:
 	*/
@@ -432,7 +432,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	//arr.init(9+m_visible_block_number);
+	//arr.init(9+m_visible_block_number+((m_offset < PLAYERPOS_X+2)?2:0));
 	arr.init(8+m_visible_block_number+((m_offset < PLAYERPOS_X+2)?2:0));
 	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
@@ -533,7 +533,7 @@ void SinglePlayer::update_level(void)
 	/*
 	 * Place background:
 	*/
-	//m_bg.setTextureRect(sf::IntRect(m_offset*m_blockw*2, 0, 1920, 1080));
+	//m_bg.setTextureRect(sf::IntRect(m_offset*16, 0, m_bg.getLocalBounds().width, m_bg.getLocalBounds().height)); // 16 = 2*bwidth(32)/4(scale)
 	/*
 	 * Place portable toilet:
 	*/
