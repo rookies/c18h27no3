@@ -330,6 +330,15 @@ class LevelEditor (object):
 				self.changed = True
 				self.update_everything(False)
 				print("Block deleted on x_trans=%d; y_trans=%d" % (x,y))
+	def add_item(self, x, y, iid):
+		x_trans, y_trans = self.translate_coords(x,y)
+		print("Item #%d received on x=%d; y=%d; x_trans=%d; y_trans=%d" % (iid, x, y, x_trans, y_trans))
+		if x_trans >= self.level.get_level_width()-1 or y_trans > 30:
+			self.open_messagedialog1("Fehler beim Platzieren des Items!", "Das Item kann nicht außerhalb des Level-Bereichs abgelegt werden!", None)
+		else:
+			self.level.add_item(x_trans, y_trans, iid)
+			self.changed = True
+			self.update_everything(False)
 	### window1 EVENTS ###
 	def on_window1_delete_event(self, *args):
 		# closed
@@ -541,7 +550,7 @@ class LevelEditor (object):
 			self.add_block(x,y,bdef)
 		elif self.dragtype is 2:
 			iid = int(selection.get_text())
-			print("Received item!")
+			self.add_item(x,y,iid)
 		else:
 			print("Unknown dragtype!")
 	def on_layout1_button_press_event(self, widget, ev):

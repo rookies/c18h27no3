@@ -129,9 +129,9 @@ class Level (object):
 			print("= BLOCKS & ITEMS =")
 			for col in self.columns:
 				for blk in col["blocks"]:
-					print("x=%d; y=%d; blockdef_id=%d" % (col["position"], blk["position"], blk["blockdef"]))
+					print("Block: x=%d; y=%d; blockdef_id=%d" % (col["position"], blk["position"], blk["blockdef"]))
 				for itm in col["items"]:
-					print("x=%d; y=%d; id=%d" % (col["position"], itm["position"], itm["id"]))
+					print("Item:  x=%d; y=%d; id=%d" % (col["position"], itm["position"], itm["id"]))
 		print("= EXTENSIONS =")
 		for name, ext in self.extensions.items():
 			print("'%s' => '%s'" % (name, ext["raw"]))
@@ -160,7 +160,7 @@ class Level (object):
 			if col is None:
 				f.write(struct.pack("<BB", 0, 0))
 			else:
-				f.write(struct.pack("<BB", len(col["blocks"], len(col["items"]))))
+				f.write(struct.pack("<BB", len(col["blocks"]), len(col["items"])))
 				for blk in col["blocks"]:
 					f.write(struct.pack("<Bh", blk["position"], blk["blockdef"]))
 				for itm in col["items"]:
