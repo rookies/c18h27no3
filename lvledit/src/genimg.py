@@ -19,7 +19,7 @@
 #  MA 02110-1301, USA.
 #  
 #
-import level1 as level
+import level2 as level
 from PIL import Image, ImageDraw, ImageFont
 import os.path
 import sys
@@ -34,6 +34,7 @@ class ImgGenerator (object):
 	img_sizes = (0,0)
 	image = None
 	blkdef_images = {}
+	item_images = []
 	
 	def __init__(self, path):
 		print("==> Loading level...")
@@ -65,7 +66,13 @@ class ImgGenerator (object):
 				img = self.IMGPATH+"block_not_found.png"
 			i = d["id"]
 			self.blkdef_images[i] = img
-		# Create blocks:
+		# Create item textures:
+		for i in self.level.get_itemdefs():
+			img = self.IMGPATH+"items/"+i+".png"
+			if not os.path.exists(img):
+				img = self.IMGPATH+"item_not_found.png"
+			self.item_images.append(img)
+		# Create blocks & items:
 		for col in self.level.get_columns():
 			x = int(col["position"]*self.blk_sizes[0]/2)
 			for blk in col["blocks"]:
@@ -74,6 +81,15 @@ class ImgGenerator (object):
 				img = Image.open(self.blkdef_images[bdef])
 				img = img.convert("RGBA")
 				img = img.resize(self.blk_sizes, Image.NEAREST)
+				self.image.paste(img, (x,y), img)
+			for itm in col["items"]:
+				y = self.img_sizes[1]-int((itm["position"]+3)*self.blk_sizes[1]/2)
+				x += int(self.blk_sizes[1]*0.1)
+				iid = itm["id"]
+				img = Image.open(self.item_images[iid])
+				img = img.convert("RGBA")
+				s = int(self.blk_sizes[1]*0.8)
+				img = img.resize((s,s), Image.NEAREST)
 				self.image.paste(img, (x,y), img)
 		# Add text:
 		draw = ImageDraw.Draw(self.image)
