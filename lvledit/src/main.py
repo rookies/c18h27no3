@@ -102,6 +102,13 @@ class LevelEditor (object):
 		self.builder.get_object("treeview4").set_model(self.standard_blocks_store)
 		## Fill the model:
 		self.update_standard_blocks_store()
+		### CREATE STUFF FOR THE ITEMS TREEVIEW ###
+		ident = Gtk.TreeViewColumn("ID", Gtk.CellRendererText(), text=0)
+		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview5").append_column(ident)
+		self.builder.get_object("treeview5").append_column(img)
+		## FIXME
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
 		### ENABLE DRAG & DROP FOR THE LEVEL EDITOR ###
