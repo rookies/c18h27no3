@@ -43,6 +43,7 @@ class LevelEditor (object):
 	opened_filepath = ""
 	level_pixmap = None
 	block_images = []
+	item_images = []
 	messagedialog1_parent_dialog = None
 	trashcoords = (0, 0)
 	dragtype = 0
@@ -297,20 +298,35 @@ class LevelEditor (object):
 		layout = self.builder.get_object("layout1")
 		layout.set_size((self.level.get_level_width()+1)*self.get_block_height(), layout.get_size()[1])
 	def fill_block_images(self):
+		# Calculate sizes:
 		layout = self.builder.get_object("layout1")
 		height = layout.get_allocation().height
 		block_height = height/self.NUMBLOCKSY
 		self.resize_level_layout()
+		# Clear block images:
 		for img in self.block_images:
 			img.clear()
 		del self.block_images[:]
+		# Clear item images:
+		for img in self.item_images:
+			img.clear()
+		del self.item_images[:]
+		# Run through columns:
 		i = 0
+		j = 0
 		for col in self.level.get_columns():
+			# Add blocks:
 			for blk in col["blocks"]:
 				self.block_images.append(self.get_image_from_blockdef_id(blk["blockdef"]))
 				self.block_images[i].set_from_pixbuf(self.block_images[i].get_pixbuf().scale_simple(block_height*2, block_height, GdkPixbuf.InterpType.NEAREST))
 				layout.put(self.block_images[i], col["position"]*block_height, height-(((blk["position"]/2.)+0.5)*block_height))
 				i += 1
+			# Add items:
+			for itm in col["items"]:
+				self.item_images.append(self.get_image_from_item_id(itm["id"]))
+				self.item_images[j].set_from_pixbuf(self.item_images[j].get_pixbuf().scale_simple(block_height*.8, block_height*.8, GdkPixbuf.InterpType.NEAREST))
+				layout.put(self.item_images[j], col["position"]*block_height, height-(((itm["position"]/2.)+0.5+1)*block_height))
+				j += 1
 		self.builder.get_object("layout1").show_all()
 	def add_block(self, x, y, bdef):
 		x_trans, y_trans = self.translate_coords(x,y)
