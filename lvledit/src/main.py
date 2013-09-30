@@ -19,7 +19,7 @@
 #  MA 02110-1301, USA.
 #  
 #  
-import level1 as level
+import level2 as level
 from gi.repository import Gtk, Gdk, GdkPixbuf, GObject # python-gobject
 from gi.repository.Gtk import Builder
 import os.path
@@ -36,6 +36,7 @@ class LevelEditor (object):
 	blockdefs_store = None
 	blockdefs_store2 = None
 	standard_blocks_store = None
+	items_store = None
 	level = level.Level()
 	changed = False
 	opened_file = None
@@ -44,6 +45,7 @@ class LevelEditor (object):
 	block_images = []
 	messagedialog1_parent_dialog = None
 	trashcoords = (0, 0)
+	dragtype = 0
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -108,12 +110,19 @@ class LevelEditor (object):
 		## Add the columns to the TreeView:
 		self.builder.get_object("treeview5").append_column(ident)
 		self.builder.get_object("treeview5").append_column(img)
-		## FIXME
+		## Create the model:
+		self.items_store = Gtk.ListStore(GObject.TYPE_UINT, GdkPixbuf.Pixbuf)
+		## Assign the model to the TreeView:
+		self.builder.get_object("treeview5").set_model(self.items_store)
+		## Fill the model:
+		self.update_items_store()
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
 		### ENABLE DRAG & DROP FOR THE LEVEL EDITOR ###
 		self.builder.get_object("treeview3").drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.COPY)
 		self.builder.get_object("treeview3").drag_source_add_text_targets()
+		self.builder.get_object("treeview5").drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.COPY)
+		self.builder.get_object("treeview5").drag_source_add_text_targets()
 		self.builder.get_object("layout1").drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
 		self.builder.get_object("layout1").drag_dest_add_text_targets()
 		self.builder.get_object("layout1").drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.MOVE)
@@ -215,6 +224,16 @@ class LevelEditor (object):
 				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
 			])
 			img.clear()
+	def update_items_store(self):
+		self.items_store.clear()
+		i = 0
+		for item in self.level.get_itemdefs():
+			img = self.get_image_from_item_name(item)
+			self.items_store.append([
+				i,
+				img.get_pixbuf()
+			])
+			i += 1
 	def update_window_title(self):
 		## Check for unsaved file:
 		if self.changed:
@@ -251,6 +270,23 @@ class LevelEditor (object):
 				fname = self.IMGPATH + "blocks/" + bdef[1] + ".png"
 			else:
 				fname = self.IMGPATH + "block_not_found.png"
+		img.set_from_file(fname)
+		return img
+	def get_image_from_item_id(self, ident):
+		defs = self.level.get_itemdefs()
+		if len(defs) <= ident:
+			img = Gtk.Image()
+			img.set_from_file(self.IMGPATH + "item_not_found.png")
+		else:
+			name = defs[ident]
+			img = self.get_image_from_item_name(name)
+		return img
+	def get_image_from_item_name(self, name):
+		img = Gtk.Image()
+		if os.path.exists(self.IMGPATH + "items/" + name + ".png"):
+			fname = self.IMGPATH + "items/" + name + ".png"
+		else:
+			fname = self.IMGPATH + "item_not_found.png"
 		img.set_from_file(fname)
 		return img
 	def get_level_layout_height(self):
@@ -478,16 +514,36 @@ class LevelEditor (object):
 			img = self.get_image_from_blockdef_id(row[0].get_value(row[1], 0))
 			widget.drag_source_set_icon_pixbuf(img.get_pixbuf().scale_simple(64, 32, GdkPixbuf.InterpType.NEAREST))
 			img.clear()
+			self.dragtype = 1
 	def on_treeview3_drag_data_get(self, widget, dragctx, selection, info, time):
 		row = self.builder.get_object("treeview-selection3").get_selected()
 		if row[1] is not None:
 			selection.set_text(str(row[0].get_value(row[1], 0)), 1)
 	def on_treeview3_drag_end(self, widget, dragctx):
 		widget.drag_source_set_icon_stock("")
+	def on_treeview5_drag_begin(self, widget, dragctx):
+		row = self.builder.get_object("treeview-selection5").get_selected()
+		if row[1] is not None:
+			img = self.get_image_from_item_id(row[0].get_value(row[1], 0))
+			widget.drag_source_set_icon_pixbuf(img.get_pixbuf())
+			img.clear()
+			self.dragtype = 2
+	def on_treeview5_drag_data_get(self, widget, dragctx, selection, info, time):
+		row = self.builder.get_object("treeview-selection5").get_selected()
+		if row[1] is not None:
+			selection.set_text(str(row[0].get_value(row[1], 0)), 1)
+	def on_treeview5_drag_end(self, widget, dragctx):
+		widget.drag_source_set_icon_stock("")
 	def on_layout1_drag_data_received(self, widget, dragctx, x, y, selection, info, time):
 		x += self.builder.get_object("adjustment2").get_value()
-		bdef = int(selection.get_text())
-		self.add_block(x,y,bdef)
+		if self.dragtype is 1:
+			bdef = int(selection.get_text())
+			self.add_block(x,y,bdef)
+		elif self.dragtype is 2:
+			iid = int(selection.get_text())
+			print("Received item!")
+		else:
+			print("Unknown dragtype!")
 	def on_layout1_button_press_event(self, widget, ev):
 		if ev.button is 1:
 			# left click -> add

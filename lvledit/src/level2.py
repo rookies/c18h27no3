@@ -23,6 +23,10 @@ import struct
 
 class Level (object):
 	LEVEL_VERSION = 2
+	ITEMDEFS = [
+		"coin",
+		"bottle"
+	]
 	level_width = 50
 	metadata = {
 		"name": "",
@@ -305,6 +309,8 @@ class Level (object):
 				del self.columns[pos]
 			return True
 	### ITEMS:
+	def get_itemdefs(self):
+		return self.ITEMDEFS
 	def add_item(self, x, y, iid):
 		# 1. check if the column exists:
 		pos = None
