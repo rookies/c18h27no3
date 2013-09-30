@@ -19,7 +19,7 @@
 #  MA 02110-1301, USA.
 #  
 #
-import level
+import level1 as level
 from PIL import Image, ImageDraw, ImageFont
 import os.path
 import sys

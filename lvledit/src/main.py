@@ -19,7 +19,7 @@
 #  MA 02110-1301, USA.
 #  
 #  
-import level
+import level1 as level
 from gi.repository import Gtk, Gdk, GdkPixbuf, GObject # python-gobject
 from gi.repository.Gtk import Builder
 import os.path
