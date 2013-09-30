@@ -80,41 +80,70 @@ std::string LevelBlockdef::get_arg(void)
 	return m_arg;
 }
 
-LevelColumn::LevelColumn() : m_offset(-1)
+LevelColumn::LevelColumn() : m_blockoffset(-1), m_itemoffset(-1)
 {
 
 }
 LevelColumn::~LevelColumn()
 {
-	if (m_offset >= 0)
+	if (m_blockoffset >= 0)
 		delete[] m_blocks;
+	if (m_itemoffset >= 0)
+		delete[] m_items;
 }
 void LevelColumn::set_blocknumber(unsigned short number)
 {
-	if (m_offset < 0)
+	if (m_blockoffset < 0)
 	{
 		m_blocknumber = number;
 		m_blocks = new LevelBlock[m_blocknumber];
-		m_offset = 0;
+		m_blockoffset = 0;
 	};
 }
 void LevelColumn::add_block(unsigned short position, unsigned short blockdef)
 {
-	if (m_offset < 0)
+	if (m_blockoffset < 0)
 		return;
-	m_blocks[m_offset].position = position;
-	m_blocks[m_offset].blockdef = blockdef;
-	m_offset++;
+	m_blocks[m_blockoffset].position = position;
+	m_blocks[m_blockoffset].blockdef = blockdef;
+	m_blockoffset++;
 }
 unsigned short LevelColumn::get_blocknumber(void)
 {
-	if (m_offset < 0)
+	if (m_blockoffset < 0)
 		return 0;
 	return m_blocknumber;
 }
 LevelBlock *LevelColumn::get_block(unsigned short index)
 {
 	return &m_blocks[index];
+}
+void LevelColumn::set_itemnumber(unsigned short number)
+{
+	if (m_itemoffset < 0)
+	{
+		m_itemnumber = number;
+		m_items = new LevelItem[m_itemnumber];
+		m_itemoffset = 0;
+	};
+}
+void LevelColumn::add_item(unsigned short position, unsigned short id)
+{
+	if (m_itemoffset < 0)
+		return;
+	m_items[m_itemoffset].position = position;
+	m_items[m_itemoffset].id = id;
+	m_itemoffset++;
+}
+unsigned short LevelColumn::get_itemnumber(void)
+{
+	if (m_itemoffset < 0)
+		return 0;
+	return m_itemnumber;
+}
+LevelItem *LevelColumn::get_item(unsigned short index)
+{
+	return &m_items[index];
 }
 
 Level::Level()
@@ -134,7 +163,7 @@ bool Level::load_from_file(std::string file)
 	std::ifstream f;
 	char *buf;
 	std::string buf_;
-	unsigned short tmp, tmp2, tmp3;
+	unsigned short tmp, tmp2, tmp3, tmp4;
 	/*
 	 * Open file:
 	*/
@@ -153,7 +182,6 @@ bool Level::load_from_file(std::string file)
 	buf = new char[9];
 	f.read(buf, 9);
 	buf_ = std::string(buf).substr(0,9);
-	std::cout << buf_ << std::endl;
 	if (buf_.compare("CAPSAICIN") != 0)
 	{
 		std::cerr << "LevelLoader: CAPSAICIN header not found!" << std::endl;
@@ -310,16 +338,24 @@ bool Level::load_from_file(std::string file)
 		i = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
 		delete[] buf;
 		/*
-		 * Read Y number:
+		 * Read Y block number:
 		*/
 		buf = new char[1];
 		f.read(buf, 1);
 		tmp = (unsigned short)buf[0];
 		delete[] buf;
+		m_columns[i].set_blocknumber(tmp);
+		/*
+		 * Read Y item number:
+		*/
+		buf = new char[1];
+		f.read(buf, 1);
+		tmp4 = (unsigned short)buf[0];
+		delete[] buf;
+		m_columns[i].set_itemnumber(tmp4);
 		/*
 		 * Run through Y blocks:
 		*/
-		m_columns[i].set_blocknumber(tmp);
 		for (j=0; j < tmp; j++)
 		{
 			/*
@@ -342,6 +378,33 @@ bool Level::load_from_file(std::string file)
 			m_columns[i].add_block(tmp2, tmp3);
 #ifdef LVL_DEBUG
 			std::cerr << "LevelLoader: Block x=" << i << "; y=" << tmp2 << "; blockdef=" << tmp3 << std::endl;
+#endif
+		}
+		/*
+		 * Run through Y items:
+		*/
+		for (j=0; j < tmp4; j++)
+		{
+			/*
+			 * Read Y coordinate:
+			*/
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp2 = (unsigned short)buf[0];
+			delete[] buf;
+			/*
+			 * Read blockdef ID:
+			*/
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp3 = (unsigned char)buf[0];
+			delete[] buf;
+			/*
+			 * Write into array:
+			*/
+			m_columns[i].add_item(tmp2, tmp3);
+#ifdef LVL_DEBUG
+			std::cerr << "LevelLoader: Item x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
 #endif
 		}
 	}

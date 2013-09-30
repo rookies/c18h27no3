@@ -69,6 +69,13 @@
 			unsigned short position;
 			unsigned short blockdef;
 	};
+	
+	class LevelItem
+	{
+		public:
+			unsigned short position;
+			unsigned short id;
+	};
 
 	class LevelColumn
 	{
@@ -79,10 +86,18 @@
 			void add_block(unsigned short position, unsigned short blockdef);
 			unsigned short get_blocknumber(void);
 			LevelBlock *get_block(unsigned short index);
+			
+			void set_itemnumber(unsigned short number);
+			void add_item(unsigned short position, unsigned short id);
+			unsigned short get_itemnumber(void);
+			LevelItem *get_item(unsigned short index);
 		private:
 			unsigned short m_blocknumber;
-			int m_offset;
+			unsigned short m_itemnumber;
+			int m_blockoffset;
+			int m_itemoffset;
 			LevelBlock *m_blocks;
+			LevelItem *m_items;
 	};
 
 	class Level
