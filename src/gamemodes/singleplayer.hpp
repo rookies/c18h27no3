@@ -65,6 +65,10 @@
 			*/
 			void update_level(void);
 			/*
+			 * Update item position:
+			*/
+			void update_itempos(void);
+			/*
 			 * Update hearts:
 			*/
 			void update_hearts(void);
@@ -102,6 +106,8 @@
 			long double m_playerx;
 			long double m_playery;
 			long double m_offset;
+			unsigned long m_offsetf;
+			double m_offsetr;
 			unsigned int m_blockw;
 			unsigned int m_blockh;
 			Level m_level;
@@ -132,5 +138,7 @@
 			sf::Texture m_item_textures[ITEMS_NUMBER];
 			int m_visible_item_number;
 			sf::Sprite *m_items;
+			float m_itemoffset;
+			bool m_itemoffsetd;
 	};
 #endif // SINGLEPLAYER_HPP

@@ -35,7 +35,9 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_playerx(PLAYERPOS_X),
 								m_playery(PLAYERPOS_Y),
 								m_moving(false),
-								m_backwards(false)
+								m_backwards(false),
+								m_itemoffset(0),
+								m_itemoffsetd(false)
 {
 
 }
@@ -470,6 +472,30 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			else
 				m_moving = true;
 		};
+		/*
+		 * Update item offset:
+		*/
+		if (m_itemoffsetd)
+		{
+			/*
+			 * Moving downwards.
+			*/
+			if (m_itemoffset <= 0)
+				m_itemoffsetd = false;
+			else
+				m_itemoffset -= ITEM_STEPOFFSET;
+		}
+		else
+		{
+			/*
+			 * Moving upwards.
+			*/
+			if (m_itemoffset >= ITEM_MAXOFFSET)
+				m_itemoffsetd = true;
+			else
+				m_itemoffset += ITEM_STEPOFFSET;
+		};
+		update_itempos();
 	};
 	/*
 	 * Fill array:
@@ -535,21 +561,20 @@ void SinglePlayer::update_level(void)
 	/*
 	 * Variable declarations:
 	*/
-	unsigned long i, j, k, l, offset;
-	double offset_r;
+	unsigned long i, j, k, l;
 	/*
 	 * Calculate offset:
 	*/
-	offset = floor(m_offset);
-	if (offset > 0)
-		offset -= 1;
-	offset_r = m_offset-offset;
+	m_offsetf = floor(m_offset);
+	if (m_offsetf > 0)
+		m_offsetf -= 1;
+	m_offsetr = m_offset-m_offsetf;
 	/*
 	 * Calculate width in blocks:
 	*/
 	m_width_hblk = HORIZONTAL_BLOCK_NUMBER;
-	if (m_width_hblk > m_level.get_levelwidth()-offset)
-		m_width_hblk = m_level.get_levelwidth()-offset;
+	if (m_width_hblk > m_level.get_levelwidth()-m_offsetf)
+		m_width_hblk = m_level.get_levelwidth()-m_offsetf;
 	/*
 	 * Calculate visible block & item numbers:
 	*/
@@ -557,8 +582,8 @@ void SinglePlayer::update_level(void)
 	m_visible_item_number = 0;
 	for (i=0; i < m_width_hblk; i++)
 	{
-		m_visible_block_number += m_level.get_column(offset+i)->get_blocknumber();
-		m_visible_item_number += m_level.get_column(offset+i)->get_itemnumber();
+		m_visible_block_number += m_level.get_column(m_offsetf+i)->get_blocknumber();
+		m_visible_item_number += m_level.get_column(m_offsetf+i)->get_itemnumber();
 	}
 	/*
 	 * Create block & item sprites:
@@ -575,24 +600,24 @@ void SinglePlayer::update_level(void)
 	l = 0;
 	for (i=0; i < m_width_hblk; i++)
 	{
-		for (j=0; j < m_level.get_column(offset+i)->get_blocknumber(); j++)
+		for (j=0; j < m_level.get_column(m_offsetf+i)->get_blocknumber(); j++)
 		{
-			m_blocks[k].setPosition(sf::Vector2f((i-offset_r)*m_blockw/2., m_h-(((m_level.get_column(offset+i)->get_block(j)->position/2.)+0.5)*m_blockh)));
+			m_blocks[k].setPosition(sf::Vector2f((i-m_offsetr)*m_blockw/2., m_h-(((m_level.get_column(m_offsetf+i)->get_block(j)->position/2.)+0.5)*m_blockh)));
 			m_blocks[k].setScale(m_blockw/32., m_blockh/16.);
-			m_blocks[k].setTexture(m_block_textures[m_level.get_column(offset+i)->get_block(j)->blockdef]);
+			m_blocks[k].setTexture(m_block_textures[m_level.get_column(m_offsetf+i)->get_block(j)->blockdef]);
 			k++;
 		}
-		for (j=0; j < m_level.get_column(offset+i)->get_itemnumber(); j++)
+		for (j=0; j < m_level.get_column(m_offsetf+i)->get_itemnumber(); j++)
 		{
-			if (!m_level.get_column(offset+i)->get_item(j)->collected)
+			if (!m_level.get_column(m_offsetf+i)->get_item(j)->collected)
 			{
-				m_items[l].setPosition(sf::Vector2f((i-offset_r+.1)*m_blockw/2., m_h-(((m_level.get_column(offset+i)->get_item(j)->position/2.)+1.5)*m_blockh)));
 				m_items[l].setScale((m_blockw/32.)*.8, (m_blockh/16.)*.8);
-				m_items[l].setTexture(m_item_textures[m_level.get_column(offset+i)->get_item(j)->id]);
+				m_items[l].setTexture(m_item_textures[m_level.get_column(m_offsetf+i)->get_item(j)->id]);
 				l++;
 			};
 		}
 	}
+	update_itempos();
 	/*
 	 * Place background:
 	*/
@@ -606,6 +631,26 @@ void SinglePlayer::update_level(void)
 		m_ptoiletbase.setSize(sf::Vector2f(m_blockw, m_blockh/SIZE_PTOILETBASE_HEIGHT_DIVIDER));
 		m_ptoiletbase.setPosition(sf::Vector2f((PLAYERPOS_X-m_offset-0.5)*m_blockw/2., m_blockh));
 	};
+}
+void SinglePlayer::update_itempos(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	unsigned long i, j, k;
+	
+	k = 0;
+	for (i=0; i < m_width_hblk; i++)
+	{
+		for (j=0; j < m_level.get_column(m_offsetf+i)->get_itemnumber(); j++)
+		{
+			if (!m_level.get_column(m_offsetf+i)->get_item(j)->collected)
+			{
+				m_items[k].setPosition(sf::Vector2f((i-m_offsetr+.1)*m_blockw/2., m_h-(((m_level.get_column(m_offsetf+i)->get_item(j)->position/2.)+1.5+m_itemoffset)*m_blockh)));
+				k++;
+			};
+		}
+	}
 }
 void SinglePlayer::update_hearts(void)
 {
