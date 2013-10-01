@@ -111,6 +111,21 @@ int SinglePlayer::init(Config conf, std::string arg)
 		};
 	}
 	/*
+	 * Load item textures:
+	*/
+	for (i=0; i < ITEMS_NUMBER; i++)
+	{
+		fname = "";
+		fname.append("items/");
+		fname.append(m_itemdefs[i]);
+		fname.append(".png");
+		if (!m_item_textures[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, fname)))
+		{
+			if (!m_item_textures[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "item_not_found.png")))
+				return 1;
+		};
+	}
+	/*
 	 * Load background texture:
 	*/
 	//if (!m_bg_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "bg1.png")))
@@ -433,11 +448,15 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	 * Fill array:
 	*/
 	//arr.init(9+m_visible_block_number+((m_offset < PLAYERPOS_X+2)?2:0));
-	arr.init(8+m_visible_block_number+((m_offset < PLAYERPOS_X+2)?2:0));
+	arr.init(8+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0));
 	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
 	{
 		arr.add_sprite(m_blocks[i]);
+	}
+	for (i=0; i < m_visible_item_number; i++)
+	{
+		arr.add_sprite(m_items[i]);
 	}
 	arr.add_sprite(m_player);
 	arr.add_sprite(m_frame);
@@ -489,7 +508,7 @@ void SinglePlayer::update_level(void)
 	/*
 	 * Variable declarations:
 	*/
-	unsigned long i, j, k, offset;
+	unsigned long i, j, k, l, offset;
 	double offset_r;
 	/*
 	 * Calculate offset:
@@ -505,21 +524,28 @@ void SinglePlayer::update_level(void)
 	if (m_width_hblk > m_level.get_levelwidth()-offset)
 		m_width_hblk = m_level.get_levelwidth()-offset;
 	/*
-	 * Calculate visible block number:
+	 * Calculate visible block & item numbers:
 	*/
 	m_visible_block_number = 0;
+	m_visible_item_number = 0;
 	for (i=0; i < m_width_hblk; i++)
 	{
 		m_visible_block_number += m_level.get_column(offset+i)->get_blocknumber();
+		m_visible_item_number += m_level.get_column(offset+i)->get_itemnumber();
 	}
 	/*
-	 * Create block sprites:
+	 * Create block & item sprites:
 	*/
 	if (m_blocks_i)
+	{
 		delete[] m_blocks;
+		delete[] m_items;
+	};
 	m_blocks = new sf::Sprite[m_visible_block_number];
+	m_items = new sf::Sprite[m_visible_item_number];
 	m_blocks_i = true;
 	k = 0;
+	l = 0;
 	for (i=0; i < m_width_hblk; i++)
 	{
 		for (j=0; j < m_level.get_column(offset+i)->get_blocknumber(); j++)
@@ -528,6 +554,13 @@ void SinglePlayer::update_level(void)
 			m_blocks[k].setScale(m_blockw/32., m_blockh/16.);
 			m_blocks[k].setTexture(m_block_textures[m_level.get_column(offset+i)->get_block(j)->blockdef]);
 			k++;
+		}
+		for (j=0; j < m_level.get_column(offset+i)->get_itemnumber(); j++)
+		{
+			m_items[l].setPosition(sf::Vector2f((i-offset_r+.1)*m_blockw/2., m_h-(((m_level.get_column(offset+i)->get_item(j)->position/2.)+1.5)*m_blockh)));
+			m_items[l].setScale((m_blockw/32.)*.8, (m_blockh/16.)*.8);
+			m_items[l].setTexture(m_item_textures[m_level.get_column(offset+i)->get_item(j)->id]);
+			l++;
 		}
 	}
 	/*

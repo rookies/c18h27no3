@@ -156,4 +156,5 @@
 #	define HORIZONTAL_BLOCK_NUMBER 38
 #	define PLAYERPOS_X 1
 #	define PLAYERPOS_Y 38
+#	define ITEMS_NUMBER 2
 #endif // GLOBALS_HPP

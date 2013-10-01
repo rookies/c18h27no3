@@ -125,5 +125,12 @@
 			sf::RectangleShape m_ptoiletbase;
 			bool m_moving;
 			bool m_backwards;
+			std::string m_itemdefs[ITEMS_NUMBER] = {
+				"coin",
+				"bottle"
+			};
+			sf::Texture m_item_textures[ITEMS_NUMBER];
+			int m_visible_item_number;
+			sf::Sprite *m_items;
 	};
 #endif // SINGLEPLAYER_HPP
