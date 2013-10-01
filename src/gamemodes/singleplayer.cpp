@@ -433,6 +433,33 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			}
 			else
 				m_player_canjump = true;
+			/*
+			 * Check for interaction with items:
+			*/
+			col = m_level.get_column(floor(m_playerx));
+			for (j=0; j < col->get_itemnumber(); j++)
+			{
+				if (!col->get_item(j)->collected && col->get_item(j)->position == floor(m_playery))
+				{
+					// Got an item!
+					col->get_item(j)->collected = true;
+					update_level();
+					switch (col->get_item(j)->id)
+					{
+						case 0:
+							std::cout << "Collected coin!" << std::endl;
+							break;
+						case 1:
+							std::cout << "Collected bottle!" << std::endl;
+							break;
+						default:
+							std::cout << "Collected unknown item!" << std::endl;
+					}
+				};
+			}
+			/*
+			 * Restart timer:
+			*/
 			m_actiontimer.restart();
 		}
 		else
@@ -447,7 +474,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	//arr.init(9+m_visible_block_number+((m_offset < PLAYERPOS_X+2)?2:0));
+	//arr.init(9+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0));
 	arr.init(8+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0));
 	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
@@ -557,10 +584,13 @@ void SinglePlayer::update_level(void)
 		}
 		for (j=0; j < m_level.get_column(offset+i)->get_itemnumber(); j++)
 		{
-			m_items[l].setPosition(sf::Vector2f((i-offset_r+.1)*m_blockw/2., m_h-(((m_level.get_column(offset+i)->get_item(j)->position/2.)+1.5)*m_blockh)));
-			m_items[l].setScale((m_blockw/32.)*.8, (m_blockh/16.)*.8);
-			m_items[l].setTexture(m_item_textures[m_level.get_column(offset+i)->get_item(j)->id]);
-			l++;
+			if (!m_level.get_column(offset+i)->get_item(j)->collected)
+			{
+				m_items[l].setPosition(sf::Vector2f((i-offset_r+.1)*m_blockw/2., m_h-(((m_level.get_column(offset+i)->get_item(j)->position/2.)+1.5)*m_blockh)));
+				m_items[l].setScale((m_blockw/32.)*.8, (m_blockh/16.)*.8);
+				m_items[l].setTexture(m_item_textures[m_level.get_column(offset+i)->get_item(j)->id]);
+				l++;
+			};
 		}
 	}
 	/*

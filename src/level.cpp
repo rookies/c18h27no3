@@ -80,6 +80,11 @@ std::string LevelBlockdef::get_arg(void)
 	return m_arg;
 }
 
+LevelItem::LevelItem() : collected(false)
+{
+	
+}
+
 LevelColumn::LevelColumn() : m_blockoffset(-1), m_itemoffset(-1)
 {
 

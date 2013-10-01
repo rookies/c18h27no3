@@ -73,8 +73,11 @@
 	class LevelItem
 	{
 		public:
+			LevelItem();
+			
 			unsigned short position;
 			unsigned short id;
+			bool collected;
 	};
 
 	class LevelColumn
