@@ -648,7 +648,7 @@ void SinglePlayer::update_itempos(void)
 		{
 			if (!m_level.get_column(m_offsetf+i)->get_item(j)->collected)
 			{
-				m_items[k].setPosition(sf::Vector2f((i-m_offsetr+.1)*m_blockw/2., m_h-(((m_level.get_column(m_offsetf+i)->get_item(j)->position/2.)+1.5+m_itemoffset)*m_blockh)));
+				m_items[k].setPosition(sf::Vector2f((i-m_offsetr+.1)*m_blockw/2., m_h-(((m_level.get_column(m_offsetf+i)->get_item(j)->position/2.)+.5+m_itemoffset)*m_blockh)));
 				k++;
 			};
 		}

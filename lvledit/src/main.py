@@ -325,7 +325,7 @@ class LevelEditor (object):
 			for itm in col["items"]:
 				self.item_images.append(self.get_image_from_item_id(itm["id"]))
 				self.item_images[j].set_from_pixbuf(self.item_images[j].get_pixbuf().scale_simple(block_height*.8, block_height*.8, GdkPixbuf.InterpType.NEAREST))
-				layout.put(self.item_images[j], (col["position"]+.1)*block_height, height-(((itm["position"]/2.)+0.5+1)*block_height))
+				layout.put(self.item_images[j], (col["position"]+.1)*block_height, height-(((itm["position"]/2.)+0.5)*block_height))
 				j += 1
 		self.builder.get_object("layout1").show_all()
 	def add_block(self, x, y, bdef):
