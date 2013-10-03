@@ -122,7 +122,8 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 					mouse_y >= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i] &&
 					mouse_y <= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i]+m_menuc_h[i])
 				{
-					m_menuitem_over = i;
+					if (i != 1 && i != 2) // FIXME: disable loading & highscore
+						m_menuitem_over = i;
 					break;
 				};
 			}

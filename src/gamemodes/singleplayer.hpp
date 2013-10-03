@@ -125,6 +125,7 @@
 			sf::Texture m_healthm_texture;
 			sf::Sprite m_healthm;
 			float m_health;
+			unsigned long m_money;
 			sf::RectangleShape m_healthm_helper;
 			sf::Texture m_ptoilet_texture;
 			sf::Sprite m_ptoilet;

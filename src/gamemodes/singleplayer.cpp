@@ -37,7 +37,8 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_moving(false),
 								m_backwards(false),
 								m_itemoffset(0),
-								m_itemoffsetd(false)
+								m_itemoffsetd(false),
+								m_money(0)
 {
 
 }
@@ -449,10 +450,11 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 					switch (col->get_item(j)->id)
 					{
 						case 0:
-							std::cout << "Collected coin!" << std::endl;
+							m_money++;
 							break;
 						case 1:
-							std::cout << "Collected bottle!" << std::endl;
+							m_hearts_num++;
+							update_hearts();
 							break;
 						default:
 							std::cout << "Collected unknown item!" << std::endl;
