@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-03 17:54+0200\n"
-"PO-Revision-Date: 2013-10-03 17:59+0100\n"
+"POT-Creation-Date: 2013-10-03 19:53+0200\n"
+"PO-Revision-Date: 2013-10-03 19:54+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: en\n"
@@ -40,11 +40,50 @@ msgstr "Save"
 msgid "settings_graphics_menu_entry_abort"
 msgstr "Abort"
 
-#: src/gamemodes/credits.cpp:54
+#: src/gamemodes/credits.cpp:129
+#, fuzzy
+msgid "credits_text0"
+msgstr ""
+"Go with your mouse over one of the heads to read more.\n"
+"Click on the door to go back to main menu."
+
+#: src/gamemodes/credits.cpp:133
+#, fuzzy
+msgid "credits_text1"
+msgstr ""
+"Go with your mouse over one of the heads to read more.\n"
+"Click on the door to go back to main menu."
+
+#: src/gamemodes/credits.cpp:137
+#, fuzzy
+msgid "credits_text2"
+msgstr ""
+"Go with your mouse over one of the heads to read more.\n"
+"Click on the door to go back to main menu."
+
+#: src/gamemodes/credits.cpp:141
+#, fuzzy
+msgid "credits_text3"
+msgstr ""
+"Go with your mouse over one of the heads to read more.\n"
+"Click on the door to go back to main menu."
+
+#: src/gamemodes/credits.cpp:145
+#, fuzzy
+msgid "credits_text4"
+msgstr ""
+"Go with your mouse over one of the heads to read more.\n"
+"Click on the door to go back to main menu."
+
+#: src/gamemodes/credits.cpp:149
+msgid "credits_text5"
+msgstr "Click to go back to the main menu."
+
+#: src/gamemodes/credits.cpp:152
 msgid "credits_header"
 msgstr "The team of Capsaicin Game Development & fans"
 
-#: src/gamemodes/credits.cpp:60
+#: src/gamemodes/credits.cpp:153
 msgid "credits_stdtext"
 msgstr ""
 "Go with your mouse over one of the heads to read more.\n"

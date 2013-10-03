@@ -33,10 +33,16 @@ FPScounter::~FPScounter()
 int FPScounter::init(void)
 {
 	/*
+	 * Load font:
+	*/
+	if (!m_font.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Regular.ttf")))
+		return 1;
+	/*
 	 * Load text:
 	*/
 	m_txt.setColor(sf::Color::Black);
 	m_txt.setString("0 fps");
+	m_txt.setFont(m_font);
 	/*
 	 * Set bg properties:
 	*/

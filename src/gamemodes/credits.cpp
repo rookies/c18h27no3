@@ -88,7 +88,7 @@ int Credits::calculate_sizes(int w, int h)
 	*/
 	scale = w/1920.;
 	m_img.setScale(scale, scale);
-	m_credits_yoffset = h-m_img.getGlobalBounds().height;
+	m_credits_yoffset = h-m_img.getGlobalBounds().height+1;
 	m_img.setPosition(sf::Vector2f(0, m_credits_yoffset));
 	/*
 	 * Set header properties:

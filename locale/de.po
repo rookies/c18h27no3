@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-03 17:54+0200\n"
-"PO-Revision-Date: 2013-10-03 17:59+0100\n"
+"POT-Creation-Date: 2013-10-03 19:53+0200\n"
+"PO-Revision-Date: 2013-10-03 19:54+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -41,11 +41,50 @@ msgstr "Speichern"
 msgid "settings_graphics_menu_entry_abort"
 msgstr "Abbrechen"
 
-#: src/gamemodes/credits.cpp:54
+#: src/gamemodes/credits.cpp:129
+#, fuzzy
+msgid "credits_text0"
+msgstr ""
+"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
+"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+
+#: src/gamemodes/credits.cpp:133
+#, fuzzy
+msgid "credits_text1"
+msgstr ""
+"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
+"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+
+#: src/gamemodes/credits.cpp:137
+#, fuzzy
+msgid "credits_text2"
+msgstr ""
+"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
+"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+
+#: src/gamemodes/credits.cpp:141
+#, fuzzy
+msgid "credits_text3"
+msgstr ""
+"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
+"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+
+#: src/gamemodes/credits.cpp:145
+#, fuzzy
+msgid "credits_text4"
+msgstr ""
+"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
+"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+
+#: src/gamemodes/credits.cpp:149
+msgid "credits_text5"
+msgstr "Klicke, um zurück ins Hauptmenü zu gelangen."
+
+#: src/gamemodes/credits.cpp:152
 msgid "credits_header"
 msgstr "Das Team von Capsaicin Game Development & Fans"
 
-#: src/gamemodes/credits.cpp:60
+#: src/gamemodes/credits.cpp:153
 msgid "credits_stdtext"
 msgstr ""
 "Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"

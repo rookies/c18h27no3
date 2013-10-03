@@ -30,6 +30,7 @@
 #	include <SFML/System.hpp>
 #	include <SFML/Graphics.hpp>
 #	include "globals.hpp" 
+#	include "dataloader.hpp"
 	
 	class FPScounter
 	{
@@ -55,6 +56,7 @@
 			*/
 			void restart(void);
 		private:
+			sf::Font m_font;
 			sf::Text m_txt;
 			sf::String m_txt_str;
 			std::ostringstream m_txt_float;
