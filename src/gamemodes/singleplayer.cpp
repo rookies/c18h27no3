@@ -207,7 +207,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	/*
 	 * Set player properties:
 	*/
-	m_player.scale((m_blockw)/16, (m_blockh*3)/24);
+	m_player.setScale((m_blockw)/16, (m_blockh*3)/24);
 	place_player();
 	/*
 	 * Scale background sprite:
@@ -217,12 +217,12 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Set statusframe properties:
 	*/
 	m_sframe_scale = (h*SIZE_STATUSFRAME_HEIGHT/100.)/SIZE_STATUSFRAME_IMGHEIGHT;
-	m_frame.scale(m_sframe_scale, m_sframe_scale);
+	m_frame.setScale(m_sframe_scale, m_sframe_scale);
 	m_frame.setPosition(sf::Vector2f(w*SIZE_STATUSFRAME_XOFFSET/100., h*SIZE_STATUSFRAME_YOFFSET/100.));
 	/*
 	 * Set health meter properties:
 	*/
-	m_healthm.scale(m_sframe_scale, m_sframe_scale);
+	m_healthm.setScale(m_sframe_scale, m_sframe_scale);
 	/*
 	 * Init health meter:
 	*/
@@ -238,7 +238,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	scale = (h*SIZE_HEARTS/100.)/SIZE_HEARTS_IMGSIZE;
 	for (i=0; i < 3; i++)
 	{
-		m_hearts[i].scale(scale, scale);
+		m_hearts[i].setScale(scale, scale);
 		m_hearts[i].setPosition(sf::Vector2f(w*SIZE_HEARTS_XOFFSET/100., (h*SIZE_HEARTS_YOFFSET0/100.)+(i*h*SIZE_HEARTS/100.)+(i*h*SIZE_HEARTS_YGAP/100.)));
 	}
 	/*

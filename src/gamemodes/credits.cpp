@@ -33,8 +33,31 @@ Credits::~Credits()
 int Credits::init(Config conf, std::string arg)
 {
 	/*
-	 * ...
+	 * Load image texture:
 	*/
+	if (!m_img_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "credits.png")))
+		return 1;
+	m_img_texture.setSmooth(true);
+	m_img.setTexture(m_img_texture);
+	/*
+	 * Load fonts:
+	*/
+	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Bold.ttf")))
+		return 1;
+	if (!m_font2.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Regular.ttf")))
+		return 1;
+	/*
+	 * Init header:
+	*/
+	m_header.setFont(m_font1);
+	m_header.setColor(sf::Color::Black);
+	m_header.setString(_("credits_header"));
+	/*
+	 * Init text:
+	*/
+	m_text.setFont(m_font2);
+	m_text.setColor(sf::Color::Black);
+	m_text.setString(get_wstring(_("credits_stdtext")));
 	return 0;
 }
 int Credits::uninit(void)
@@ -47,8 +70,19 @@ int Credits::uninit(void)
 int Credits::calculate_sizes(int w, int h)
 {
 	/*
-	 * ...
+	 * Set image properties:
 	*/
+	m_img.setScale(w/1920., w/1920.);
+	m_img.setPosition(sf::Vector2f(0, h-m_img.getGlobalBounds().height));
+	/*
+	 * Set header properties:
+	*/
+	m_header.setCharacterSize(h/SIZE_CREDITS_HEADER_TEXT_SIZE_DIVIDER);
+	/*
+	 * Set text properties:
+	*/
+	m_text.setCharacterSize(h/SIZE_CREDITS_TEXT_SIZE_DIVIDER);
+	m_text.setPosition(sf::Vector2f(0, h/SIZE_CREDITS_HEADER_TEXT_SIZE_DIVIDER*2));
 	return 0;
 }
 void Credits::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -71,9 +105,9 @@ UniversalDrawableArray Credits::get_drawables(void)
 	 * Variable declarations:
 	*/
 	UniversalDrawableArray arr;
-	/*
-	 * ...
-	*/
-	arr.init(0);
+	arr.init(3);
+	arr.add_sprite(m_img);
+	arr.add_text(m_header);
+	arr.add_text(m_text);
 	return arr;
 }

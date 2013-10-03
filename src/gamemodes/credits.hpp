@@ -23,9 +23,12 @@
 #ifndef CREDITS_HPP
 #	define CREDITS_HPP
 
+#	include <libintl.h>
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
+#	include "../dataloader.hpp"
+#	include "../widestring.hpp"
 	
 	class Credits : public Gamemode
 	{
@@ -51,6 +54,11 @@
 			*/
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
-			
+			sf::Texture m_img_texture;
+			sf::Sprite m_img;
+			sf::Font m_font1;
+			sf::Font m_font2;
+			sf::Text m_header;
+			sf::Text m_text;
 	};
 #endif // CREDITS_HPP

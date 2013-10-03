@@ -7,14 +7,49 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-08 16:50+0100\n"
-"PO-Revision-Date: 2012-11-08 16:51+0100\n"
+"POT-Creation-Date: 2013-10-03 17:54+0200\n"
+"PO-Revision-Date: 2013-10-03 17:59+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+
+#: src/gamemodes/settings_graphics_menu.cpp:52
+msgid "settings_graphics_menu_entry_value_fullscreen_enabled"
+msgstr "aktiviert"
+
+#: src/gamemodes/settings_graphics_menu.cpp:53
+msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
+msgstr "deaktiviert"
+
+#: src/gamemodes/settings_graphics_menu.cpp:92
+msgid "settings_graphics_menu_entry_header_resolution"
+msgstr "Bildschirmauflösung"
+
+#: src/gamemodes/settings_graphics_menu.cpp:93
+msgid "settings_graphics_menu_entry_header_fullscreen"
+msgstr "Vollbild"
+
+#: src/gamemodes/settings_graphics_menu.cpp:110
+msgid "settings_graphics_menu_entry_save"
+msgstr "Speichern"
+
+#: src/gamemodes/settings_graphics_menu.cpp:111
+msgid "settings_graphics_menu_entry_abort"
+msgstr "Abbrechen"
+
+#: src/gamemodes/credits.cpp:54
+msgid "credits_header"
+msgstr "Credits"
+
+#: src/gamemodes/credits.cpp:60
+msgid "credits_stdtext"
+msgstr ""
+"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
+"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
 
 #: src/gamemodes/settings_general_menu.cpp:52
 msgid "settings_general_menu_entry_value_fpscounter_enabled"
@@ -59,30 +94,6 @@ msgstr "Sound"
 #: src/gamemodes/settings_menu.cpp:62
 msgid "settings_menu_entry_back"
 msgstr "Zurück zum Hauptmenü"
-
-#: src/gamemodes/settings_graphics_menu.cpp:52
-msgid "settings_graphics_menu_entry_value_fullscreen_enabled"
-msgstr "aktiviert"
-
-#: src/gamemodes/settings_graphics_menu.cpp:53
-msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
-msgstr "deaktiviert"
-
-#: src/gamemodes/settings_graphics_menu.cpp:92
-msgid "settings_graphics_menu_entry_header_resolution"
-msgstr "Bildschirmauflösung"
-
-#: src/gamemodes/settings_graphics_menu.cpp:93
-msgid "settings_graphics_menu_entry_header_fullscreen"
-msgstr "Vollbild"
-
-#: src/gamemodes/settings_graphics_menu.cpp:110
-msgid "settings_graphics_menu_entry_save"
-msgstr "Speichern"
-
-#: src/gamemodes/settings_graphics_menu.cpp:111
-msgid "settings_graphics_menu_entry_abort"
-msgstr "Abbrechen"
 
 #: src/gamemodes/settings_control_menu.cpp:161
 msgid "key_LControl"
@@ -197,61 +208,52 @@ msgstr "nach rechts laufen"
 msgid "settings_control_menu_entry_caption_jump"
 msgstr "hüpfen"
 
-#: src/gamemodes/settings_control_menu.cpp:334
-msgid "settings_control_menu_entry_caption_screenshot"
-msgstr "Screenshot"
-
-#: src/gamemodes/settings_control_menu.cpp:338
-msgid "settings_control_menu_entry_caption_shoot"
-msgstr "schießen"
-
-#: src/gamemodes/settings_control_menu.cpp:342
-msgid "settings_control_menu_entry_caption_weaponchange"
-msgstr "Waffe wechseln"
-
-#: src/gamemodes/settings_control_menu.cpp:382
+#: src/gamemodes/settings_control_menu.cpp:371
 msgid "settings_control_menu_warning_keyused"
 msgstr "Taste schon verwendet!"
 
-#: src/gamemodes/settings_control_menu.cpp:383
+#: src/gamemodes/settings_control_menu.cpp:372
 msgid "settings_control_menu_entry_save"
 msgstr "Speichern"
 
-#: src/gamemodes/settings_control_menu.cpp:384
+#: src/gamemodes/settings_control_menu.cpp:373
 msgid "settings_control_menu_entry_abort"
 msgstr "Abbrechen"
 
-#: src/gamemodes/settings_control_menu.cpp:611
-#: src/gamemodes/settings_control_menu.cpp:617
-#: src/gamemodes/settings_control_menu.cpp:623
-#: src/gamemodes/settings_control_menu.cpp:629
-#: src/gamemodes/settings_control_menu.cpp:635
+#: src/gamemodes/settings_control_menu.cpp:600
+#: src/gamemodes/settings_control_menu.cpp:606
+#: src/gamemodes/settings_control_menu.cpp:612
+#: src/gamemodes/settings_control_menu.cpp:618
+#: src/gamemodes/settings_control_menu.cpp:624
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Taste drücken-"
 
-#: src/gamemodes/main_menu.cpp:59
-msgid "main_menu_entry_newgame"
-msgstr "Neues Spiel"
+#~ msgid "settings_control_menu_entry_caption_screenshot"
+#~ msgstr "Screenshot"
 
-#: src/gamemodes/main_menu.cpp:60
-msgid "main_menu_entry_loadgame"
-msgstr "Spiel Laden"
+#~ msgid "settings_control_menu_entry_caption_shoot"
+#~ msgstr "schießen"
 
-#: src/gamemodes/main_menu.cpp:61
-msgid "main_menu_entry_highscore"
-msgstr "Highscore"
+#~ msgid "settings_control_menu_entry_caption_weaponchange"
+#~ msgstr "Waffe wechseln"
 
-#: src/gamemodes/main_menu.cpp:62
-msgid "main_menu_entry_settings"
-msgstr "Einstellungen"
+#~ msgid "main_menu_entry_newgame"
+#~ msgstr "Neues Spiel"
 
-#: src/gamemodes/main_menu.cpp:63
-msgid "main_menu_entry_credits"
-msgstr "Credits"
+#~ msgid "main_menu_entry_loadgame"
+#~ msgstr "Spiel Laden"
 
-#: src/gamemodes/main_menu.cpp:64
-msgid "main_menu_entry_exit"
-msgstr "Spiel Beenden"
+#~ msgid "main_menu_entry_highscore"
+#~ msgstr "Highscore"
+
+#~ msgid "main_menu_entry_settings"
+#~ msgstr "Einstellungen"
+
+#~ msgid "main_menu_entry_credits"
+#~ msgstr "Credits"
+
+#~ msgid "main_menu_entry_exit"
+#~ msgstr "Spiel Beenden"
 
 #~ msgid "main_menu_entry_leveleditor"
 #~ msgstr "Level-Editor"

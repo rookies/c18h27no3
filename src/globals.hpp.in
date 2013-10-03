@@ -63,7 +63,7 @@
 	/*
 	 * Number of control keys:
 	*/
-#	define CONFIGVAR_CONTROL_KEY_COUNT 6
+#	define CONFIGVAR_CONTROL_KEY_COUNT 3
 	/*
 	 * Number of configuration variables:
 	*/
@@ -149,6 +149,8 @@
 #	define SIZE_MENU_CONFIG_ELEMENT_HEADER_SIZE_DIVIDER 2.0
 #	define SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER 2.2
 #	define SIZE_PTOILETBASE_HEIGHT_DIVIDER 10.0
+#	define SIZE_CREDITS_HEADER_TEXT_SIZE_DIVIDER 20.
+#	define SIZE_CREDITS_TEXT_SIZE_DIVIDER 30.
 	/*
 	 * Game settings:
 	*/

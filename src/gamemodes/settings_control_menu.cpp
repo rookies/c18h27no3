@@ -329,17 +329,6 @@ int SettingsControlMenu::init(Config conf, std::string arg)
 				confkey = "CONTROL__KEY_JUMP";
 				caption = _("settings_control_menu_entry_caption_jump");
 				break;
-			case 3:
-				confkey = "CONTROL__KEY_SCREENSHOT";
-				caption = _("settings_control_menu_entry_caption_screenshot");
-				break;
-			case 4:
-				confkey = "CONTROL__KEY_SHOOT";
-				caption = _("settings_control_menu_entry_caption_shoot");
-				break;
-			case 5:
-				confkey = "CONTROL__KEY_WEAPONCHANGE";
-				caption = _("settings_control_menu_entry_caption_weaponchange");
 		}
 		m_controlkeys[i].set_value(conf.get(confkey).value_int);
 		m_controlkeys[i].set_config_key(confkey);

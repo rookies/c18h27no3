@@ -37,6 +37,7 @@ int MainMenu::init(Config conf, std::string arg)
 	*/
 	if (!m_img1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "mainmenu.png")))
 		return 1;
+	m_img1.setSmooth(true);
 	m_img1_sprite.setTexture(m_img1);
 	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	/*
@@ -44,6 +45,7 @@ int MainMenu::init(Config conf, std::string arg)
 	*/
 	if (!m_img2.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "mainmenu_active.png")))
 		return 1;
+	m_img2.setSmooth(true);
 	m_img2_sprite.setTexture(m_img2);
 	m_img2_sprite.setColor(sf::Color(255, 255, 255, 255));
 	m_menuitem_over = -1;
