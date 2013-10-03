@@ -111,9 +111,7 @@ class Level (object):
 			if name in self.extensions:
 				raise Exception("Extension duplicate! There's already a %s extension." % name)
 			else:
-				self.extensions[name] = {
-					"raw": data
-				}
+				self.extensions[name] = data
 			
 	def dump(self, verbose=False):
 		print("=== LEVEL DUMP ===")
@@ -134,7 +132,7 @@ class Level (object):
 					print("Item:  x=%d; y=%d; id=%d" % (col["position"], itm["position"], itm["id"]))
 		print("= EXTENSIONS =")
 		for name, ext in self.extensions.items():
-			print("'%s' => '%s'" % (name, ext["raw"]))
+			print("'%s' => '%s'" % (name, ext))
 	def write(self, filepath):
 		# Open file:
 		f = open(filepath, "wb")
@@ -167,11 +165,11 @@ class Level (object):
 					f.write(struct.pack("<BB", itm["position"], itm["id"]))
 		# Write extensions:
 		f.write(struct.pack("<h", len(self.extensions)))
-		for name, ext in self.extensions:
+		for name, ext in self.extensions.items():
 			f.write(struct.pack("<B", len(name)))
 			f.write(bytes(name, "ascii"))
-			f.write(struct.pack("<h", len(ext["raw"])))
-			f.write(ext["raw"])
+			f.write(struct.pack("<h", len(ext)))
+			f.write(ext)
 	## VERSION:
 	def get_version(self):
 		return self.LEVEL_VERSION
@@ -385,6 +383,11 @@ class Level (object):
 			return True
 		else:
 			return False
+	def get_bgimg(self):
+		if "_bgimg" in self.extensions:
+			return (True, self.extensions["_bgimg"].decode("utf-8"))
+		else:
+			return (False, None)
 	### _bgmusic EXTENSION:
 	def set_bgmusic(self, arg):
 		self.extensions["_bgmusic"] = bytes(arg, "ascii")
@@ -395,3 +398,8 @@ class Level (object):
 			return True
 		else:
 			return False
+	def get_bgmusic(self):
+		if "_bgmusic" in self.extensions:
+			return (True, self.extensions["_bgmusic"].decode("utf-8"))
+		else:
+			return (False, None)

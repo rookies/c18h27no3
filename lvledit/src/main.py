@@ -27,6 +27,7 @@ import math
 import glob
 import subprocess
 import operator
+import traceback
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
@@ -37,6 +38,7 @@ class LevelEditor (object):
 	blockdefs_store2 = None
 	standard_blocks_store = None
 	items_store = None
+	bgimgs = []
 	level = level.Level()
 	changed = False
 	opened_file = None
@@ -47,6 +49,7 @@ class LevelEditor (object):
 	messagedialog1_parent_dialog = None
 	trashcoords = (0, 0)
 	dragtype = 0
+	comboboxtext1_changing = False
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -117,6 +120,8 @@ class LevelEditor (object):
 		self.builder.get_object("treeview5").set_model(self.items_store)
 		## Fill the model:
 		self.update_items_store()
+		### CREATE STUFF FOR THE BGIMG COMBOBOX ###
+		self.update_bgimg_store()
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
 		### ENABLE DRAG & DROP FOR THE LEVEL EDITOR ###
@@ -169,6 +174,8 @@ class LevelEditor (object):
 		## Level Width Scale:
 		self.builder.get_object("adjustment1").set_value(self.level.get_level_width())
 		self.update_levelwidth_scale_lower()
+		## BG imgs:
+		self.update_bgimg_store()
 	def update_levelwidth_scale_lower(self):
 		## get biggest block position:
 		cols = self.level.get_columns()
@@ -235,6 +242,27 @@ class LevelEditor (object):
 				img.get_pixbuf()
 			])
 			i += 1
+	def update_bgimg_store(self):
+		widget = self.builder.get_object("comboboxtext1")
+		widget.get_model().clear()
+		self.bgimgs = []
+		for f in glob.glob(self.IMGPATH + "backgrounds/*.png"):
+			name = os.path.basename(f).split(".", 2)[0]
+			self.bgimgs.append(name)
+		self.bgimgs.sort()
+		widget.append_text("- kein Hintergrund -")
+		for name in self.bgimgs:
+			widget.append_text(name)
+		x = self.level.get_bgimg()
+		if x[0] is False:
+			widget.set_active(0)
+		else:
+			i = 0
+			for name in self.bgimgs:
+				if name == x[1]:
+					widget.set_active(i+1)
+					break
+				i += 1
 	def update_window_title(self):
 		## Check for unsaved file:
 		if self.changed:
@@ -520,8 +548,25 @@ class LevelEditor (object):
 		else:
 			self.level.del_blockdef(bdef)
 			self.update_everything()
-		
+	
 	### window1/tab3 EVENTS ###
+	def on_comboboxtext1_changed(self, widget):
+		if self.comboboxtext1_changing:
+			return
+		self.comboboxtext1_changing = True
+		x = widget.get_active()
+		if x <= 0:
+			if self.level.get_bgimg()[0] is not False:
+				self.changed = True
+			self.level.unset_bgimg()
+		else:
+			if self.level.get_bgimg()[0] is False or self.level.get_bgimg()[1] != self.bgimgs[x-1]:
+				self.changed = True
+			self.level.set_bgimg(self.bgimgs[x-1])
+		self.update_everything()
+		self.comboboxtext1_changing = False
+	
+	### window1/tab4 EVENTS ###
 	def on_scale1_format_value(self, widget, value):
 		return "%d" % value
 	def on_scale1_change_value(self, widget, scroll, value):
@@ -676,6 +721,7 @@ class LevelEditor (object):
 					self.level.write(fname)
 				except BaseException as e:
 					self.open_messagedialog1("Fehler beim Speichern!", str(e), None)
+					traceback.print_exc()
 				else:
 					self.changed = False
 					self.opened_file = os.path.basename(fname)

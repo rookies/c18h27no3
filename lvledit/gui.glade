@@ -1156,9 +1156,12 @@
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkComboBox" id="combobox1">
+                              <object class="GtkComboBoxText" id="comboboxtext1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="entry_text_column">0</property>
+                                <property name="id_column">1</property>
+                                <signal name="changed" handler="on_comboboxtext1_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
