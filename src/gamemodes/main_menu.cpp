@@ -22,7 +22,7 @@
  */
 #include "main_menu.hpp"
 
-MainMenu::MainMenu()
+MainMenu::MainMenu() : m_menuitem_over(-1), m_menuitem_loaded(-1)
 {
 	
 }

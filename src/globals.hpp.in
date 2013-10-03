@@ -85,6 +85,10 @@
 	*/
 #	define MAINMENU_ACTIVEWIDTH 231
 	/*
+	 * Number of credits items:
+	*/
+#	define CREDITS_COUNT 6
+	/*
 	 * Colors:
 	*/
 #	define COLOR_MENU_BACKGROUND sf::Color(170, 217, 152)
@@ -134,6 +138,10 @@
 #	define SIZE_HEALTHMETER_YOFFSET 19.53
 #	define SIZE_HEALTHMETER_HELPER_XOFFSET 86.2
 #	define SIZE_HEALTHMETER_HELPER_YOFFSET 18.85
+#	define SIZE_CREDITS_TEXT_XOFFSET 25.
+#	define SIZE_CREDITS_IMG_XOFFSET 5.
+#	define SIZE_CREDITS_IMG_YOFFSET 2.
+#	define SIZE_CREDITS_IMG_WIDTH 15.
 	/*
 	 * Sizes (in px):
 	*/
@@ -142,6 +150,7 @@
 #	define SIZE_HEARTS_IMGSIZE 16.0
 #	define SIZE_HEALTHMETER_IMGWIDTH 31.0
 #	define SIZE_HEALTHMETER_IMGHEIGHT 3.0
+#	define SIZE_CDEV_IMGWIDTH 300.
 	/*
 	 * Size dividers:
 	*/

@@ -42,7 +42,7 @@ msgstr "Abort"
 
 #: src/gamemodes/credits.cpp:54
 msgid "credits_header"
-msgstr "Credits"
+msgstr "The team of Capsaicin Game Development & fans"
 
 #: src/gamemodes/credits.cpp:60
 msgid "credits_stdtext"
@@ -226,33 +226,3 @@ msgstr "Abort"
 #: src/gamemodes/settings_control_menu.cpp:624
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Press key-"
-
-#~ msgid "settings_control_menu_entry_caption_screenshot"
-#~ msgstr "Screenshot"
-
-#~ msgid "settings_control_menu_entry_caption_shoot"
-#~ msgstr "shoot"
-
-#~ msgid "settings_control_menu_entry_caption_weaponchange"
-#~ msgstr "change weapon"
-
-#~ msgid "main_menu_entry_newgame"
-#~ msgstr "New Game"
-
-#~ msgid "main_menu_entry_loadgame"
-#~ msgstr "Load Game"
-
-#~ msgid "main_menu_entry_highscore"
-#~ msgstr "Highscore"
-
-#~ msgid "main_menu_entry_settings"
-#~ msgstr "Settings"
-
-#~ msgid "main_menu_entry_credits"
-#~ msgstr "Credits"
-
-#~ msgid "main_menu_entry_exit"
-#~ msgstr "Exit Game"
-
-#~ msgid "main_menu_entry_leveleditor"
-#~ msgstr "Level-Editor"

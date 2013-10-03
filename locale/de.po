@@ -43,7 +43,7 @@ msgstr "Abbrechen"
 
 #: src/gamemodes/credits.cpp:54
 msgid "credits_header"
-msgstr "Credits"
+msgstr "Das Team von Capsaicin Game Development & Fans"
 
 #: src/gamemodes/credits.cpp:60
 msgid "credits_stdtext"
@@ -227,33 +227,3 @@ msgstr "Abbrechen"
 #: src/gamemodes/settings_control_menu.cpp:624
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Taste drücken-"
-
-#~ msgid "settings_control_menu_entry_caption_screenshot"
-#~ msgstr "Screenshot"
-
-#~ msgid "settings_control_menu_entry_caption_shoot"
-#~ msgstr "schießen"
-
-#~ msgid "settings_control_menu_entry_caption_weaponchange"
-#~ msgstr "Waffe wechseln"
-
-#~ msgid "main_menu_entry_newgame"
-#~ msgstr "Neues Spiel"
-
-#~ msgid "main_menu_entry_loadgame"
-#~ msgstr "Spiel Laden"
-
-#~ msgid "main_menu_entry_highscore"
-#~ msgstr "Highscore"
-
-#~ msgid "main_menu_entry_settings"
-#~ msgstr "Einstellungen"
-
-#~ msgid "main_menu_entry_credits"
-#~ msgstr "Credits"
-
-#~ msgid "main_menu_entry_exit"
-#~ msgstr "Spiel Beenden"
-
-#~ msgid "main_menu_entry_leveleditor"
-#~ msgstr "Level-Editor"
