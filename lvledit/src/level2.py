@@ -375,3 +375,23 @@ class Level (object):
 			if len(self.columns[pos]["items"]) is 0:
 				del self.columns[pos]
 			return True
+	### _bgimg EXTENSION:
+	def set_bgimg(self, arg):
+		self.extensions["_bgimg"] = bytes(arg, "ascii")
+		return True
+	def unset_bgimg(self):
+		if "_bgimg" in self.extensions:
+			del self.extensions["_bgimg"]
+			return True
+		else:
+			return False
+	### _bgmusic EXTENSION:
+	def set_bgmusic(self, arg):
+		self.extensions["_bgmusic"] = bytes(arg, "ascii")
+		return True
+	def unset_bgmusic(self):
+		if "_bgmusic" in self.extensions:
+			del self.extensions["_bgmusic"]
+			return True
+		else:
+			return False
