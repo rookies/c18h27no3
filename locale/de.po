@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-05 17:32+0200\n"
-"PO-Revision-Date: 2013-10-05 17:33+0100\n"
+"POT-Creation-Date: 2013-10-05 18:00+0200\n"
+"PO-Revision-Date: 2013-10-05 18:02+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -133,6 +133,10 @@ msgstr "Sound"
 #: src/gamemodes/settings_menu.cpp:62
 msgid "settings_menu_entry_back"
 msgstr "Zurück zum Hauptmenü"
+
+#: src/gamemodes/settings_menu.cpp:77
+msgid "settings_menu_header"
+msgstr "Einstellungen"
 
 #: src/gamemodes/settings_control_menu.cpp:161
 msgid "key_LControl"

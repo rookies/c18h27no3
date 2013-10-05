@@ -77,6 +77,7 @@
 			sf::Text m_menuitem3_txt;
 			sf::Text m_menuitem4_txt;
 			sf::Text m_menuitem5_txt;
+			sf::Text m_header;
 			sf::Texture m_img1;
 			sf::Sprite m_img1_sprite;
 	};

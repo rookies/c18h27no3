@@ -40,10 +40,10 @@ int SettingsMenu::init(Config conf, std::string arg)
 	/*
 	 * Init creeper:
 	*/
-	if (!m_img1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "creeper.png")))
+	if (!m_img1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "settings.png")))
 		return 1;
+	m_img1.setSmooth(true);
 	m_img1_sprite.setTexture(m_img1);
-	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	/*
 	 * Init menuitem shapes:
 	*/
@@ -71,6 +71,12 @@ int SettingsMenu::init(Config conf, std::string arg)
 	m_menuitem4_txt.setFont(m_font1);
 	m_menuitem5_txt.setFont(m_font1);
 	reset_menuitem_over();
+	/*
+	 * Init header:
+	*/
+	m_header.setString(get_wstring(_("settings_menu_header")));
+	m_header.setColor(sf::Color::Black);
+	m_header.setFont(m_font1);
 	return 0;
 }
 int SettingsMenu::uninit(void)
@@ -86,16 +92,16 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	int menuitem_height = h*(SIZE_MENU_ELEMENT_HEIGHT/100.0);
 	int menuitem_first_yoffset = h*(SIZE_MENU_FIRST_ELEMENT_YOFFSET/100.0);
 	int menuitem_gap = h*(SIZE_MENU_ELEMENT_GAP/100.0);
-	int creeper_height = h*(SIZE_SETTINGSMENU_CREEPER_HEIGHT/100.0);
-	int creeper_yoffset = h*(SIZE_SETTINGSMENU_CREEPER_YOFFSET/100.0);
+	int img_height = h*(SIZE_SETTINGSMENU_IMG_HEIGHT/100.0);
+	int img_yoffset = h*(SIZE_SETTINGSMENU_IMG_YOFFSET/100.0);
 	int menuitem_xoffset = (w-menuitem_width)/2.0;
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	/*
 	 * Update creeper position & size:
 	*/
-	m_img1_sprite.setScale(creeper_height/98, creeper_height/98);
-	m_img1_sprite.setPosition((w-m_img1_sprite.getGlobalBounds().width)/2, creeper_yoffset);
+	m_img1_sprite.setScale(img_height/SIZE_SETTINGSMENU_IMG_IMGHEIGHT, img_height/SIZE_SETTINGSMENU_IMG_IMGHEIGHT);
+	m_img1_sprite.setPosition((w-m_img1_sprite.getGlobalBounds().width)/2., img_yoffset);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
@@ -127,6 +133,11 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	m_menuitem3_txt.setPosition((w-(int)m_menuitem3_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*2+text_gap);
 	m_menuitem4_txt.setPosition((w-(int)m_menuitem4_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*3+text_gap);
 	m_menuitem5_txt.setPosition((w-(int)m_menuitem5_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+(menuitem_height+menuitem_gap)*4+text_gap+menuitem_gap);
+	/*
+	 * Update header:
+	*/
+	m_header.setCharacterSize(h/SIZE_SETTINGSMENU_HEADER_TEXT_SIZE_DIVIDER);
+	m_header.setPosition((w-(int)m_header.getGlobalBounds().width)/2, h*SIZE_SETTINGSMENU_HEADER_YOFFSET/100.);
 	return 0;
 }
 void SettingsMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -190,7 +201,7 @@ UniversalDrawableArray SettingsMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(11);
+	arr.init(12);
 	/*
 	 * Add elements:
 	*/
@@ -235,6 +246,8 @@ UniversalDrawableArray SettingsMenu::get_drawables(void)
 	arr.add_text(m_menuitem4_txt);
 	//
 	arr.add_text(m_menuitem5_txt);
+	//
+	arr.add_text(m_header);
 	/*
 	 * Return:
 	*/

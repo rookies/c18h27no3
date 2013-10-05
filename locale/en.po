@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-03 19:53+0200\n"
-"PO-Revision-Date: 2013-10-03 19:54+0100\n"
+"POT-Creation-Date: 2013-10-05 18:00+0200\n"
+"PO-Revision-Date: 2013-10-05 18:03+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: en\n"
@@ -132,6 +132,10 @@ msgstr "Sound"
 #: src/gamemodes/settings_menu.cpp:62
 msgid "settings_menu_entry_back"
 msgstr "Back to Main Menu"
+
+#: src/gamemodes/settings_menu.cpp:77
+msgid "settings_menu_header"
+msgstr "Settings"
 
 #: src/gamemodes/settings_control_menu.cpp:161
 msgid "key_LControl"
@@ -265,3 +269,15 @@ msgstr "Abort"
 #: src/gamemodes/settings_control_menu.cpp:624
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Press key-"
+
+#: src/gamemodes/settings_sound_menu.cpp:79
+msgid "settings_sound_menu_entry_header_menu_music_volume"
+msgstr "Menu music volume"
+
+#: src/gamemodes/settings_sound_menu.cpp:91
+msgid "settings_sound_menu_entry_save"
+msgstr "Save"
+
+#: src/gamemodes/settings_sound_menu.cpp:92
+msgid "settings_sound_menu_entry_abort"
+msgstr "Abort"
