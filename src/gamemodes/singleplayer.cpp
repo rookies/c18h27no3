@@ -412,12 +412,12 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			lowest += 0.5;
 			if (lowest-2 > m_playery+6)
 			{
-				if (m_player_ystatus == 30)
+				if (m_player_ystatus == 50)
 					m_player_ystatus = 0;
 				else
 				{
 					m_player_ystatus++;
-					m_playery += ((-(0.6/30)*m_player_ystatus)+0.6)*multip; // f(x) = (-(max/steps)*x)+max
+					m_playery += ((-(0.6/50)*m_player_ystatus)+0.6)*multip; // f(x) = (-(max/steps)*x)+max
 					place_player();
 				};
 			}
@@ -439,21 +439,21 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			}
 		}
 		highest += 0.5;
-		if (highest < m_playery)
+		if (highest < m_playery-(0.4*multip))
 		{
 			/*
 			 * Too high!
 			*/
 			if (m_player_ystatus == 0)
 			{
-				if (m_playery-highest < 0.4*multip)
+				if (m_playery-highest < 0.4)
 					m_playery -= (m_playery-highest)*multip;
 				else
 					m_playery -= 0.4*multip;
 				place_player();
 			};
 			m_player_canjump = false;
-			if (m_playery <= -0.5)
+			if (m_playery <= 0)
 			{
 				m_hearts_num--;
 				update_hearts();
