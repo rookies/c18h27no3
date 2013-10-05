@@ -90,6 +90,7 @@ int MainMenu::calculate_sizes(int w, int h)
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	m_logo_yoffset = h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0);
+	m_activewidth = w*MAINMENU_ACTIVEWIDTH/1920.;
 	/*
 	 * Update logo position & size:
 	*/
@@ -140,7 +141,7 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 			for (i=0; i < MAINMENU_COUNT; i++)
 			{
 				if (mouse_x >= m_logo_xoffset+m_menuc_x[i] &&
-					mouse_x <= m_logo_xoffset+m_menuc_x[i]+MAINMENU_ACTIVEWIDTH &&
+					mouse_x <= m_logo_xoffset+m_menuc_x[i]+m_activewidth &&
 					mouse_y >= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i] &&
 					mouse_y <= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i]+m_menuc_h[i])
 				{

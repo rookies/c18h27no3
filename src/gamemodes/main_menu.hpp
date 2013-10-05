@@ -90,5 +90,6 @@
 			bool m_updates;
 			bool m_updatetext_changed;
 			std::string m_updatetext;
+			float m_activewidth;
 	};
 #endif // MAIN_MENU_HPP
