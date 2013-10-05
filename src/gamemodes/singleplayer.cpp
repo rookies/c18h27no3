@@ -506,7 +506,10 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		if (m_actiontimer.getElapsedTime().asMilliseconds() <= 450)
 			m_ptoiletbase.setRotation(m_actiontimer.getElapsedTime().asMilliseconds()/5.);
 		else
+		{
 			m_moving = true;
+			m_actiontimer.restart();
+		};
 	};
 	/*
 	 * Update item offset:
