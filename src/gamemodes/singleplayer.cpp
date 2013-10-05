@@ -308,6 +308,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	LevelColumn *col;
 	double highest, incr, lowest;
 	bool barrier;
+	sf::FloatRect rect;
 	/*
 	 * Perform player actions:
 	*/
@@ -328,9 +329,11 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 						*/
 						barrier = false;
 						col = m_level.get_column(floor(m_playerx)-1);
+						rect = m_player.getGlobalBounds();
+						rect.left -= PLAYER_XSTEPSIZE*m_blockw;
 						for (i=0; i < col->get_blocknumber(); i++)
 						{
-							if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
+							if (m_blocks[col->get_block(i)->offset].getGlobalBounds().intersects(rect))
 								barrier = true;
 						}
 						if (!barrier)
@@ -338,12 +341,12 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 							/*
 							 * Move:
 							*/
-							m_playerx -= 0.1;
+							m_playerx -= PLAYER_XSTEPSIZE;
 							m_backwards = true;
 							toggle_playertexture();
 							if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
 							{
-								m_offset -= 0.1;
+								m_offset -= PLAYER_XSTEPSIZE;
 								update_level();
 							};
 							place_player();
@@ -360,9 +363,11 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 						*/
 						barrier = false;
 						col = m_level.get_column(floor(m_playerx)+1);
+						rect = m_player.getGlobalBounds();
+						rect.left += PLAYER_XSTEPSIZE*m_blockw;
 						for (i=0; i < col->get_blocknumber(); i++)
 						{
-							if (col->get_block(i)->position > floor(m_playery) && col->get_block(i)->position < floor(m_playery)+6)
+							if (m_blocks[col->get_block(i)->offset].getGlobalBounds().intersects(rect))
 								barrier = true;
 						}
 						if (!barrier)
@@ -370,12 +375,12 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 							/*
 							 * Move:
 							*/
-							m_playerx += 0.1;
+							m_playerx += PLAYER_XSTEPSIZE;
 							m_backwards = false;
 							toggle_playertexture();
 							if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
 							{
-								m_offset += 0.1;
+								m_offset += PLAYER_XSTEPSIZE;
 								update_level();
 							};
 							place_player();
@@ -423,9 +428,10 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			 * Check if we're falling:
 			*/
 			highest = -1;
-			for (i=-1; i < 2; i++)
+			x = floor(m_playerx);
+			for (i=(x>0?-1:0); i <= (x<m_level.get_levelwidth()?1:0); i++)
 			{
-				col = m_level.get_column(floor(m_playerx)+i);
+				col = m_level.get_column(x+i);
 				for (j=0; j < col->get_blocknumber(); j++)
 				{
 					if (col->get_block(j)->position > highest && m_playery > col->get_block(j)->position)
@@ -465,7 +471,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			x = floor(m_playerx);
 			for (i=(x>0?-1:0); i <= (x<m_level.get_levelwidth()?1:0); i++)
 			{
-				col = m_level.get_column(floor(m_playerx)+i);
+				col = m_level.get_column(x+i);
 				for (j=0; j < col->get_itemnumber(); j++)
 				{
 					if (!col->get_item(j)->collected && m_items[col->get_item(j)->offset].getGlobalBounds().intersects(m_player.getGlobalBounds()))
@@ -635,6 +641,7 @@ void SinglePlayer::update_level(void)
 	{
 		for (j=0; j < m_level.get_column(m_offsetf+i)->get_blocknumber(); j++)
 		{
+			m_level.get_column(m_offsetf+i)->get_block(j)->offset = k;
 			m_blocks[k].setPosition(sf::Vector2f((i-m_offsetr)*m_blockw/2., m_h-(((m_level.get_column(m_offsetf+i)->get_block(j)->position/2.)+0.5)*m_blockh)));
 			m_blocks[k].setScale(m_blockw/32., m_blockh/16.);
 			m_blocks[k].setTexture(m_block_textures[m_level.get_column(m_offsetf+i)->get_block(j)->blockdef]);

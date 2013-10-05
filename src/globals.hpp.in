@@ -186,4 +186,5 @@
 #	define ITEMS_NUMBER 2
 #	define ITEM_MAXOFFSET .3
 #	define ITEM_STEPOFFSET .007
+#	define PLAYER_XSTEPSIZE .1
 #endif // GLOBALS_HPP

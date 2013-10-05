@@ -68,6 +68,7 @@
 		public:
 			unsigned short position;
 			unsigned short blockdef;
+			unsigned int offset;
 	};
 	
 	class LevelItem
