@@ -94,6 +94,13 @@
 	*/
 #	define CREDITS_COUNT 6
 	/*
+	 * Minima & Maxima for screen resolution:
+	*/
+#	define SCREENWIDTH_MIN 640
+#	define SCREENWIDTH_MAX 1920
+#	define SCREENHEIGHT_MIN 480
+#	define SCREENHEIGHT_MAX 1080
+	/*
 	 * Colors:
 	*/
 #	define COLOR_MENU_BACKGROUND sf::Color(255, 255, 255)
