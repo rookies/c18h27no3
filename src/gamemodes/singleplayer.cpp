@@ -306,233 +306,232 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	int i, j, x;
 	UniversalDrawableArray arr;
 	LevelColumn *col;
-	double highest, incr, lowest;
+	double highest, incr, lowest, multip, ssize;
 	bool barrier;
 	sf::FloatRect rect;
 	/*
 	 * Perform player actions:
 	*/
-	if (m_actiontimer.getElapsedTime().asMilliseconds() >= 10)
+	if (m_moving)
 	{
-		if (m_moving)
+		multip = m_actiontimer.getElapsedTime().asMilliseconds()/12.;
+		ssize = PLAYER_XSTEPSIZE*multip;
+		/*
+		 * Perform X actions (running):
+		*/
+		switch (m_player_xaction)
 		{
-			/*
-			 * Perform X actions (running):
-			*/
-			switch (m_player_xaction)
-			{
-				case PLAYER_RUNNING_LEFT:
-					if (m_playerx-0.1 >= 0)
+			case PLAYER_RUNNING_LEFT:
+				if (m_playerx-ssize >= 0)
+				{
+					/*
+					 * Check for barriers:
+					*/
+					barrier = false;
+					col = m_level.get_column(floor(m_playerx)-1);
+					rect = m_player.getGlobalBounds();
+					rect.left -= ssize*m_blockw;
+					for (i=0; i < col->get_blocknumber(); i++)
+					{
+						if (m_blocks[col->get_block(i)->offset].getGlobalBounds().intersects(rect))
+							barrier = true;
+					}
+					if (!barrier)
 					{
 						/*
-						 * Check for barriers:
+						 * Move:
 						*/
-						barrier = false;
-						col = m_level.get_column(floor(m_playerx)-1);
-						rect = m_player.getGlobalBounds();
-						rect.left -= PLAYER_XSTEPSIZE*m_blockw;
-						for (i=0; i < col->get_blocknumber(); i++)
+						m_playerx -= ssize;
+						m_backwards = true;
+						toggle_playertexture();
+						if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
 						{
-							if (m_blocks[col->get_block(i)->offset].getGlobalBounds().intersects(rect))
-								barrier = true;
-						}
-						if (!barrier)
-						{
-							/*
-							 * Move:
-							*/
-							m_playerx -= PLAYER_XSTEPSIZE;
-							m_backwards = true;
-							toggle_playertexture();
-							if (m_playerx-m_offset <= 15 && m_offset-0.1 >= 0)
-							{
-								m_offset -= PLAYER_XSTEPSIZE;
-								update_level();
-							};
-							place_player();
+							m_offset -= ssize;
+							update_level();
 						};
-					}
-					else
-						m_player_xaction = 0;
-					break;
-				case PLAYER_RUNNING_RIGHT:
-					if (m_playerx <= m_level.get_levelwidth()-2)
-					{
-						/*
-						 * Check for barriers:
-						*/
-						barrier = false;
-						col = m_level.get_column(floor(m_playerx)+1);
-						rect = m_player.getGlobalBounds();
-						rect.left += PLAYER_XSTEPSIZE*m_blockw;
-						for (i=0; i < col->get_blocknumber(); i++)
-						{
-							if (m_blocks[col->get_block(i)->offset].getGlobalBounds().intersects(rect))
-								barrier = true;
-						}
-						if (!barrier)
-						{
-							/*
-							 * Move:
-							*/
-							m_playerx += PLAYER_XSTEPSIZE;
-							m_backwards = false;
-							toggle_playertexture();
-							if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
-							{
-								m_offset += PLAYER_XSTEPSIZE;
-								update_level();
-							};
-							place_player();
-						};
-					}
-					else
-						m_player_xaction = 0;
-					break;
-			}
-			/*
-			 * Perform Y actions (jumping, falling):
-			*/
-			if (m_player_ystatus > 0)
-			{
-				/*
-				 * We're jumping!
-				 * Check if it's still possible:
-				*/
-				lowest = 100;
-				for (i=-1; i < 2; i++)
-				{
-					col = m_level.get_column(floor(m_playerx)+i);
-					for (j=0; j < col->get_blocknumber(); j++)
-					{
-						if (col->get_block(j)->position < lowest && m_playery+6 < col->get_block(j)->position)
-							lowest = col->get_block(j)->position;
-					}
-				}
-				lowest += 0.5;
-				if (lowest-2 > m_playery+6)
-				{
-					if (m_player_ystatus == 30)
-						m_player_ystatus = 0;
-					else
-					{
-						m_player_ystatus++;
-						m_playery += (-(0.6/30)*m_player_ystatus)+0.6; // f(x) = (-(max/steps)*x)+max
 						place_player();
 					};
 				}
 				else
-					m_player_ystatus = 0;
-			}
-			/*
-			 * Check if we're falling:
-			*/
-			highest = -1;
-			x = floor(m_playerx);
-			for (i=(x>0?-1:0); i <= (x<m_level.get_levelwidth()?1:0); i++)
-			{
-				col = m_level.get_column(x+i);
-				for (j=0; j < col->get_blocknumber(); j++)
+					m_player_xaction = 0;
+				break;
+			case PLAYER_RUNNING_RIGHT:
+				if (m_playerx <= m_level.get_levelwidth()-2)
 				{
-					if (col->get_block(j)->position > highest && m_playery > col->get_block(j)->position)
-						highest = col->get_block(j)->position;
-				}
-			}
-			highest += 0.5;
-			if (highest < m_playery)
-			{
-				/*
-				 * Too high!
-				*/
-				if (m_player_ystatus == 0)
-				{
-					if (m_playery-highest < 0.4)
-						m_playery -= (m_playery-highest);
-					else
-						m_playery -= 0.4;
-					place_player();
-				};
-				m_player_canjump = false;
-				if (m_playery <= -0.5)
-				{
-					m_hearts_num--;
-					update_hearts();
-					if (m_hearts_num == -1)
-						std::cout << "GAME OVER :(" << std::endl;
-					else
-						restart_level();
-				};
-			}
-			else
-				m_player_canjump = true;
-			/*
-			 * Check for interaction with items:
-			*/
-			x = floor(m_playerx);
-			for (i=(x>0?-1:0); i <= (x<m_level.get_levelwidth()?1:0); i++)
-			{
-				col = m_level.get_column(x+i);
-				for (j=0; j < col->get_itemnumber(); j++)
-				{
-					if (!col->get_item(j)->collected && m_items[col->get_item(j)->offset].getGlobalBounds().intersects(m_player.getGlobalBounds()))
+					/*
+					 * Check for barriers:
+					*/
+					barrier = false;
+					col = m_level.get_column(floor(m_playerx)+1);
+					rect = m_player.getGlobalBounds();
+					rect.left += ssize*m_blockw;
+					for (i=0; i < col->get_blocknumber(); i++)
 					{
-						// Got an item!
-						col->get_item(j)->collected = true;
-						update_level();
-						switch (col->get_item(j)->id)
+						if (m_blocks[col->get_block(i)->offset].getGlobalBounds().intersects(rect))
+							barrier = true;
+					}
+					if (!barrier)
+					{
+						/*
+						 * Move:
+						*/
+						m_playerx += ssize;
+						m_backwards = false;
+						toggle_playertexture();
+						if (m_playerx-m_offset >= 17 && m_offset+0.1 <= m_level.get_levelwidth()-HORIZONTAL_BLOCK_NUMBER)
 						{
-							case 0:
-								m_money++;
-								update_money();
-								break;
-							case 1:
-								m_hearts_num++;
-								update_hearts();
-								break;
-							default:
-								std::cout << "Collected unknown item!" << std::endl;
-						}
+							m_offset += ssize;
+							update_level();
+						};
+						place_player();
 					};
 				}
-			}
-			/*
-			 * Restart timer:
-			*/
-			m_actiontimer.restart();
+				else
+					m_player_xaction = 0;
+				break;
 		}
-		else
-		{
-			// Not moving, yet.
-			if (m_actiontimer.getElapsedTime().asMilliseconds() <= 450)
-				m_ptoiletbase.setRotation(m_actiontimer.getElapsedTime().asMilliseconds()/5.);
-			else
-				m_moving = true;
-		};
 		/*
-		 * Update item offset:
+		 * Perform Y actions (jumping, falling):
 		*/
-		if (m_itemoffsetd)
+		if (m_player_ystatus > 0)
 		{
 			/*
-			 * Moving downwards.
+			 * We're jumping!
+			 * Check if it's still possible:
 			*/
-			if (m_itemoffset <= 0)
-				m_itemoffsetd = false;
+			lowest = 100;
+			for (i=-1; i < 2; i++)
+			{
+				col = m_level.get_column(floor(m_playerx)+i);
+				for (j=0; j < col->get_blocknumber(); j++)
+				{
+					if (col->get_block(j)->position < lowest && m_playery+6 < col->get_block(j)->position)
+						lowest = col->get_block(j)->position;
+				}
+			}
+			lowest += 0.5;
+			if (lowest-2 > m_playery+6)
+			{
+				if (m_player_ystatus == 30)
+					m_player_ystatus = 0;
+				else
+				{
+					m_player_ystatus++;
+					m_playery += ((-(0.6/30)*m_player_ystatus)+0.6)*multip; // f(x) = (-(max/steps)*x)+max
+					place_player();
+				};
+			}
 			else
-				m_itemoffset -= ITEM_STEPOFFSET;
+				m_player_ystatus = 0;
+		}
+		/*
+		 * Check if we're falling:
+		*/
+		highest = -1;
+		x = floor(m_playerx);
+		for (i=(x>0?-1:0); i <= (x<m_level.get_levelwidth()?1:0); i++)
+		{
+			col = m_level.get_column(x+i);
+			for (j=0; j < col->get_blocknumber(); j++)
+			{
+				if (col->get_block(j)->position > highest && m_playery > col->get_block(j)->position)
+					highest = col->get_block(j)->position;
+			}
+		}
+		highest += 0.5;
+		if (highest < m_playery)
+		{
+			/*
+			 * Too high!
+			*/
+			if (m_player_ystatus == 0)
+			{
+				if (m_playery-highest < 0.4*multip)
+					m_playery -= (m_playery-highest)*multip;
+				else
+					m_playery -= 0.4*multip;
+				place_player();
+			};
+			m_player_canjump = false;
+			if (m_playery <= -0.5)
+			{
+				m_hearts_num--;
+				update_hearts();
+				if (m_hearts_num == -1)
+					std::cout << "GAME OVER :(" << std::endl;
+				else
+					restart_level();
+			};
 		}
 		else
+			m_player_canjump = true;
+		/*
+		 * Check for interaction with items:
+		*/
+		x = floor(m_playerx);
+		for (i=(x>0?-1:0); i <= (x<m_level.get_levelwidth()?1:0); i++)
 		{
-			/*
-			 * Moving upwards.
-			*/
-			if (m_itemoffset >= ITEM_MAXOFFSET)
-				m_itemoffsetd = true;
-			else
-				m_itemoffset += ITEM_STEPOFFSET;
-		};
-		update_itempos();
+			col = m_level.get_column(x+i);
+			for (j=0; j < col->get_itemnumber(); j++)
+			{
+				if (!col->get_item(j)->collected && m_items[col->get_item(j)->offset].getGlobalBounds().intersects(m_player.getGlobalBounds()))
+				{
+					// Got an item!
+					col->get_item(j)->collected = true;
+					update_level();
+					switch (col->get_item(j)->id)
+					{
+						case 0:
+							m_money++;
+							update_money();
+							break;
+						case 1:
+							m_hearts_num++;
+							update_hearts();
+							break;
+						default:
+							std::cout << "Collected unknown item!" << std::endl;
+					}
+				};
+			}
+		}
+		/*
+		 * Restart timer:
+		*/
+		m_actiontimer.restart();
+	}
+	else
+	{
+		// Not moving, yet.
+		if (m_actiontimer.getElapsedTime().asMilliseconds() <= 450)
+			m_ptoiletbase.setRotation(m_actiontimer.getElapsedTime().asMilliseconds()/5.);
+		else
+			m_moving = true;
 	};
+	/*
+	 * Update item offset:
+	*/
+	if (m_itemoffsetd)
+	{
+		/*
+		 * Moving downwards.
+		*/
+		if (m_itemoffset <= 0)
+			m_itemoffsetd = false;
+		else
+			m_itemoffset -= ITEM_STEPOFFSET;
+	}
+	else
+	{
+		/*
+		 * Moving upwards.
+		*/
+		if (m_itemoffset >= ITEM_MAXOFFSET)
+			m_itemoffsetd = true;
+		else
+			m_itemoffset += ITEM_STEPOFFSET;
+	};
+	update_itempos();
 	/*
 	 * Fill array:
 	*/
