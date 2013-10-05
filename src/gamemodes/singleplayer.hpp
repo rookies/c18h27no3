@@ -27,6 +27,7 @@
 #	define PLAYER_RUNNING_RIGHT 2
 
 #	include <math.h>
+#	include <sstream>
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
@@ -76,6 +77,10 @@
 			 * Update health meter:
 			*/
 			void update_healthm(void);
+			/*
+			 * Update money:
+			*/
+			void update_money(void);
 			/*
 			 * Restart level:
 			*/
@@ -141,5 +146,8 @@
 			sf::Sprite *m_items;
 			float m_itemoffset;
 			bool m_itemoffsetd;
+			sf::Font m_font1;
+			sf::Text m_moneytext;
+			sf::Text m_heartstext;
 	};
 #endif // SINGLEPLAYER_HPP

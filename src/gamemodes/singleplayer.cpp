@@ -170,9 +170,25 @@ int SinglePlayer::init(Config conf, std::string arg)
 	m_healthm_helper.setFillColor(sf::Color::Black);
 	m_healthm_helper.setOutlineThickness(0);
 	/*
+	 * Load font:
+	*/
+	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "PressStart2P.ttf")))
+		return 1;
+	/*
+	 * Init texts:
+	*/
+	m_moneytext.setFont(m_font1);
+	m_moneytext.setColor(sf::Color::Black);
+	m_heartstext.setFont(m_font1);
+	m_heartstext.setColor(sf::Color::Black);
+	/*
 	 * Init hearts:
 	*/
 	update_hearts();
+	/*
+	 * Init money:
+	*/
+	update_money();
 	/*
 	 * Init timers:
 	*/
@@ -246,6 +262,13 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Set portable toilet properties:
 	*/
 	m_ptoilet.setScale(m_blockw/32., m_blockh/16.);
+	/*
+	 * Set text properties:
+	*/
+	m_moneytext.setCharacterSize(h/SIZE_GAME_MONEYTEXT_SIZE_DIVIDER);
+	m_moneytext.setPosition(sf::Vector2f(w*SIZE_GAME_MONEYTEXT_XOFFSET/100., h*SIZE_GAME_MONEYTEXT_YOFFSET/100.));
+	m_heartstext.setCharacterSize(h/SIZE_GAME_HEARTSTEXT_SIZE_DIVIDER);
+	m_heartstext.setPosition(sf::Vector2f(w*SIZE_GAME_HEARTSTEXT_XOFFSET/100., h*SIZE_GAME_HEARTSTEXT_YOFFSET/100.));
 	return 0;
 }
 void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -451,6 +474,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 					{
 						case 0:
 							m_money++;
+							update_money();
 							break;
 						case 1:
 							m_hearts_num++;
@@ -502,8 +526,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	//arr.init(9+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0));
-	arr.init(8+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0));
+	//arr.init(11+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0));
+	arr.init(10+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0));
 	//arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
 	{
@@ -524,6 +548,9 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		arr.add_sprite(m_ptoilet);
 		arr.add_rectshape(m_ptoiletbase);
 	};
+	arr.add_text(m_moneytext);
+	if (m_hearts_num > 3)
+		arr.add_text(m_heartstext);
 	return arr;
 }
 void SinglePlayer::toggle_playertexture(void)
@@ -660,6 +687,7 @@ void SinglePlayer::update_hearts(void)
 	 * Variable declarations:
 	*/
 	unsigned int i;
+	std::ostringstream ss;
 	
 	for (i=0; i < 3; i++)
 	{
@@ -668,6 +696,18 @@ void SinglePlayer::update_hearts(void)
 		else
 			m_hearts[i].setTexture(m_heart_grey);
 	}
+	/*
+	 * Update extra hearts view:
+	*/
+	if (m_hearts_num > 3)
+	{
+		m_frame.setTextureRect(sf::IntRect(0, 0, SIZE_STATUSFRAME_IMGWIDTH, SIZE_STATUSFRAME_IMGHEIGHT));
+		ss.str("");
+		ss << m_hearts_num-3;
+		m_heartstext.setString(ss.str());
+	}
+	else
+		m_frame.setTextureRect(sf::IntRect(0, 0, SIZE_STATUSFRAME_NOEHEARTS_WIDTH, SIZE_STATUSFRAME_NOEHEARTS_HEIGHT));
 }
 void SinglePlayer::update_healthm(void)
 {
@@ -679,6 +719,17 @@ void SinglePlayer::update_healthm(void)
 	scale = (100-m_health)/100.;
 	m_healthm.setTextureRect(sf::IntRect(0, 0, ceil(SIZE_HEALTHMETER_IMGWIDTH*(1-scale)), SIZE_HEALTHMETER_IMGHEIGHT));
 	m_healthm.setPosition(sf::Vector2f((m_w*SIZE_HEALTHMETER_XOFFSET/100.)+(SIZE_HEALTHMETER_IMGWIDTH*m_sframe_scale*scale), m_h*SIZE_HEALTHMETER_YOFFSET/100.));
+}
+void SinglePlayer::update_money(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	std::ostringstream ss;
+	
+	ss.str("");
+	ss << m_money;
+	m_moneytext.setString(ss.str());
 }
 void SinglePlayer::restart_level(void)
 {
