@@ -1370,6 +1370,7 @@
                       <object class="GtkNotebook" id="notebook3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="switch-page" handler="on_notebook3_switch_page" swapped="no"/>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow3">
                             <property name="visible">True</property>

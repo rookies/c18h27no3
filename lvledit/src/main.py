@@ -49,6 +49,7 @@ class LevelEditor (object):
 	messagedialog1_parent_dialog = None
 	trashcoords = (0, 0)
 	dragtype = 0
+	notebook3_page = 0
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -373,7 +374,7 @@ class LevelEditor (object):
 		else:
 			self.level.add_block(x_trans, y_trans, bdef)
 			self.changed = True
-			self.update_everything(False)
+			self.update_everything(False, False)
 	def rm_block_raw(self, x, y):
 		x_trans, y_trans = self.translate_coords(x,y)
 		self.rm_block(x_trans, y_trans)
@@ -381,7 +382,7 @@ class LevelEditor (object):
 		if y < 30:
 			if self.level.remove_block(x, y):
 				self.changed = True
-				self.update_everything(False)
+				self.update_everything(False, False)
 				print("Block deleted on x_trans=%d; y_trans=%d" % (x,y))
 	def add_item(self, x, y, iid):
 		x_trans, y_trans = self.translate_coords(x,y)
@@ -391,7 +392,16 @@ class LevelEditor (object):
 		else:
 			self.level.add_item(x_trans, y_trans, iid)
 			self.changed = True
-			self.update_everything(False)
+			self.update_everything(False, False)
+	def rm_item_raw(self, x, y):
+		x_trans, y_trans = self.translate_coords(x,y)
+		self.rm_item(x_trans, y_trans)
+	def rm_item(self, x, y):
+		if y < 30:
+			if self.level.remove_item(x, y):
+				self.changed = True
+				self.update_everything(False, False)
+				print("Item deleted on x_trans=%d; y_trans=%d" % (x,y))
 	### window1 EVENTS ###
 	def on_window1_delete_event(self, *args):
 		# closed
@@ -576,6 +586,8 @@ class LevelEditor (object):
 		self.update_everything()
 	
 	### window1/tab4 EVENTS ###
+	def on_notebook3_switch_page(self, widget, child, num):
+		self.notebook3_page = num
 	def on_scale1_format_value(self, widget, value):
 		return "%d" % value
 	def on_scale1_change_value(self, widget, scroll, value):
@@ -601,14 +613,14 @@ class LevelEditor (object):
 	def on_treeview3_drag_end(self, widget, dragctx):
 		widget.drag_source_set_icon_stock("")
 	def on_treeview5_drag_begin(self, widget, dragctx):
-		row = self.builder.get_object("treeview-selection5").get_selected()
+		row = self.builder.get_object("treeview5").get_selection().get_selected()
 		if row[1] is not None:
 			img = self.get_image_from_item_id(row[0].get_value(row[1], 0))
 			widget.drag_source_set_icon_pixbuf(img.get_pixbuf())
 			img.clear()
 			self.dragtype = 2
 	def on_treeview5_drag_data_get(self, widget, dragctx, selection, info, time):
-		row = self.builder.get_object("treeview-selection5").get_selected()
+		row = self.builder.get_object("treeview5").get_selection().get_selected()
 		if row[1] is not None:
 			selection.set_text(str(row[0].get_value(row[1], 0)), 1)
 	def on_treeview5_drag_end(self, widget, dragctx):
@@ -626,12 +638,24 @@ class LevelEditor (object):
 	def on_layout1_button_press_event(self, widget, ev):
 		if ev.button is 1:
 			# left click -> add
-			row = self.builder.get_object("treeview-selection3").get_selected()
-			if row[1] is not None:
-				self.add_block(ev.x, ev.y, row[0].get_value(row[1], 0))
+			if self.notebook3_page is 0:
+				# block
+				row = self.builder.get_object("treeview3").get_selection().get_selected()
+				if row[1] is not None:
+					self.add_block(ev.x, ev.y, row[0].get_value(row[1], 0))
+			elif self.notebook3_page is 1:
+				# item
+				row = self.builder.get_object("treeview5").get_selection().get_selected()
+				if row[1] is not None:
+					self.add_item(ev.x, ev.y, row[0].get_value(row[1], 0))
 		elif ev.button is 3:
 			# right click -> remove
-			self.rm_block_raw(ev.x, ev.y)
+			if self.notebook3_page is 0:
+				# block
+				self.rm_block_raw(ev.x, ev.y)
+			elif self.notebook3_page is 1:
+				# item
+				self.rm_item_raw(ev.x, ev.y)
 	def on_layout1_draw(self, widget, ctx):
 		s = widget.get_allocation()
 		block_height = s.height/self.NUMBLOCKSY
@@ -672,7 +696,10 @@ class LevelEditor (object):
 		x_trans, y_trans = self.translate_coords(m[0],m[1])
 		self.trashcoords = (x_trans, y_trans)
 	def on_image1_drag_drop(self, *args):
-		self.rm_block(self.trashcoords[0], self.trashcoords[1])
+		if self.notebook3_page is 0:
+			self.rm_block(self.trashcoords[0], self.trashcoords[1])
+		elif self.notebook3_page is 1:
+			self.rm_item(self.trashcoords[0], self.trashcoords[1])
 		self.trashcoords = (0,0)
 	### scrolledwindow1 EVENTS ###
 	def on_adjustment2_value_changed(self, widget):

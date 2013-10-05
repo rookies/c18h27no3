@@ -303,7 +303,7 @@ class Level (object):
 			return False
 		else:
 			del self.columns[pos]["blocks"][pos2]
-			if len(self.columns[pos]["blocks"]) is 0:
+			if len(self.columns[pos]["blocks"]) is 0 and len(self.columns[pos]["items"]) is 0:
 				del self.columns[pos]
 			return True
 	### ITEMS:
@@ -370,7 +370,7 @@ class Level (object):
 			return False
 		else:
 			del self.columns[pos]["items"][pos2]
-			if len(self.columns[pos]["items"]) is 0:
+			if len(self.columns[pos]["items"]) is 0 and len(self.columns[pos]["blocks"]) is 0:
 				del self.columns[pos]
 			return True
 	### _bgimg EXTENSION:
