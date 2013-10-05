@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-03 19:53+0200\n"
-"PO-Revision-Date: 2013-10-03 19:54+0100\n"
+"POT-Creation-Date: 2013-10-05 17:32+0200\n"
+"PO-Revision-Date: 2013-10-05 17:33+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -266,3 +266,15 @@ msgstr "Abbrechen"
 #: src/gamemodes/settings_control_menu.cpp:624
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Taste drücken-"
+
+#: src/gamemodes/settings_sound_menu.cpp:79
+msgid "settings_sound_menu_entry_header_menu_music_volume"
+msgstr "Lautstärke Menü-Musik"
+
+#: src/gamemodes/settings_sound_menu.cpp:91
+msgid "settings_sound_menu_entry_save"
+msgstr "Speichern"
+
+#: src/gamemodes/settings_sound_menu.cpp:92
+msgid "settings_sound_menu_entry_abort"
+msgstr "Abbrechen"

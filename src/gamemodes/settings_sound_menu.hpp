@@ -25,8 +25,14 @@
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
+#	include <libintl.h>
+#	include "globals.hpp"
+#	include "../widestring.hpp"
+#	include "../config_chooser.hpp"
+#	include "../config_common.hpp"
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
+#	include "../dataloader.hpp"
 #	include "../gamemode.hpp"
 	
 	class SettingsSoundMenu : public Gamemode
@@ -49,10 +55,32 @@
 			*/
 			void process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret); /* Called in Game::process_events() */
 			/*
+			 * Reset menuitemX_over variables:
+			*/
+			void reset_menuitem_over(void);
+			/*
 			 * Get drawable items:
 			*/
 			UniversalDrawableArray get_drawables(void);
 		private:
-			
+			int m_w, m_h;
+			ConfigChooser m_config_chooser1;
+			sf::Font m_font1;
+			sf::Font m_font2;
+			sf::RectangleShape m_menuitem1;
+			sf::RectangleShape m_menuitem2;
+			sf::RectangleShape m_menuitem3;
+			sf::Texture m_arrow_left;
+			sf::Texture m_arrow_right;
+			sf::Sprite m_arrow_left1_sprite;
+			sf::Sprite m_arrow_right1_sprite;
+			sf::Text m_menuitem1_header;
+			sf::Text m_menuitem1_value;
+			sf::Text m_menuitem2_txt;
+			sf::Text m_menuitem3_txt;
+			int m_menuitem2_over;
+			int m_menuitem3_over;
+			int m_arrow_left1_over;
+			int m_arrow_right1_over;
 	};
 #endif // SETTINGS_SOUND_MENU_HPP
