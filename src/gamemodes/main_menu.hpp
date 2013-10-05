@@ -25,6 +25,7 @@
 	
 #	include <iostream>
 #	include <SFML/Graphics.hpp>
+#	include <SFML/Network.hpp>
 #	include <libintl.h>
 #	include "globals.hpp"
 #	include "../widestring.hpp"
@@ -60,6 +61,10 @@
 			 * Get drawable items:
 			*/
 			UniversalDrawableArray get_drawables(void);
+			/*
+			 * Update thread:
+			*/
+			void updater(void);
 		private:
 			int m_w;
 			int m_h;
@@ -79,5 +84,11 @@
 			unsigned int m_menuc_h[MAINMENU_COUNT];
 			int m_logo_xoffset;
 			int m_logo_yoffset;
+			sf::Thread *m_update_thread;
+			sf::Font m_font1;
+			sf::Text m_text1;
+			bool m_updates;
+			bool m_updatetext_changed;
+			std::string m_updatetext;
 	};
 #endif // MAIN_MENU_HPP

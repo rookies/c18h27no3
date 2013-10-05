@@ -38,6 +38,11 @@
 	*/
 #	define PROJECTNAME "@CMAKE_PROJECT_NAME@"
 	/*
+	 * Update server:
+	*/
+#	define UPDATESERVER "http://update.capsaicin-dev.de"
+#	define UPDATEURI "/@CMAKE_PROJECT_NAME@-v@GAME_VERSION_MAJOR@.@GAME_VERSION_MINOR@.txt"
+	/*
 	 * Defines:
 	*/
 	#cmakedefine HAVE_PUTENV
@@ -142,6 +147,8 @@
 #	define SIZE_CREDITS_IMG_XOFFSET 5.
 #	define SIZE_CREDITS_IMG_YOFFSET 2.
 #	define SIZE_CREDITS_IMG_WIDTH 15.
+#	define SIZE_UPDATER_TEXT_XOFFSET 2.
+#	define SIZE_UPDATER_TEXT_YOFFSET 90.
 	/*
 	 * Sizes (in px):
 	*/
@@ -160,6 +167,7 @@
 #	define SIZE_PTOILETBASE_HEIGHT_DIVIDER 10.0
 #	define SIZE_CREDITS_HEADER_TEXT_SIZE_DIVIDER 20.
 #	define SIZE_CREDITS_TEXT_SIZE_DIVIDER 30.
+#	define SIZE_UPDATER_TEXT_SIZE_DIVIDER 30.
 	/*
 	 * Game settings:
 	*/

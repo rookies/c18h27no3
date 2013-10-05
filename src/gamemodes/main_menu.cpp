@@ -22,7 +22,7 @@
  */
 #include "main_menu.hpp"
 
-MainMenu::MainMenu() : m_menuitem_over(-1), m_menuitem_loaded(-1)
+MainMenu::MainMenu() : m_menuitem_over(-1), m_menuitem_loaded(-1), m_updates(false), m_updatetext_changed(false)
 {
 	
 }
@@ -32,6 +32,11 @@ MainMenu::~MainMenu()
 }
 int MainMenu::init(Config conf, std::string arg)
 {
+	/*
+	 * Start update thread:
+	*/
+	m_update_thread = new sf::Thread(&MainMenu::updater, this);
+	m_update_thread->launch();
 	/*
 	 * Init logo & menu image:
 	*/
@@ -50,10 +55,22 @@ int MainMenu::init(Config conf, std::string arg)
 	m_img2_sprite.setColor(sf::Color(255, 255, 255, 255));
 	m_menuitem_over = -1;
 	m_menuitem_loaded = -1;
+	/*
+	 * Load font:
+	*/
+	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Regular.ttf")))
+		return 1;
+	/*
+	 * Init update text:
+	*/
+	m_text1.setFont(m_font1);
+	m_text1.setColor(sf::Color::Red);
 	return 0;
 }
 int MainMenu::uninit(void)
 {
+	m_update_thread->terminate();
+	delete m_update_thread;
 	return 0;
 }
 int MainMenu::calculate_sizes(int w, int h)
@@ -89,6 +106,11 @@ int MainMenu::calculate_sizes(int w, int h)
 		m_menuc_y[i] = (m_menu_y[i]/1920.0)*w;
 		m_menuc_h[i] = (m_menu_h[i]/1920.0)*w;
 	}
+	/*
+	 * Calculate update text properties:
+	*/
+	m_text1.setCharacterSize(h/SIZE_UPDATER_TEXT_SIZE_DIVIDER);
+	m_text1.setPosition(sf::Vector2f(w*SIZE_UPDATER_TEXT_XOFFSET/100., h*SIZE_UPDATER_TEXT_YOFFSET/100.));
 	return 0;
 }
 void MainMenu::load_menuitem(int i)
@@ -154,20 +176,63 @@ UniversalDrawableArray MainMenu::get_drawables(void)
 	*/
 	UniversalDrawableArray arr;
 	/*
+	 * Change update text:
+	*/
+	if (m_updatetext_changed)
+	{
+		m_text1.setString(get_wstring(m_updatetext));
+		m_updatetext_changed = false;
+	};
+	/*
 	 * Init UniversalDrawableArray:
 	*/
-	if (m_menuitem_over > -1)
-		arr.init(2);
-	else
-		arr.init(1);
+	arr.init(1+(m_menuitem_over>-1?1:0)+(m_updates?1:0));
 	/*
 	 * Add elements:
 	*/
 	arr.add_sprite(m_img1_sprite);
 	if (m_menuitem_over > -1)
 		arr.add_sprite(m_img2_sprite);
+	if (m_updates)
+		arr.add_text(m_text1);
 	/*
 	 * Return:
 	*/
 	return arr;
+}
+void MainMenu::updater(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	sf::Http http;
+	sf::Http::Request req;
+	sf::Http::Response res;
+	/*
+	 * Set host:
+	*/
+	http.setHost(UPDATESERVER);
+	/*
+	 * Send request:
+	*/
+	std::cout << "Updater: Requesting " << UPDATESERVER << UPDATEURI << " ..." << std::endl;
+	req.setUri(UPDATEURI);
+	res = http.sendRequest(req);
+	/*
+	 * Analyze response:
+	*/
+	std::cout << "Updater: Got " << res.getStatus() << " response, length: " << res.getBody().length() << std::endl;
+	if (res.getStatus() == sf::Http::Response::Ok && res.getBody().length() > 0)
+	{
+		/*
+		 * Got an update.
+		*/
+		std::cout << "Updater: Got an update:" << std::endl;
+		std::cout << "= TEXT START =" << std::endl;
+		std::cout << res.getBody();
+		std::cout << "= TEXT END =" << std::endl;
+		m_updatetext = res.getBody();
+		m_updatetext_changed = true;
+		m_updates = true;
+	};
 }
