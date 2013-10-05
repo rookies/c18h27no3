@@ -77,6 +77,7 @@
 			
 			unsigned short position;
 			unsigned short id;
+			unsigned int offset;
 			bool collected;
 	};
 

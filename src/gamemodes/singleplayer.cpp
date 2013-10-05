@@ -303,7 +303,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Variable declarations:
 	*/
-	int i, j;
+	int i, j, x;
 	UniversalDrawableArray arr;
 	LevelColumn *col;
 	double highest, incr, lowest;
@@ -462,28 +462,32 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			/*
 			 * Check for interaction with items:
 			*/
-			col = m_level.get_column(floor(m_playerx));
-			for (j=0; j < col->get_itemnumber(); j++)
+			x = floor(m_playerx);
+			for (i=(x>0?-1:0); i <= (x<m_level.get_levelwidth()?1:0); i++)
 			{
-				if (!col->get_item(j)->collected && col->get_item(j)->position == floor(m_playery))
+				col = m_level.get_column(floor(m_playerx)+i);
+				for (j=0; j < col->get_itemnumber(); j++)
 				{
-					// Got an item!
-					col->get_item(j)->collected = true;
-					update_level();
-					switch (col->get_item(j)->id)
+					if (!col->get_item(j)->collected && m_items[col->get_item(j)->offset].getGlobalBounds().intersects(m_player.getGlobalBounds()))
 					{
-						case 0:
-							m_money++;
-							update_money();
-							break;
-						case 1:
-							m_hearts_num++;
-							update_hearts();
-							break;
-						default:
-							std::cout << "Collected unknown item!" << std::endl;
-					}
-				};
+						// Got an item!
+						col->get_item(j)->collected = true;
+						update_level();
+						switch (col->get_item(j)->id)
+						{
+							case 0:
+								m_money++;
+								update_money();
+								break;
+							case 1:
+								m_hearts_num++;
+								update_hearts();
+								break;
+							default:
+								std::cout << "Collected unknown item!" << std::endl;
+						}
+					};
+				}
 			}
 			/*
 			 * Restart timer:
@@ -640,6 +644,7 @@ void SinglePlayer::update_level(void)
 		{
 			if (!m_level.get_column(m_offsetf+i)->get_item(j)->collected)
 			{
+				m_level.get_column(m_offsetf+i)->get_item(j)->offset = l;
 				m_items[l].setScale((m_blockw/32.)*.8, (m_blockh/16.)*.8);
 				m_items[l].setTexture(m_item_textures[m_level.get_column(m_offsetf+i)->get_item(j)->id]);
 				l++;
