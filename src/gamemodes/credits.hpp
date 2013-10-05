@@ -77,5 +77,6 @@
 			int m_credits_yoffset;
 			int m_item_over;
 			int m_item_loaded;
+			sf::Text m_sign;
 	};
 #endif // CREDITS_HPP

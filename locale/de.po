@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-05 18:00+0200\n"
-"PO-Revision-Date: 2013-10-05 18:02+0100\n"
+"PO-Revision-Date: 2013-10-05 18:47+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -49,11 +49,10 @@ msgstr ""
 "Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
 
 #: src/gamemodes/credits.cpp:133
-#, fuzzy
 msgid "credits_text1"
 msgstr ""
-"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
-"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+"Ich bin Programmierer, ich habe die Ergebnisse der Anderen\n"
+"zusammengefügt und das Spiel und den Level-Editor daraus gemacht."
 
 #: src/gamemodes/credits.cpp:137
 #, fuzzy
@@ -63,11 +62,10 @@ msgstr ""
 "Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
 
 #: src/gamemodes/credits.cpp:141
-#, fuzzy
 msgid "credits_text3"
 msgstr ""
-"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
-"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+"Ich bin Grafikdesigner, das heißt ich entwickle und\n"
+"gestalte Grafiken für unser Spiel, vor allem die Blöcke und Items."
 
 #: src/gamemodes/credits.cpp:145
 #, fuzzy

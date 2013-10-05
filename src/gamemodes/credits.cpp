@@ -57,6 +57,11 @@ int Credits::init(Config conf, std::string arg)
 	m_text.setFont(m_font2);
 	m_text.setColor(sf::Color::Black);
 	/*
+	 * Init sign:
+	*/
+	m_sign.setFont(m_font1);
+	m_sign.setColor(sf::Color(50,50,50));
+	/*
 	 * Load standard text:
 	*/
 	load_item(-1);
@@ -94,18 +99,23 @@ int Credits::calculate_sizes(int w, int h)
 	 * Set header properties:
 	*/
 	m_header.setCharacterSize(h/SIZE_CREDITS_HEADER_TEXT_SIZE_DIVIDER);
-	m_header.setPosition(w*SIZE_CREDITS_TEXT_XOFFSET/100., 0);
+	m_header.setPosition(w*SIZE_CREDITS_HEADER_XOFFSET/100., 0);
 	/*
 	 * Set text properties:
 	*/
 	m_text.setCharacterSize(h/SIZE_CREDITS_TEXT_SIZE_DIVIDER);
-	m_text.setPosition(sf::Vector2f(w*SIZE_CREDITS_TEXT_XOFFSET/100., h/SIZE_CREDITS_HEADER_TEXT_SIZE_DIVIDER*2));
+	m_text.setPosition(w*SIZE_CREDITS_TEXT_XOFFSET/100., h/SIZE_CREDITS_HEADER_TEXT_SIZE_DIVIDER*2);
 	/*
 	 * Set capsaicin dev logo properties:
 	*/
 	scale = w*SIZE_CREDITS_IMG_WIDTH/100./SIZE_CDEV_IMGWIDTH;
 	m_cdev.setScale(scale, scale);
 	m_cdev.setPosition(w*SIZE_CREDITS_IMG_XOFFSET/100., h*SIZE_CREDITS_IMG_YOFFSET/100.);
+	/*
+	 * Set sign properties:
+	*/
+	m_sign.setCharacterSize(h/SIZE_CREDITS_SIGN_SIZE_DIVIDER);
+	m_sign.setPosition(w*SIZE_CREDITS_SIGN_XOFFSET/100., h*SIZE_CREDITS_SIGN_YOFFSET/100.);
 	/*
 	 * Translate image positions:
 	*/
@@ -127,30 +137,37 @@ void Credits::load_item(int i)
 		case 0:
 			m_header.setString(get_wstring("Max „Die DVU“ Bäz-Dölle"));
 			m_text.setString(get_wstring(_("credits_text0")));
+			m_sign.setString(get_wstring("„"));
 			break;
 		case 1:
 			m_header.setString(get_wstring("Robert „Knauer“ Knauer"));
 			m_text.setString(get_wstring(_("credits_text1")));
+			m_sign.setString(get_wstring("„"));
 			break;
 		case 2:
 			m_header.setString(get_wstring("Robert „F.“ Falkenstein"));
 			m_text.setString(get_wstring(_("credits_text2")));
+			m_sign.setString(get_wstring("„"));
 			break;
 		case 3:
 			m_header.setString(get_wstring("Vasco „Der Pfandjude“ Lehmann"));
 			m_text.setString(get_wstring(_("credits_text3")));
+			m_sign.setString(get_wstring("„"));
 			break;
 		case 4:
 			m_header.setString(get_wstring("Robert „Roert“ Worm"));
 			m_text.setString(get_wstring(_("credits_text4")));
+			m_sign.setString(get_wstring("„"));
 			break;
 		case 5:
 			m_header.setString(get_wstring("Grünlers Tür"));
 			m_text.setString(get_wstring(_("credits_text5")));
+			m_sign.setString(get_wstring("!"));
 			break;
 		default:
 			m_header.setString(get_wstring(_("credits_header")));
 			m_text.setString(get_wstring(_("credits_stdtext")));
+			m_sign.setString(get_wstring("!"));
 	}
 	m_item_loaded = i;
 }
@@ -203,10 +220,11 @@ UniversalDrawableArray Credits::get_drawables(void)
 	 * Variable declarations:
 	*/
 	UniversalDrawableArray arr;
-	arr.init(4);
+	arr.init(5);
 	arr.add_sprite(m_img);
 	arr.add_text(m_header);
 	arr.add_text(m_text);
 	arr.add_sprite(m_cdev);
+	arr.add_text(m_sign);
 	return arr;
 }
