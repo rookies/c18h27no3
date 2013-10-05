@@ -38,7 +38,7 @@ class LevelEditor (object):
 	blockdefs_store2 = None
 	standard_blocks_store = None
 	items_store = None
-	bgimgs = []
+	bgimg_store = None
 	level = level.Level()
 	changed = False
 	opened_file = None
@@ -49,7 +49,6 @@ class LevelEditor (object):
 	messagedialog1_parent_dialog = None
 	trashcoords = (0, 0)
 	dragtype = 0
-	comboboxtext1_changing = False
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -120,7 +119,17 @@ class LevelEditor (object):
 		self.builder.get_object("treeview5").set_model(self.items_store)
 		## Fill the model:
 		self.update_items_store()
-		### CREATE STUFF FOR THE BGIMG COMBOBOX ###
+		### CREATE STUFF FOR THE BGIMG TREEVIEW ###
+		name = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=0)
+		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview6").append_column(name)
+		self.builder.get_object("treeview6").append_column(img)
+		## Create the model:
+		self.bgimg_store = Gtk.ListStore(GObject.TYPE_STRING, GdkPixbuf.Pixbuf)
+		## Assign the model to the treeview:
+		self.builder.get_object("treeview6").set_model(self.bgimg_store)
+		## Fill the model:
 		self.update_bgimg_store()
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
@@ -158,7 +167,7 @@ class LevelEditor (object):
 		else:
 			self.messagedialog1_parent_dialog = parent_dlg
 			parent_dlg.set_sensitive(False)
-	def update_everything(self, blockdefs=True):
+	def update_everything(self, blockdefs=True, bgimgs=True):
 		## Metadata Store:
 		self.update_metadata_store()
 		## Blockdefs Stores:
@@ -175,7 +184,8 @@ class LevelEditor (object):
 		self.builder.get_object("adjustment1").set_value(self.level.get_level_width())
 		self.update_levelwidth_scale_lower()
 		## BG imgs:
-		self.update_bgimg_store()
+		if bgimgs:
+			self.update_bgimg_store()
 	def update_levelwidth_scale_lower(self):
 		## get biggest block position:
 		cols = self.level.get_columns()
@@ -243,26 +253,25 @@ class LevelEditor (object):
 			])
 			i += 1
 	def update_bgimg_store(self):
-		widget = self.builder.get_object("comboboxtext1")
-		widget.get_model().clear()
-		self.bgimgs = []
+		self.bgimg_store.clear()
+		bgimgs = []
 		for f in glob.glob(self.IMGPATH + "backgrounds/*.png"):
 			name = os.path.basename(f).split(".", 2)[0]
-			self.bgimgs.append(name)
-		self.bgimgs.sort()
-		widget.append_text("- kein Hintergrund -")
-		for name in self.bgimgs:
-			widget.append_text(name)
+			bgimgs.append((name, f))
+		bgimgs.sort(key=operator.itemgetter(0))
 		x = self.level.get_bgimg()
-		if x[0] is False:
-			widget.set_active(0)
-		else:
-			i = 0
-			for name in self.bgimgs:
-				if name == x[1]:
-					widget.set_active(i+1)
-					break
-				i += 1
+		i = 0
+		for name, f in bgimgs:
+			img = Gtk.Image()
+			img.set_from_file(f)
+			pb = img.get_pixbuf()
+			self.bgimg_store.append([
+				name,
+				pb.scale_simple(pb.get_width()/4., pb.get_height()/4., GdkPixbuf.InterpType.NEAREST)
+			])
+			if x[0] and x[1] == name:
+				self.builder.get_object("treeview6").set_cursor(i)
+			i += 1
 	def update_window_title(self):
 		## Check for unsaved file:
 		if self.changed:
@@ -550,21 +559,21 @@ class LevelEditor (object):
 			self.update_everything()
 	
 	### window1/tab3 EVENTS ###
-	def on_comboboxtext1_changed(self, widget):
-		if self.comboboxtext1_changing:
-			return
-		self.comboboxtext1_changing = True
-		x = widget.get_active()
-		if x <= 0:
-			if self.level.get_bgimg()[0] is not False:
-				self.changed = True
+	def on_button19_clicked(self, widget, *args):
+		# Set bgimg
+		tv = self.builder.get_object("treeview6")
+		row = tv.get_selection().get_selected()
+		if row[1] is None:
 			self.level.unset_bgimg()
 		else:
-			if self.level.get_bgimg()[0] is False or self.level.get_bgimg()[1] != self.bgimgs[x-1]:
-				self.changed = True
-			self.level.set_bgimg(self.bgimgs[x-1])
+			self.level.set_bgimg(row[0].get_value(row[1], 0))
+		self.changed = True
 		self.update_everything()
-		self.comboboxtext1_changing = False
+	def on_button20_clicked(self, widget, *args):
+		# Unset bgimg
+		self.level.unset_bgimg()
+		self.changed = True
+		self.update_everything()
 	
 	### window1/tab4 EVENTS ###
 	def on_scale1_format_value(self, widget, value):
@@ -726,7 +735,7 @@ class LevelEditor (object):
 					self.changed = False
 					self.opened_file = os.path.basename(fname)
 					self.opened_filepath = fname
-					self.update_everything()
+					self.update_everything(False, False)
 				self.builder.get_object("filechooserdialog1").set_visible(False)
 	### filechooserdialog2 (open) EVENTS ###
 	def on_filechooserdialog2_delete_event(self, *args):
