@@ -118,6 +118,10 @@
 			LevelBlockdef get_blockdef(unsigned short index);
 			LevelColumn *get_column(unsigned short index);
 			unsigned short get_levelwidth(void);
+			bool has_bgimg(void);
+			std::string get_bgimg(void);
+			bool has_bgmusic(void);
+			std::string get_bgmusic(void);
 		private:
 			unsigned short m_levelwidth;
 			unsigned short m_metadata_number;
@@ -125,5 +129,9 @@
 			unsigned short m_blockdefs_number;
 			LevelBlockdef *m_blockdefs;
 			LevelColumn *m_columns;
+			bool m_has_bgimg;
+			std::string m_bgimg;
+			bool m_has_bgmusic;
+			std::string m_bgmusic;
 	};
 #endif // LEVEL_HPP

@@ -151,7 +151,7 @@ LevelItem *LevelColumn::get_item(unsigned short index)
 	return &m_items[index];
 }
 
-Level::Level()
+Level::Level() : m_has_bgimg(false)
 {
 
 }
@@ -413,6 +413,96 @@ bool Level::load_from_file(std::string file)
 #endif
 		}
 	}
+	/*
+	 * Read extensions number:
+	*/
+	buf = new char[2];
+	f.read(buf, 2);
+	tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+	delete[] buf;
+#ifdef LVL_DEBUG
+	std::cerr << "LevelLoader: Extensions_Number = " << tmp << std::endl;
+#endif
+	/*
+	 * Read extensions:
+	*/
+	for (i=0; i < tmp; i++)
+	{
+		/*
+		 * Read name length:
+		*/
+		buf = new char[1];
+		f.read(buf, 1);
+		tmp2 = (unsigned short)buf[0];
+		delete[] buf;
+		/*
+		 * Read name:
+		*/
+		buf = new char[tmp2+1];
+		f.read(buf, tmp2);
+		buf[tmp2] = '\0';
+		buf_ = std::string(buf).substr(0,tmp2);
+		delete[] buf;
+		/*
+		 * Analyze name:
+		*/
+		if (buf_.compare("_bgimg") == 0)
+		{
+#ifdef LVL_DEBUG
+			std::cerr << "LevelLoader: _bgimg extension found." << std::endl;
+#endif
+			/*
+			 * Read data length:
+			*/
+			buf = new char[2];
+			f.read(buf, 2);
+			tmp2 = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			delete[] buf;
+			/*
+			 * Read data:
+			*/
+			buf = new char[tmp2+1];
+			f.read(buf, tmp2);
+			buf[tmp2] = '\0';
+			buf_ = std::string(buf).substr(0,tmp2);
+			delete[] buf;
+			m_has_bgimg = true;
+			m_bgimg = buf_;
+#ifdef LVL_DEBUG
+			std::cerr << " -> Data: " << buf_ << std::endl;
+#endif
+		}
+		else if (buf_.compare("_bgmusic") == 0)
+		{
+#ifdef LVL_DEBUG
+			std::cerr << "LevelLoader: _bgmusic extension found." << std::endl;
+#endif
+			/*
+			 * Read data length:
+			*/
+			buf = new char[2];
+			f.read(buf, 2);
+			tmp2 = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			delete[] buf;
+			/*
+			 * Read data:
+			*/
+			buf = new char[tmp2+1];
+			f.read(buf, tmp2);
+			buf[tmp2] = '\0';
+			buf_ = std::string(buf).substr(0,tmp2);
+			delete[] buf;
+			m_has_bgmusic = true;
+			m_bgmusic = buf_;
+#ifdef LVL_DEBUG
+			std::cerr << " -> Data: " << buf_ << std::endl;
+#endif
+		}
+		else
+		{
+			std::cerr << "LevelLoader: Unknown extension found: " << buf_ << std::endl;
+		};
+	}
 	return true;
 }
 unsigned short Level::get_blockdefs_number(void)
@@ -430,4 +520,20 @@ LevelColumn *Level::get_column(unsigned short index)
 unsigned short Level::get_levelwidth(void)
 {
 	return m_levelwidth;
+}
+bool Level::has_bgimg(void)
+{
+	return m_has_bgimg;
+}
+std::string Level::get_bgimg(void)
+{
+	return m_bgimg;
+}
+bool Level::has_bgmusic(void)
+{
+	return m_has_bgmusic;
+}
+std::string Level::get_bgmusic(void)
+{
+	return m_bgmusic;
 }
