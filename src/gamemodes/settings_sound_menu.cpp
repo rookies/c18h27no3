@@ -220,6 +220,7 @@ void SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y,
 						var1.index = "SOUND__MENU_MUSIC_VOLUME";
 						var1.value_int = m_config_chooser1.get_actual_int();
 						ret->add_confvar(var1);
+						ret->set_menumusic_vol(m_config_chooser1.get_actual_int());
 						/*
 						 * Back to settings menu:
 						*/

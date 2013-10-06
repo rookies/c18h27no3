@@ -38,6 +38,7 @@
 			void set_language(std::string lang);
 			void set_exit(bool exit);
 			void set_reload(bool reload);
+			void set_menumusic_vol(int vol);
 			
 			int get_gamemode(void);
 			bool are_confvars_initialized(void);
@@ -46,12 +47,14 @@
 			std::string get_language(void);
 			bool get_exit(void);
 			bool get_reload(void);
+			int get_menumusic_vol(void);
 		private:
 			int m_gamemode;
 			ConfigVariable *m_confvars;
 			int m_confvar_pointer;
 			bool m_confvars_initialized;
 			std::string m_lang;
+			int m_menumusic_vol;
 			bool m_exit;
 			bool m_reload;
 	};

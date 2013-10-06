@@ -26,6 +26,7 @@ EventProcessorReturn::EventProcessorReturn()
 {
 	m_gamemode = 0; // no new gamemode
 	m_lang = ""; // no new language
+	m_menumusic_vol = -1; // no new volume
 	m_exit = false; // don't exit
 	m_reload = false; // no reload
 	m_confvars_initialized = false;
@@ -66,6 +67,10 @@ void EventProcessorReturn::set_reload(bool reload)
 {
 	m_reload = reload;
 }
+void EventProcessorReturn::set_menumusic_vol(int vol)
+{
+	m_menumusic_vol = vol;
+}
 int EventProcessorReturn::get_gamemode(void)
 {
 	return m_gamemode;
@@ -93,4 +98,8 @@ bool EventProcessorReturn::get_exit(void)
 bool EventProcessorReturn::get_reload(void)
 {
 	return m_reload;
+}
+int EventProcessorReturn::get_menumusic_vol(void)
+{
+	return m_menumusic_vol;
 }

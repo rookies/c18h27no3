@@ -517,6 +517,11 @@ int Game::process_events(void)
 			if (set_language(event_processor_return.get_language(), false) == 1)
 				return 1; // setting language failed, exit
 		/*
+		 * Set menusound volume?
+		*/
+		if (event_processor_return.get_menumusic_vol() != -1)
+			m_menusound.setVolume(event_processor_return.get_menumusic_vol());
+		/*
 		 * Change GameMode?
 		*/
 		if (event_processor_return.get_gamemode() != 0)
