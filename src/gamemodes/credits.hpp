@@ -78,5 +78,7 @@
 			int m_item_over;
 			int m_item_loaded;
 			sf::Text m_sign;
+			sf::Texture m_bg;
+			sf::Sprite m_bgs;
 	};
 #endif // CREDITS_HPP

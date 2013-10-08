@@ -80,5 +80,7 @@
 			sf::Text m_header;
 			sf::Texture m_img1;
 			sf::Sprite m_img1_sprite;
+			sf::Texture m_bg;
+			sf::Sprite m_bgs;
 	};
 #endif // SETTINGS_MENU_HPP

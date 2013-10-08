@@ -33,6 +33,12 @@ MainMenu::~MainMenu()
 int MainMenu::init(Config conf, std::string arg)
 {
 	/*
+	 * Init background:
+	*/
+	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
+		return 1;
+	m_bgs.setTexture(m_bg);
+	/*
 	 * Start update thread:
 	*/
 	m_update_thread = new sf::Thread(&MainMenu::updater, this);
@@ -44,7 +50,6 @@ int MainMenu::init(Config conf, std::string arg)
 		return 1;
 	m_img1.setSmooth(true);
 	m_img1_sprite.setTexture(m_img1);
-	m_img1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	/*
 	 * Init coloured menu image:
 	*/
@@ -52,7 +57,6 @@ int MainMenu::init(Config conf, std::string arg)
 		return 1;
 	m_img2.setSmooth(true);
 	m_img2_sprite.setTexture(m_img2);
-	m_img2_sprite.setColor(sf::Color(255, 255, 255, 255));
 	m_menuitem_over = -1;
 	m_menuitem_loaded = -1;
 	/*
@@ -91,6 +95,10 @@ int MainMenu::calculate_sizes(int w, int h)
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	m_logo_yoffset = h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0);
 	m_activewidth = w*MAINMENU_ACTIVEWIDTH/1920.;
+	/*
+	 * Resize background:
+	*/
+	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Update logo position & size:
 	*/
@@ -187,10 +195,11 @@ UniversalDrawableArray MainMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(1+(m_menuitem_over>-1?1:0)+(m_updates?1:0));
+	arr.init(2+(m_menuitem_over>-1?1:0)+(m_updates?1:0));
 	/*
 	 * Add elements:
 	*/
+	arr.add_sprite(m_bgs);
 	arr.add_sprite(m_img1_sprite);
 	if (m_menuitem_over > -1)
 		arr.add_sprite(m_img2_sprite);

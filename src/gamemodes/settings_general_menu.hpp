@@ -90,5 +90,7 @@
 			int m_arrow_left2_over;
 			int m_arrow_right1_over;
 			int m_arrow_right2_over;
+			sf::Texture m_bg;
+			sf::Sprite m_bgs;
 	};
 #endif // SETTINGS_GENERAL_MENU_HPP

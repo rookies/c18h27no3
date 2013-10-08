@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-05 18:00+0200\n"
-"PO-Revision-Date: 2013-10-05 18:47+0100\n"
+"PO-Revision-Date: 2013-10-08 17:38+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -42,11 +42,10 @@ msgid "settings_graphics_menu_entry_abort"
 msgstr "Abbrechen"
 
 #: src/gamemodes/credits.cpp:129
-#, fuzzy
 msgid "credits_text0"
 msgstr ""
-"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
-"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+"Ich bin Level-Designer, ich stelle die einzelnen Grafiken\n"
+"zusammen und sorge für ultimativen Spielspaß!"
 
 #: src/gamemodes/credits.cpp:133
 msgid "credits_text1"
@@ -55,11 +54,10 @@ msgstr ""
 "zusammengefügt und das Spiel und den Level-Editor daraus gemacht."
 
 #: src/gamemodes/credits.cpp:137
-#, fuzzy
 msgid "credits_text2"
 msgstr ""
-"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
-"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+"Ich bin der Musik- und Sound-Designer, alles was ihr im\n"
+"Spiel zu hören bekommt stammt von mir."
 
 #: src/gamemodes/credits.cpp:141
 msgid "credits_text3"
@@ -68,11 +66,10 @@ msgstr ""
 "gestalte Grafiken für unser Spiel, vor allem die Blöcke und Items."
 
 #: src/gamemodes/credits.cpp:145
-#, fuzzy
 msgid "credits_text4"
 msgstr ""
-"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
-"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
+"Ich bin Level-Designer und kümmere mich mit Max zusammen\n"
+"um die Storyline und die Handlung in den einzelnen Levels."
 
 #: src/gamemodes/credits.cpp:149
 msgid "credits_text5"

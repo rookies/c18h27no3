@@ -82,5 +82,7 @@
 			int m_menuitem3_over;
 			int m_arrow_left1_over;
 			int m_arrow_right1_over;
+			sf::Texture m_bg;
+			sf::Sprite m_bgs;
 	};
 #endif // SETTINGS_SOUND_MENU_HPP

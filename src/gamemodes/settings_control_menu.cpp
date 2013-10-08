@@ -308,6 +308,12 @@ int SettingsControlMenu::init(Config conf, std::string arg)
 	std::string confkey;
 	std::string caption;
 	/*
+	 * Init background:
+	*/
+	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
+		return 1;
+	m_bgs.setTexture(m_bg);
+	/*
 	 * Init control key settings array:
 	*/
 	m_controlkeys_offset = 0;
@@ -356,14 +362,14 @@ int SettingsControlMenu::init(Config conf, std::string arg)
 	/*
 	 * Init menuitem shapes:
 	*/
-	m_menuitem1.setOutlineColor(sf::Color::Black);
-	m_menuitem2.setOutlineColor(sf::Color::Black);
-	m_menuitem3.setOutlineColor(sf::Color::Black);
-	m_menuitem4.setOutlineColor(sf::Color::Black);
-	m_menuitem5.setOutlineColor(sf::Color::Black);
-	m_menuitem6.setOutlineColor(sf::Color::Black);
-	m_menuitem7.setOutlineColor(sf::Color::Black);
-	m_menuitem8.setOutlineColor(sf::Color::Black);
+	m_menuitem1.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem2.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem3.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem4.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem5.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem6.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem7.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem8.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	
 	/*
 	 * Init menuitem texts:
@@ -434,6 +440,10 @@ int SettingsControlMenu::calculate_sizes(int w, int h)
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	int text_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_TEXT_XGAP/100.0);
+	/*
+	 * Resize background:
+	*/
+	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
@@ -689,10 +699,11 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(6+(m_controlkeys_showc*3)+((m_controlkeys_offset > 0)?1:0)+((CONFIGVAR_CONTROL_KEY_COUNT > m_controlkeys_offset+5)?1:0));
+	arr.init(7+(m_controlkeys_showc*3)+((m_controlkeys_offset > 0)?1:0)+((CONFIGVAR_CONTROL_KEY_COUNT > m_controlkeys_offset+5)?1:0));
 	/*
 	 * Add elements:
 	*/
+	arr.add_sprite(m_bgs);
 	if (m_controlkeys_showc >= 1)
 	{
 		if (m_menuitem1_over)

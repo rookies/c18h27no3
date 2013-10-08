@@ -33,6 +33,12 @@ SettingsMenu::~SettingsMenu()
 int SettingsMenu::init(Config conf, std::string arg)
 {
 	/*
+	 * Init background:
+	*/
+	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
+		return 1;
+	m_bgs.setTexture(m_bg);
+	/*
 	 * Load fonts:
 	*/
 	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Bold.ttf")))
@@ -47,11 +53,11 @@ int SettingsMenu::init(Config conf, std::string arg)
 	/*
 	 * Init menuitem shapes:
 	*/
-	m_menuitem1.setOutlineColor(sf::Color::Black);
-	m_menuitem2.setOutlineColor(sf::Color::Black);
-	m_menuitem3.setOutlineColor(sf::Color::Black);
-	m_menuitem4.setOutlineColor(sf::Color::Black);
-	m_menuitem5.setOutlineColor(sf::Color::Black);
+	m_menuitem1.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem2.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem3.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem4.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem5.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	/*
 	 * Init menuitem texts:
 	*/
@@ -98,7 +104,11 @@ int SettingsMenu::calculate_sizes(int w, int h)
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	/*
-	 * Update creeper position & size:
+	 * Resize background:
+	*/
+	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
+	/*
+	 * Update img position & size:
 	*/
 	m_img1_sprite.setScale(img_height/SIZE_SETTINGSMENU_IMG_IMGHEIGHT, img_height/SIZE_SETTINGSMENU_IMG_IMGHEIGHT);
 	m_img1_sprite.setPosition((w-m_img1_sprite.getGlobalBounds().width)/2., img_yoffset);
@@ -201,10 +211,12 @@ UniversalDrawableArray SettingsMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(12);
+	arr.init(13);
 	/*
 	 * Add elements:
 	*/
+	arr.add_sprite(m_bgs);
+	//
 	arr.add_sprite(m_img1_sprite);
 	//
 	if (m_menuitem1_over == 1)

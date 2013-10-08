@@ -33,6 +33,12 @@ Credits::~Credits()
 int Credits::init(Config conf, std::string arg)
 {
 	/*
+	 * Init background:
+	*/
+	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
+		return 1;
+	m_bgs.setTexture(m_bg);
+	/*
 	 * Load image texture:
 	*/
 	if (!m_img_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "credits.png")))
@@ -50,17 +56,17 @@ int Credits::init(Config conf, std::string arg)
 	 * Init header:
 	*/
 	m_header.setFont(m_font1);
-	m_header.setColor(sf::Color::Black);
+	m_header.setColor(sf::Color::Red);
 	/*
 	 * Init text:
 	*/
 	m_text.setFont(m_font2);
-	m_text.setColor(sf::Color::Black);
+	m_text.setColor(sf::Color::Red);
 	/*
 	 * Init sign:
 	*/
 	m_sign.setFont(m_font1);
-	m_sign.setColor(sf::Color(50,50,50));
+	m_sign.setColor(sf::Color(254, 42, 53));
 	/*
 	 * Load standard text:
 	*/
@@ -88,6 +94,10 @@ int Credits::calculate_sizes(int w, int h)
 	*/
 	float scale;
 	int i;
+	/*
+	 * Resize background:
+	*/
+	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Set image properties:
 	*/
@@ -135,27 +145,27 @@ void Credits::load_item(int i)
 	switch (i)
 	{
 		case 0:
-			m_header.setString(get_wstring("Max „Die DVU“ Bäz-Dölle"));
+			m_header.setString(get_wstring("Max Bäz-Dölle"));
 			m_text.setString(get_wstring(_("credits_text0")));
 			m_sign.setString(get_wstring("„"));
 			break;
 		case 1:
-			m_header.setString(get_wstring("Robert „Knauer“ Knauer"));
+			m_header.setString(get_wstring("Robert Knauer"));
 			m_text.setString(get_wstring(_("credits_text1")));
 			m_sign.setString(get_wstring("„"));
 			break;
 		case 2:
-			m_header.setString(get_wstring("Robert „F.“ Falkenstein"));
+			m_header.setString(get_wstring("Robert Falkenstein"));
 			m_text.setString(get_wstring(_("credits_text2")));
 			m_sign.setString(get_wstring("„"));
 			break;
 		case 3:
-			m_header.setString(get_wstring("Vasco „Der Pfandjude“ Lehmann"));
+			m_header.setString(get_wstring("Vasco Lehmann"));
 			m_text.setString(get_wstring(_("credits_text3")));
 			m_sign.setString(get_wstring("„"));
 			break;
 		case 4:
-			m_header.setString(get_wstring("Robert „Roert“ Worm"));
+			m_header.setString(get_wstring("Robert Worm"));
 			m_text.setString(get_wstring(_("credits_text4")));
 			m_sign.setString(get_wstring("„"));
 			break;
@@ -220,7 +230,8 @@ UniversalDrawableArray Credits::get_drawables(void)
 	 * Variable declarations:
 	*/
 	UniversalDrawableArray arr;
-	arr.init(5);
+	arr.init(6);
+	arr.add_sprite(m_bgs);
 	arr.add_sprite(m_img);
 	arr.add_text(m_header);
 	arr.add_text(m_text);

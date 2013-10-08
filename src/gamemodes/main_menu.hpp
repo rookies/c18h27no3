@@ -91,5 +91,7 @@
 			bool m_updatetext_changed;
 			std::string m_updatetext;
 			float m_activewidth;
+			sf::Texture m_bg;
+			sf::Sprite m_bgs;
 	};
 #endif // MAIN_MENU_HPP
