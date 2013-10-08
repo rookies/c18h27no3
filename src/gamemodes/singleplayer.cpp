@@ -38,7 +38,10 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_backwards(false),
 								m_itemoffset(0),
 								m_itemoffsetd(false),
-								m_money(0)
+								m_money(0),
+								m_successful(false),
+								m_gameover(false),
+								m_exit(false)
 {
 
 }
@@ -188,6 +191,8 @@ int SinglePlayer::init(Config conf, std::string arg)
 	m_moneytext.setColor(sf::Color::Black);
 	m_heartstext.setFont(m_font1);
 	m_heartstext.setColor(sf::Color::Black);
+	m_message.setFont(m_font1);
+	m_message.setColor(sf::Color::Red);
 	/*
 	 * Init hearts:
 	*/
@@ -276,6 +281,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	m_moneytext.setPosition(sf::Vector2f(w*SIZE_GAME_MONEYTEXT_XOFFSET/100., h*SIZE_GAME_MONEYTEXT_YOFFSET/100.));
 	m_heartstext.setCharacterSize(h/SIZE_GAME_HEARTSTEXT_SIZE_DIVIDER);
 	m_heartstext.setPosition(sf::Vector2f(w*SIZE_GAME_HEARTSTEXT_XOFFSET/100., h*SIZE_GAME_HEARTSTEXT_YOFFSET/100.));
+	m_message.setCharacterSize(h/SIZE_GAME_MESSAGE_SIZE_DIVIDER);
 	return 0;
 }
 void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -286,7 +292,7 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret->set_gamemode(1);
+					ret->set_gamemode(1); // main menu
 					break;
 				default:
 					if (event.key.code == m_key_goleft)
@@ -304,6 +310,8 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 				m_player_xaction = 0;
 			break;
 	}
+	if (m_exit)
+		ret->set_gamemode(1); // main menu
 }
 UniversalDrawableArray SinglePlayer::get_drawables(void)
 {
@@ -446,15 +454,15 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			}
 		}
 		highest += 0.5;
-		if (highest < m_playery-(0.4*multip))
+		if (highest < m_playery)
 		{
 			/*
 			 * Too high!
 			*/
 			if (m_player_ystatus == 0)
 			{
-				if (m_playery-highest < 0.4)
-					m_playery -= (m_playery-highest)*multip;
+				if (m_playery-highest < 0.4*multip)
+					m_playery -= m_playery-highest;
 				else
 					m_playery -= 0.4*multip;
 				place_player();
@@ -463,11 +471,17 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			if (m_playery <= 0)
 			{
 				m_hearts_num--;
-				update_hearts();
 				if (m_hearts_num == -1)
-					std::cout << "GAME OVER :(" << std::endl;
+				{
+					m_moving = false;
+					m_gameover = true;
+					m_message.setString(get_wstring(_("game_gameover_message")));
+					place_message();
+					m_hearts_num = 0;
+				}
 				else
 					restart_level();
+				update_hearts();
 			};
 		}
 		else
@@ -503,19 +517,46 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			}
 		}
 		/*
+		 * Check for level end:
+		*/
+		if (m_playerx >= m_level.get_levelwidth()-GAME_ENDOFFSET)
+		{
+			m_moving = false;
+			m_successful = true;
+			m_message.setString(get_wstring(_("game_successful_message")));
+			place_message();
+		};
+		/*
 		 * Restart timer:
 		*/
 		m_actiontimer.restart();
 	}
 	else
 	{
-		// Not moving, yet.
-		if (m_actiontimer.getElapsedTime().asMilliseconds() <= 450)
-			m_ptoiletbase.setRotation(m_actiontimer.getElapsedTime().asMilliseconds()/5.);
+		if (m_successful)
+		{
+			if (m_actiontimer.getElapsedTime().asMilliseconds() <= 4080)
+				m_player.setColor(sf::Color(255, 255, 255, 255-(m_actiontimer.getElapsedTime().asMilliseconds()/16.)));
+			else
+				m_exit = true;
+		}
+		else if (m_gameover)
+		{
+			if (m_actiontimer.getElapsedTime().asMilliseconds() <= 4080)
+				m_player.setColor(sf::Color(255, 255, 255, 255-(m_actiontimer.getElapsedTime().asMilliseconds()/16.)));
+			else
+				m_exit = true;
+		}
 		else
 		{
-			m_moving = true;
-			m_actiontimer.restart();
+			// Not moving, yet.
+			if (m_actiontimer.getElapsedTime().asMilliseconds() <= 450)
+				m_ptoiletbase.setRotation(m_actiontimer.getElapsedTime().asMilliseconds()/5.);
+			else
+			{
+				m_moving = true;
+				m_actiontimer.restart();
+			};
 		};
 	};
 	/*
@@ -545,7 +586,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	arr.init(10+(m_level.has_bgimg()?1:0)+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0));
+	arr.init(10+(m_level.has_bgimg()?1:0)+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0)+((m_successful||m_gameover)?1:0));
 	if (m_level.has_bgimg())
 		arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
@@ -570,6 +611,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	arr.add_text(m_moneytext);
 	if (m_hearts_num > 3)
 		arr.add_text(m_heartstext);
+	if (m_successful || m_gameover)
+		arr.add_text(m_message);
 	return arr;
 }
 void SinglePlayer::toggle_playertexture(void)
@@ -766,4 +809,8 @@ void SinglePlayer::restart_level(void)
 	update_level();
 	place_player();
 	m_actiontimer.restart();
+}
+void SinglePlayer::place_message(void)
+{
+	m_message.setPosition((m_w-m_message.getGlobalBounds().width)/2., (m_h-m_message.getGlobalBounds().height)/2.);
 }

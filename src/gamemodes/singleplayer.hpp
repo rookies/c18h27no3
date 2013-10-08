@@ -33,6 +33,7 @@
 #	include "../event_processor_return.hpp"
 #	include "../dataloader.hpp"
 #	include "../level.hpp"
+#	include "../widestring.hpp"
 	
 	class SinglePlayer : public Gamemode
 	{
@@ -85,6 +86,10 @@
 			 * Restart level:
 			*/
 			void restart_level(void);
+			/*
+			 * Place message:
+			*/
+			void place_message(void);
 		private:
 			void toggle_playertexture(void);
 
@@ -149,5 +154,9 @@
 			sf::Font m_font1;
 			sf::Text m_moneytext;
 			sf::Text m_heartstext;
+			bool m_successful;
+			bool m_gameover;
+			sf::Text m_message;
+			bool m_exit;
 	};
 #endif // SINGLEPLAYER_HPP

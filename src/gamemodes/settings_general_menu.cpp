@@ -48,7 +48,7 @@ int SettingsGeneralMenu::init(Config conf, std::string arg)
 	 * Init ConfigChooser instance for language:
 	*/
 	m_config_chooser1.init(CONFIGVAR_TYPE_STRING, CONFIGVAR_LANGUAGE_COUNT);
-	m_config_chooser1.add_string("English", "en");
+	m_config_chooser1.add_string("English (incomplete)", "en");
 	m_config_chooser1.add_string("Deutsch", "de");
 	m_config_chooser1.set_actual_string(conf.get("GENERAL__LANGUAGE").value_string);
 	/*
