@@ -131,9 +131,16 @@ int SinglePlayer::init(Config conf, std::string arg)
 	/*
 	 * Load background texture:
 	*/
-	//if (!m_bg_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "bg1.png")))
-	//	return 1;
-	//m_bg.setTexture(m_bg_texture);
+	if (m_level.has_bgimg())
+	{
+		fname = "";
+		fname.append("backgrounds/");
+		fname.append(m_level.get_bgimg());
+		fname.append(".png");
+		if (!m_bg_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, fname)))
+			return 1;
+		m_bg.setTexture(m_bg_texture);
+	};
 	/*
 	 * Load status frame texture:
 	*/
@@ -229,7 +236,7 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	/*
 	 * Scale background sprite:
 	*/
-	//m_bg.scale(4*w/1920, 4*h/1080);
+	m_bg.setScale(h/SIZE_GAME_BG_IMGHEIGHT, h/SIZE_GAME_BG_IMGHEIGHT);
 	/*
 	 * Set statusframe properties:
 	*/
@@ -538,9 +545,9 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	//arr.init(11+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0));
-	arr.init(10+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0));
-	//arr.add_sprite(m_bg);
+	arr.init(10+(m_level.has_bgimg()?1:0)+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0));
+	if (m_level.has_bgimg())
+		arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
 	{
 		arr.add_sprite(m_blocks[i]);
@@ -664,7 +671,7 @@ void SinglePlayer::update_level(void)
 	/*
 	 * Place background:
 	*/
-	//m_bg.setTextureRect(sf::IntRect(m_offset*16, 0, m_bg.getLocalBounds().width, m_bg.getLocalBounds().height)); // 16 = 2*bwidth(32)/4(scale)
+	m_bg.setTextureRect(sf::IntRect(m_offset*SIZE_GAME_BG_BLOCKWIDTH/2., 0, m_bg.getLocalBounds().width, m_bg.getLocalBounds().height));
 	/*
 	 * Place portable toilet:
 	*/
