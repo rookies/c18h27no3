@@ -200,6 +200,12 @@ int SinglePlayer::init(Config conf, std::string arg)
 	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "PressStart2P.ttf")))
 		return 1;
 	/*
+	 * Load item sounds:
+	*/
+	if (!m_coinsound_buf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, "items/coin.ogg")))
+		return 1;
+	m_coinsound.setBuffer(m_coinsound_buf);
+	/*
 	 * Init texts:
 	*/
 	m_moneytext.setFont(m_font1);
@@ -521,6 +527,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 					switch (col->get_item(j)->id)
 					{
 						case 0:
+							m_coinsound.setPlayingOffset(sf::Time::Zero);
+							m_coinsound.play();
 							m_money++;
 							update_money();
 							break;

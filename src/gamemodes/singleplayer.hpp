@@ -161,5 +161,7 @@
 			bool m_exit;
 			sf::SoundBuffer m_bgbuf;
 			sf::Sound m_bgsound;
+			sf::SoundBuffer m_coinsound_buf;
+			sf::Sound m_coinsound;
 	};
 #endif // SINGLEPLAYER_HPP
