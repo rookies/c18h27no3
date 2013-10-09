@@ -28,6 +28,7 @@
 
 #	include <math.h>
 #	include <sstream>
+#	include <SFML/Audio.hpp>
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
@@ -158,5 +159,7 @@
 			bool m_gameover;
 			sf::Text m_message;
 			bool m_exit;
+			sf::SoundBuffer m_bgbuf;
+			sf::Sound m_bgsound;
 	};
 #endif // SINGLEPLAYER_HPP

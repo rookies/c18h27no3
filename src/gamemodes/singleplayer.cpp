@@ -145,6 +145,21 @@ int SinglePlayer::init(Config conf, std::string arg)
 		m_bg.setTexture(m_bg_texture);
 	};
 	/*
+	 * Load background music:
+	*/
+	if (m_level.has_bgmusic())
+	{
+		fname = "";
+		fname.append("backgrounds/");
+		fname.append(m_level.get_bgmusic());
+		fname.append(".ogg");
+		if (!m_bgbuf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, fname)))
+			return 1;
+		m_bgsound.setBuffer(m_bgbuf);
+		m_bgsound.setLoop(true);
+		m_bgsound.play();
+	};
+	/*
 	 * Load status frame texture:
 	*/
 	if (!m_frame_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "statusframe.png")))
@@ -211,8 +226,10 @@ int SinglePlayer::init(Config conf, std::string arg)
 int SinglePlayer::uninit(void)
 {
 	/*
-	 * ...
+	 * Stop music:
 	*/
+	if (m_level.has_bgmusic())
+		m_bgsound.stop();
 	return 0;
 }
 int SinglePlayer::calculate_sizes(int w, int h)
