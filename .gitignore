@@ -1,6 +1,5 @@
 build
 route94
-*.mo
 __pycache__
 *.swp
 *.xcf
