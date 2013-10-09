@@ -29,6 +29,7 @@
 #	include <math.h>
 #	include <sstream>
 #	include <SFML/Audio.hpp>
+#	include <libintl.h>
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
