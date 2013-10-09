@@ -494,6 +494,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 					m_gameover = true;
 					m_message.setString(get_wstring(_("game_gameover_message")));
 					place_message();
+					m_bgsound.stop();
 					m_hearts_num = 0;
 				}
 				else
@@ -542,6 +543,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			m_successful = true;
 			m_message.setString(get_wstring(_("game_successful_message")));
 			place_message();
+			m_bgsound.stop();
 		};
 		/*
 		 * Restart timer:
