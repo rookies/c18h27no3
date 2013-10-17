@@ -56,6 +56,15 @@ class ImgGenerator (object):
 		print("Image Size: %dx%d px" % self.img_sizes)
 		# Create image:
 		self.image = Image.new("RGB", self.img_sizes, "white")
+		# Create bgimg:
+		x = self.level.get_bgimg()
+		if x[0]:
+			img = self.IMGPATH+"backgrounds/"+x[1]+".png"
+			if os.path.exists(img):
+				img = Image.open(img)
+				img = img.convert("RGBA")
+				img = img.resize((int(img.size[0]*(self.img_sizes[1]/img.size[1])),self.img_sizes[1]), Image.NEAREST)
+				self.image.paste(img, (0,0), img)
 		# Create block textures:
 		for d in self.level.get_blockdefs():
 			if d["type"] is 1:
@@ -83,7 +92,7 @@ class ImgGenerator (object):
 				img = img.resize(self.blk_sizes, Image.NEAREST)
 				self.image.paste(img, (x,y), img)
 			for itm in col["items"]:
-				y = self.img_sizes[1]-int((itm["position"]+3)*self.blk_sizes[1]/2)
+				y = self.img_sizes[1]-int((itm["position"]+1)*self.blk_sizes[1]/2)
 				x += int(self.blk_sizes[1]*0.1)
 				iid = itm["id"]
 				img = Image.open(self.item_images[iid])
