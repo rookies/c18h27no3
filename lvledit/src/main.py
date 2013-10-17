@@ -31,6 +31,7 @@ import traceback
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
+	SOUNDPATH = "../data/sound/"
 	NUMBLOCKSY = 20.	
 	builder = None
 	metadata_store = None
@@ -39,6 +40,7 @@ class LevelEditor (object):
 	standard_blocks_store = None
 	items_store = None
 	bgimg_store = None
+	bgmusic_store = None
 	level = level.Level()
 	changed = False
 	opened_file = None
@@ -121,17 +123,31 @@ class LevelEditor (object):
 		## Fill the model:
 		self.update_items_store()
 		### CREATE STUFF FOR THE BGIMG TREEVIEW ###
-		name = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=0)
-		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
+		sel = Gtk.TreeViewColumn("Gewählt?", Gtk.CellRendererText(), text=0)
+		name = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=1)
+		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=2)
 		## Add the columns to the TreeView:
+		self.builder.get_object("treeview6").append_column(sel)
 		self.builder.get_object("treeview6").append_column(name)
 		self.builder.get_object("treeview6").append_column(img)
 		## Create the model:
-		self.bgimg_store = Gtk.ListStore(GObject.TYPE_STRING, GdkPixbuf.Pixbuf)
+		self.bgimg_store = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING, GdkPixbuf.Pixbuf)
 		## Assign the model to the treeview:
 		self.builder.get_object("treeview6").set_model(self.bgimg_store)
 		## Fill the model:
 		self.update_bgimg_store()
+		### CREATE STUFF FOR THE BGMUSIC TREEVIEW ###
+		sel = Gtk.TreeViewColumn("Gewählt?", Gtk.CellRendererText(), text=0)
+		name = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=1)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview7").append_column(sel)
+		self.builder.get_object("treeview7").append_column(name)
+		## Create the model:
+		self.bgmusic_store = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
+		## Assign the model to the treeview:
+		self.builder.get_object("treeview7").set_model(self.bgmusic_store)
+		## Fill the model:
+		self.update_bgmusic_store()
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
 		### ENABLE DRAG & DROP FOR THE LEVEL EDITOR ###
@@ -168,7 +184,7 @@ class LevelEditor (object):
 		else:
 			self.messagedialog1_parent_dialog = parent_dlg
 			parent_dlg.set_sensitive(False)
-	def update_everything(self, blockdefs=True, bgimgs=True):
+	def update_everything(self, blockdefs=True, bgimgs=True, bgmusic=True):
 		## Metadata Store:
 		self.update_metadata_store()
 		## Blockdefs Stores:
@@ -187,6 +203,9 @@ class LevelEditor (object):
 		## BG imgs:
 		if bgimgs:
 			self.update_bgimg_store()
+		## BG music:
+		if bgmusic:
+			self.update_bgmusic_store()
 	def update_levelwidth_scale_lower(self):
 		## get biggest block position:
 		cols = self.level.get_columns()
@@ -261,18 +280,33 @@ class LevelEditor (object):
 			bgimgs.append((name, f))
 		bgimgs.sort(key=operator.itemgetter(0))
 		x = self.level.get_bgimg()
-		i = 0
 		for name, f in bgimgs:
 			img = Gtk.Image()
 			img.set_from_file(f)
 			pb = img.get_pixbuf()
+			if x[0] and x[1] == name:
+				t = "X"
+			else:
+				t = ""
 			self.bgimg_store.append([
+				t,
 				name,
 				pb.scale_simple(pb.get_width()/4., pb.get_height()/4., GdkPixbuf.InterpType.NEAREST)
 			])
+	def update_bgmusic_store(self):
+		self.bgmusic_store.clear()
+		bgm = []
+		for f in glob.glob(self.SOUNDPATH + "backgrounds/*.ogg"):
+			name = os.path.basename(f).split(".", 2)[0]
+			bgm.append(name)
+		bgm.sort()
+		x = self.level.get_bgmusic()
+		for name in bgm:
 			if x[0] and x[1] == name:
-				self.builder.get_object("treeview6").set_cursor(i)
-			i += 1
+				t = "X"
+			else:
+				t = ""
+			self.bgmusic_store.append([ t, name ])
 	def update_window_title(self):
 		## Check for unsaved file:
 		if self.changed:
@@ -576,12 +610,27 @@ class LevelEditor (object):
 		if row[1] is None:
 			self.level.unset_bgimg()
 		else:
-			self.level.set_bgimg(row[0].get_value(row[1], 0))
+			self.level.set_bgimg(row[0].get_value(row[1], 1))
 		self.changed = True
 		self.update_everything()
 	def on_button20_clicked(self, widget, *args):
 		# Unset bgimg
 		self.level.unset_bgimg()
+		self.changed = True
+		self.update_everything()
+	def on_button21_clicked(self, widget, *args):
+		# Set bgmusic
+		tv = self.builder.get_object("treeview7")
+		row = tv.get_selection().get_selected()
+		if row[1] is None:
+			self.level.unset_bgmusic()
+		else:
+			self.level.set_bgmusic(row[0].get_value(row[1], 1))
+		self.changed = True
+		self.update_everything()
+	def on_button22_clicked(self, widget, *args):
+		# Unset bgmusic
+		self.level.unset_bgmusic()
 		self.changed = True
 		self.update_everything()
 	
