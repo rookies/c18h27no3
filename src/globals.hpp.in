@@ -207,6 +207,6 @@
 #	define ITEM_STEPOFFSET .007
 #	define PLAYER_XSTEPSIZE .1
 #	define GAME_ENDOFFSET 12
-//#	define JUMPTIME_MS 2000.
-//#	define JUMPHEIGHT 2
+#	define JUMPTIME_MS 400.
+#	define JUMPHEIGHT 10
 #endif // GLOBALS_HPP

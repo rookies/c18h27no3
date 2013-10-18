@@ -455,8 +455,6 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			lowest += 0.5;
 			if (lowest-2 > m_playery+6)
 			{
-#	define JUMPTIME_MS 500.
-#	define JUMPHEIGHT 10.
 				if (m_jumptimer.getElapsedTime().asMilliseconds() > JUMPTIME_MS)
 					m_player_ystatus = 0;
 				else
