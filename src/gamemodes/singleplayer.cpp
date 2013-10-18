@@ -323,7 +323,11 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 					else if (event.key.code == m_key_goright)
 						m_player_xaction = PLAYER_RUNNING_RIGHT;
 					else if (event.key.code == m_key_jump && m_player_canjump && m_player_ystatus == 0)
+					{
 						m_player_ystatus = 1;
+						m_playerj = 0;
+						m_jumptimer.restart();
+					};
 			}
 			break;
 		case sf::Event::KeyReleased:
@@ -347,6 +351,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	double highest, incr, lowest, multip, ssize;
 	bool barrier;
 	sf::FloatRect rect;
+	long el;
 	/*
 	 * Perform player actions:
 	*/
@@ -450,12 +455,16 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			lowest += 0.5;
 			if (lowest-2 > m_playery+6)
 			{
-				if (m_player_ystatus == 50)
+#	define JUMPTIME_MS 500.
+#	define JUMPHEIGHT 10.
+				if (m_jumptimer.getElapsedTime().asMilliseconds() > JUMPTIME_MS)
 					m_player_ystatus = 0;
 				else
 				{
-					m_player_ystatus++;
-					m_playery += ((-(0.6/50)*m_player_ystatus)+0.6)*multip; // f(x) = (-(max/steps)*x)+max
+					el = m_jumptimer.getElapsedTime().asMilliseconds();
+					m_playery -= m_playerj;
+					m_playerj = -(JUMPHEIGHT/(JUMPTIME_MS*JUMPTIME_MS))*el*el + (2*JUMPHEIGHT/JUMPTIME_MS)*el; // s(t) = -(s_max/(t_max^2))*t^2 + (2*s_max/t_max)*t
+					m_playery += m_playerj;
 					place_player();
 				};
 			}

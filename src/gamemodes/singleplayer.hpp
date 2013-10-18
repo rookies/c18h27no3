@@ -120,11 +120,13 @@
 			long double m_offset;
 			unsigned long m_offsetf;
 			double m_offsetr;
+			double m_playerj;
 			unsigned int m_blockw;
 			unsigned int m_blockh;
 			Level m_level;
 			sf::Clock m_actiontimer;
 			sf::Clock m_playertimer;
+			sf::Clock m_jumptimer;
 			sf::Texture m_bg_texture;
 			sf::Sprite m_bg;
 			sf::Texture m_frame_texture;
