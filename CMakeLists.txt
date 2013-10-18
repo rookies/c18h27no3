@@ -10,7 +10,8 @@ project(route94)
 # project version:
 # .
 set(GAME_VERSION_MAJOR 0)
-set(GAME_VERSION_MINOR 1)
+set(GAME_VERSION_MINOR1 1)
+set(GAME_VERSION_MINOR2 1)
 # .
 # debug settings:
 # .
@@ -55,6 +56,13 @@ include_directories("${LIBINTL_INCLUDE_DIR}")
 # .
 # create globals.hpp and make it available:
 # .
+if (UNIX)
+	set(GAME_RUNNINGON "Unix")
+elseif (WIN32)
+	set(GAME_RUNNINGON "Windows")
+else ()
+	set(GAME_RUNNINGON "Unknown OS")
+endif ()
 configure_file(
 	"${CMAKE_SOURCE_DIR}/src/globals.hpp.in"
 	"${CMAKE_BINARY_DIR}/globals.hpp"

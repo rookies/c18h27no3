@@ -227,6 +227,7 @@ void MainMenu::updater(void)
 	*/
 	std::cout << "Updater: Requesting " << UPDATESERVER << UPDATEURI << " ..." << std::endl;
 	req.setUri(UPDATEURI);
+	req.setField("User-Agent", UPDATEAGENT);
 	res = http.sendRequest(req);
 	/*
 	 * Analyze response:

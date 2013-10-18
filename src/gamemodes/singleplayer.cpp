@@ -571,14 +571,14 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		{
 			if (m_actiontimer.getElapsedTime().asMilliseconds() <= 4080)
 				m_player.setColor(sf::Color(255, 255, 255, 255-(m_actiontimer.getElapsedTime().asMilliseconds()/16.)));
-			else
+			if (m_actiontimer.getElapsedTime().asMilliseconds() > 500)
 				m_exit = true;
 		}
 		else if (m_gameover)
 		{
 			if (m_actiontimer.getElapsedTime().asMilliseconds() <= 4080)
 				m_player.setColor(sf::Color(255, 255, 255, 255-(m_actiontimer.getElapsedTime().asMilliseconds()/16.)));
-			else
+			if (m_actiontimer.getElapsedTime().asMilliseconds() > 500)
 				m_exit = true;
 		}
 		else
