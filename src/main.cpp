@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 	/*
 	 * Startup:
 	*/
-	cout << "c18h27no3 v" << VERSION << endl;
+	cout << "route94 v" << VERSION << endl;
 	/*
 	 * Init game:
 	*/

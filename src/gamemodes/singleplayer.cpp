@@ -345,10 +345,10 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Variable declarations:
 	*/
-	int i, j, x;
+	int i, j, x, highest, colno;
 	UniversalDrawableArray arr;
 	LevelColumn *col;
-	double highest, incr, lowest, multip, ssize;
+	double incr, lowest, multip, ssize, y, z;
 	bool barrier;
 	sf::FloatRect rect;
 	long el;
@@ -479,44 +479,52 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			col = m_level.get_column(x+i);
 			for (j=0; j < col->get_blocknumber(); j++)
 			{
-				if (col->get_block(j)->position > highest && m_playery > col->get_block(j)->position)
-					highest = col->get_block(j)->position;
+				if ((highest == -1 || col->get_block(j)->position > col->get_block(highest)->position) && m_playery > col->get_block(j)->position)
+				{
+					colno = x+i;
+					highest = j;
+				};
 			}
 		}
-		highest += 0.5;
-		if (highest < m_playery)
+		if (highest > -1)
 		{
 			/*
 			 * Too high!
 			*/
 			if (m_player_ystatus == 0)
 			{
-				if (m_playery-highest < 0.4*multip)
-					m_playery -= m_playery-highest;
+				z = m_level.get_column(colno)->get_block(highest)->position+0.5;
+				if (m_playery-z < 0.4*multip)
+					y = m_playery-z;
 				else
-					m_playery -= 0.4*multip;
-				place_player();
-			};
-			m_player_canjump = false;
-			if (m_playery <= 0)
-			{
-				m_hearts_num--;
-				if (m_hearts_num == -1)
+					y = 0.4*multip;
+				if (y > 0)
 				{
-					m_moving = false;
-					m_gameover = true;
-					m_message.setString(get_wstring(_("game_gameover_message")));
-					place_message();
-					m_bgsound.stop();
-					m_hearts_num = 0;
+					rect = m_player.getGlobalBounds();
+					rect.height += y;
+					if (!m_blocks[col->get_block(highest)->offset].getGlobalBounds().intersects(rect))
+					{
+						m_playery -= y;
+						place_player();
+					};
+					m_player_canjump = false;
 				}
 				else
-					restart_level();
-				update_hearts();
+					m_player_canjump = true;
 			};
 		}
 		else
-			m_player_canjump = true;
+		{
+			/*
+			 * Free fall!
+			*/
+			if (m_player_ystatus == 0)
+			{
+				m_playery -= 0.4*multip;
+				place_player();
+				m_player_canjump = false;
+			}
+		};
 		/*
 		 * Check for interaction with items:
 		*/
@@ -559,6 +567,26 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			m_message.setString(get_wstring(_("game_successful_message")));
 			place_message();
 			m_bgsound.stop();
+		};
+		/*
+		 * Check for death by falling:
+		*/
+		if (m_playery <= 0)
+		{
+			m_hearts_num--;
+			if (m_hearts_num == -1)
+			{
+				m_moving = false;
+				m_gameover = true;
+				m_message.setString(get_wstring(_("game_gameover_message")));
+				place_message();
+				m_bgsound.stop();
+			}
+			else
+			{
+				restart_level();
+				update_hearts();
+			};
 		};
 		/*
 		 * Restart timer:
@@ -679,7 +707,7 @@ void SinglePlayer::toggle_playertexture(void)
 }
 void SinglePlayer::place_player(void)
 {
-	m_player.setPosition(sf::Vector2f((m_playerx-m_offset)*m_blockw/2., (VERTICAL_BLOCK_NUMBER-3-(m_playery/2.))*m_blockh));
+	m_player.setPosition((m_playerx-m_offset)*m_blockw/2., (VERTICAL_BLOCK_NUMBER-3-(m_playery/2.))*m_blockh);
 }
 void SinglePlayer::update_level(void)
 {
