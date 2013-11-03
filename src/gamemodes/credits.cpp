@@ -145,39 +145,39 @@ void Credits::load_item(int i)
 	switch (i)
 	{
 		case 0:
-			m_header.setString(get_wstring("Max Bäz-Dölle"));
+			m_header.setString(L"Max Bäz-Dölle");
 			m_text.setString(get_wstring(_("credits_text0")));
-			m_sign.setString(get_wstring("„"));
+			m_sign.setString(L"„");
 			break;
 		case 1:
-			m_header.setString(get_wstring("Robert Knauer"));
+			m_header.setString("Robert Knauer");
 			m_text.setString(get_wstring(_("credits_text1")));
-			m_sign.setString(get_wstring("„"));
+			m_sign.setString(L"„");
 			break;
 		case 2:
-			m_header.setString(get_wstring("Robert Falkenstein"));
+			m_header.setString("Robert Falkenstein");
 			m_text.setString(get_wstring(_("credits_text2")));
-			m_sign.setString(get_wstring("„"));
+			m_sign.setString(L"„");
 			break;
 		case 3:
-			m_header.setString(get_wstring("Vasco Lehmann"));
+			m_header.setString("Vasco Lehmann");
 			m_text.setString(get_wstring(_("credits_text3")));
-			m_sign.setString(get_wstring("„"));
+			m_sign.setString(L"„");
 			break;
 		case 4:
-			m_header.setString(get_wstring("Robert Worm"));
+			m_header.setString("Robert Worm");
 			m_text.setString(get_wstring(_("credits_text4")));
-			m_sign.setString(get_wstring("„"));
+			m_sign.setString(L"„");
 			break;
 		case 5:
-			m_header.setString(get_wstring("Grünlers Tür"));
+			m_header.setString(L"Grünlers Tür");
 			m_text.setString(get_wstring(_("credits_text5")));
-			m_sign.setString(get_wstring("!"));
+			m_sign.setString("!");
 			break;
 		default:
 			m_header.setString(get_wstring(_("credits_header")));
 			m_text.setString(get_wstring(_("credits_stdtext")));
-			m_sign.setString(get_wstring("!"));
+			m_sign.setString("!");
 	}
 	m_item_loaded = i;
 }
