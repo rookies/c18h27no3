@@ -479,7 +479,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 			col = m_level.get_column(x+i);
 			for (j=0; j < col->get_blocknumber(); j++)
 			{
-				if ((highest == -1 || col->get_block(j)->position > col->get_block(highest)->position) && m_playery > col->get_block(j)->position)
+				if ((highest == -1 || col->get_block(j)->position > m_level.get_column(colno)->get_block(highest)->position) && m_playery >= col->get_block(j)->position)
 				{
 					colno = x+i;
 					highest = j;
@@ -502,7 +502,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 				{
 					rect = m_player.getGlobalBounds();
 					rect.height += y;
-					if (!m_blocks[col->get_block(highest)->offset].getGlobalBounds().intersects(rect))
+					if (!m_blocks[m_level.get_column(colno)->get_block(highest)->offset].getGlobalBounds().intersects(rect))
 					{
 						m_playery -= y;
 						place_player();
