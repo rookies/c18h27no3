@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-08 18:57+0200\n"
-"PO-Revision-Date: 2013-10-08 18:58+0100\n"
+"POT-Creation-Date: 2013-11-03 14:32+0100\n"
+"PO-Revision-Date: 2013-11-03 14:33+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -266,22 +266,30 @@ msgstr "Abbrechen"
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Taste drücken-"
 
-#: src/gamemodes/singleplayer.cpp:479
-msgid "game_gameover_message"
-msgstr "Game Over :("
-
-#: src/gamemodes/singleplayer.cpp:525
+#: src/gamemodes/singleplayer.cpp:567
 msgid "game_successful_message"
 msgstr "Level erfolgreich beendet!"
 
-#: src/gamemodes/settings_sound_menu.cpp:85
+#: src/gamemodes/singleplayer.cpp:581
+msgid "game_gameover_message"
+msgstr "Game Over :("
+
+#: src/gamemodes/settings_sound_menu.cpp:128
 msgid "settings_sound_menu_entry_header_menu_music_volume"
 msgstr "Lautstärke Menü-Musik"
 
-#: src/gamemodes/settings_sound_menu.cpp:97
+#: src/gamemodes/settings_sound_menu.cpp:131
+msgid "settings_sound_menu_entry_header_game_music_volume"
+msgstr "Lautstärke Spiel-Musik"
+
+#: src/gamemodes/settings_sound_menu.cpp:134
+msgid "settings_sound_menu_entry_header_game_sound_volume"
+msgstr "Lautstärke Spiel-Sounds"
+
+#: src/gamemodes/settings_sound_menu.cpp:152
 msgid "settings_sound_menu_entry_save"
 msgstr "Speichern"
 
-#: src/gamemodes/settings_sound_menu.cpp:98
+#: src/gamemodes/settings_sound_menu.cpp:153
 msgid "settings_sound_menu_entry_abort"
 msgstr "Abbrechen"

@@ -61,6 +61,38 @@ int SettingsSoundMenu::init(Config conf, std::string arg)
 	m_config_chooser1.add_int("100 %", 100);
 	m_config_chooser1.set_actual_int(conf.get("SOUND__MENU_MUSIC_VOLUME").value_int);
 	/*
+	 * Init ConfigChooser instance for game music volume:
+	*/
+	m_config_chooser2.init(CONFIGVAR_TYPE_INTEGER, 11);
+	m_config_chooser2.add_int("  0 %", 0);
+	m_config_chooser2.add_int(" 10 %", 10);
+	m_config_chooser2.add_int(" 20 %", 20);
+	m_config_chooser2.add_int(" 30 %", 30);
+	m_config_chooser2.add_int(" 40 %", 40);
+	m_config_chooser2.add_int(" 50 %", 50);
+	m_config_chooser2.add_int(" 60 %", 60);
+	m_config_chooser2.add_int(" 70 %", 70);
+	m_config_chooser2.add_int(" 80 %", 80);
+	m_config_chooser2.add_int(" 90 %", 90);
+	m_config_chooser2.add_int("100 %", 100);
+	m_config_chooser2.set_actual_int(conf.get("SOUND__GAME_MUSIC_VOLUME").value_int);
+	/*
+	 * Init ConfigChooser instance for game sound volume:
+	*/
+	m_config_chooser3.init(CONFIGVAR_TYPE_INTEGER, 11);
+	m_config_chooser3.add_int("  0 %", 0);
+	m_config_chooser3.add_int(" 10 %", 10);
+	m_config_chooser3.add_int(" 20 %", 20);
+	m_config_chooser3.add_int(" 30 %", 30);
+	m_config_chooser3.add_int(" 40 %", 40);
+	m_config_chooser3.add_int(" 50 %", 50);
+	m_config_chooser3.add_int(" 60 %", 60);
+	m_config_chooser3.add_int(" 70 %", 70);
+	m_config_chooser3.add_int(" 80 %", 80);
+	m_config_chooser3.add_int(" 90 %", 90);
+	m_config_chooser3.add_int("100 %", 100);
+	m_config_chooser3.set_actual_int(conf.get("SOUND__GAME_SOUND_VOLUME").value_int);
+	/*
 	 * Init arrows:
 	*/
 	if (!m_arrow_left.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow_left.png")))
@@ -71,35 +103,58 @@ int SettingsSoundMenu::init(Config conf, std::string arg)
 	m_arrow_right1_sprite.setTexture(m_arrow_right);
 	m_arrow_left1_sprite.setColor(sf::Color(255, 255, 255, 255));
 	m_arrow_right1_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_arrow_left2_sprite.setTexture(m_arrow_left);
+	m_arrow_right2_sprite.setTexture(m_arrow_right);
+	m_arrow_left2_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_arrow_right2_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_arrow_left3_sprite.setTexture(m_arrow_left);
+	m_arrow_right3_sprite.setTexture(m_arrow_right);
+	m_arrow_left3_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_arrow_right3_sprite.setColor(sf::Color(255, 255, 255, 255));
 	/*
 	 * Init menuitem shapes:
 	*/
 	m_menuitem1.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	m_menuitem2.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	m_menuitem3.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem4.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_menuitem5.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	m_menuitem1.setFillColor(COLOR_MENU_ELEMENT);
 	m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
+	m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
 	/*
 	 * Init menuitem headers:
 	*/
 	m_menuitem1_header.setString(get_wstring(_("settings_sound_menu_entry_header_menu_music_volume")));
 	m_menuitem1_header.setColor(sf::Color::Black);
 	m_menuitem1_header.setFont(m_font1);
+	m_menuitem2_header.setString(get_wstring(_("settings_sound_menu_entry_header_game_music_volume")));
+	m_menuitem2_header.setColor(sf::Color::Black);
+	m_menuitem2_header.setFont(m_font1);
+	m_menuitem3_header.setString(get_wstring(_("settings_sound_menu_entry_header_game_sound_volume")));
+	m_menuitem3_header.setColor(sf::Color::Black);
+	m_menuitem3_header.setFont(m_font1);
 	/*
 	 * Init menuitem values:
 	*/
 	m_menuitem1_value.setString(get_wstring(m_config_chooser1.get_actual_showable()));
 	m_menuitem1_value.setColor(sf::Color::Black);
 	m_menuitem1_value.setFont(m_font2);
+	m_menuitem2_value.setString(get_wstring(m_config_chooser2.get_actual_showable()));
+	m_menuitem2_value.setColor(sf::Color::Black);
+	m_menuitem2_value.setFont(m_font2);
+	m_menuitem3_value.setString(get_wstring(m_config_chooser3.get_actual_showable()));
+	m_menuitem3_value.setColor(sf::Color::Black);
+	m_menuitem3_value.setFont(m_font2);
 	/*
 	 * Init menuitem texts:
 	*/
-	m_menuitem2_txt.setString(get_wstring(_("settings_sound_menu_entry_save")));
-	m_menuitem3_txt.setString(get_wstring(_("settings_sound_menu_entry_abort")));
-	m_menuitem2_txt.setColor(sf::Color::Black);
-	m_menuitem3_txt.setColor(sf::Color::Black);
-	m_menuitem2_txt.setFont(m_font1);
-	m_menuitem3_txt.setFont(m_font1);
+	m_menuitem4_txt.setString(get_wstring(_("settings_sound_menu_entry_save")));
+	m_menuitem5_txt.setString(get_wstring(_("settings_sound_menu_entry_abort")));
+	m_menuitem4_txt.setColor(sf::Color::Black);
+	m_menuitem5_txt.setColor(sf::Color::Black);
+	m_menuitem4_txt.setFont(m_font1);
+	m_menuitem5_txt.setFont(m_font1);
 	reset_menuitem_over();
 	return 0;
 }
@@ -137,31 +192,45 @@ int SettingsSoundMenu::calculate_sizes(int w, int h)
 	 * Update menuitem positions & sizes:
 	*/
 	m_menuitem1.setSize(sf::Vector2f(menuitem_width, menuitem_height));
-	m_menuitem2.setSize(sf::Vector2f(menuitem_width, menuitem_height2));
-	m_menuitem3.setSize(sf::Vector2f(menuitem_width, menuitem_height2));
+	m_menuitem2.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem3.setSize(sf::Vector2f(menuitem_width, menuitem_height));
+	m_menuitem4.setSize(sf::Vector2f(menuitem_width, menuitem_height2));
+	m_menuitem5.setSize(sf::Vector2f(menuitem_width, menuitem_height2));
 	m_menuitem1.setOutlineThickness(element_outline);
 	m_menuitem2.setOutlineThickness(element_outline);
 	m_menuitem3.setOutlineThickness(element_outline);
+	m_menuitem4.setOutlineThickness(element_outline);
+	m_menuitem5.setOutlineThickness(element_outline);
 	m_menuitem1.setPosition(menuitem_xoffset, menuitem_first_yoffset);
-	m_menuitem2.setPosition(menuitem_xoffset, menuitem_first_yoffset+2*menuitem_gap+menuitem_height);
-	m_menuitem3.setPosition(menuitem_xoffset, menuitem_first_yoffset+2*menuitem_gap+menuitem_height+menuitem_gap+menuitem_height2);
+	m_menuitem2.setPosition(menuitem_xoffset, menuitem_first_yoffset+menuitem_gap+menuitem_height);
+	m_menuitem3.setPosition(menuitem_xoffset, menuitem_first_yoffset+2*menuitem_height+2*menuitem_gap);
+	m_menuitem4.setPosition(menuitem_xoffset, menuitem_first_yoffset+2*menuitem_gap+3*menuitem_height+3*menuitem_gap);
+	m_menuitem5.setPosition(menuitem_xoffset, menuitem_first_yoffset+2*menuitem_gap+3*menuitem_height+4*menuitem_gap+menuitem_height2);
 	/*
 	 * Update menuitem header size & positions:
 	*/
 	m_menuitem1_header.setCharacterSize(header_size);
 	m_menuitem1_header.setPosition((w-(int)m_menuitem1_header.getGlobalBounds().width)/2, menuitem_first_yoffset+text_gap);
+	m_menuitem2_header.setCharacterSize(header_size);
+	m_menuitem2_header.setPosition((w-(int)m_menuitem2_header.getGlobalBounds().width)/2, menuitem_first_yoffset+menuitem_gap+menuitem_height+text_gap);
+	m_menuitem3_header.setCharacterSize(header_size);
+	m_menuitem3_header.setPosition((w-(int)m_menuitem3_header.getGlobalBounds().width)/2, menuitem_first_yoffset+2*menuitem_height+2*menuitem_gap+text_gap);
 	/*
 	 * Update menuitem value size & positions:
 	*/
 	m_menuitem1_value.setCharacterSize(value_size);
 	m_menuitem1_value.setPosition((w-(int)m_menuitem1_value.getGlobalBounds().width)/2, menuitem_first_yoffset+text_gap+value_gap);
+	m_menuitem2_value.setCharacterSize(value_size);
+	m_menuitem2_value.setPosition((w-(int)m_menuitem2_value.getGlobalBounds().width)/2, menuitem_first_yoffset+menuitem_gap+menuitem_height+text_gap+value_gap);
+	m_menuitem3_value.setCharacterSize(value_size);
+	m_menuitem3_value.setPosition((w-(int)m_menuitem3_value.getGlobalBounds().width)/2, menuitem_first_yoffset+2*menuitem_height+2*menuitem_gap+text_gap+value_gap);
 	/*
 	 * Update menuitem text size & positions:
 	*/
-	m_menuitem2_txt.setCharacterSize(menuitem_height2/SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER);
-	m_menuitem3_txt.setCharacterSize(menuitem_height2/SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER);
-	m_menuitem2_txt.setPosition((w-(int)m_menuitem2_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+2*menuitem_gap+menuitem_height+text_gap);
-	m_menuitem3_txt.setPosition((w-(int)m_menuitem3_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+2*menuitem_gap+menuitem_height+menuitem_gap+menuitem_height2+text_gap);
+	m_menuitem4_txt.setCharacterSize(menuitem_height2/SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER);
+	m_menuitem5_txt.setCharacterSize(menuitem_height2/SIZE_MENU_ELEMENT_TEXT_SIZE_DIVIDER);
+	m_menuitem4_txt.setPosition((w-(int)m_menuitem4_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+2*menuitem_gap+3*menuitem_height+3*menuitem_gap+text_gap);
+	m_menuitem5_txt.setPosition((w-(int)m_menuitem5_txt.getGlobalBounds().width)/2, menuitem_first_yoffset+2*menuitem_gap+3*menuitem_height+4*menuitem_gap+menuitem_height2+text_gap);
 	/*
 	 * Update arrow positions & sizes:
 	*/
@@ -169,6 +238,14 @@ int SettingsSoundMenu::calculate_sizes(int w, int h)
 	m_arrow_right1_sprite.setPosition(menuitem_xoffset+menuitem_width-arrow_xgap-arrow_height, menuitem_first_yoffset+arrow_ygap);
 	m_arrow_left1_sprite.setScale(arrow_height/7, arrow_height/7);
 	m_arrow_right1_sprite.setScale(arrow_height/7, arrow_height/7);
+	m_arrow_left2_sprite.setPosition(menuitem_xoffset+arrow_xgap, menuitem_first_yoffset+menuitem_gap+menuitem_height+arrow_ygap);
+	m_arrow_right2_sprite.setPosition(menuitem_xoffset+menuitem_width-arrow_xgap-arrow_height, menuitem_first_yoffset+menuitem_gap+menuitem_height+arrow_ygap);
+	m_arrow_left2_sprite.setScale(arrow_height/7, arrow_height/7);
+	m_arrow_right2_sprite.setScale(arrow_height/7, arrow_height/7);
+	m_arrow_left3_sprite.setPosition(menuitem_xoffset+arrow_xgap, menuitem_first_yoffset+2*menuitem_height+2*menuitem_gap+arrow_ygap);
+	m_arrow_right3_sprite.setPosition(menuitem_xoffset+menuitem_width-arrow_xgap-arrow_height, menuitem_first_yoffset+2*menuitem_height+2*menuitem_gap+arrow_ygap);
+	m_arrow_left3_sprite.setScale(arrow_height/7, arrow_height/7);
+	m_arrow_right3_sprite.setScale(arrow_height/7, arrow_height/7);
 	return 0;
 }
 void SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -185,14 +262,22 @@ void SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y,
 			break;
 		case sf::Event::MouseMoved:
 			reset_menuitem_over();
-			if (m_menuitem2.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem2_over = 1;
-			else if (m_menuitem3.getGlobalBounds().contains(mouse_x, mouse_y))
-				m_menuitem3_over = 1;
+			if (m_menuitem4.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem4_over = 1;
+			else if (m_menuitem5.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_menuitem5_over = 1;
 			else if (m_arrow_left1_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
 				m_arrow_left1_over = 1;
 			else if (m_arrow_right1_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
 				m_arrow_right1_over = 1;
+			else if (m_arrow_left2_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_arrow_left2_over = 1;
+			else if (m_arrow_right2_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_arrow_right2_over = 1;
+			else if (m_arrow_left3_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_arrow_left3_over = 1;
+			else if (m_arrow_right3_sprite.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_arrow_right3_over = 1;
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
@@ -216,13 +301,49 @@ void SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y,
 						m_menuitem1_value.setString(get_wstring(m_config_chooser1.get_actual_showable()));
 						calculate_sizes(m_w, m_h);
 					}
-					else if (m_menuitem2_over == 1)
+					else if (m_arrow_left2_over == 1)
+					{
+						/*
+						 * Left Game Music Volume Arrow
+						*/
+						m_config_chooser2.prev();
+						m_menuitem2_value.setString(get_wstring(m_config_chooser2.get_actual_showable()));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_arrow_right2_over == 1)
+					{
+						/*
+						 * Right Game Music Volume Arrow
+						*/
+						m_config_chooser2.next();
+						m_menuitem2_value.setString(get_wstring(m_config_chooser2.get_actual_showable()));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_arrow_left3_over == 1)
+					{
+						/*
+						 * Left Game Sound Volume Arrow
+						*/
+						m_config_chooser3.prev();
+						m_menuitem3_value.setString(get_wstring(m_config_chooser3.get_actual_showable()));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_arrow_right3_over == 1)
+					{
+						/*
+						 * Right Game Sound Volume Arrow
+						*/
+						m_config_chooser3.next();
+						m_menuitem3_value.setString(get_wstring(m_config_chooser3.get_actual_showable()));
+						calculate_sizes(m_w, m_h);
+					}
+					else if (m_menuitem4_over == 1)
 					{
 						/*
 						 * Save!
 						*/
-						ConfigVariable var1;
-						ret->init_confvars(1);
+						ConfigVariable var1, var2, var3;
+						ret->init_confvars(3);
 						/*
 						 * Menu Music Volume:
 						*/
@@ -232,11 +353,25 @@ void SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y,
 						ret->add_confvar(var1);
 						ret->set_menumusic_vol(m_config_chooser1.get_actual_int());
 						/*
+						 * Game Music Volume:
+						*/
+						var2.type = CONFIGVAR_TYPE_INTEGER;
+						var2.index = "SOUND__GAME_MUSIC_VOLUME";
+						var2.value_int = m_config_chooser2.get_actual_int();
+						ret->add_confvar(var2);
+						/*
+						 * Game Sound Volume:
+						*/
+						var3.type = CONFIGVAR_TYPE_INTEGER;
+						var3.index = "SOUND__GAME_SOUND_VOLUME";
+						var3.value_int = m_config_chooser3.get_actual_int();
+						ret->add_confvar(var3);
+						/*
 						 * Back to settings menu:
 						*/
 						ret->set_gamemode(2);
 					}
-					else if (m_menuitem3_over == 1)
+					else if (m_menuitem5_over == 1)
 						ret->set_gamemode(2); // back to settings menu
 					break;
 			}
@@ -245,10 +380,14 @@ void SettingsSoundMenu::process_event(sf::Event event, int mouse_x, int mouse_y,
 }
 void SettingsSoundMenu::reset_menuitem_over(void)
 {
-	m_menuitem2_over = 0;
-	m_menuitem3_over = 0;
+	m_menuitem4_over = 0;
+	m_menuitem5_over = 0;
 	m_arrow_left1_over = 0;
 	m_arrow_right1_over = 0;
+	m_arrow_left2_over = 0;
+	m_arrow_right2_over = 0;
+	m_arrow_left3_over = 0;
+	m_arrow_right3_over = 0;
 }
 UniversalDrawableArray SettingsSoundMenu::get_drawables(void)
 {
@@ -259,7 +398,7 @@ UniversalDrawableArray SettingsSoundMenu::get_drawables(void)
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(10);
+	arr.init(20);
 	/*
 	 * Add elements:
 	*/
@@ -267,29 +406,49 @@ UniversalDrawableArray SettingsSoundMenu::get_drawables(void)
 	//
 	arr.add_rectshape(m_menuitem1);
 	//
-	if (m_menuitem2_over == 1)
-		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem2.setFillColor(COLOR_MENU_ELEMENT);
 	arr.add_rectshape(m_menuitem2);
 	//
-	if (m_menuitem3_over == 1)
-		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT_HOVER);
-	else
-		m_menuitem3.setFillColor(COLOR_MENU_ELEMENT);
 	arr.add_rectshape(m_menuitem3);
+	//
+	if (m_menuitem4_over == 1)
+		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT_HOVER);
+	else
+		m_menuitem4.setFillColor(COLOR_MENU_ELEMENT);
+	arr.add_rectshape(m_menuitem4);
+	//
+	if (m_menuitem5_over == 1)
+		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT_HOVER);
+	else
+		m_menuitem5.setFillColor(COLOR_MENU_ELEMENT);
+	arr.add_rectshape(m_menuitem5);
 	//
 	arr.add_text(m_menuitem1_header);
 	//
 	arr.add_text(m_menuitem1_value);
 	//
-	arr.add_text(m_menuitem2_txt);
+	arr.add_text(m_menuitem2_header);
 	//
-	arr.add_text(m_menuitem3_txt);
+	arr.add_text(m_menuitem2_value);
+	//
+	arr.add_text(m_menuitem3_header);
+	//
+	arr.add_text(m_menuitem3_value);
+	//
+	arr.add_text(m_menuitem4_txt);
+	//
+	arr.add_text(m_menuitem5_txt);
 	//
 	arr.add_sprite(m_arrow_left1_sprite);
 	//
 	arr.add_sprite(m_arrow_right1_sprite);
+	//
+	arr.add_sprite(m_arrow_left2_sprite);
+	//
+	arr.add_sprite(m_arrow_right2_sprite);
+	//
+	arr.add_sprite(m_arrow_left3_sprite);
+	//
+	arr.add_sprite(m_arrow_right3_sprite);
 	/*
 	 * Return:
 	*/

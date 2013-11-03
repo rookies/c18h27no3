@@ -70,6 +70,14 @@ Config::Config()
 	m_vars[8].index = "SOUND__MENU_MUSIC_VOLUME";
 	m_vars[8].type = CONFIGVAR_TYPE_INTEGER;
 	m_vars[8].value_int = 100;
+	
+	m_vars[9].index = "SOUND__GAME_MUSIC_VOLUME";
+	m_vars[9].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[9].value_int = 100;
+	
+	m_vars[10].index = "SOUND__GAME_SOUND_VOLUME";
+	m_vars[10].type = CONFIGVAR_TYPE_INTEGER;
+	m_vars[10].value_int = 100;
 }
 Config::~Config()
 {

@@ -157,6 +157,7 @@ int SinglePlayer::init(Config conf, std::string arg)
 			return 1;
 		m_bgsound.setBuffer(m_bgbuf);
 		m_bgsound.setLoop(true);
+		m_bgsound.setVolume(conf.get("SOUND__GAME_MUSIC_VOLUME").value_int);
 		m_bgsound.play();
 	};
 	/*
@@ -205,6 +206,7 @@ int SinglePlayer::init(Config conf, std::string arg)
 	if (!m_coinsound_buf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, "items/coin.ogg")))
 		return 1;
 	m_coinsound.setBuffer(m_coinsound_buf);
+	m_coinsound.setVolume(conf.get("SOUND__GAME_SOUND_VOLUME").value_int);
 	/*
 	 * Init texts:
 	*/
