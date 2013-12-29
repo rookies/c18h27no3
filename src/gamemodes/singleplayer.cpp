@@ -634,7 +634,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		if (m_itemoffset <= 0)
 			m_itemoffsetd = false;
 		else
-			m_itemoffset -= ITEM_STEPOFFSET;
+			m_itemoffset -= ITEM_STEPOFFSET*multip;
 	}
 	else
 	{
@@ -644,7 +644,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		if (m_itemoffset >= ITEM_MAXOFFSET)
 			m_itemoffsetd = true;
 		else
-			m_itemoffset += ITEM_STEPOFFSET;
+			m_itemoffset += ITEM_STEPOFFSET*multip;
 	};
 	update_itempos();
 	/*
