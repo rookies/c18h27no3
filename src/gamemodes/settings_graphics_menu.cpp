@@ -293,11 +293,11 @@ void SettingsGraphicsMenu::process_event(sf::Event event, int mouse_x, int mouse
 						*/
 						var1.type = CONFIGVAR_TYPE_INTEGER;
 						var1.index = "GRAPHICS__RESOLUTION_X";
-						var1.value_int = (m_textfield1_1_buffer.get_int() < SCREENWIDTH_MIN)?SCREENWIDTH_MIN:((m_textfield1_1_buffer.get_int() > SCREENWIDTH_MAX)?SCREENWIDTH_MAX:m_textfield1_1_buffer.get_int());
+						var1.value_int = (m_textfield1_1_buffer.get_int() < SCREENWIDTH_MIN && m_textfield1_1_buffer.get_int() != 0)?SCREENWIDTH_MIN:((m_textfield1_1_buffer.get_int() > SCREENWIDTH_MAX)?SCREENWIDTH_MAX:m_textfield1_1_buffer.get_int());
 						ret->add_confvar(var1);
 						var2.type = CONFIGVAR_TYPE_INTEGER;
 						var2.index = "GRAPHICS__RESOLUTION_Y";
-						var2.value_int = (m_textfield1_2_buffer.get_int() < SCREENHEIGHT_MIN)?SCREENHEIGHT_MIN:((m_textfield1_2_buffer.get_int() > SCREENHEIGHT_MAX)?SCREENHEIGHT_MAX:m_textfield1_2_buffer.get_int());
+						var2.value_int = (m_textfield1_2_buffer.get_int() < SCREENHEIGHT_MIN && m_textfield1_2_buffer.get_int() != 0)?SCREENHEIGHT_MIN:((m_textfield1_2_buffer.get_int() > SCREENHEIGHT_MAX)?SCREENHEIGHT_MAX:m_textfield1_2_buffer.get_int());
 						ret->add_confvar(var2);
 						/*
 						 * Fullscreen:
