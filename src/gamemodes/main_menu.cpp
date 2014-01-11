@@ -167,6 +167,7 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 				case sf::Mouse::Left:
 					if (m_menuitem_over == 0)
 						ret->set_gamemode(7); // go to singleplayer
+						//ret->set_gamemode(9); // go to level chooser
 					else if (m_menuitem_over == 3)
 						ret->set_gamemode(2); // go to settings menu
 					else if (m_menuitem_over == 4)
