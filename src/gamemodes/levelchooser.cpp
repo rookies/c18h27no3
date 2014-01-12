@@ -128,6 +128,15 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 					break;
 			}
 			break;
+		case sf::Event::MouseButtonPressed:
+			switch (event.mouseButton.button)
+			{
+				case sf::Mouse::Left:
+					if (m_level_sprite[0].getGlobalBounds().contains(mouse_x, mouse_y))
+						ret->set_gamemode(7); // go to singleplayer
+					break;
+			}
+			break;
 	}
 }
 UniversalDrawableArray LevelChooser::get_drawables(void)

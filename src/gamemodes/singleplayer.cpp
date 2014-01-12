@@ -317,7 +317,7 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 			switch (event.key.code)
 			{
 				case sf::Keyboard::Escape:
-					ret->set_gamemode(1); // main menu
+					ret->set_gamemode(9); // levelchooser
 					break;
 				default:
 					if (event.key.code == m_key_goleft)
@@ -340,7 +340,7 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 			break;
 	}
 	if (m_exit)
-		ret->set_gamemode(1); // main menu
+		ret->set_gamemode(9); // levelchooser
 }
 UniversalDrawableArray SinglePlayer::get_drawables(void)
 {
