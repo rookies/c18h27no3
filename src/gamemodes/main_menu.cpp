@@ -21,6 +21,7 @@
  * 
  */
 #include "main_menu.hpp"
+#	define FIRE_FRAMELENGTH_MS 170
 
 MainMenu::MainMenu() : m_menuitem_over(-1), m_menuitem_loaded(-1), m_updates(false), m_updatetext_changed(false)
 {
@@ -33,11 +34,26 @@ MainMenu::~MainMenu()
 int MainMenu::init(Config conf, std::string arg)
 {
 	/*
+	 * Variable declaration:
+	*/
+	unsigned int i;
+	std::stringstream tmp;
+	/*
 	 * Init background:
 	*/
-	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
-		return 1;
-	m_bgs.setTexture(m_bg);
+	for (i=0; i < FIRE_FRAMES; i++)
+	{
+		tmp.str("");
+		tmp << "fire";
+		tmp << i;
+		tmp << ".png";
+		if (!m_fire[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, tmp.str())))
+			return 1;
+	}
+	m_fireframe = 0;
+	m_fireclock.restart();
+	m_fire_sprite.setTexture(m_fire[0]);
+	update_fire();
 	/*
 	 * Start update thread:
 	*/
@@ -98,7 +114,7 @@ int MainMenu::calculate_sizes(int w, int h)
 	/*
 	 * Resize background:
 	*/
-	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
+	m_fire_sprite.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Update logo position & size:
 	*/
@@ -194,13 +210,17 @@ UniversalDrawableArray MainMenu::get_drawables(void)
 		m_updatetext_changed = false;
 	};
 	/*
+	 * Update fire animation:
+	*/
+	update_fire();
+	/*
 	 * Init UniversalDrawableArray:
 	*/
 	arr.init(2+(m_menuitem_over>-1?1:0)+(m_updates?1:0));
 	/*
 	 * Add elements:
 	*/
-	arr.add_sprite(m_bgs);
+	arr.add_sprite(m_fire_sprite);
 	arr.add_sprite(m_img1_sprite);
 	if (m_menuitem_over > -1)
 		arr.add_sprite(m_img2_sprite);
@@ -246,5 +266,16 @@ void MainMenu::updater(void)
 		m_updatetext = res.getBody();
 		m_updatetext_changed = true;
 		m_updates = true;
+	};
+}
+void MainMenu::update_fire(void)
+{
+	if (m_fireclock.getElapsedTime().asMilliseconds() >= FIRE_FRAMELENGTH_MS)
+	{
+		m_fireframe++;
+		if (m_fireframe == FIRE_FRAMES)
+			m_fireframe = 0;
+		m_fire_sprite.setTexture(m_fire[m_fireframe]);
+		m_fireclock.restart();
 	};
 }

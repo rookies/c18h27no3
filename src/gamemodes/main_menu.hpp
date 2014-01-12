@@ -27,6 +27,7 @@
 #	include <SFML/Graphics.hpp>
 #	include <SFML/Network.hpp>
 #	include <libintl.h>
+#	include <sstream>
 #	include "globals.hpp"
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
@@ -65,6 +66,10 @@
 			 * Update thread:
 			*/
 			void updater(void);
+			/*
+			 * Update fire frame:
+			*/
+			void update_fire(void);
 		private:
 			int m_w;
 			int m_h;
@@ -91,7 +96,9 @@
 			bool m_updatetext_changed;
 			std::string m_updatetext;
 			float m_activewidth;
-			sf::Texture m_bg;
-			sf::Sprite m_bgs;
+			sf::Texture m_fire[FIRE_FRAMES];
+			sf::Sprite m_fire_sprite;
+			sf::Clock m_fireclock;
+			unsigned int m_fireframe;
 	};
 #endif // MAIN_MENU_HPP

@@ -221,4 +221,5 @@
 #	define JUMPTIME_MS 400.
 #	define JUMPHEIGHT 10
 #	define LEVELCHOOSER_NUMITEMS 12
+#	define FIRE_FRAMES 5
 #endif // GLOBALS_HPP
