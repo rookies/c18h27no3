@@ -85,6 +85,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/numerical_textfield_buffer.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/universal_drawable.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/dataloader.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/level.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/fireanimation.cpp)
 # .
 # add operating system specific source files:
 # .

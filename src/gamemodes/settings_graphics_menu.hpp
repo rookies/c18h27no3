@@ -34,6 +34,7 @@
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
 #	include "../gamemode.hpp"
+#	include "../fireanimation.hpp"
 	
 	class SettingsGraphicsMenu : public Gamemode
 	{
@@ -94,7 +95,6 @@
 			int m_arrow_right2_over;
 			int m_menuitem3_over;
 			int m_menuitem4_over;
-			sf::Texture m_bg;
-			sf::Sprite m_bgs;
+			FireAnimation m_fire;
 	};
 #endif // SETTINGS_GRAPHICS_MENU_HPP

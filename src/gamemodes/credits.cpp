@@ -33,12 +33,6 @@ Credits::~Credits()
 int Credits::init(Config conf, std::string arg)
 {
 	/*
-	 * Init background:
-	*/
-	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
-		return 1;
-	m_bgs.setTexture(m_bg);
-	/*
 	 * Load image texture:
 	*/
 	if (!m_img_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "credits.png")))
@@ -89,15 +83,12 @@ int Credits::uninit(void)
 }
 int Credits::calculate_sizes(int w, int h)
 {
+	m_fire.calculate_sizes(w,h);
 	/*
 	 * Variable declarations:
 	*/
 	float scale;
 	int i;
-	/*
-	 * Resize background:
-	*/
-	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Set image properties:
 	*/
@@ -231,7 +222,7 @@ UniversalDrawableArray Credits::get_drawables(void)
 	*/
 	UniversalDrawableArray arr;
 	arr.init(6);
-	arr.add_sprite(m_bgs);
+	arr.add_sprite(m_fire.get_sprite());
 	arr.add_sprite(m_img);
 	arr.add_text(m_header);
 	arr.add_text(m_text);

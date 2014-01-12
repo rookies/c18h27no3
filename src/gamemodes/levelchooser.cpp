@@ -37,12 +37,6 @@ int LevelChooser::init(Config conf, std::string arg)
 	*/
 	unsigned int i;
 	/*
-	 * Init background:
-	*/
-	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
-		return 1;
-	m_bgs.setTexture(m_bg);
-	/*
 	 * Init frames:
 	*/
 	if (!m_frame.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "levelchooser_frame.png")))
@@ -88,16 +82,13 @@ int LevelChooser::uninit(void)
 }
 int LevelChooser::calculate_sizes(int w, int h)
 {
+	m_fire.calculate_sizes(w,h);
 	/*
 	 * Variable declaration:
 	*/
 	unsigned int i;
 	double multip;
 	unsigned long pos1, pos2;
-	/*
-	 * Resize background:
-	*/
-	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Resize & position frames, level images, locks & level backgrounds:
 	*/
@@ -162,7 +153,7 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	*/
 	//arr.init(49);
 	arr.init(48);
-	arr.add_sprite(m_bgs);
+	arr.add_sprite(m_fire.get_sprite());
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
 		arr.add_rectshape(m_level_bg[i]);

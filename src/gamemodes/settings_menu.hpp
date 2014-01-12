@@ -32,6 +32,7 @@
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
 #	include "../gamemode.hpp"
+#	include "../fireanimation.hpp"
 	
 	class SettingsMenu : public Gamemode
 	{
@@ -80,7 +81,6 @@
 			sf::Text m_header;
 			sf::Texture m_img1;
 			sf::Sprite m_img1_sprite;
-			sf::Texture m_bg;
-			sf::Sprite m_bgs;
+			FireAnimation m_fire;
 	};
 #endif // SETTINGS_MENU_HPP

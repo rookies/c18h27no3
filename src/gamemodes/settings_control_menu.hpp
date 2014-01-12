@@ -31,6 +31,7 @@
 #	include "../dataloader.hpp"
 #	include "../widestring.hpp"
 #	include "../gamemode.hpp"
+#	include "../fireanimation.hpp"
 
 	class ControlKeySetting
 	{
@@ -139,7 +140,6 @@
 			bool m_menuitem8_over;
 			bool m_arrow_left6_over;
 			bool m_arrow_right6_over;
-			sf::Texture m_bg;
-			sf::Sprite m_bgs;
+			FireAnimation m_fire;
 	};
 #endif // SETTINGS_CONTROL_MENU_HPP
