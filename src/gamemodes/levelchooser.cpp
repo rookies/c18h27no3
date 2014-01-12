@@ -37,12 +37,41 @@ int LevelChooser::init(Config conf, std::string arg)
 	*/
 	unsigned int i;
 	/*
+	 * Init background:
+	*/
+	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
+		return 1;
+	m_bgs.setTexture(m_bg);
+	/*
 	 * Init frames:
 	*/
 	if (!m_frame.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "levelchooser_frame.png")))
 		return 1;
-	for (i=0; i < 12; i++)
+	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 		m_frame_sprite[i].setTexture(m_frame);
+	/*
+	 * Init testlevel:
+	*/
+	if (!m_testlevel.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "testlevel.png")))
+		return 1;
+	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
+	{
+		m_level_sprite[i].setTexture(m_testlevel);
+		if (i > 0)
+			m_level_sprite[i].setColor(sf::Color(255,255,255,80));
+	}
+	/*
+	 * Init locks:
+	*/
+	if (!m_lock.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "lock.png")))
+		return 1;
+	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
+		m_lock_sprite[i].setTexture(m_lock);
+	/*
+	 * Init level backgrounds:
+	*/
+	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
+		m_level_bg[i].setFillColor(sf::Color::Black);
 	return 0;
 }
 int LevelChooser::uninit(void)
@@ -59,14 +88,31 @@ int LevelChooser::calculate_sizes(int w, int h)
 	*/
 	unsigned int i;
 	double multip;
+	unsigned long pos1, pos2;
 	/*
-	 * Resize & position frames:
+	 * Resize background:
+	*/
+	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
+	/*
+	 * Resize & position frames, level images, locks & level backgrounds:
 	*/
 	multip = w/1920.;
-	for (i=0; i < 12; i++)
+	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
+		pos1 = (i % 4)*(60+SIZE_LEVELCHOOSER_FRAME_IMGWIDTH*5)+170;
+		pos2 = int(i/4)*(60+SIZE_LEVELCHOOSER_FRAME_IMGHEIGHT*5)+120;
+		// Frames:
 		m_frame_sprite[i].setScale(5*multip, 5*multip);
-		m_frame_sprite[i].setPosition(((i % 4)*(60+SIZE_LEVELCHOOSER_FRAME_IMGWIDTH*5)+170)*multip, (int(i/4)*(60+SIZE_LEVELCHOOSER_FRAME_IMGHEIGHT*5)+120)*multip);
+		m_frame_sprite[i].setPosition(pos1*multip, pos2*multip);
+		// Level Images:
+		m_level_sprite[i].setScale(0.63*multip, 0.63*multip); // div 8 * 5 + tolerance
+		m_level_sprite[i].setPosition((pos1+20)*multip, (pos2+20)*multip);
+		// Locks:
+		m_lock_sprite[i].setScale(5*multip, 5*multip);
+		m_lock_sprite[i].setPosition((pos1+112.5)*multip, (pos2+17.5)*multip); // 22.5*5 ; 3.5*5
+		// Level Backgrounds:
+		m_level_bg[i].setSize(sf::Vector2f(SIZE_LEVELCHOOSER_LVLIMG_IMGWIDTH*0.63*multip, SIZE_LEVELCHOOSER_LVLIMG_IMGHEIGHT*0.63*multip));
+		m_level_bg[i].setPosition((pos1+20)*multip, (pos2+20)*multip);
 	}
 	return 0;
 }
@@ -94,8 +140,16 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.init(12);
-	for (i=0; i < 12; i++)
+	//arr.init(49);
+	arr.init(48);
+	arr.add_sprite(m_bgs);
+	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
+	{
+		arr.add_rectshape(m_level_bg[i]);
+		arr.add_sprite(m_level_sprite[i]);
 		arr.add_sprite(m_frame_sprite[i]);
+		if (i > 0)
+			arr.add_sprite(m_lock_sprite[i]);
+	}
 	return arr;
 }

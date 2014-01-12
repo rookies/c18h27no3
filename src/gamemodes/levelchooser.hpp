@@ -53,6 +53,13 @@
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
 			sf::Texture m_frame;
-			sf::Sprite m_frame_sprite[12];
+			sf::Sprite m_frame_sprite[LEVELCHOOSER_NUMITEMS];
+			sf::Texture m_bg;
+			sf::Sprite m_bgs;
+			sf::Texture m_testlevel;
+			sf::Sprite m_level_sprite[LEVELCHOOSER_NUMITEMS];
+			sf::Texture m_lock;
+			sf::Sprite m_lock_sprite[LEVELCHOOSER_NUMITEMS];
+			sf::RectangleShape m_level_bg[LEVELCHOOSER_NUMITEMS];
 	};
 #endif // LEVELCHOOSER_HPP
