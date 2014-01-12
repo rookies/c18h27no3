@@ -58,7 +58,7 @@ int LevelChooser::init(Config conf, std::string arg)
 	{
 		m_level_sprite[i].setTexture(m_testlevel);
 		if (i > 0)
-			m_level_sprite[i].setColor(sf::Color(255,255,255,80));
+			m_level_sprite[i].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK_INACTIVE);
 	}
 	/*
 	 * Init locks:
@@ -71,7 +71,12 @@ int LevelChooser::init(Config conf, std::string arg)
 	 * Init level backgrounds:
 	*/
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
-		m_level_bg[i].setFillColor(sf::Color::Black);
+	{
+		if (i == 0)
+			m_level_bg[i].setFillColor(COLOR_LEVELCHOOSER_LEVEL_BACKGROUND_HOVER);
+		else
+			m_level_bg[i].setFillColor(COLOR_LEVELCHOOSER_LEVEL_BACKGROUND);
+	}
 	return 0;
 }
 int LevelChooser::uninit(void)
@@ -127,6 +132,12 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 					ret->set_gamemode(1);
 					break;
 			}
+			break;
+		case sf::Event::MouseMoved:
+			if (m_level_sprite[0].getGlobalBounds().contains(mouse_x, mouse_y))
+				m_level_sprite[0].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK_HOVER);
+			else
+				m_level_sprite[0].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK);
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
