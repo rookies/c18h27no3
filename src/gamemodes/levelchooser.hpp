@@ -26,6 +26,7 @@
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
+#	include "../dataloader.hpp"
 	
 	class LevelChooser : public Gamemode
 	{
@@ -51,6 +52,7 @@
 			*/
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
-			
+			sf::Texture m_frame;
+			sf::Sprite m_frame_sprite[12];
 	};
 #endif // LEVELCHOOSER_HPP

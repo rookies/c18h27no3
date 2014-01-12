@@ -33,8 +33,16 @@ LevelChooser::~LevelChooser()
 int LevelChooser::init(Config conf, std::string arg)
 {
 	/*
-	 * ...
+	 * Variable declaration:
 	*/
+	unsigned int i;
+	/*
+	 * Init frames:
+	*/
+	if (!m_frame.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "levelchooser_frame.png")))
+		return 1;
+	for (i=0; i < 12; i++)
+		m_frame_sprite[i].setTexture(m_frame);
 	return 0;
 }
 int LevelChooser::uninit(void)
@@ -47,8 +55,19 @@ int LevelChooser::uninit(void)
 int LevelChooser::calculate_sizes(int w, int h)
 {
 	/*
-	 * ...
+	 * Variable declaration:
 	*/
+	unsigned int i;
+	double multip;
+	/*
+	 * Resize & position frames:
+	*/
+	multip = w/1920.;
+	for (i=0; i < 12; i++)
+	{
+		m_frame_sprite[i].setScale(5*multip, 5*multip);
+		m_frame_sprite[i].setPosition(((i % 4)*(60+SIZE_LEVELCHOOSER_FRAME_IMGWIDTH*5)+170)*multip, (int(i/4)*(60+SIZE_LEVELCHOOSER_FRAME_IMGHEIGHT*5)+120)*multip);
+	}
 	return 0;
 }
 void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -71,9 +90,12 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	 * Variable declarations:
 	*/
 	UniversalDrawableArray arr;
+	unsigned int i;
 	/*
-	 * ...
+	 * Add elements:
 	*/
-	arr.init(0);
+	arr.init(12);
+	for (i=0; i < 12; i++)
+		arr.add_sprite(m_frame_sprite[i]);
 	return arr;
 }
