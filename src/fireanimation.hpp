@@ -38,5 +38,6 @@
 			sf::Sprite m_fire_sprite;
 			sf::Clock m_fireclock;
 			unsigned int m_fireframe;
+			bool m_backwards;
 	};
 #endif // FIREANIMATION_HPP

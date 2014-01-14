@@ -22,7 +22,7 @@
  */
 #include "fireanimation.hpp"
 
-FireAnimation::FireAnimation()
+FireAnimation::FireAnimation() : m_backwards(false)
 {
 	/*
 	 * Variable declaration:
@@ -56,9 +56,18 @@ sf::Sprite FireAnimation::get_sprite(void)
 {
 	if (m_fireclock.getElapsedTime().asMilliseconds() >= FIRE_FRAMELENGTH_MS)
 	{
-		m_fireframe++;
-		if (m_fireframe == FIRE_FRAMES)
-			m_fireframe = 0;
+		// Switch direction if necessary:
+		if (!m_backwards && m_fireframe == FIRE_FRAMES-1)
+			m_backwards = true;
+		else if (m_backwards && m_fireframe == 0)
+			m_backwards = false;
+		// Increase or decrease framenumber:
+		if (m_backwards)
+			m_fireframe--;
+		else
+			m_fireframe++;
+		// Update frame & restart clock:
+		std::cout << m_fireframe << std::endl;
 		m_fire_sprite.setTexture(m_fire[m_fireframe]);
 		m_fireclock.restart();
 	};
