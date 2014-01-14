@@ -398,7 +398,7 @@ bool Level::load_from_file(std::string file)
 			tmp2 = (unsigned short)buf[0];
 			delete[] buf;
 			/*
-			 * Read blockdef ID:
+			 * Read item ID:
 			*/
 			buf = new char[1];
 			f.read(buf, 1);
