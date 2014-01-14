@@ -67,7 +67,6 @@ sf::Sprite FireAnimation::get_sprite(void)
 		else
 			m_fireframe++;
 		// Update frame & restart clock:
-		std::cout << m_fireframe << std::endl;
 		m_fire_sprite.setTexture(m_fire[m_fireframe]);
 		m_fireclock.restart();
 	};
