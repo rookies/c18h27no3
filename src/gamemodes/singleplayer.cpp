@@ -305,9 +305,6 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	 * Set weapon properties:
 	 * (position data is from upper left corner of the screen to lower right corner of the weapon sprite)
 	*/
-#	define SIZE_GAME_WEAPON_XOFFSET 89.
-#	define SIZE_GAME_WEAPON_YOFFSET 17.
-#	define SIZE_GAME_WEAPON_WIDTH 6.5
 	scale = w*SIZE_GAME_WEAPON_WIDTH/100./m_weaponsprite.getLocalBounds().width;
 	m_weaponsprite.setScale(scale, scale);
 	m_weaponsprite.setPosition(w*SIZE_GAME_WEAPON_XOFFSET/100.-m_weaponsprite.getGlobalBounds().width, h*SIZE_GAME_WEAPON_YOFFSET/100.-m_weaponsprite.getGlobalBounds().height);
