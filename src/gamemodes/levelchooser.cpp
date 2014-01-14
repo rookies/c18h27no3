@@ -194,8 +194,8 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	//arr.init(53);
-	arr.init(52);
+	//arr.init(53); // with all elements
+	arr.init(38);
 	arr.add_sprite(m_fire.get_sprite());
 	arr.add_text(m_header);
 	arr.add_text(m_subheading);
@@ -204,9 +204,10 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
 		arr.add_rectshape(m_level_bg[i]);
-		arr.add_sprite(m_level_sprite[i]);
+		if (i < 5)
+			arr.add_sprite(m_level_sprite[i]);
 		arr.add_sprite(m_frame_sprite[i]);
-		if (i > 0)
+		if (i > 0 && i < 5)
 			arr.add_sprite(m_lock_sprite[i]);
 	}
 	return arr;
