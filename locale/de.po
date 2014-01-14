@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-03 14:32+0100\n"
-"PO-Revision-Date: 2013-11-03 14:33+0100\n"
+"POT-Creation-Date: 2014-01-14 15:33+0100\n"
+"PO-Revision-Date: 2014-01-14 15:34+0100\n"
 "Last-Translator: Robert Knauer <robert@privatdemail.net>\n"
 "Language-Team: Robert Knauer <robert@privatdemail.net>\n"
 "Language: de\n"
@@ -17,121 +17,97 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
 
-#: src/gamemodes/settings_graphics_menu.cpp:58
-msgid "settings_graphics_menu_entry_value_fullscreen_enabled"
-msgstr "aktiviert"
+#: src/gamemodes/levelchooser.cpp:49
+msgid "levelchooser_header"
+msgstr "Level-Auswahl"
 
-#: src/gamemodes/settings_graphics_menu.cpp:59
-msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
-msgstr "deaktiviert"
+#: src/gamemodes/levelchooser.cpp:52
+msgid "levelchooser_subheading"
+msgstr "Seite 1 von 1"
 
-#: src/gamemodes/settings_graphics_menu.cpp:98
-msgid "settings_graphics_menu_entry_header_resolution"
-msgstr "Bildschirmauflösung"
+#: src/gamemodes/levelchooser.cpp:53
+msgid "levelchooser_back"
+msgstr "Zurück zum Hauptmenü"
 
-#: src/gamemodes/settings_graphics_menu.cpp:99
-msgid "settings_graphics_menu_entry_header_fullscreen"
-msgstr "Vollbild"
-
-#: src/gamemodes/settings_graphics_menu.cpp:116
-msgid "settings_graphics_menu_entry_save"
-msgstr "Speichern"
-
-#: src/gamemodes/settings_graphics_menu.cpp:117
-msgid "settings_graphics_menu_entry_abort"
-msgstr "Abbrechen"
-
-#: src/gamemodes/credits.cpp:149
-msgid "credits_text0"
-msgstr ""
-"Ich bin Level-Designer, ich stelle die einzelnen Grafiken\n"
-"zusammen und sorge für ultimativen Spielspaß!"
-
-#: src/gamemodes/credits.cpp:154
-msgid "credits_text1"
-msgstr ""
-"Ich bin Programmierer, ich habe die Ergebnisse der Anderen\n"
-"zusammengefügt und das Spiel und den Level-Editor daraus gemacht."
-
-#: src/gamemodes/credits.cpp:159
-msgid "credits_text2"
-msgstr ""
-"Ich bin der Musik- und Sound-Designer, alles was ihr im\n"
-"Spiel zu hören bekommt stammt von mir."
-
-#: src/gamemodes/credits.cpp:164
-msgid "credits_text3"
-msgstr ""
-"Ich bin Grafikdesigner, das heißt ich entwickle und\n"
-"gestalte Grafiken für unser Spiel, vor allem die Blöcke und Items."
-
-#: src/gamemodes/credits.cpp:169
-msgid "credits_text4"
-msgstr ""
-"Ich bin Level-Designer und kümmere mich mit Max zusammen\n"
-"um die Storyline und die Handlung in den einzelnen Levels."
-
-#: src/gamemodes/credits.cpp:174
-msgid "credits_text5"
-msgstr "Klicke, um zurück ins Hauptmenü zu gelangen."
-
-#: src/gamemodes/credits.cpp:178
-msgid "credits_header"
-msgstr "Das Team von Capsaicin Game Development & Fans"
-
-#: src/gamemodes/credits.cpp:179
-msgid "credits_stdtext"
-msgstr ""
-"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
-"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."
-
-#: src/gamemodes/settings_general_menu.cpp:58
+#: src/gamemodes/settings_general_menu.cpp:52
 msgid "settings_general_menu_entry_value_fpscounter_enabled"
 msgstr "anzeigen"
 
-#: src/gamemodes/settings_general_menu.cpp:59
+#: src/gamemodes/settings_general_menu.cpp:53
 msgid "settings_general_menu_entry_value_fpscounter_disabled"
 msgstr "nicht anzeigen"
 
-#: src/gamemodes/settings_general_menu.cpp:88
+#: src/gamemodes/settings_general_menu.cpp:82
 msgid "settings_general_menu_entry_header_language"
 msgstr "Sprache"
 
-#: src/gamemodes/settings_general_menu.cpp:89
+#: src/gamemodes/settings_general_menu.cpp:83
 msgid "settings_general_menu_entry_header_fpscounter"
 msgstr "FPS-Anzeige"
 
-#: src/gamemodes/settings_general_menu.cpp:106
+#: src/gamemodes/settings_general_menu.cpp:100
 msgid "settings_general_menu_entry_save"
 msgstr "Speichern"
 
-#: src/gamemodes/settings_general_menu.cpp:107
+#: src/gamemodes/settings_general_menu.cpp:101
 msgid "settings_general_menu_entry_abort"
 msgstr "Abbrechen"
 
-#: src/gamemodes/settings_menu.cpp:64
+#: src/gamemodes/settings_menu.cpp:58
 msgid "settings_menu_entry_general"
 msgstr "Allgemein"
 
-#: src/gamemodes/settings_menu.cpp:65
+#: src/gamemodes/settings_menu.cpp:59
 msgid "settings_menu_entry_graphics"
 msgstr "Grafik"
 
-#: src/gamemodes/settings_menu.cpp:66
+#: src/gamemodes/settings_menu.cpp:60
 msgid "settings_menu_entry_control"
 msgstr "Steuerung"
 
-#: src/gamemodes/settings_menu.cpp:67
+#: src/gamemodes/settings_menu.cpp:61
 msgid "settings_menu_entry_sound"
 msgstr "Sound"
 
-#: src/gamemodes/settings_menu.cpp:68
+#: src/gamemodes/settings_menu.cpp:62
 msgid "settings_menu_entry_back"
 msgstr "Zurück zum Hauptmenü"
 
-#: src/gamemodes/settings_menu.cpp:83
+#: src/gamemodes/settings_menu.cpp:77
 msgid "settings_menu_header"
 msgstr "Einstellungen"
+
+#: src/gamemodes/singleplayer.cpp:569
+msgid "game_successful_message"
+msgstr "Level erfolgreich beendet!"
+
+#: src/gamemodes/singleplayer.cpp:583
+msgid "game_gameover_message"
+msgstr "Game Over :("
+
+#: src/gamemodes/settings_graphics_menu.cpp:52
+msgid "settings_graphics_menu_entry_value_fullscreen_enabled"
+msgstr "aktiviert"
+
+#: src/gamemodes/settings_graphics_menu.cpp:53
+msgid "settings_graphics_menu_entry_value_fullscreen_disabled"
+msgstr "deaktiviert"
+
+#: src/gamemodes/settings_graphics_menu.cpp:92
+msgid "settings_graphics_menu_entry_header_resolution"
+msgstr "Bildschirmauflösung"
+
+#: src/gamemodes/settings_graphics_menu.cpp:93
+msgid "settings_graphics_menu_entry_header_fullscreen"
+msgstr "Vollbild"
+
+#: src/gamemodes/settings_graphics_menu.cpp:110
+msgid "settings_graphics_menu_entry_save"
+msgstr "Speichern"
+
+#: src/gamemodes/settings_graphics_menu.cpp:111
+msgid "settings_graphics_menu_entry_abort"
+msgstr "Abbrechen"
 
 #: src/gamemodes/settings_control_menu.cpp:161
 msgid "key_LControl"
@@ -234,62 +210,98 @@ msgstr "Pause"
 msgid "settings_control_menu_entry_pagecount %d %d"
 msgstr "Seite %d von %d"
 
-#: src/gamemodes/settings_control_menu.cpp:328
+#: src/gamemodes/settings_control_menu.cpp:322
 msgid "settings_control_menu_entry_caption_goleft"
 msgstr "nach links laufen"
 
-#: src/gamemodes/settings_control_menu.cpp:332
+#: src/gamemodes/settings_control_menu.cpp:326
 msgid "settings_control_menu_entry_caption_goright"
 msgstr "nach rechts laufen"
 
-#: src/gamemodes/settings_control_menu.cpp:336
+#: src/gamemodes/settings_control_menu.cpp:330
 msgid "settings_control_menu_entry_caption_jump"
 msgstr "hüpfen"
 
-#: src/gamemodes/settings_control_menu.cpp:377
+#: src/gamemodes/settings_control_menu.cpp:371
 msgid "settings_control_menu_warning_keyused"
 msgstr "Taste schon verwendet!"
 
-#: src/gamemodes/settings_control_menu.cpp:378
+#: src/gamemodes/settings_control_menu.cpp:372
 msgid "settings_control_menu_entry_save"
 msgstr "Speichern"
 
-#: src/gamemodes/settings_control_menu.cpp:379
+#: src/gamemodes/settings_control_menu.cpp:373
 msgid "settings_control_menu_entry_abort"
 msgstr "Abbrechen"
 
-#: src/gamemodes/settings_control_menu.cpp:610
-#: src/gamemodes/settings_control_menu.cpp:616
-#: src/gamemodes/settings_control_menu.cpp:622
-#: src/gamemodes/settings_control_menu.cpp:628
-#: src/gamemodes/settings_control_menu.cpp:634
+#: src/gamemodes/settings_control_menu.cpp:601
+#: src/gamemodes/settings_control_menu.cpp:607
+#: src/gamemodes/settings_control_menu.cpp:613
+#: src/gamemodes/settings_control_menu.cpp:619
+#: src/gamemodes/settings_control_menu.cpp:625
 msgid "settings_control_menu_entry_value_wait"
 msgstr "-Taste drücken-"
 
-#: src/gamemodes/singleplayer.cpp:567
-msgid "game_successful_message"
-msgstr "Level erfolgreich beendet!"
-
-#: src/gamemodes/singleplayer.cpp:581
-msgid "game_gameover_message"
-msgstr "Game Over :("
-
-#: src/gamemodes/settings_sound_menu.cpp:128
+#: src/gamemodes/settings_sound_menu.cpp:122
 msgid "settings_sound_menu_entry_header_menu_music_volume"
 msgstr "Lautstärke Menü-Musik"
 
-#: src/gamemodes/settings_sound_menu.cpp:131
+#: src/gamemodes/settings_sound_menu.cpp:125
 msgid "settings_sound_menu_entry_header_game_music_volume"
 msgstr "Lautstärke Spiel-Musik"
 
-#: src/gamemodes/settings_sound_menu.cpp:134
+#: src/gamemodes/settings_sound_menu.cpp:128
 msgid "settings_sound_menu_entry_header_game_sound_volume"
 msgstr "Lautstärke Spiel-Sounds"
 
-#: src/gamemodes/settings_sound_menu.cpp:152
+#: src/gamemodes/settings_sound_menu.cpp:146
 msgid "settings_sound_menu_entry_save"
 msgstr "Speichern"
 
-#: src/gamemodes/settings_sound_menu.cpp:153
+#: src/gamemodes/settings_sound_menu.cpp:147
 msgid "settings_sound_menu_entry_abort"
 msgstr "Abbrechen"
+
+#: src/gamemodes/credits.cpp:140
+msgid "credits_text0"
+msgstr ""
+"Ich bin Level-Designer, ich stelle die einzelnen Grafiken\n"
+"zusammen und sorge für ultimativen Spielspaß!"
+
+#: src/gamemodes/credits.cpp:145
+msgid "credits_text1"
+msgstr ""
+"Ich bin Programmierer, ich habe die Ergebnisse der Anderen\n"
+"zusammengefügt und das Spiel und den Level-Editor daraus gemacht."
+
+#: src/gamemodes/credits.cpp:150
+msgid "credits_text2"
+msgstr ""
+"Ich bin der Musik- und Sound-Designer, alles was ihr im\n"
+"Spiel zu hören bekommt stammt von mir."
+
+#: src/gamemodes/credits.cpp:155
+msgid "credits_text3"
+msgstr ""
+"Ich bin Grafikdesigner, das heißt ich entwickle und\n"
+"gestalte Grafiken für unser Spiel, vor allem die Blöcke und Items."
+
+#: src/gamemodes/credits.cpp:160
+msgid "credits_text4"
+msgstr ""
+"Ich bin Level-Designer und kümmere mich mit Max zusammen\n"
+"um die Storyline und die Handlung in den einzelnen Levels."
+
+#: src/gamemodes/credits.cpp:165
+msgid "credits_text5"
+msgstr "Klicke, um zurück ins Hauptmenü zu gelangen."
+
+#: src/gamemodes/credits.cpp:169
+msgid "credits_header"
+msgstr "Das Team von Capsaicin Game Development & Fans"
+
+#: src/gamemodes/credits.cpp:170
+msgid "credits_stdtext"
+msgstr ""
+"Fahre mit der Maus über einen der Köpfe um mehr zu erfahren.\n"
+"Klick' auf die Tür, um zurück ins Hauptmenü zu gelangen."

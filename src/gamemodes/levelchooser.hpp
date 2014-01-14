@@ -28,6 +28,7 @@
 #	include "../event_processor_return.hpp"
 #	include "../dataloader.hpp"
 #	include "../fireanimation.hpp"
+#	include "../widestring.hpp"
 	
 	class LevelChooser : public Gamemode
 	{
@@ -61,5 +62,10 @@
 			sf::Sprite m_lock_sprite[LEVELCHOOSER_NUMITEMS];
 			sf::RectangleShape m_level_bg[LEVELCHOOSER_NUMITEMS];
 			FireAnimation m_fire;
+			sf::Font m_font1;
+			sf::Text m_header;
+			sf::Text m_subheading;
+			sf::RectangleShape m_backbutton;
+			sf::Text m_backtext;
 	};
 #endif // LEVELCHOOSER_HPP

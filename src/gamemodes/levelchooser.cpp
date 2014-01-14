@@ -37,6 +37,28 @@ int LevelChooser::init(Config conf, std::string arg)
 	*/
 	unsigned int i;
 	/*
+	 * Load fonts:
+	*/
+	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Bold.ttf")))
+		return 1;
+	/*
+	 * Init header:
+	*/
+	m_header.setFont(m_font1);
+	m_header.setColor(sf::Color::White);
+	m_header.setString(get_wstring(_("levelchooser_header")));
+	m_subheading.setFont(m_font1);
+	m_subheading.setColor(sf::Color::White);
+	m_subheading.setString(get_wstring(_("levelchooser_subheading")));
+	/*
+	 * Init back button:
+	*/
+	m_backtext.setFont(m_font1);
+	m_backtext.setColor(sf::Color::Black);
+	m_backtext.setString(get_wstring(_("levelchooser_back")));
+	m_backbutton.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
+	/*
 	 * Init frames:
 	*/
 	if (!m_frame.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "levelchooser_frame.png")))
@@ -90,6 +112,21 @@ int LevelChooser::calculate_sizes(int w, int h)
 	double multip;
 	unsigned long pos1, pos2;
 	/*
+	 * Resize & position header:
+	*/
+	m_header.setCharacterSize(h/SIZE_LEVELCHOOSER_HEADER_SIZE_DIVIDER);
+	m_header.setPosition((w-m_header.getGlobalBounds().width)/2., h*SIZE_LEVELCHOOSER_HEADER_GAP/100.);
+	m_subheading.setCharacterSize(h/SIZE_LEVELCHOOSER_SUBHEADING_SIZE_DIVIDER);
+	m_subheading.setPosition((w-m_subheading.getGlobalBounds().width)/2., m_header.getGlobalBounds().height+h*SIZE_LEVELCHOOSER_SUBHEADING_GAP/100.);
+	/*
+	 * Resize & position back button:
+	*/
+	m_backbutton.setSize(sf::Vector2f(w*SIZE_MENU_ELEMENT_WIDTH/100., h*SIZE_MENU_ELEMENT_HEIGHT/100.));
+	m_backbutton.setOutlineThickness(h*SIZE_MENU_ELEMENT_OUTLINE/100.0);
+	m_backbutton.setPosition((w-m_backbutton.getGlobalBounds().width)/2., h*SIZE_LEVELCHOOSER_BACKBUTTON_YOFFSET/100.);
+	m_backtext.setCharacterSize(h*SIZE_MENU_ELEMENT_HEIGHT/200.);
+	m_backtext.setPosition((w-m_backtext.getGlobalBounds().width)/2., h*(SIZE_MENU_ELEMENT_TEXT_GAP+SIZE_LEVELCHOOSER_BACKBUTTON_YOFFSET)/100.);
+	/*
 	 * Resize & position frames, level images, locks & level backgrounds:
 	*/
 	multip = w/1920.;
@@ -125,6 +162,10 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 			}
 			break;
 		case sf::Event::MouseMoved:
+			if (m_backbutton.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_backbutton.setFillColor(COLOR_MENU_ELEMENT_HOVER);
+			else
+				m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
 			if (m_level_sprite[0].getGlobalBounds().contains(mouse_x, mouse_y))
 				m_level_sprite[0].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK_HOVER);
 			else
@@ -136,6 +177,8 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 				case sf::Mouse::Left:
 					if (m_level_sprite[0].getGlobalBounds().contains(mouse_x, mouse_y))
 						ret->set_gamemode(7); // go to singleplayer
+					else if (m_backbutton.getGlobalBounds().contains(mouse_x, mouse_y))
+						ret->set_gamemode(1); // go to main menu
 					break;
 			}
 			break;
@@ -151,9 +194,13 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	//arr.init(49);
-	arr.init(48);
+	//arr.init(53);
+	arr.init(52);
 	arr.add_sprite(m_fire.get_sprite());
+	arr.add_text(m_header);
+	arr.add_text(m_subheading);
+	arr.add_rectshape(m_backbutton);
+	arr.add_text(m_backtext);
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
 		arr.add_rectshape(m_level_bg[i]);
