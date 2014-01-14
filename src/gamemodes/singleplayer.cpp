@@ -186,6 +186,12 @@ int SinglePlayer::init(Config conf, std::string arg)
 		return 1;
 	m_ptoilet.setTexture(m_ptoilet_texture);
 	/*
+	 * Load weapon texture:
+	*/
+	if (!m_weapon.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "weapons/fist.png")))
+		return 1;
+	m_weaponsprite.setTexture(m_weapon);
+	/*
 	 * Init portable toilet base:
 	*/
 	m_ptoiletbase.setFillColor(sf::Color::Black);
@@ -295,6 +301,16 @@ int SinglePlayer::calculate_sizes(int w, int h)
 		m_hearts[i].setScale(scale, scale);
 		m_hearts[i].setPosition(sf::Vector2f(w*SIZE_HEARTS_XOFFSET/100., (h*SIZE_HEARTS_YOFFSET0/100.)+(i*h*SIZE_HEARTS/100.)+(i*h*SIZE_HEARTS_YGAP/100.)));
 	}
+	/*
+	 * Set weapon properties:
+	 * (position data is from upper left corner of the screen to lower right corner of the weapon sprite)
+	*/
+#	define SIZE_GAME_WEAPON_XOFFSET 89.
+#	define SIZE_GAME_WEAPON_YOFFSET 17.
+#	define SIZE_GAME_WEAPON_WIDTH 6.5
+	scale = w*SIZE_GAME_WEAPON_WIDTH/100./m_weaponsprite.getLocalBounds().width;
+	m_weaponsprite.setScale(scale, scale);
+	m_weaponsprite.setPosition(w*SIZE_GAME_WEAPON_XOFFSET/100.-m_weaponsprite.getGlobalBounds().width, h*SIZE_GAME_WEAPON_YOFFSET/100.-m_weaponsprite.getGlobalBounds().height);
 	/*
 	 * Set portable toilet properties:
 	*/
@@ -650,7 +666,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
-	arr.init(10+(m_level.has_bgimg()?1:0)+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0)+((m_successful||m_gameover)?1:0));
+	arr.init(11+(m_level.has_bgimg()?1:0)+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0)+((m_successful||m_gameover)?1:0));
 	if (m_level.has_bgimg())
 		arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
@@ -665,6 +681,7 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	arr.add_sprite(m_frame);
 	arr.add_sprite(m_healthm);
 	arr.add_rectshape(m_healthm_helper);
+	arr.add_sprite(m_weaponsprite);
 	for (i=0; i < 3; i++)
 		arr.add_sprite(m_hearts[i]);
 	if (m_offset < PLAYERPOS_X+2)
