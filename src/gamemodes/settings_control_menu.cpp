@@ -308,12 +308,6 @@ int SettingsControlMenu::init(Config conf, std::string arg)
 	std::string confkey;
 	std::string caption;
 	/*
-	 * Init background:
-	*/
-	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
-		return 1;
-	m_bgs.setTexture(m_bg);
-	/*
 	 * Init control key settings array:
 	*/
 	m_controlkeys_offset = 0;
@@ -424,6 +418,7 @@ int SettingsControlMenu::uninit(void)
 }
 int SettingsControlMenu::calculate_sizes(int w, int h)
 {
+	m_fire.calculate_sizes(w,h);
 	m_w = w;
 	m_h = h;
 	/*
@@ -440,10 +435,6 @@ int SettingsControlMenu::calculate_sizes(int w, int h)
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	int text_xgap = w*(SIZE_MENU_CONFIG_ELEMENT_TEXT_XGAP/100.0);
-	/*
-	 * Resize background:
-	*/
-	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
@@ -703,7 +694,7 @@ UniversalDrawableArray SettingsControlMenu::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.add_sprite(m_bgs);
+	arr.add_sprite(m_fire.get_sprite());
 	if (m_controlkeys_showc >= 1)
 	{
 		if (m_menuitem1_over)

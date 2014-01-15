@@ -32,12 +32,6 @@ SettingsGeneralMenu::~SettingsGeneralMenu()
 int SettingsGeneralMenu::init(Config conf, std::string arg)
 {
 	/*
-	 * Init background:
-	*/
-	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
-		return 1;
-	m_bgs.setTexture(m_bg);
-	/*
 	 * Load fonts:
 	*/
 	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Bold.ttf")))
@@ -118,6 +112,7 @@ int SettingsGeneralMenu::uninit(void)
 }
 int SettingsGeneralMenu::calculate_sizes(int w, int h)
 {
+	m_fire.calculate_sizes(w,h);
 	/*
 	 * Save screen sizes:
 	*/
@@ -138,10 +133,6 @@ int SettingsGeneralMenu::calculate_sizes(int w, int h)
 	int text_gap = h*(SIZE_MENU_ELEMENT_TEXT_GAP/100.0);
 	int value_size = menuitem_height2/SIZE_MENU_CONFIG_ELEMENT_VALUE_SIZE_DIVIDER;
 	int value_gap = h*(SIZE_MENU_CONFIG_ELEMENT_VALUE_GAP/100.0);
-	/*
-	 * Resize background:
-	*/
-	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Update menuitem positions & sizes:
 	*/
@@ -314,7 +305,7 @@ UniversalDrawableArray SettingsGeneralMenu::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.add_sprite(m_bgs);
+	arr.add_sprite(m_fire.get_sprite());
 	//
 	arr.add_rectshape(m_menuitem1);
 	//

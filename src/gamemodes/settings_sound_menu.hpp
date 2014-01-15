@@ -34,6 +34,7 @@
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
 #	include "../gamemode.hpp"
+#	include "../fireanimation.hpp"
 	
 	class SettingsSoundMenu : public Gamemode
 	{
@@ -98,7 +99,6 @@
 			int m_arrow_right2_over;
 			int m_arrow_left3_over;
 			int m_arrow_right3_over;
-			sf::Texture m_bg;
-			sf::Sprite m_bgs;
+			FireAnimation m_fire;
 	};
 #endif // SETTINGS_SOUND_MENU_HPP

@@ -43,6 +43,7 @@
 #	include "gamemodes/settings_sound_menu.hpp"
 #	include "gamemodes/singleplayer.hpp"
 #	include "gamemodes/credits.hpp"
+#	include "gamemodes/levelchooser.hpp"
 #	include "event_processor_return.hpp"
 #	include "universal_drawable.hpp"
 #	include "gamemode.hpp"
@@ -136,6 +137,7 @@
 			 *  6 - settings sound menu
 			 *  7 - singleplayer
 			 *  8 - credits
+			 *  9 - level chooser
 			*/
 			int m_gamemode;
 			bool m_menusound_state;

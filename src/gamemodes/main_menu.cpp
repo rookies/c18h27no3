@@ -33,12 +33,6 @@ MainMenu::~MainMenu()
 int MainMenu::init(Config conf, std::string arg)
 {
 	/*
-	 * Init background:
-	*/
-	if (!m_bg.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "menu_bg.png")))
-		return 1;
-	m_bgs.setTexture(m_bg);
-	/*
 	 * Start update thread:
 	*/
 	m_update_thread = new sf::Thread(&MainMenu::updater, this);
@@ -79,6 +73,7 @@ int MainMenu::uninit(void)
 }
 int MainMenu::calculate_sizes(int w, int h)
 {
+	m_fire.calculate_sizes(w,h);
 	m_w = w;
 	m_h = h;
 	unsigned int i;
@@ -95,10 +90,6 @@ int MainMenu::calculate_sizes(int w, int h)
 	int element_outline = h*(SIZE_MENU_ELEMENT_OUTLINE/100.0);
 	m_logo_yoffset = h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0);
 	m_activewidth = w*MAINMENU_ACTIVEWIDTH/1920.;
-	/*
-	 * Resize background:
-	*/
-	m_bgs.setScale(w/SIZE_MENU_BG_IMGWIDTH, w/SIZE_MENU_BG_IMGWIDTH);
 	/*
 	 * Update logo position & size:
 	*/
@@ -166,7 +157,8 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 			{
 				case sf::Mouse::Left:
 					if (m_menuitem_over == 0)
-						ret->set_gamemode(7); // go to singleplayer
+						//ret->set_gamemode(7); // go to singleplayer
+						ret->set_gamemode(9); // go to level chooser
 					else if (m_menuitem_over == 3)
 						ret->set_gamemode(2); // go to settings menu
 					else if (m_menuitem_over == 4)
@@ -199,7 +191,7 @@ UniversalDrawableArray MainMenu::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.add_sprite(m_bgs);
+	arr.add_sprite(m_fire.get_sprite());
 	arr.add_sprite(m_img1_sprite);
 	if (m_menuitem_over > -1)
 		arr.add_sprite(m_img2_sprite);

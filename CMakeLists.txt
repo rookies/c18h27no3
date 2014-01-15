@@ -85,6 +85,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/numerical_textfield_buffer.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/universal_drawable.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/dataloader.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/level.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/fireanimation.cpp)
 # .
 # add operating system specific source files:
 # .
@@ -106,6 +107,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/settings_control_menu.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/settings_sound_menu.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/singleplayer.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/credits.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/levelchooser.cpp)
 # .
 # add executable:
 # .

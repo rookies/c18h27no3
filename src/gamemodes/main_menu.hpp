@@ -27,12 +27,14 @@
 #	include <SFML/Graphics.hpp>
 #	include <SFML/Network.hpp>
 #	include <libintl.h>
+#	include <sstream>
 #	include "globals.hpp"
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../dataloader.hpp"
 #	include "../gamemode.hpp"
+#	include "../fireanimation.hpp"
 	
 	class MainMenu : public Gamemode
 	{
@@ -91,7 +93,6 @@
 			bool m_updatetext_changed;
 			std::string m_updatetext;
 			float m_activewidth;
-			sf::Texture m_bg;
-			sf::Sprite m_bgs;
+			FireAnimation m_fire;
 	};
 #endif // MAIN_MENU_HPP

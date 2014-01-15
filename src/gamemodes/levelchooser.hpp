@@ -1,7 +1,7 @@
 /*
- * credits.hpp
+ * levelchooser.hpp
  * 
- * Copyright 2013 Robert Knauer <robert@privatdemail.net>
+ * Copyright 2014 Robert Knauer <robert@privatdemail.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,22 +20,21 @@
  * 
  * 
  */
-#ifndef CREDITS_HPP
-#	define CREDITS_HPP
+#ifndef LEVELCHOOSER_HPP
+#	define LEVELCHOOSER_HPP
 
-#	include <libintl.h>
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
 #	include "../dataloader.hpp"
-#	include "../widestring.hpp"
 #	include "../fireanimation.hpp"
+#	include "../widestring.hpp"
 	
-	class Credits : public Gamemode
+	class LevelChooser : public Gamemode
 	{
 		public:
-			Credits();
-			virtual ~Credits();
+			LevelChooser();
+			virtual ~LevelChooser();
 			
 			/*
 			 * (Un)init:
@@ -47,10 +46,6 @@
 			*/
 			int calculate_sizes(int w, int h); /* Called in Game::calculate_sizes() */
 			/*
-			 * Load item:
-			*/
-			void load_item(int i);
-			/*
 			 * Process events:
 			*/
 			void process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret); /* Called in Game::process_events() */
@@ -59,26 +54,18 @@
 			*/
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
-			sf::Texture m_img_texture;
-			sf::Sprite m_img;
-			sf::Font m_font1;
-			sf::Font m_font2;
-			sf::Text m_header;
-			sf::Text m_text;
-			sf::Texture m_cdev_texture;
-			sf::Sprite m_cdev;
-			unsigned int m_hover_x1[CREDITS_COUNT] = {499,550,929,998,1592,1097};
-			unsigned int m_hover_x2[CREDITS_COUNT] = {557,611,997,1063,1666,1294};
-			unsigned int m_hover_y1[CREDITS_COUNT] = {383,285,297,330,89,3};
-			unsigned int m_hover_y2[CREDITS_COUNT] = {460,369,391,423,183,377};
-			unsigned int m_hovert_x1[CREDITS_COUNT];
-			unsigned int m_hovert_x2[CREDITS_COUNT];
-			unsigned int m_hovert_y1[CREDITS_COUNT];
-			unsigned int m_hovert_y2[CREDITS_COUNT];
-			int m_credits_yoffset;
-			int m_item_over;
-			int m_item_loaded;
-			sf::Text m_sign;
+			sf::Texture m_frame;
+			sf::Sprite m_frame_sprite[LEVELCHOOSER_NUMITEMS];
+			sf::Texture m_testlevel;
+			sf::Sprite m_level_sprite[LEVELCHOOSER_NUMITEMS];
+			sf::Texture m_lock;
+			sf::Sprite m_lock_sprite[LEVELCHOOSER_NUMITEMS];
+			sf::RectangleShape m_level_bg[LEVELCHOOSER_NUMITEMS];
 			FireAnimation m_fire;
+			sf::Font m_font1;
+			sf::Text m_header;
+			sf::Text m_subheading;
+			sf::RectangleShape m_backbutton;
+			sf::Text m_backtext;
 	};
-#endif // CREDITS_HPP
+#endif // LEVELCHOOSER_HPP
