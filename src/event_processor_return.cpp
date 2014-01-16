@@ -25,6 +25,7 @@
 EventProcessorReturn::EventProcessorReturn()
 {
 	m_gamemode = 0; // no new gamemode
+	m_gamemode_arg = ""; // empty gamemode arg
 	m_lang = ""; // no new language
 	m_menumusic_vol = -1; // no new volume
 	m_exit = false; // don't exit
@@ -43,6 +44,10 @@ void EventProcessorReturn::uninit(void)
 void EventProcessorReturn::set_gamemode(int gamemode)
 {
 	m_gamemode = gamemode;
+}
+void EventProcessorReturn::set_gamemode_arg(std::string arg)
+{
+	m_gamemode_arg = arg;
 }
 void EventProcessorReturn::init_confvars(int count)
 {
@@ -74,6 +79,10 @@ void EventProcessorReturn::set_menumusic_vol(int vol)
 int EventProcessorReturn::get_gamemode(void)
 {
 	return m_gamemode;
+}
+std::string EventProcessorReturn::get_gamemode_arg(void)
+{
+	return m_gamemode_arg;
 }
 bool EventProcessorReturn::are_confvars_initialized(void)
 {

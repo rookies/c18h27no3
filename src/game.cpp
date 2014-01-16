@@ -525,7 +525,7 @@ int Game::process_events(void)
 		 * Change GameMode?
 		*/
 		if (event_processor_return.get_gamemode() != 0)
-			if (set_gamemode(event_processor_return.get_gamemode()) == 1) // set gamemode
+			if (set_gamemode(event_processor_return.get_gamemode(), event_processor_return.get_gamemode_arg()) == 1) // set gamemode
 				return 1; // setting gamemode failed, exit
 			else
 				return 0; // setting gamemode successfull, abort event handling

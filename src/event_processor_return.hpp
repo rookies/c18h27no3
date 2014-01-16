@@ -33,6 +33,7 @@
 			
 			void uninit(void);
 			void set_gamemode(int gamemode);
+			void set_gamemode_arg(std::string arg);
 			void init_confvars(int count);
 			void add_confvar(ConfigVariable var);
 			void set_language(std::string lang);
@@ -41,6 +42,7 @@
 			void set_menumusic_vol(int vol);
 			
 			int get_gamemode(void);
+			std::string get_gamemode_arg(void);
 			bool are_confvars_initialized(void);
 			int get_confvars_count(void);
 			ConfigVariable get_confvar(int index);
@@ -50,6 +52,7 @@
 			int get_menumusic_vol(void);
 		private:
 			int m_gamemode;
+			std::string m_gamemode_arg;
 			ConfigVariable *m_confvars;
 			int m_confvar_pointer;
 			bool m_confvars_initialized;
