@@ -78,15 +78,14 @@ int LevelChooser::init(Config conf, std::string arg)
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 		m_frame_sprite[i].setTexture(m_frame);
 	/*
-	 * Init testlevel:
+	 * Init level previews:
 	*/
-	if (!m_testlevel.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "testlevel.png")))
-		return 1;
-	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
+	for (i=0; i < m_lvlc_shown; i++)
 	{
-		m_level_sprite[i].setTexture(m_testlevel);
-		if (i > m_lvlc-1)
-			m_level_sprite[i].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK_INACTIVE);
+		sprintf(tmp, "levelpreviews/%04d.png", i);
+		if (!m_level_texture[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, tmp)))
+			return 1;
+		m_level_sprite[i].setTexture(m_level_texture[i]);
 	}
 	/*
 	 * Init locks:

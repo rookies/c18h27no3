@@ -56,7 +56,7 @@
 		private:
 			sf::Texture m_frame;
 			sf::Sprite m_frame_sprite[LEVELCHOOSER_NUMITEMS];
-			sf::Texture m_testlevel;
+			sf::Texture m_level_texture[LEVELCHOOSER_NUMITEMS];
 			sf::Sprite m_level_sprite[LEVELCHOOSER_NUMITEMS];
 			sf::Texture m_lock;
 			sf::Sprite m_lock_sprite[LEVELCHOOSER_NUMITEMS];
