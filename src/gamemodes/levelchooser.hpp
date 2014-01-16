@@ -67,5 +67,7 @@
 			sf::Text m_subheading;
 			sf::RectangleShape m_backbutton;
 			sf::Text m_backtext;
+			unsigned int m_lvlc;
+			unsigned int m_lvlc_shown;
 	};
 #endif // LEVELCHOOSER_HPP

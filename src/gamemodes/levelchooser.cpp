@@ -36,6 +36,7 @@ int LevelChooser::init(Config conf, std::string arg)
 	 * Variable declaration:
 	*/
 	unsigned int i;
+	char tmp[LEVELCHOOSER_FILENAME_BUFLEN];
 	/*
 	 * Load fonts:
 	*/
@@ -59,6 +60,17 @@ int LevelChooser::init(Config conf, std::string arg)
 	m_backbutton.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
 	/*
+	 * Search for levels:
+	*/
+	for (m_lvlc=0; true; m_lvlc++)
+	{
+		sprintf(tmp, "%04d.dat", m_lvlc);
+		if (get_data_path(DATALOADER_TYPE_LEVEL, tmp).compare("") == 0)
+			break;
+	}
+	m_lvlc_shown = (m_lvlc > LEVELCHOOSER_NUMITEMS)?LEVELCHOOSER_NUMITEMS:m_lvlc;
+	std::cout << "Levelchooser: Found " << m_lvlc << " levels, showing " << m_lvlc_shown << " of them." << std::endl;
+	/*
 	 * Init frames:
 	*/
 	if (!m_frame.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "levelchooser_frame.png")))
@@ -73,7 +85,7 @@ int LevelChooser::init(Config conf, std::string arg)
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
 		m_level_sprite[i].setTexture(m_testlevel);
-		if (i > 0)
+		if (i > m_lvlc-1)
 			m_level_sprite[i].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK_INACTIVE);
 	}
 	/*
@@ -88,7 +100,7 @@ int LevelChooser::init(Config conf, std::string arg)
 	*/
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
-		if (i == 0)
+		if (i < m_lvlc)
 			m_level_bg[i].setFillColor(COLOR_LEVELCHOOSER_LEVEL_BACKGROUND_HOVER);
 		else
 			m_level_bg[i].setFillColor(COLOR_LEVELCHOOSER_LEVEL_BACKGROUND);
@@ -151,6 +163,14 @@ int LevelChooser::calculate_sizes(int w, int h)
 }
 void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
+	/*
+	 * Variable declarations:
+	*/
+	unsigned int i;
+	char tmp[LEVELCHOOSER_FILENAME_BUFLEN];
+	/*
+	 * Event handling:
+	*/
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
@@ -166,19 +186,36 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 				m_backbutton.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 			else
 				m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
-			if (m_level_sprite[0].getGlobalBounds().contains(mouse_x, mouse_y))
-				m_level_sprite[0].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK_HOVER);
-			else
-				m_level_sprite[0].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK);
+			for (i=0; i < m_lvlc_shown; i++)
+			{
+				if (m_level_sprite[i].getGlobalBounds().contains(mouse_x, mouse_y))
+				{
+					m_level_sprite[i].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK_HOVER);
+					break;
+				}
+				else
+					m_level_sprite[i].setColor(COLOR_LEVELCHOOSER_LEVEL_MASK);
+			}
 			break;
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
 			{
 				case sf::Mouse::Left:
-					if (m_level_sprite[0].getGlobalBounds().contains(mouse_x, mouse_y))
-						ret->set_gamemode(7); // go to singleplayer
-					else if (m_backbutton.getGlobalBounds().contains(mouse_x, mouse_y))
+					if (m_backbutton.getGlobalBounds().contains(mouse_x, mouse_y))
 						ret->set_gamemode(1); // go to main menu
+					else
+					{
+						for (i=0; i < m_lvlc_shown; i++)
+						{
+							if (m_level_sprite[i].getGlobalBounds().contains(mouse_x, mouse_y))
+							{
+								ret->set_gamemode(7); // go to singleplayer
+								sprintf(tmp, "%04d.dat", i);
+								ret->set_gamemode_arg(get_data_path(DATALOADER_TYPE_LEVEL, tmp));
+								break;
+							};
+						}
+					};
 					break;
 			}
 			break;
@@ -194,8 +231,7 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	//arr.init(53); // with all elements
-	arr.init(38);
+	arr.init(5+2*LEVELCHOOSER_NUMITEMS+m_lvlc_shown);
 	arr.add_sprite(m_fire.get_sprite());
 	arr.add_text(m_header);
 	arr.add_text(m_subheading);
@@ -204,11 +240,11 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
 		arr.add_rectshape(m_level_bg[i]);
-		if (i < 5)
+		if (i < m_lvlc_shown)
 			arr.add_sprite(m_level_sprite[i]);
 		arr.add_sprite(m_frame_sprite[i]);
-		if (i > 0 && i < 5)
-			arr.add_sprite(m_lock_sprite[i]);
+		//if (i > 0 && i < 5)
+		//	arr.add_sprite(m_lock_sprite[i]);
 	}
 	return arr;
 }

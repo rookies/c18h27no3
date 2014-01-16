@@ -118,6 +118,27 @@ std::string get_data_path(int type, std::string fname, bool append_fname)
 			*/
 			datasources[1] = "./data/sound/";
 			break;
+		case DATALOADER_TYPE_LEVEL:
+			datasource_c = 2;
+			datasources = new std::string[datasource_c];
+			/*
+			 * Source #1:
+			 * UNIX: /usr/share/@PROJECTNAME@/data/levels/
+			 * WINDOWS: FIXME: add windows-specific default path
+			*/
+#if defined(__unix__)
+			datasources[0] = "/usr/share/";
+			datasources[0].append(PROJECTNAME);
+			datasources[0].append("/data/levels/");
+#elif defined(_WIN32)
+			datasources[0] = "/"; // FIXME: add windows-specific default path
+#endif
+			/*
+			 * Source #2:
+			 * ./data/sound/
+			*/
+			datasources[1] = "./data/levels/";
+			break;
 		default:
 			datasource_c = 0;
 	}
@@ -143,17 +164,19 @@ std::string get_data_path(int type, std::string fname, bool append_fname)
 			/*
 			 * It is readable, so take this directory:
 			*/
-#ifdef DATALOADER_DEBUG
+#ifdef DATALOADER_VERBOSE
 			std::cout << "Dataloader: '" << fname << "' found in '" << datasources[i] << "', returning." << std::endl;
-#endif // DATALOADER_DEBUG
+#endif // DATALOADER_VERBOSE
 			testfile.close();
 			break;
 		}
 		else
 		{
-#ifdef DATALOADER_VERBOSE
+#ifdef DATALOADER_DEBUG
 			std::cout << "Dataloader: '" << fname << "' not found in '" << datasources[i] << "'." << std::endl;
-#endif // DATALOADER_VERBOSE
+#endif // DATALOADER_DEBUG
+			ret = "";
+			ret_nofname = "";
 		};
 	}
 #ifdef DATALOADER_DEBUG
