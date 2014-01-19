@@ -213,6 +213,10 @@ int SinglePlayer::init(Config conf, std::string arg)
 		return 1;
 	m_coinsound.setBuffer(m_coinsound_buf);
 	m_coinsound.setVolume(conf.get("SOUND__GAME_SOUND_VOLUME").value_int);
+	if (!m_bottlesound_buf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, "items/bottle.ogg")))
+		return 1;
+	m_bottlesound.setBuffer(m_bottlesound_buf);
+	m_bottlesound.setVolume(conf.get("SOUND__GAME_SOUND_VOLUME").value_int);
 	/*
 	 * Init texts:
 	*/
@@ -563,6 +567,8 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 							update_money();
 							break;
 						case 1:
+							m_bottlesound.setPlayingOffset(sf::Time::Zero);
+							m_bottlesound.play();
 							m_hearts_num++;
 							update_hearts();
 							break;

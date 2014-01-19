@@ -166,6 +166,8 @@
 			sf::Sound m_bgsound;
 			sf::SoundBuffer m_coinsound_buf;
 			sf::Sound m_coinsound;
+			sf::SoundBuffer m_bottlesound_buf;
+			sf::Sound m_bottlesound;
 			sf::Texture m_weapon;
 			sf::Sprite m_weaponsprite;
 	};
