@@ -3,3 +3,4 @@ route94
 __pycache__
 *.swp
 *.xcf
+*.pyc

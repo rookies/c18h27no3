@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #  main.py
 #  
 #  Copyright 2013 Robert Knauer <robert@privatdemail.net>
