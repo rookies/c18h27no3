@@ -144,7 +144,7 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 					mouse_y >= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i] &&
 					mouse_y <= m_logo_yoffset+m_menuc_y[i]+m_menuc_a[i]+m_menuc_h[i])
 				{
-					if (i != 1 && i != 2) // FIXME: disable loading & highscore
+					if (i != 2) // FIXME: disable highscore
 						m_menuitem_over = i;
 					break;
 				};
@@ -157,8 +157,9 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 			{
 				case sf::Mouse::Left:
 					if (m_menuitem_over == 0)
-						//ret->set_gamemode(7); // go to singleplayer
 						ret->set_gamemode(9); // go to level chooser
+					else if (m_menuitem_over == 1)
+						ret->set_gamemode(10); // go to load game
 					else if (m_menuitem_over == 3)
 						ret->set_gamemode(2); // go to settings menu
 					else if (m_menuitem_over == 4)

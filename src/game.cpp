@@ -700,6 +700,16 @@ int Game::init_gamemode(int gamemode, std::string arg)
 					return 1;
 			set_cursor(true);
 			break;
+		case 10:
+			/*
+			 * Load Game
+			*/
+			m_gamemode_class = new LoadGame;
+			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
+				if (!set_menusound(true))
+					return 1;
+			set_cursor(true);
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;

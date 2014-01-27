@@ -108,6 +108,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/settings_sound_menu.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/singleplayer.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/credits.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/levelchooser.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/loadgame.cpp)
 # .
 # add executable:
 # .
