@@ -729,7 +729,7 @@ void SinglePlayer::toggle_playertexture(void)
 }
 void SinglePlayer::place_player(void)
 {
-	m_player.setPosition((m_playerx-m_offset)*m_blockw/2., (VERTICAL_BLOCK_NUMBER-3-(m_playery/2.))*m_blockh);
+	m_player.setPosition((m_playerx-m_offset)*m_blockw/2., (VERTICAL_BLOCK_NUMBER-3-(m_playery/2.)-.3)*m_blockh);
 }
 void SinglePlayer::update_level(void)
 {

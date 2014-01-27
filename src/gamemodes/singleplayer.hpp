@@ -121,8 +121,8 @@
 			unsigned long m_offsetf;
 			double m_offsetr;
 			double m_playerj;
-			unsigned int m_blockw;
-			unsigned int m_blockh;
+			double m_blockw;
+			double m_blockh;
 			Level m_level;
 			sf::Clock m_actiontimer;
 			sf::Clock m_playertimer;
