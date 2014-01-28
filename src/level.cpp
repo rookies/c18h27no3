@@ -151,7 +151,7 @@ LevelItem *LevelColumn::get_item(unsigned short index)
 	return &m_items[index];
 }
 
-Level::Level() : m_has_bgimg(false)
+Level::Level() : m_has_bgimg(false), m_has_bgmusic(false)
 {
 
 }
