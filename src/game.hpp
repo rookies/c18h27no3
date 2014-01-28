@@ -45,6 +45,7 @@
 #	include "gamemodes/credits.hpp"
 #	include "gamemodes/levelchooser.hpp"
 #	include "gamemodes/loadgame.hpp"
+#	include "gamemodes/newgame.hpp"
 #	include "event_processor_return.hpp"
 #	include "universal_drawable.hpp"
 #	include "gamemode.hpp"
@@ -140,6 +141,7 @@
 			 *  8 - credits
 			 *  9 - level chooser
 			 * 10 - load game
+			 * 11 - new game
 			*/
 			int m_gamemode;
 			bool m_menusound_state;

@@ -109,6 +109,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/singleplayer.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/credits.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/levelchooser.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/loadgame.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/newgame.cpp)
 # .
 # add executable:
 # .
