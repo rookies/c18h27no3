@@ -610,121 +610,77 @@ int Game::set_gamemode(int gamemode, std::string arg)
 }
 int Game::init_gamemode(int gamemode, std::string arg)
 {
+	/*
+	 * Variable declarations:
+	*/
+	bool cursor, menusound;
+	/*
+	 * Init them:
+	*/
+	cursor = true; // show cursor by default
+	menusound = true; // play menu music by default
+	/*
+	 * Check gamemode:
+	*/
 	switch (gamemode)
 	{
 		case 1:
-			/*
-			 * Main Menu
-			*/
 			m_gamemode_class = new MainMenu;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 2:
-			/*
-			 * Settings Menu
-			*/
 			m_gamemode_class = new SettingsMenu;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 3:
-			/*
-			 * Settings General Menu
-			*/
 			m_gamemode_class = new SettingsGeneralMenu;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 4:
-			/*
-			 * Settings Graphics Menu
-			*/
 			m_gamemode_class = new SettingsGraphicsMenu;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 5:
-			/*
-			 * Settings Control Menu
-			*/
 			m_gamemode_class = new SettingsControlMenu;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 6:
-			/*
-			 * Settings Sound Menu
-			*/
 			m_gamemode_class = new SettingsSoundMenu;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 7:
-			/*
-			 * Singleplayer
-			*/
 			m_gamemode_class = new SinglePlayer;
-			set_menusound(false);
-			set_cursor(false);
+			menusound = false;
+			cursor = false;
 			break;
 		case 8:
-			/*
-			 * Credits
-			*/
 			m_gamemode_class = new Credits;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 9:
-			/*
-			 * Level Chooser
-			*/
 			m_gamemode_class = new LevelChooser;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 10:
-			/*
-			 * Load Game
-			*/
 			m_gamemode_class = new LoadGame;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
 		case 11:
-			/*
-			 * New Game
-			*/
 			m_gamemode_class = new NewGame;
-			if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
-				if (!set_menusound(true))
-					return 1;
-			set_cursor(true);
 			break;
+		case 12:
+			m_gamemode_class = new GameShop;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
 			break;
 	}
+	/*
+	 * Set cursor & music:
+	*/
+	if (menusound)
+	{
+		if (m_config.get("SOUND__MENU_MUSIC_VOLUME").value_int > 0)
+			if (!set_menusound(true))
+				return 1;
+	}
+	else
+		set_menusound(false);
+	set_cursor(cursor);
+	/*
+	 * Init gamemode:
+	*/
 	if (m_gamemode_class->init(m_config, arg) == 1)
 		return 1;
 	return 0;
