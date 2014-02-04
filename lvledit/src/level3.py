@@ -19,7 +19,7 @@
 #  MA 02110-1301, USA.
 #  
 #  
-import struct, hashlib
+import struct, hashlib, io, zipfile
 
 class Level (object):
 	LEVEL_VERSION = 3
@@ -39,9 +39,11 @@ class Level (object):
 	columns = []
 	extensions = {}
 	checksum = ""
+	zipbuf = io.BytesIO()
+	zipfile = None
 	
 	def __init__(self):
-		pass
+		self.openzip()
 	def cleanup(self):
 		self.level_width = 50
 		self.metadata = {
@@ -54,10 +56,18 @@ class Level (object):
 		self.columns = []
 		self.extensions = {}
 		self.checksum = ""
+		self.zipbuf = io.BytesIO()
+		self.openzip()
+	def openzip(self):
+		self.zipfile = zipfile.ZipFile(self.zipbuf, "a", zipfile.ZIP_STORED, False)
 	def read(self, filepath):
 		self.cleanup()
 		# Open file:
 		f = open(filepath, "rb")
+		# Get filesize:
+		f.seek(0,2)
+		fsize = f.tell()
+		f.seek(0,0)
 		# Calculate checksum:
 		buf = bytearray(f.read())
 		buf[13:45] = b"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
@@ -133,7 +143,10 @@ class Level (object):
 				raise Exception("Extension duplicate! There's already a %s extension." % name)
 			else:
 				self.extensions[name] = data
-			
+		# Read zip data:
+		if f.tell() < fsize:
+			self.zipbuf.write(f.read())
+			self.openzip()
 	def dump(self, verbose=False):
 		print("=== LEVEL DUMP ===")
 		print("Version: %d" % self.LEVEL_VERSION)
@@ -198,6 +211,12 @@ class Level (object):
 			f.write(bytes(name, "ascii"))
 			f.write(struct.pack("<h", len(ext)))
 			f.write(ext)
+		# Write zip file:
+		self.zipfile.close()
+		self.zipbuf.seek(0,0)
+		f.write(self.zipbuf.read())
+		self.zipbuf.seek(0,0)
+		self.openzip()
 		# Close file:
 		f.close()
 		# Calculate checksum:
