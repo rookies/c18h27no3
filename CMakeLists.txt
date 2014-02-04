@@ -87,6 +87,10 @@ set(GAME_SOURCES ${GAME_SOURCES} src/dataloader.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/level.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/fireanimation.cpp)
 # .
+# add external source files:
+# .
+set(GAME_SOURCES ${GAME_SOURCES} src/external/sha256.c)
+# .
 # add operating system specific source files:
 # .
 if (UNIX)

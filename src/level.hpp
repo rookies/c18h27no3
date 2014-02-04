@@ -31,6 +31,7 @@
 #	include <fstream>
 #	include <iostream>
 #	include "globals.hpp"
+#	include "external/sha256.h"
 
 	class LevelMetadata
 	{
