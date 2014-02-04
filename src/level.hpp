@@ -81,6 +81,14 @@
 			unsigned int offset;
 			bool collected;
 	};
+	
+	class LevelOpponent
+	{
+		public:
+			unsigned short position;
+			unsigned short id;
+			unsigned int offset;
+	};
 
 	class LevelColumn
 	{
@@ -96,13 +104,21 @@
 			void add_item(unsigned short position, unsigned short id);
 			unsigned short get_itemnumber(void);
 			LevelItem *get_item(unsigned short index);
+			
+			void set_opponentnumber(unsigned short number);
+			void add_opponent(unsigned short position, unsigned short id);
+			unsigned short get_opponentnumber(void);
+			LevelOpponent *get_opponent(unsigned short index);
 		private:
 			unsigned short m_blocknumber;
 			unsigned short m_itemnumber;
+			unsigned short m_opponentnumber;
 			int m_blockoffset;
 			int m_itemoffset;
+			int m_opponentoffset;
 			LevelBlock *m_blocks;
 			LevelItem *m_items;
+			LevelOpponent *m_opponents;
 	};
 
 	class Level

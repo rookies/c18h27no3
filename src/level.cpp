@@ -85,7 +85,7 @@ LevelItem::LevelItem() : collected(false)
 	
 }
 
-LevelColumn::LevelColumn() : m_blockoffset(-1), m_itemoffset(-1)
+LevelColumn::LevelColumn() : m_blockoffset(-1), m_itemoffset(-1), m_opponentoffset(-1)
 {
 
 }
@@ -95,6 +95,8 @@ LevelColumn::~LevelColumn()
 		delete[] m_blocks;
 	if (m_itemoffset >= 0)
 		delete[] m_items;
+	if (m_opponentoffset >= 0)
+		delete[] m_opponents;
 }
 void LevelColumn::set_blocknumber(unsigned short number)
 {
@@ -150,6 +152,33 @@ LevelItem *LevelColumn::get_item(unsigned short index)
 {
 	return &m_items[index];
 }
+void LevelColumn::set_opponentnumber(unsigned short number)
+{
+	if (m_opponentoffset < 0)
+	{
+		m_opponentnumber = number;
+		m_opponents = new LevelOpponent[m_opponentnumber];
+		m_opponentoffset = 0;
+	};
+}
+void LevelColumn::add_opponent(unsigned short position, unsigned short id)
+{
+	if (m_opponentoffset < 0)
+		return;
+	m_opponents[m_opponentoffset].position = position;
+	m_opponents[m_opponentoffset].id = id;
+	m_opponentoffset++;
+}
+unsigned short LevelColumn::get_opponentnumber(void)
+{
+	if (m_opponentoffset < 0)
+		return 0;
+	return m_opponentnumber;
+}
+LevelOpponent *LevelColumn::get_opponent(unsigned short index)
+{
+	return &m_opponents[index];
+}
 
 Level::Level() : m_has_bgimg(false), m_has_bgmusic(false)
 {
@@ -168,7 +197,7 @@ bool Level::load_from_file(std::string file)
 	std::ifstream f;
 	char *buf;
 	std::string buf_;
-	unsigned short tmp, tmp2, tmp3, tmp4;
+	unsigned short tmp, tmp2, tmp3, tmp4, tmp5;
 	/*
 	 * Open file:
 	*/
@@ -222,6 +251,12 @@ bool Level::load_from_file(std::string file)
 #endif
 	delete[] buf;
 	/*
+	 * Read checksum:
+	*/
+	buf = new char[32];
+	f.read(buf, 32);
+	delete[] buf;
+	/*
 	 * Read metadata number:
 	*/
 	buf = new char[1];
@@ -259,10 +294,12 @@ bool Level::load_from_file(std::string file)
 		f.read(buf, 2);
 		tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
 		delete[] buf;
+		std::cerr << tmp << std::endl;
 		/*
 		 * Read value:
+		 * (FIXME: UTF-32 support)
 		*/
-		buf = new char[tmp+1];
+		buf = new char[(tmp)+1];
 		f.read(buf, tmp);
 		buf[tmp] = '\0';
 		m_metadata[i].set_value(buf);
@@ -359,6 +396,14 @@ bool Level::load_from_file(std::string file)
 		delete[] buf;
 		m_columns[i].set_itemnumber(tmp4);
 		/*
+		 * Read Y opponent number:
+		*/
+		buf = new char[1];
+		f.read(buf, 1);
+		tmp5 = (unsigned short)buf[0];
+		delete[] buf;
+		m_columns[i].set_opponentnumber(tmp5);
+		/*
 		 * Run through Y blocks:
 		*/
 		for (j=0; j < tmp; j++)
@@ -410,6 +455,33 @@ bool Level::load_from_file(std::string file)
 			m_columns[i].add_item(tmp2, tmp3);
 #ifdef LVL_DEBUG
 			std::cerr << "LevelLoader: Item x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
+#endif
+		}
+		/*
+		 * Run through Y opponents:
+		*/
+		for (j=0; j < tmp5; j++)
+		{
+			/*
+			 * Read Y coordinate:
+			*/
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp2 = (unsigned short)buf[0];
+			delete[] buf;
+			/*
+			 * Read opponent ID:
+			*/
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp3 = (unsigned char)buf[0];
+			delete[] buf;
+			/*
+			 * Write into array:
+			*/
+			m_columns[i].add_opponent(tmp2, tmp3);
+#ifdef LVL_DEBUG
+			std::cerr << "LevelLoader: Opponent x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
 #endif
 		}
 	}
@@ -503,6 +575,10 @@ bool Level::load_from_file(std::string file)
 			std::cerr << "LevelLoader: Unknown extension found: " << buf_ << std::endl;
 		};
 	}
+	/*
+	 * Read zip file:
+	 * FIXME
+	*/
 	return true;
 }
 unsigned short Level::get_blockdefs_number(void)
