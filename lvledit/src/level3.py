@@ -27,6 +27,7 @@ class Level (object):
 		"coin",
 		"bottle"
 	]
+	OPPONENTDEFS = []
 	level_width = 50
 	metadata = {
 		"name": "",
@@ -270,6 +271,16 @@ class Level (object):
 		self.blockdefs[i]["type"] = int(t)
 		self.blockdefs[i]["arg"] = arg
 	## COLUMNS:
+	def append_col(self, pos):
+		self.columns.append({
+			"position": pos,
+			"blocks": [],
+			"items": [],
+			"opponents": []
+		})
+	def delete_col_if_empty(self, pos):
+		if len(self.columns[pos]["blocks"]) is 0 and len(self.columns[pos]["items"]) is 0 and len(self.columns[pos]["opponents"]) is 0:
+			del self.columns[pos]
 	def get_columns(self):
 		return self.columns
 	def get_column_by_pos(self, pos):
@@ -291,11 +302,7 @@ class Level (object):
 		# 2. if not, create it:
 		if pos is None:
 			pos = len(self.columns)
-			self.columns.append({
-				"position": x,
-				"blocks": [],
-				"items": []
-			})
+			self.append_col(x)
 		# 3. check if the block exists:
 		pos2 = None
 		i = 0
@@ -339,8 +346,7 @@ class Level (object):
 			return False
 		else:
 			del self.columns[pos]["blocks"][pos2]
-			if len(self.columns[pos]["blocks"]) is 0 and len(self.columns[pos]["items"]) is 0:
-				del self.columns[pos]
+			self.delete_col_if_empty(pos)
 			return True
 	### ITEMS:
 	def get_itemdefs(self):
@@ -358,11 +364,7 @@ class Level (object):
 		# 2. if not, create it:
 		if pos is None:
 			pos = len(self.columns)
-			self.columns.append({
-				"position": x,
-				"blocks": [],
-				"items": []
-			})
+			self.append_col(x)
 		# 3. check if the item exists:
 		pos2 = None
 		i = 0
@@ -393,7 +395,7 @@ class Level (object):
 				i += 1
 		if pos is None:
 			return False
-		# 2. check if the block exists:
+		# 2. check if the item exists:
 		pos2 = None
 		i = 0
 		for itm in self.columns[pos]["items"]:
@@ -406,8 +408,69 @@ class Level (object):
 			return False
 		else:
 			del self.columns[pos]["items"][pos2]
-			if len(self.columns[pos]["items"]) is 0 and len(self.columns[pos]["blocks"]) is 0:
-				del self.columns[pos]
+			self.delete_col_if_empty(pos)
+			return True
+	### OPPONENTS:
+	def get_opponentdefs(self):
+		return self.OPPONENTDEFS
+	def add_opponent(self, x, y, oid):
+		# 1. check if the column exists:
+		pos = None
+		i = 0
+		for col in self.columns:
+			if col["position"] == x:
+				pos = i
+				break
+			else:
+				i += 1
+		# 2. if not, create it:
+		if pos is None:
+			pos = len(self.columns)
+			self.append_col(x)
+		# 3. check if the opponent exists:
+		pos2 = None
+		i = 0
+		for opp in self.columns[pos]["opponents"]:
+			if opp["position"] == y:
+				pos2 = i
+				break
+			else:
+				i += 1
+		if pos2 is None:
+			# 4a. if not, create a new opponent:
+			self.columns[pos]["opponents"].append({
+				"position": y,
+				"id": oid
+			})
+		else:
+			# 4b. if it exists, overwrite the old:
+			self.columns[pos]["opponents"][pos2]["id"] = oid
+	def remove_opponent(self, x, y):
+		# 1. check if the column exists:
+		pos = None
+		i = 0
+		for col in self.columns:
+			if col["position"] == x:
+				pos = i
+				break
+			else:
+				i += 1
+		if pos is None:
+			return False
+		# 2. check if the opponent exists:
+		pos2 = None
+		i = 0
+		for opp in self.columns[pos]["opponents"]:
+			if opp["position"] == y:
+				pos2 = i
+				break
+			else:
+				i += 1
+		if pos2 is None:
+			return False
+		else:
+			del self.columns[pos]["opponents"][pos2]
+			self.delete_col_if_empty(pos)
 			return True
 	### _bgimg EXTENSION:
 	def set_bgimg(self, arg):
