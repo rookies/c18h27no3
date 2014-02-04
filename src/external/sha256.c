@@ -28,7 +28,6 @@
  *  http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
  */
 #include "sha256.h"
-#include <stdio.h>
 
 /*
  * 32-bit integer manipulation macros (big endian)
@@ -315,36 +314,4 @@ void sha256( const unsigned char *input, size_t ilen,
     sha256_finish( &ctx, output );
 
     memset( &ctx, 0, sizeof( sha256_context ) );
-}
-
-/*
- * output = SHA-256( file contents )
- */
-int sha256_file( const char *path, unsigned char output[32], int is224 )
-{
-    FILE *f;
-    size_t n;
-    sha256_context ctx;
-    unsigned char buf[1024];
-
-    if( ( f = fopen( path, "rb" ) ) == NULL )
-        return( POLARSSL_ERR_SHA256_FILE_IO_ERROR );
-
-    sha256_starts( &ctx, is224 );
-
-    while( ( n = fread( buf, 1, sizeof( buf ), f ) ) > 0 )
-        sha256_update( &ctx, buf, n );
-
-    sha256_finish( &ctx, output );
-
-    memset( &ctx, 0, sizeof( sha256_context ) );
-
-    if( ferror( f ) != 0 )
-    {
-        fclose( f );
-        return( POLARSSL_ERR_SHA256_FILE_IO_ERROR );
-    }
-
-    fclose( f );
-    return( 0 );
 }
