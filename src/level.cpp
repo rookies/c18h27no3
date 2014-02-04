@@ -198,6 +198,8 @@ bool Level::load_from_file(std::string file)
 	char *buf;
 	std::string buf_;
 	unsigned short tmp, tmp2, tmp3, tmp4, tmp5;
+	std::streampos fsize;
+	unsigned char chksum[32];
 	/*
 	 * Open file:
 	*/
@@ -210,6 +212,25 @@ bool Level::load_from_file(std::string file)
 #ifdef LVL_DEBUG
 	std::cerr << "LevelLoader: Opened level file '" << file << "'!" << std::endl;
 #endif
+	/*
+	 * Get file size:
+	*/
+	f.seekg(0, std::ios::end);
+	fsize = f.tellg();
+	f.seekg(0, std::ios::beg);
+#ifdef LVL_DEBUG
+	std::cerr << "LevelLoader: Filesize = " << fsize << " bytes" << std::endl;
+#endif
+	/*
+	 * Calculate checksum:
+	*/
+	buf = new char[fsize];
+	f.read(buf, fsize);
+	for (i=13; i < 45; i++)
+		buf[i] = 0;
+	sha256((const unsigned char *)buf, fsize, chksum, 0);
+	delete[] buf;
+	f.seekg(0, std::ios::beg);
 	/*
 	 * Read CAPSAICIN header:
 	*/
@@ -255,6 +276,14 @@ bool Level::load_from_file(std::string file)
 	*/
 	buf = new char[32];
 	f.read(buf, 32);
+	if (strcmp(buf, (char *)chksum) != 0)
+	{
+		std::cerr << "LevelLoader: Invalid checksum!" << std::endl;
+		return false;
+	};
+#ifdef LVL_DEBUG
+	std::cerr << "LevelLoader: Valid checksum." << std::endl;
+#endif
 	delete[] buf;
 	/*
 	 * Read metadata number:
@@ -294,7 +323,6 @@ bool Level::load_from_file(std::string file)
 		f.read(buf, 2);
 		tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
 		delete[] buf;
-		std::cerr << tmp << std::endl;
 		/*
 		 * Read value:
 		 * (FIXME: UTF-32 support)
