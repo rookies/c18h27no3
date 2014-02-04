@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #  level.py
 #  
-#  Copyright 2013 Robert Knauer <robert@privatdemail.net>
+#  Copyright 2014 Robert Knauer <robert@privatdemail.net>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
 #  MA 02110-1301, USA.
 #  
 #  
-import struct
+import struct, hashlib
 
 class Level (object):
-	LEVEL_VERSION = 2
+	LEVEL_VERSION = 3
 	ITEMDEFS = [
 		"coin",
 		"bottle"
@@ -37,6 +37,7 @@ class Level (object):
 	blockdefs = []
 	columns = []
 	extensions = {}
+	checksum = ""
 	
 	def __init__(self):
 		pass
@@ -51,10 +52,16 @@ class Level (object):
 		self.blockdefs = []
 		self.columns = []
 		self.extensions = {}
+		self.checksum = ""
 	def read(self, filepath):
 		self.cleanup()
 		# Open file:
 		f = open(filepath, "rb")
+		# Calculate checksum:
+		buf = bytearray(f.read())
+		buf[13:45] = b"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+		h = hashlib.sha256(buf)
+		f.seek(0,0)
 		# Read CAPSAICIN header:
 		if f.read(9) != bytes("CAPSAICIN", "ascii"):
 			raise Exception("Invalid file format! CAPSAICIN header not found!")
@@ -64,6 +71,10 @@ class Level (object):
 			raise Exception("Invalid file version! Only v%d is supported, not v%d!" % (self.LEVEL_VERSION, version))
 		# Read level width:
 		self.level_width = struct.unpack("<h", f.read(2))[0]
+		# Read checksum:
+		self.checksum = "".join("%x" % c for c in struct.unpack("<32s", f.read(32))[0])
+		if self.checksum != h.hexdigest():
+			raise Exception("Invalid checksum! Should be %s, but is %s." % (h.hexdigest(), self.checksum))
 		# Read metadata number:
 		num = struct.unpack("<B", f.read(1))[0]
 		# Read metadata:
@@ -84,7 +95,7 @@ class Level (object):
 			})
 		# Read data:
 		for i in range(self.level_width):
-			pos, block_number, item_number = struct.unpack("<hBB", f.read(4))
+			pos, block_number, item_number, opp_number = struct.unpack("<hBBB", f.read(5))
 			blocks = []
 			for j in range(block_number):
 				y_pos, blockdef = struct.unpack("<Bh", f.read(3))
@@ -99,10 +110,18 @@ class Level (object):
 					"position": y_pos,
 					"id": iid
 				})
+			opponents = []
+			for j in range(opp_number):
+				y_pos, oid = struct.unpack("<BB", f.read(2))
+				opponents.append({
+					"position": y_pos,
+					"id": oid
+				})
 			self.columns.append({
 				"position": pos,
 				"blocks": blocks,
-				"items": items
+				"items": items,
+				"opponents": opponents
 			})
 		# Read extensions:
 		ext_number = struct.unpack("<h", f.read(2))[0]
@@ -118,6 +137,7 @@ class Level (object):
 		print("=== LEVEL DUMP ===")
 		print("Version: %d" % self.LEVEL_VERSION)
 		print("Width: %d" % self.level_width)
+		print("Checksum: %s" % self.checksum)
 		print("= METADATA =")
 		for key, value in self.metadata.items():
 			print("'%s' = '%s'" % (key, value))
@@ -125,12 +145,14 @@ class Level (object):
 		for bdef in self.blockdefs:
 			print("%d: type=%d; arg='%s'" % (bdef["id"], bdef["type"], bdef["arg"]))
 		if verbose:
-			print("= BLOCKS & ITEMS =")
+			print("= BLOCKS, ITEMS & OPPONENTS =")
 			for col in self.columns:
 				for blk in col["blocks"]:
 					print("Block: x=%d; y=%d; blockdef_id=%d" % (col["position"], blk["position"], blk["blockdef"]))
 				for itm in col["items"]:
 					print("Item:  x=%d; y=%d; id=%d" % (col["position"], itm["position"], itm["id"]))
+				for opp in col["opponents"]:
+					print("Opponent:  x=%d; y=%d; id=%d" % (col["position"], opp["position"], opp["id"]))
 		print("= EXTENSIONS =")
 		for name, ext in self.extensions.items():
 			print("'%s' => '%s'" % (name, ext))
@@ -140,6 +162,8 @@ class Level (object):
 		# Write header:
 		f.write(b"CAPSAICIN")
 		f.write(struct.pack("<hh", self.LEVEL_VERSION, self.level_width))
+		# Write dummy checksum:
+		f.write(b"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
 		# Write metadata:
 		f.write(struct.pack("<B", len(self.metadata)))
 		for key, value in self.metadata.items():
@@ -157,13 +181,15 @@ class Level (object):
 			f.write(struct.pack("<h", i))
 			col = self.get_column_by_pos(i)
 			if col is None:
-				f.write(struct.pack("<BB", 0, 0))
+				f.write(struct.pack("<BBB", 0, 0, 0))
 			else:
-				f.write(struct.pack("<BB", len(col["blocks"]), len(col["items"])))
+				f.write(struct.pack("<BBB", len(col["blocks"]), len(col["items"]), len(col["opponents"])))
 				for blk in col["blocks"]:
 					f.write(struct.pack("<Bh", blk["position"], blk["blockdef"]))
 				for itm in col["items"]:
 					f.write(struct.pack("<BB", itm["position"], itm["id"]))
+				for opp in col["opponents"]:
+					f.write(struct.pack("<BB", opp["position"], opp["id"]))
 		# Write extensions:
 		f.write(struct.pack("<h", len(self.extensions)))
 		for name, ext in self.extensions.items():
@@ -171,6 +197,15 @@ class Level (object):
 			f.write(bytes(name, "ascii"))
 			f.write(struct.pack("<h", len(ext)))
 			f.write(ext)
+		# Close file:
+		f.close()
+		# Calculate checksum:
+		f = open(filepath, "r+b")
+		h = hashlib.sha256(f.read())
+		# Write it to the file:
+		f.seek(13,0) # after file header
+		f.write(h.digest())
+		f.close()
 	## VERSION:
 	def get_version(self):
 		return self.LEVEL_VERSION
