@@ -73,15 +73,15 @@ class Level (object):
 		# Read level width:
 		self.level_width = struct.unpack("<h", f.read(2))[0]
 		# Read checksum:
-		self.checksum = "".join("%x" % c for c in struct.unpack("<32s", f.read(32))[0])
+		self.checksum = "".join("%0.2x" % c for c in struct.unpack("<32s", f.read(32))[0])
 		if self.checksum != h.hexdigest():
-			raise Exception("Invalid checksum! Should be %s, but is %s." % (h.hexdigest(), self.checksum))
+			raise Exception("Invalid checksum! Should be %s, but is %s." % (self.checksum, h.hexdigest()))
 		# Read metadata number:
 		num = struct.unpack("<B", f.read(1))[0]
 		# Read metadata:
 		for i in range(num):
 			key = f.read(struct.unpack("<h", f.read(2))[0]).decode("utf-8")
-			value = f.read(struct.unpack("<h", f.read(2))[0]).decode("utf-8")
+			value = f.read(struct.unpack("<h", f.read(2))[0]).decode("utf-32-le")
 			self.metadata[key] = value
 		# Read blockdef number:
 		num = struct.unpack("<h", f.read(2))[0]
@@ -170,8 +170,8 @@ class Level (object):
 		for key, value in self.metadata.items():
 			f.write(struct.pack("<h", len(key)))
 			f.write(bytes(key, "ascii"))
-			f.write(struct.pack("<h", len(value)))
-			f.write(bytes(value, "ascii"))
+			f.write(struct.pack("<h", len(value)*4))
+			f.write(bytes(value, "utf-32-le"))
 		# Write block definitions:
 		f.write(struct.pack("<h", len(self.blockdefs)))
 		for block in self.blockdefs:
@@ -206,6 +206,7 @@ class Level (object):
 		# Write it to the file:
 		f.seek(13,0) # after file header
 		f.write(h.digest())
+		self.checksum = h.hexdigest()
 		f.close()
 	## VERSION:
 	def get_version(self):
