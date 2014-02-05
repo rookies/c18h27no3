@@ -170,6 +170,9 @@ class Level (object):
 		print("= EXTENSIONS =")
 		for name, ext in self.extensions.items():
 			print("'%s' => '%s'" % (name, ext))
+		print("= ZIP FILE =")
+		for f in self.zipfile.infolist():
+			print("-> %s (%d Bytes)" % (f.filename, f.file_size))
 	def write(self, filepath):
 		# Open file:
 		f = open(filepath, "wb")
@@ -522,3 +525,31 @@ class Level (object):
 			return (True, self.extensions["_bgmusic"].decode("utf-8"))
 		else:
 			return (False, None)
+	### ZIP FILE:
+	def zip_list(self):
+		return self.zipfile.namelist()
+	def zip_info(self, member=None):
+		if member is None:
+			return self.zipfile.infolist()
+		else:
+			return self.zipfile.getinfo(member)
+	def zip_extract(self, member, path):
+		return self.zipfile.extract(member, path)
+	def zip_add(self, path, zip_path):
+		return self.zipfile.write(path, zip_path)
+	def zip_remove(self, member):
+		# Create new buffer & zip file:
+		newbuf = io.BytesIO()
+		newfile = zipfile.ZipFile(newbuf, "a", zipfile.ZIP_STORED, False)
+		# Copy all files except of the one to delete:
+		for item in self.zipfile.infolist():
+			if item.filename != member:
+				buf = self.zipfile.read(item.filename)
+				newfile.writestr(item, buf)
+		# Close the files:
+		newfile.close()
+		self.zipfile.close()
+		# Copy the new buffer to the old buffer:
+		self.zipbuf = newbuf
+		# Reopen the zipfile:
+		self.openzip()
