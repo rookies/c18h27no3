@@ -101,6 +101,13 @@
 			unsigned short id;
 			unsigned int offset;
 	};
+	
+	class CustomTexture
+	{
+		public:
+			std::string name;
+			sf::Texture texture;
+	};
 
 	class LevelColumn
 	{
@@ -185,5 +192,7 @@
 			sf::Image m_background;
 			bool m_has_music;
 			sf::SoundBuffer m_music;
+			unsigned int m_ctextures_count;
+			CustomTexture *m_ctextures;
 	};
 #endif // LEVEL_HPP

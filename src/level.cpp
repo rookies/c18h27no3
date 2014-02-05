@@ -180,7 +180,12 @@ LevelOpponent *LevelColumn::get_opponent(unsigned short index)
 	return &m_opponents[index];
 }
 
-Level::Level() : m_has_bgimg(false), m_has_bgmusic(false), m_has_thumbnail(false), m_has_background(false), m_has_music(false)
+Level::Level() :	m_has_bgimg(false),
+					m_has_bgmusic(false),
+					m_has_thumbnail(false),
+					m_has_background(false),
+					m_has_music(false),
+					m_ctextures_count(0)
 {
 
 }
@@ -653,7 +658,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				if ((flags & LEVELLOADER_NOTHUMBNAIL) == LEVELLOADER_NOTHUMBNAIL)
 				{
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Ignoring thumbnail." << std::endl;
+					std::cout << " -> Ignoring thumbnail." << std::endl;
 #endif
 				}
 				else
@@ -670,7 +675,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 						return false;
 					};
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Read thumbnail." << std::endl;
+					std::cout << " -> Read thumbnail." << std::endl;
 #endif
 					if (!m_thumbnail.loadFromMemory(buf2, size))
 					{
@@ -678,7 +683,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 						return false;
 					};
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Created thumbnail texture." << std::endl;
+					std::cout << " -> Created thumbnail texture." << std::endl;
 #endif
 					/*
 					 * Free buffer:
@@ -691,7 +696,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				if ((flags & LEVELLOADER_NOBACKGROUND) == LEVELLOADER_NOBACKGROUND)
 				{
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Ignoring custom background image." << std::endl;
+					std::cout << " -> Ignoring custom background image." << std::endl;
 #endif
 				}
 				else
@@ -708,7 +713,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 						return false;
 					};
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Read background." << std::endl;
+					std::cout << " -> Read background." << std::endl;
 #endif
 					if (!m_background.loadFromMemory(buf2, size))
 					{
@@ -716,7 +721,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 						return false;
 					};
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Created background image." << std::endl;
+					std::cout << " -> Created background image." << std::endl;
 #endif
 					/*
 					 * Free buffer:
@@ -729,7 +734,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				if ((flags & LEVELLOADER_NOMUSIC) == LEVELLOADER_NOMUSIC)
 				{
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Ignoring custom background music." << std::endl;
+					std::cout << " -> Ignoring custom background music." << std::endl;
 #endif
 				}
 				else
@@ -746,7 +751,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 						return false;
 					};
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Read music." << std::endl;
+					std::cout << " -> Read music." << std::endl;
 #endif
 					if (!m_music.loadFromMemory(buf2, size))
 					{
@@ -754,7 +759,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 						return false;
 					};
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Created music buffer." << std::endl;
+					std::cout << " -> Created music buffer." << std::endl;
 #endif
 					/*
 					 * Free buffer:
@@ -767,7 +772,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				if ((flags & LEVELLOADER_NOTEXTURES) == LEVELLOADER_NOTEXTURES)
 				{
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Ignoring custom texture." << std::endl;
+					std::cout << " -> Ignoring custom texture." << std::endl;
 #endif
 				}
 				else
