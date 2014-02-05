@@ -34,7 +34,7 @@ void LevelMetadata::set_key(std::string key)
 {
 	m_key = key;
 }
-void LevelMetadata::set_value(std::string value)
+void LevelMetadata::set_value(sf::String value)
 {
 	m_value = value;
 }
@@ -42,7 +42,7 @@ std::string LevelMetadata::get_key(void)
 {
 	return m_key;
 }
-std::string LevelMetadata::get_value(void)
+sf::String LevelMetadata::get_value(void)
 {
 	return m_value;
 }
@@ -276,11 +276,14 @@ bool Level::load_from_file(std::string file)
 	*/
 	buf = new char[32];
 	f.read(buf, 32);
-	if (strcmp(buf, (char *)chksum) != 0)
+	for (i=0; i < 32; i++)
 	{
-		std::cerr << "LevelLoader: Invalid checksum!" << std::endl;
-		return false;
-	};
+		if ((unsigned char)buf[i] != chksum[i])
+		{
+			std::cerr << "LevelLoader: Invalid checksum!" << std::endl;
+			return false;
+		};
+	}
 #ifdef LVL_DEBUG
 	std::cerr << "LevelLoader: Valid checksum." << std::endl;
 #endif
@@ -327,16 +330,17 @@ bool Level::load_from_file(std::string file)
 		 * Read value:
 		 * (FIXME: UTF-32 support)
 		*/
-		buf = new char[(tmp)+1];
+		buf = new char[tmp];
 		f.read(buf, tmp);
-		buf[tmp] = '\0';
-		m_metadata[i].set_value(buf);
+		m_metadata[i].set_value(get_string_from_utf32buf(buf, tmp));
 		delete[] buf;
 		/*
 		 * Print status message:
 		*/
 #ifdef LVL_DEBUG
-		std::cerr << "LevelLoader: Metadata '" << m_metadata[i].get_key() << "' = '" << m_metadata[i].get_value() << "'" << std::endl;
+		std::cout << "LevelLoader: Metadata '" << m_metadata[i].get_key() << "' = '";
+		std::wcout << m_metadata[i].get_value().toWideString();
+		std::cout << "'" << std::endl;
 #endif
 	}
 	/*

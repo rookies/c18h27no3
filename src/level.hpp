@@ -30,7 +30,9 @@
 #	include <string>
 #	include <fstream>
 #	include <iostream>
+#	include <SFML/System.hpp>
 #	include "globals.hpp"
+#	include "widestring.hpp"
 #	include "external/sha256.h"
 
 	class LevelMetadata
@@ -39,12 +41,12 @@
 			LevelMetadata();
 			virtual ~LevelMetadata();
 			void set_key(std::string key);
-			void set_value(std::string value);
+			void set_value(sf::String value);
 			std::string get_key(void);
-			std::string get_value(void);
+			sf::String get_value(void);
 		private:
 			std::string m_key;
-			std::string m_value;
+			sf::String m_value;
 	};
 
 	class LevelBlockdef

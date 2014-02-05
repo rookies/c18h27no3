@@ -30,6 +30,8 @@
 #	include <cstdlib>
 #	include <cwchar>
 #	include <cerrno>
+#	include <SFML/System.hpp>
 	
 	std::wstring get_wstring(const std::string &str);
+	sf::String get_string_from_utf32buf(char *buf, size_t len);
 #endif // WIDESTRING_HPP

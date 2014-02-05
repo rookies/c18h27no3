@@ -60,3 +60,42 @@ std::wstring get_wstring(const std::string &str)
 	
 	return std::wstring(buf.data(), wn);
 }
+
+sf::String get_string_from_utf32buf(char *buf, size_t len)
+{
+	/*
+	 * Variable declarations:
+	*/
+	size_t i;
+	sf::String str;
+	sf::Uint32 *strdata;
+	/*
+	 * Check input buffer length:
+	*/
+	assert(len % 4 == 0);
+	/*
+	 * Allocate temporary buffer:
+	*/
+	strdata = new sf::Uint32[(len/4)+1];
+	/*
+	 * Run through buffer & convert:
+	*/
+	for (i=0; i*4 < len; i++)
+		strdata[i] = buf[(i*4)] + 256*buf[(i*4)+1] + 65536*buf[(i*4)+2] + 16777216*buf[(i*4)+3];
+	/*
+	 * Terminate temporary buffer:
+	*/
+	strdata[(len/4)] = 0;
+	/*
+	 * Create SFML string:
+	*/
+	str = sf::String(strdata);
+	/*
+	 * Free temporary buffer:
+	*/
+	delete[] strdata;
+	/*
+	 * Return string:
+	*/
+	return str;
+}
