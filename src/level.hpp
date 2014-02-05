@@ -23,9 +23,14 @@
 #ifndef LEVEL_HPP
 #	define LEVEL_HPP
 
-#	define BLOCKDEF_TYPE_BUILTIN 1
-#	define BLOCKDEF_TYPE_BUILTIN_SPECIAL 2
-#	define BLOCKDEF_TYPE_SPECIAL 3
+#	define BLOCKDEF_TYPE_BUILTIN            1
+#	define BLOCKDEF_TYPE_BUILTIN_SPECIAL    2
+#	define BLOCKDEF_TYPE_SPECIAL            3
+
+#	define LEVELLOADER_NOTHUMBNAIL          1
+#	define LEVELLOADER_NOBACKGROUND         2
+#	define LEVELLOADER_NOMUSIC              4
+#	define LEVELLOADER_NOTEXTURES           8
 
 #	include <string>
 #	include <fstream>
@@ -134,7 +139,7 @@
 			/*
 			 * Load from file:
 			*/
-			bool load_from_file(std::string file);
+			bool load_from_file(std::string file, unsigned int flags);
 			unsigned short get_blockdefs_number(void);
 			LevelBlockdef get_blockdef(unsigned short index);
 			LevelColumn *get_column(unsigned short index);

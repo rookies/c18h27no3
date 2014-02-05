@@ -188,7 +188,7 @@ Level::~Level()
 {
 
 }
-bool Level::load_from_file(std::string file)
+bool Level::load_from_file(std::string file, unsigned int flags)
 {
 	/*
 	 * Variable declarations:
@@ -649,19 +649,55 @@ bool Level::load_from_file(std::string file)
 #endif
 			if (buf_.compare("thumbnail.png") == 0)
 			{
-				
+				if ((flags & LEVELLOADER_NOTHUMBNAIL) == LEVELLOADER_NOTHUMBNAIL)
+				{
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Ignoring thumbnail." << std::endl;
+#endif
+				}
+				else
+				{
+					
+				};
 			}
 			else if (buf_.compare("background.png") == 0)
 			{
-				
+				if ((flags & LEVELLOADER_NOBACKGROUND) == LEVELLOADER_NOBACKGROUND)
+				{
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Ignoring custom background image." << std::endl;
+#endif
+				}
+				else
+				{
+					
+				};
 			}
 			else if (buf_.compare("music.ogg") == 0)
 			{
-				
+				if ((flags & LEVELLOADER_NOMUSIC) == LEVELLOADER_NOMUSIC)
+				{
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Ignoring custom background music." << std::endl;
+#endif
+				}
+				else
+				{
+					
+				};
 			}
 			else if (buf_.substr(0, 9).compare("textures/") == 0)
 			{
-				
+				if ((flags & LEVELLOADER_NOTEXTURES) == LEVELLOADER_NOTEXTURES)
+				{
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Ignoring custom textures." << std::endl;
+#endif
+				}
+				else
+				{
+					
+				};
 			}
 			else
 			{

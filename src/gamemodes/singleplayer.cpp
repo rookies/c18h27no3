@@ -83,12 +83,12 @@ int SinglePlayer::init(Config conf, std::string arg)
 	*/
 	if (arg.compare("") == 0)
 	{
-		if (!m_level.load_from_file("level1.dat"))
+		if (!m_level.load_from_file("level1.dat", LEVELLOADER_NOTHUMBNAIL))
 			return 1;
 	}
 	else
 	{
-		if (!m_level.load_from_file(arg))
+		if (!m_level.load_from_file(arg, LEVELLOADER_NOTHUMBNAIL))
 			return 1;
 	};
 	/*
