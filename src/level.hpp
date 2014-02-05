@@ -36,6 +36,8 @@
 #	include <fstream>
 #	include <iostream>
 #	include <SFML/System.hpp>
+#	include <SFML/Graphics.hpp>
+#	include <SFML/Audio.hpp>
 #	include <archive.h>
 #	include <archive_entry.h>
 #	include "globals.hpp"
@@ -144,10 +146,22 @@
 			LevelBlockdef get_blockdef(unsigned short index);
 			LevelColumn *get_column(unsigned short index);
 			unsigned short get_levelwidth(void);
+			/*
+			 * Extensions:
+			*/
 			bool has_bgimg(void);
 			std::string get_bgimg(void);
 			bool has_bgmusic(void);
 			std::string get_bgmusic(void);
+			/*
+			 * Zip entries:
+			*/
+			bool has_thumbnail(void);
+			sf::Texture get_thumbnail(void);
+			bool has_background(void);
+			sf::Image get_background(void);
+			bool has_music(void);
+			sf::SoundBuffer get_music(void);
 		private:
 			unsigned short m_levelwidth;
 			unsigned short m_metadata_number;
@@ -155,9 +169,21 @@
 			unsigned short m_blockdefs_number;
 			LevelBlockdef *m_blockdefs;
 			LevelColumn *m_columns;
+			/*
+			 * Extensions:
+			*/
 			bool m_has_bgimg;
 			std::string m_bgimg;
 			bool m_has_bgmusic;
 			std::string m_bgmusic;
+			/*
+			 * Zip entries:
+			*/
+			bool m_has_thumbnail;
+			sf::Texture m_thumbnail;
+			bool m_has_background;
+			sf::Image m_background;
+			bool m_has_music;
+			sf::SoundBuffer m_music;
 	};
 #endif // LEVEL_HPP

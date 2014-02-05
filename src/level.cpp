@@ -180,7 +180,7 @@ LevelOpponent *LevelColumn::get_opponent(unsigned short index)
 	return &m_opponents[index];
 }
 
-Level::Level() : m_has_bgimg(false), m_has_bgmusic(false)
+Level::Level() : m_has_bgimg(false), m_has_bgmusic(false), m_has_thumbnail(false), m_has_background(false), m_has_music(false)
 {
 
 }
@@ -195,13 +195,14 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 	*/
 	unsigned short i, j;
 	std::ifstream f;
-	char *buf;
+	char *buf, *buf2;
 	std::string buf_;
 	unsigned short tmp, tmp2, tmp3, tmp4, tmp5;
 	std::streampos fsize;
 	unsigned char chksum[32];
 	struct archive *arc;
 	struct archive_entry *arc_entry;
+	size_t size;
 	/*
 	 * Open file:
 	*/
@@ -657,7 +658,32 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				}
 				else
 				{
-					
+					m_has_thumbnail = true;
+					/*
+					 * Read data into sf::Texture:
+					*/
+					size = archive_entry_size(arc_entry);
+					buf2 = new char[size];
+					if (archive_read_data(arc, buf2, size) < 0)
+					{
+						std::cerr << "LevelLoader: Failed to read thumbnail!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Read thumbnail." << std::endl;
+#endif
+					if (!m_thumbnail.loadFromMemory(buf2, size))
+					{
+						std::cerr << "LevelLoader: Failed to create thumbnail texture!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Created thumbnail texture." << std::endl;
+#endif
+					/*
+					 * Free buffer:
+					*/
+					delete[] buf2;
 				};
 			}
 			else if (buf_.compare("background.png") == 0)
@@ -670,7 +696,32 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				}
 				else
 				{
-					
+					m_has_background = true;
+					/*
+					 * Read data into sf::Image:
+					*/
+					size = archive_entry_size(arc_entry);
+					buf2 = new char[size];
+					if (archive_read_data(arc, buf2, size) < 0)
+					{
+						std::cerr << "LevelLoader: Failed to read background!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Read background." << std::endl;
+#endif
+					if (!m_background.loadFromMemory(buf2, size))
+					{
+						std::cerr << "LevelLoader: Failed to create background image!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Created background image." << std::endl;
+#endif
+					/*
+					 * Free buffer:
+					*/
+					delete[] buf2;
 				};
 			}
 			else if (buf_.compare("music.ogg") == 0)
@@ -683,7 +734,32 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				}
 				else
 				{
-					
+					m_has_music = true;
+					/*
+					 * Read data into sf::SoundBuffer:
+					*/
+					size = archive_entry_size(arc_entry);
+					buf2 = new char[size];
+					if (archive_read_data(arc, buf2, size) < 0)
+					{
+						std::cerr << "LevelLoader: Failed to read music!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Read music." << std::endl;
+#endif
+					if (!m_music.loadFromMemory(buf2, size))
+					{
+						std::cerr << "LevelLoader: Failed to create music buffer!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << "LevelLoader: Created music buffer." << std::endl;
+#endif
+					/*
+					 * Free buffer:
+					*/
+					delete[] buf2;
 				};
 			}
 			else if (buf_.substr(0, 9).compare("textures/") == 0)
@@ -691,7 +767,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				if ((flags & LEVELLOADER_NOTEXTURES) == LEVELLOADER_NOTEXTURES)
 				{
 #ifdef LVL_DEBUG
-					std::cout << "LevelLoader: Ignoring custom textures." << std::endl;
+					std::cout << "LevelLoader: Ignoring custom texture." << std::endl;
 #endif
 				}
 				else
@@ -701,9 +777,8 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 			}
 			else
 			{
-				std::cerr << "LevelLoader: Ignoring unknown zip entry '" << archive_entry_pathname(arc_entry) << "'." << std::endl;
+				std::cerr << "LevelLoader: Ignoring unknown zip entry '" << buf_ << "'." << std::endl;
 			};
-			archive_read_data_skip(arc);
 		}
 		/*
 		 * Close zip file:
@@ -760,4 +835,28 @@ bool Level::has_bgmusic(void)
 std::string Level::get_bgmusic(void)
 {
 	return m_bgmusic;
+}
+bool Level::has_thumbnail(void)
+{
+	return m_has_thumbnail;
+}
+sf::Texture Level::get_thumbnail(void)
+{
+	return m_thumbnail;
+}
+bool Level::has_background(void)
+{
+	return m_has_background;
+}
+sf::Image Level::get_background(void)
+{
+	return m_background;
+}
+bool Level::has_music(void)
+{
+	return m_has_music;
+}
+sf::SoundBuffer Level::get_music(void)
+{
+	return m_music;
 }
