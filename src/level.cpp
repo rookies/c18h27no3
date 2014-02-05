@@ -210,7 +210,7 @@ bool Level::load_from_file(std::string file)
 		return false;
 	};
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Opened level file '" << file << "'!" << std::endl;
+	std::cout << "LevelLoader: Opened level file '" << file << "'!" << std::endl;
 #endif
 	/*
 	 * Get file size:
@@ -219,7 +219,7 @@ bool Level::load_from_file(std::string file)
 	fsize = f.tellg();
 	f.seekg(0, std::ios::beg);
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Filesize = " << fsize << " bytes" << std::endl;
+	std::cout << "LevelLoader: Filesize = " << fsize << " bytes" << std::endl;
 #endif
 	/*
 	 * Calculate checksum:
@@ -243,7 +243,7 @@ bool Level::load_from_file(std::string file)
 		return false;
 	};
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Found CAPSAICIN header!" << std::endl;
+	std::cout << "LevelLoader: Found CAPSAICIN header!" << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -258,7 +258,7 @@ bool Level::load_from_file(std::string file)
 		return false;
 	};
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Compatible level versions! (v" << tmp << ")" << std::endl;
+	std::cout << "LevelLoader: Compatible level versions! (v" << tmp << ")" << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -268,7 +268,7 @@ bool Level::load_from_file(std::string file)
 	f.read(buf, 2);
 	m_levelwidth = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Level_Width = " << m_levelwidth << std::endl;
+	std::cout << "LevelLoader: Level_Width = " << m_levelwidth << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -285,7 +285,7 @@ bool Level::load_from_file(std::string file)
 		};
 	}
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Valid checksum." << std::endl;
+	std::cout << "LevelLoader: Valid checksum." << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -295,7 +295,7 @@ bool Level::load_from_file(std::string file)
 	f.read(buf, 1);
 	m_metadata_number = (unsigned short)buf[0];
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Metadata_Number = " << m_metadata_number << std::endl;
+	std::cout << "LevelLoader: Metadata_Number = " << m_metadata_number << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -350,7 +350,7 @@ bool Level::load_from_file(std::string file)
 	f.read(buf, 2);
 	m_blockdefs_number = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Blockdefs_Number = " << m_blockdefs_number << std::endl;
+	std::cout << "LevelLoader: Blockdefs_Number = " << m_blockdefs_number << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -394,7 +394,7 @@ bool Level::load_from_file(std::string file)
 		 * Print status message:
 		*/
 #ifdef LVL_DEBUG
-		std::cerr << "LevelLoader: Blockdef #" << m_blockdefs[i].get_id() << "; type=" << m_blockdefs[i].get_type() << "; arg='" << m_blockdefs[i].get_arg() << "'" << std::endl;
+		std::cout << "LevelLoader: Blockdef #" << m_blockdefs[i].get_id() << "; type=" << m_blockdefs[i].get_type() << "; arg='" << m_blockdefs[i].get_arg() << "'" << std::endl;
 #endif
 	}
 	/*
@@ -459,7 +459,7 @@ bool Level::load_from_file(std::string file)
 			*/
 			m_columns[i].add_block(tmp2, tmp3);
 #ifdef LVL_DEBUG
-			std::cerr << "LevelLoader: Block x=" << i << "; y=" << tmp2 << "; blockdef=" << tmp3 << std::endl;
+			std::cout << "LevelLoader: Block x=" << i << "; y=" << tmp2 << "; blockdef=" << tmp3 << std::endl;
 #endif
 		}
 		/*
@@ -486,7 +486,7 @@ bool Level::load_from_file(std::string file)
 			*/
 			m_columns[i].add_item(tmp2, tmp3);
 #ifdef LVL_DEBUG
-			std::cerr << "LevelLoader: Item x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
+			std::cout << "LevelLoader: Item x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
 #endif
 		}
 		/*
@@ -513,7 +513,7 @@ bool Level::load_from_file(std::string file)
 			*/
 			m_columns[i].add_opponent(tmp2, tmp3);
 #ifdef LVL_DEBUG
-			std::cerr << "LevelLoader: Opponent x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
+			std::cout << "LevelLoader: Opponent x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
 #endif
 		}
 	}
@@ -525,7 +525,7 @@ bool Level::load_from_file(std::string file)
 	tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
 	delete[] buf;
 #ifdef LVL_DEBUG
-	std::cerr << "LevelLoader: Extensions_Number = " << tmp << std::endl;
+	std::cout << "LevelLoader: Extensions_Number = " << tmp << std::endl;
 #endif
 	/*
 	 * Read extensions:
@@ -553,7 +553,7 @@ bool Level::load_from_file(std::string file)
 		if (buf_.compare("_bgimg") == 0)
 		{
 #ifdef LVL_DEBUG
-			std::cerr << "LevelLoader: _bgimg extension found." << std::endl;
+			std::cout << "LevelLoader: _bgimg extension found." << std::endl;
 #endif
 			/*
 			 * Read data length:
@@ -573,13 +573,13 @@ bool Level::load_from_file(std::string file)
 			m_has_bgimg = true;
 			m_bgimg = buf_;
 #ifdef LVL_DEBUG
-			std::cerr << " -> Data: " << buf_ << std::endl;
+			std::cout << " -> Data: " << buf_ << std::endl;
 #endif
 		}
 		else if (buf_.compare("_bgmusic") == 0)
 		{
 #ifdef LVL_DEBUG
-			std::cerr << "LevelLoader: _bgmusic extension found." << std::endl;
+			std::cout << "LevelLoader: _bgmusic extension found." << std::endl;
 #endif
 			/*
 			 * Read data length:
@@ -599,7 +599,7 @@ bool Level::load_from_file(std::string file)
 			m_has_bgmusic = true;
 			m_bgmusic = buf_;
 #ifdef LVL_DEBUG
-			std::cerr << " -> Data: " << buf_ << std::endl;
+			std::cout << " -> Data: " << buf_ << std::endl;
 #endif
 		}
 		else
