@@ -210,14 +210,16 @@ int SinglePlayer::init(Config conf, std::string arg)
 	/*
 	 * Load item sounds:
 	*/
-	if (!m_coinsound_buf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, "items/coin.ogg")))
-		return 1;
-	m_coinsound.setBuffer(m_coinsound_buf);
-	m_coinsound.setVolume(conf.get("SOUND__GAME_SOUND_VOLUME").value_int);
-	if (!m_bottlesound_buf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, "items/bottle.ogg")))
-		return 1;
-	m_bottlesound.setBuffer(m_bottlesound_buf);
-	m_bottlesound.setVolume(conf.get("SOUND__GAME_SOUND_VOLUME").value_int);
+	for (i=0; i < ITEMS_NUMBER; i++)
+	{
+		fname = "";
+		fname.append("items/");
+		fname.append(m_itemdefs[i]);
+		fname.append(".ogg");
+		if (!m_itemsounds[i].loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, fname)))
+			return 1;
+	}
+	m_itemsound.setVolume(conf.get("SOUND__GAME_SOUND_VOLUME").value_int);
 	/*
 	 * Init texts:
 	*/
@@ -562,14 +564,12 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 					switch (col->get_item(j)->id)
 					{
 						case 0:
-							m_coinsound.setPlayingOffset(sf::Time::Zero);
-							m_coinsound.play();
+							play_itemsound(0);
 							m_money++;
 							update_money();
 							break;
 						case 1:
-							m_bottlesound.setPlayingOffset(sf::Time::Zero);
-							m_bottlesound.play();
+							play_itemsound(1);
 							m_hearts_num++;
 							update_hearts();
 							break;
@@ -899,4 +899,11 @@ void SinglePlayer::restart_level(void)
 void SinglePlayer::place_message(void)
 {
 	m_message.setPosition((m_w-m_message.getGlobalBounds().width)/2., (m_h-m_message.getGlobalBounds().height)/2.);
+}
+void SinglePlayer::play_itemsound(unsigned int id)
+{
+	m_itemsound.stop();
+	m_itemsound.setPlayingOffset(sf::Time::Zero);
+	m_itemsound.setBuffer(m_itemsounds[id]);
+	m_itemsound.play();
 }

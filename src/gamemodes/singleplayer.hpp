@@ -92,6 +92,10 @@
 			 * Place message:
 			*/
 			void place_message(void);
+			/*
+			 * Play itemsound:
+			*/
+			void play_itemsound(unsigned int id);
 		private:
 			void toggle_playertexture(void);
 
@@ -165,10 +169,8 @@
 			bool m_exit;
 			sf::SoundBuffer m_bgbuf;
 			sf::Sound m_bgsound;
-			sf::SoundBuffer m_coinsound_buf;
-			sf::Sound m_coinsound;
-			sf::SoundBuffer m_bottlesound_buf;
-			sf::Sound m_bottlesound;
+			sf::SoundBuffer m_itemsounds[ITEMS_NUMBER];
+			sf::Sound m_itemsound;
 			sf::Texture m_weapon;
 			sf::Sprite m_weaponsprite;
 	};
