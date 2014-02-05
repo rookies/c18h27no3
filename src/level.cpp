@@ -191,7 +191,14 @@ Level::Level() :	m_has_bgimg(false),
 }
 Level::~Level()
 {
-
+	if (m_metadata_number > 0)
+		delete[] m_metadata;
+	if (m_blockdefs_number > 0)
+		delete[] m_blockdefs;
+	if (m_levelwidth > 0)
+		delete[] m_columns;
+	if (m_ctextures_count > 0)
+		delete[] m_ctextures;
 }
 bool Level::load_from_file(std::string file, unsigned int flags)
 {
@@ -208,6 +215,7 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 	struct archive *arc;
 	struct archive_entry *arc_entry;
 	size_t size;
+	CustomTexture *ctextures;
 	/*
 	 * Open file:
 	*/
@@ -309,47 +317,50 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 	/*
 	 * Read metadata:
 	*/
-	m_metadata = new LevelMetadata[m_metadata_number];
-	for (i=0; i < m_metadata_number; i++)
+	if (m_metadata_number > 0)
 	{
-		/*
-		 * Read key length:
-		*/
-		buf = new char[2];
-		f.read(buf, 2);
-		tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
-		delete[] buf;
-		/*
-		 * Read key:
-		*/
-		buf = new char[tmp+1];
-		f.read(buf, tmp);
-		buf[tmp] = '\0';
-		m_metadata[i].set_key(buf);
-		delete[] buf;
-		/*
-		 * Read value length:
-		*/
-		buf = new char[2];
-		f.read(buf, 2);
-		tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
-		delete[] buf;
-		/*
-		 * Read value:
-		*/
-		buf = new char[tmp];
-		f.read(buf, tmp);
-		m_metadata[i].set_value(get_string_from_utf32buf(buf, tmp));
-		delete[] buf;
-		/*
-		 * Print status message:
-		*/
-#ifdef LVL_DEBUG
-		std::cout << "LevelLoader: Metadata '" << m_metadata[i].get_key() << "' = '";
-		std::wcout << m_metadata[i].get_value().toWideString();
-		std::cout << "'" << std::endl;
-#endif
-	}
+		m_metadata = new LevelMetadata[m_metadata_number];
+		for (i=0; i < m_metadata_number; i++)
+		{
+			/*
+			 * Read key length:
+			*/
+			buf = new char[2];
+			f.read(buf, 2);
+			tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			delete[] buf;
+			/*
+			 * Read key:
+			*/
+			buf = new char[tmp+1];
+			f.read(buf, tmp);
+			buf[tmp] = '\0';
+			m_metadata[i].set_key(buf);
+			delete[] buf;
+			/*
+			 * Read value length:
+			*/
+			buf = new char[2];
+			f.read(buf, 2);
+			tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			delete[] buf;
+			/*
+			 * Read value:
+			*/
+			buf = new char[tmp];
+			f.read(buf, tmp);
+			m_metadata[i].set_value(get_string_from_utf32buf(buf, tmp));
+			delete[] buf;
+			/*
+			 * Print status message:
+			*/
+	#ifdef LVL_DEBUG
+			std::cout << "LevelLoader: Metadata '" << m_metadata[i].get_key() << "' = '";
+			std::wcout << m_metadata[i].get_value().toWideString();
+			std::cout << "'" << std::endl;
+	#endif
+		}
+	};
 	/*
 	 * Read blockdefs number:
 	*/
@@ -363,167 +374,173 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 	/*
 	 * Read blockdefs:
 	*/
-	m_blockdefs = new LevelBlockdef[m_blockdefs_number];
-	for (i=0; i < m_blockdefs_number; i++)
+	if (m_blockdefs_number > 0)
 	{
-		/*
-		 * Read id:
-		*/
-		buf = new char[2];
-		f.read(buf, 2);
-		tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
-		m_blockdefs[i].set_id(tmp);
-		delete[] buf;
-		/*
-		 * Read type:
-		*/
-		buf = new char[1];
-		f.read(buf, 1);
-		tmp = (unsigned short)buf[0];
-		m_blockdefs[i].set_type(tmp);
-		delete[] buf;
-		/*
-		 * Read argument length:
-		*/
-		buf = new char[1];
-		f.read(buf, 1);
-		tmp = (unsigned short)buf[0];
-		delete[] buf;
-		/*
-		 * Read argument:
-		*/
-		buf = new char[tmp+1];
-		f.read(buf, tmp);
-		buf[tmp] = '\0';
-		m_blockdefs[i].set_arg(buf);
-		delete[] buf;
-		/*
-		 * Print status message:
-		*/
-#ifdef LVL_DEBUG
-		std::cout << "LevelLoader: Blockdef #" << m_blockdefs[i].get_id() << "; type=" << m_blockdefs[i].get_type() << "; arg='" << m_blockdefs[i].get_arg() << "'" << std::endl;
-#endif
-	}
-	/*
-	 * Finally: Read columns
-	*/
-	m_columns = new LevelColumn[m_levelwidth];
-	i = 0;
-	while (i < m_levelwidth-1)
-	{
-		/*
-		 * Read X coordinate:
-		*/
-		buf = new char[2];
-		f.read(buf, 2);
-		i = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
-		delete[] buf;
-		/*
-		 * Read Y block number:
-		*/
-		buf = new char[1];
-		f.read(buf, 1);
-		tmp = (unsigned short)buf[0];
-		delete[] buf;
-		m_columns[i].set_blocknumber(tmp);
-		/*
-		 * Read Y item number:
-		*/
-		buf = new char[1];
-		f.read(buf, 1);
-		tmp4 = (unsigned short)buf[0];
-		delete[] buf;
-		m_columns[i].set_itemnumber(tmp4);
-		/*
-		 * Read Y opponent number:
-		*/
-		buf = new char[1];
-		f.read(buf, 1);
-		tmp5 = (unsigned short)buf[0];
-		delete[] buf;
-		m_columns[i].set_opponentnumber(tmp5);
-		/*
-		 * Run through Y blocks:
-		*/
-		for (j=0; j < tmp; j++)
+		m_blockdefs = new LevelBlockdef[m_blockdefs_number];
+		for (i=0; i < m_blockdefs_number; i++)
 		{
 			/*
-			 * Read Y coordinate:
-			*/
-			buf = new char[1];
-			f.read(buf, 1);
-			tmp2 = (unsigned short)buf[0];
-			delete[] buf;
-			/*
-			 * Read blockdef ID:
+			 * Read id:
 			*/
 			buf = new char[2];
 			f.read(buf, 2);
-			tmp3 = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			tmp = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			m_blockdefs[i].set_id(tmp);
 			delete[] buf;
 			/*
-			 * Write into array:
+			 * Read type:
 			*/
-			m_columns[i].add_block(tmp2, tmp3);
-#ifdef LVL_DEBUG
-			std::cout << "LevelLoader: Block x=" << i << "; y=" << tmp2 << "; blockdef=" << tmp3 << std::endl;
-#endif
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp = (unsigned short)buf[0];
+			m_blockdefs[i].set_type(tmp);
+			delete[] buf;
+			/*
+			 * Read argument length:
+			*/
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp = (unsigned short)buf[0];
+			delete[] buf;
+			/*
+			 * Read argument:
+			*/
+			buf = new char[tmp+1];
+			f.read(buf, tmp);
+			buf[tmp] = '\0';
+			m_blockdefs[i].set_arg(buf);
+			delete[] buf;
+			/*
+			 * Print status message:
+			*/
+	#ifdef LVL_DEBUG
+			std::cout << "LevelLoader: Blockdef #" << m_blockdefs[i].get_id() << "; type=" << m_blockdefs[i].get_type() << "; arg='" << m_blockdefs[i].get_arg() << "'" << std::endl;
+	#endif
 		}
-		/*
-		 * Run through Y items:
-		*/
-		for (j=0; j < tmp4; j++)
+	};
+	/*
+	 * Finally: Read columns
+	*/
+	if (m_levelwidth > 0)
+	{
+		m_columns = new LevelColumn[m_levelwidth];
+		i = 0;
+		while (i < m_levelwidth-1)
 		{
 			/*
-			 * Read Y coordinate:
+			 * Read X coordinate:
+			*/
+			buf = new char[2];
+			f.read(buf, 2);
+			i = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+			delete[] buf;
+			/*
+			 * Read Y block number:
 			*/
 			buf = new char[1];
 			f.read(buf, 1);
-			tmp2 = (unsigned short)buf[0];
+			tmp = (unsigned short)buf[0];
 			delete[] buf;
+			m_columns[i].set_blocknumber(tmp);
 			/*
-			 * Read item ID:
+			 * Read Y item number:
 			*/
 			buf = new char[1];
 			f.read(buf, 1);
-			tmp3 = (unsigned char)buf[0];
+			tmp4 = (unsigned short)buf[0];
 			delete[] buf;
+			m_columns[i].set_itemnumber(tmp4);
 			/*
-			 * Write into array:
+			 * Read Y opponent number:
 			*/
-			m_columns[i].add_item(tmp2, tmp3);
-#ifdef LVL_DEBUG
-			std::cout << "LevelLoader: Item x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
-#endif
+			buf = new char[1];
+			f.read(buf, 1);
+			tmp5 = (unsigned short)buf[0];
+			delete[] buf;
+			m_columns[i].set_opponentnumber(tmp5);
+			/*
+			 * Run through Y blocks:
+			*/
+			for (j=0; j < tmp; j++)
+			{
+				/*
+				 * Read Y coordinate:
+				*/
+				buf = new char[1];
+				f.read(buf, 1);
+				tmp2 = (unsigned short)buf[0];
+				delete[] buf;
+				/*
+				 * Read blockdef ID:
+				*/
+				buf = new char[2];
+				f.read(buf, 2);
+				tmp3 = (unsigned char)buf[0]+(256*(unsigned char)buf[1]);
+				delete[] buf;
+				/*
+				 * Write into array:
+				*/
+				m_columns[i].add_block(tmp2, tmp3);
+	#ifdef LVL_DEBUG
+				std::cout << "LevelLoader: Block x=" << i << "; y=" << tmp2 << "; blockdef=" << tmp3 << std::endl;
+	#endif
+			}
+			/*
+			 * Run through Y items:
+			*/
+			for (j=0; j < tmp4; j++)
+			{
+				/*
+				 * Read Y coordinate:
+				*/
+				buf = new char[1];
+				f.read(buf, 1);
+				tmp2 = (unsigned short)buf[0];
+				delete[] buf;
+				/*
+				 * Read item ID:
+				*/
+				buf = new char[1];
+				f.read(buf, 1);
+				tmp3 = (unsigned char)buf[0];
+				delete[] buf;
+				/*
+				 * Write into array:
+				*/
+				m_columns[i].add_item(tmp2, tmp3);
+	#ifdef LVL_DEBUG
+				std::cout << "LevelLoader: Item x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
+	#endif
+			}
+			/*
+			 * Run through Y opponents:
+			*/
+			for (j=0; j < tmp5; j++)
+			{
+				/*
+				 * Read Y coordinate:
+				*/
+				buf = new char[1];
+				f.read(buf, 1);
+				tmp2 = (unsigned short)buf[0];
+				delete[] buf;
+				/*
+				 * Read opponent ID:
+				*/
+				buf = new char[1];
+				f.read(buf, 1);
+				tmp3 = (unsigned char)buf[0];
+				delete[] buf;
+				/*
+				 * Write into array:
+				*/
+				m_columns[i].add_opponent(tmp2, tmp3);
+	#ifdef LVL_DEBUG
+				std::cout << "LevelLoader: Opponent x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
+	#endif
+			}
 		}
-		/*
-		 * Run through Y opponents:
-		*/
-		for (j=0; j < tmp5; j++)
-		{
-			/*
-			 * Read Y coordinate:
-			*/
-			buf = new char[1];
-			f.read(buf, 1);
-			tmp2 = (unsigned short)buf[0];
-			delete[] buf;
-			/*
-			 * Read opponent ID:
-			*/
-			buf = new char[1];
-			f.read(buf, 1);
-			tmp3 = (unsigned char)buf[0];
-			delete[] buf;
-			/*
-			 * Write into array:
-			*/
-			m_columns[i].add_opponent(tmp2, tmp3);
-#ifdef LVL_DEBUG
-			std::cout << "LevelLoader: Opponent x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
-#endif
-		}
-	}
+	};
 	/*
 	 * Read extensions number:
 	*/
@@ -777,7 +794,68 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				}
 				else
 				{
-					
+					/*
+					 * Read data into buffer:
+					*/
+					size = archive_entry_size(arc_entry);
+					buf2 = new char[size];
+					if (archive_read_data(arc, buf2, size) < 0)
+					{
+						std::cerr << "LevelLoader: Failed to read custom texture!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << " -> Read custom texture." << std::endl;
+#endif
+					/*
+					 * Check ctextures array:
+					*/
+					if (m_ctextures_count == 0)
+					{
+						/*
+						 * Doesn't exist, create it:
+						*/
+						m_ctextures_count = 1;
+						m_ctextures = new CustomTexture[1];
+					}
+					else
+					{
+						/*
+						 * Exists, extend it:
+						*/
+						ctextures = new CustomTexture[m_ctextures_count];
+						for (i=0; i < m_ctextures_count; i++)
+						{
+							ctextures[i].name = m_ctextures[i].name;
+							ctextures[i].texture = m_ctextures[i].texture;
+						}
+						delete[] m_ctextures;
+						m_ctextures_count++;
+						m_ctextures = new CustomTexture[m_ctextures_count];
+						for (i=0; i < m_ctextures_count-1; i++)
+						{
+							m_ctextures[i].name = ctextures[i].name;
+							m_ctextures[i].texture = ctextures[i].texture;
+						}
+						delete[] ctextures;
+					};
+					/*
+					 * Append the texture:
+					*/
+					m_ctextures[m_ctextures_count-1].name = buf_.substr(9).substr(0, (buf_.length())-13);
+					m_ctextures[m_ctextures_count-1].texture = sf::Texture();
+					if (!m_ctextures[m_ctextures_count-1].texture.loadFromMemory(buf2, size))
+					{
+						std::cerr << "LevelLoader: Failed to create custom texture texture!" << std::endl;
+						return false;
+					};
+#ifdef LVL_DEBUG
+					std::cout << " -> Created custom texture texture." << std::endl;
+#endif
+					/*
+					 * Free buffer:
+					*/
+					delete[] buf2;
 				};
 			}
 			else
