@@ -72,15 +72,15 @@ build_countlines()
 	LINES_CPPA=`expr $LINES_CPP + $LINES_HPP`
 	LINES_ALL=`expr $LINES_CPP + $LINES_HPP + $LINES_PO + $LINES_SH + $LINES_CMAKE + $LINES_PYTHON`
 	## Write to stdout:
-	echo "C++ Source Files ..... $(printf '%4d' $LINES_CPP) lines ($(printf '%3d' $(expr $(expr $LINES_CPP \* 100) / $LINES_ALL))%)"
-	echo "C++ Header Files ..... $(printf '%4d' $LINES_HPP) lines ($(printf '%3d' $(expr $(expr $LINES_HPP \* 100) / $LINES_ALL))%)"
-	echo "C++ Stuff together ... $(printf '%4d' $LINES_CPPA) lines ($(printf '%3d' $(expr $(expr $LINES_CPPA \* 100) / $LINES_ALL))%)"
-	echo "Language Files ....... $(printf '%4d' $LINES_PO) lines ($(printf '%3d' $(expr $(expr $LINES_PO \* 100) / $LINES_ALL))%)"
-	echo "Shell Scripts ........ $(printf '%4d' $LINES_SH) lines ($(printf '%3d' $(expr $(expr $LINES_SH \* 100) / $LINES_ALL))%)"
-	echo "CMake Files .......... $(printf '%4d' $LINES_CMAKE) lines ($(printf '%3d' $(expr $(expr $LINES_CMAKE \* 100) / $LINES_ALL))%)"
-	echo "Python Files ......... $(printf '%4d' $LINES_PYTHON) lines ($(printf '%3d' $(expr $(expr $LINES_PYTHON \* 100) / $LINES_ALL))%)"
+	echo "C++ Source Files ..... $(printf '%5d' $LINES_CPP) lines ($(printf '%3d' $(expr $(expr $LINES_CPP \* 100) / $LINES_ALL))%)"
+	echo "C++ Header Files ..... $(printf '%5d' $LINES_HPP) lines ($(printf '%3d' $(expr $(expr $LINES_HPP \* 100) / $LINES_ALL))%)"
+	echo "C++ Stuff together ... $(printf '%5d' $LINES_CPPA) lines ($(printf '%3d' $(expr $(expr $LINES_CPPA \* 100) / $LINES_ALL))%)"
+	echo "Language Files ....... $(printf '%5d' $LINES_PO) lines ($(printf '%3d' $(expr $(expr $LINES_PO \* 100) / $LINES_ALL))%)"
+	echo "Shell Scripts ........ $(printf '%5d' $LINES_SH) lines ($(printf '%3d' $(expr $(expr $LINES_SH \* 100) / $LINES_ALL))%)"
+	echo "CMake Files .......... $(printf '%5d' $LINES_CMAKE) lines ($(printf '%3d' $(expr $(expr $LINES_CMAKE \* 100) / $LINES_ALL))%)"
+	echo "Python Files ......... $(printf '%5d' $LINES_PYTHON) lines ($(printf '%3d' $(expr $(expr $LINES_PYTHON \* 100) / $LINES_ALL))%)"
 	echo ""
-	echo "Everything ........... $(printf '%4d' $LINES_ALL) lines"
+	echo "Everything ........... $(printf '%5d' $LINES_ALL) lines"
 }
 build_pot()
 {
