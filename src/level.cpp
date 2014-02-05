@@ -200,6 +200,8 @@ bool Level::load_from_file(std::string file)
 	unsigned short tmp, tmp2, tmp3, tmp4, tmp5;
 	std::streampos fsize;
 	unsigned char chksum[32];
+	struct archive *arc;
+	struct archive_entry *arc_entry;
 	/*
 	 * Open file:
 	*/
@@ -210,7 +212,7 @@ bool Level::load_from_file(std::string file)
 		return false;
 	};
 #ifdef LVL_DEBUG
-	std::cout << "LevelLoader: Opened level file '" << file << "'!" << std::endl;
+	std::cout << "LevelLoader: Opened level file '" << file << "'." << std::endl;
 #endif
 	/*
 	 * Get file size:
@@ -243,7 +245,7 @@ bool Level::load_from_file(std::string file)
 		return false;
 	};
 #ifdef LVL_DEBUG
-	std::cout << "LevelLoader: Found CAPSAICIN header!" << std::endl;
+	std::cout << "LevelLoader: Found CAPSAICIN header." << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -258,7 +260,7 @@ bool Level::load_from_file(std::string file)
 		return false;
 	};
 #ifdef LVL_DEBUG
-	std::cout << "LevelLoader: Compatible level versions! (v" << tmp << ")" << std::endl;
+	std::cout << "LevelLoader: Compatible level versions. (v" << tmp << ")" << std::endl;
 #endif
 	delete[] buf;
 	/*
@@ -328,7 +330,6 @@ bool Level::load_from_file(std::string file)
 		delete[] buf;
 		/*
 		 * Read value:
-		 * (FIXME: UTF-32 support)
 		*/
 		buf = new char[tmp];
 		f.read(buf, tmp);
@@ -608,9 +609,88 @@ bool Level::load_from_file(std::string file)
 		};
 	}
 	/*
-	 * Read zip file:
-	 * FIXME
+	 * Check for zip file:
 	*/
+	if (f.tellg() < fsize)
+	{
+#ifdef LVL_DEBUG
+		std::cout << "LevelLoader: Zip archive found." << std::endl;
+#endif
+		/*
+		 * Init libarchive:
+		*/
+		arc = archive_read_new();
+		archive_read_support_format_zip(arc);
+		/*
+		 * Read zip data into a buffer:
+		*/
+		fsize -= f.tellg();
+		buf = new char[fsize];
+		f.read(buf, fsize);
+		/*
+		 * Open zip file:
+		*/
+		if (archive_read_open_memory(arc, buf, fsize) != ARCHIVE_OK)
+		{
+			std::cerr << "LevelLoader: Failed to open zip archive!" << std::endl;
+			return false;
+		};
+#ifdef LVL_DEBUG
+		std::cout << "LevelLoader: Opened zip archive." << std::endl;
+#endif
+		/*
+		 * Read entries:
+		*/
+		while (archive_read_next_header(arc, &arc_entry) == ARCHIVE_OK)
+		{
+			buf_ = archive_entry_pathname(arc_entry);
+#ifdef LVL_DEBUG
+			std::cout << "LevelLoader: Found zip entry '" << buf_ << "'." << std::endl;
+#endif
+			if (buf_.compare("thumbnail.png") == 0)
+			{
+				
+			}
+			else if (buf_.compare("background.png") == 0)
+			{
+				
+			}
+			else if (buf_.compare("music.ogg") == 0)
+			{
+				
+			}
+			else if (buf_.substr(0, 9).compare("textures/") == 0)
+			{
+				
+			}
+			else
+			{
+				std::cerr << "LevelLoader: Ignoring unknown zip entry '" << archive_entry_pathname(arc_entry) << "'." << std::endl;
+			};
+			archive_read_data_skip(arc);
+		}
+		/*
+		 * Close zip file:
+		*/
+		if (archive_read_free(arc) != ARCHIVE_OK)
+		{
+			std::cerr << "LevelLoader: Failed to close zip archive!" << std::endl;
+			return false;
+		};
+#ifdef LVL_DEBUG
+		std::cout << "LevelLoader: Closed zip archive." << std::endl;
+#endif
+		/*
+		 * Free buffer:
+		*/
+		delete[] buf;
+	}
+	else
+	{
+#ifdef LVL_DEBUG
+		std::cout << "LevelLoader: No zip archive found." << std::endl;
+#endif
+	};
 	return true;
 }
 unsigned short Level::get_blockdefs_number(void)

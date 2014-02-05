@@ -31,6 +31,8 @@
 #	include <fstream>
 #	include <iostream>
 #	include <SFML/System.hpp>
+#	include <archive.h>
+#	include <archive_entry.h>
 #	include "globals.hpp"
 #	include "widestring.hpp"
 #	include "external/sha256.h"
