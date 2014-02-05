@@ -140,8 +140,9 @@ int SinglePlayer::init(Config conf, std::string arg)
 		fname.append("backgrounds/");
 		fname.append(m_level.get_bgimg());
 		fname.append(".png");
-		if (!m_bg_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, fname)))
+		if (!m_bg_image.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, fname)))
 			return 1;
+		m_bg_texture.loadFromImage(m_bg_image, sf::IntRect(0,0,SIZE_GAME_BG_IMGWIDTH,SIZE_GAME_BG_IMGHEIGHT));
 		m_bg.setTexture(m_bg_texture);
 	};
 	/*
@@ -798,7 +799,8 @@ void SinglePlayer::update_level(void)
 	/*
 	 * Place background:
 	*/
-	m_bg.setTextureRect(sf::IntRect(m_offset*SIZE_GAME_BG_BLOCKWIDTH/2., 0, m_bg.getLocalBounds().width, m_bg.getLocalBounds().height));
+	m_bg_texture.loadFromImage(m_bg_image, sf::IntRect(m_offset*SIZE_GAME_BG_BLOCKWIDTH/2.,0,SIZE_GAME_BG_IMGWIDTH,SIZE_GAME_BG_IMGHEIGHT));
+	m_bg.setTexture(m_bg_texture);
 	/*
 	 * Place portable toilet:
 	*/

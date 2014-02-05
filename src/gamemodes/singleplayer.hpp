@@ -127,6 +127,7 @@
 			sf::Clock m_actiontimer;
 			sf::Clock m_playertimer;
 			sf::Clock m_jumptimer;
+			sf::Image m_bg_image;
 			sf::Texture m_bg_texture;
 			sf::Sprite m_bg;
 			sf::Texture m_frame_texture;
