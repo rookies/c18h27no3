@@ -281,6 +281,17 @@ class LevelEditor (object):
 			bgimgs.append((name, f))
 		bgimgs.sort(key=operator.itemgetter(0))
 		x = self.level.get_bgimg()
+		## Append custom bgimg:
+		if x[0] and x[1] == "":
+			t = "X"
+		else:
+			t = ""
+		self.bgimg_store.append([
+			t,
+			"<Custom background image from ZIP file>",
+			None
+		])
+		## Append standard bgimgs:
 		for name, f in bgimgs:
 			img = Gtk.Image()
 			img.set_from_file(f)
@@ -302,6 +313,16 @@ class LevelEditor (object):
 			bgm.append(name)
 		bgm.sort()
 		x = self.level.get_bgmusic()
+		## Append custom bgmusic:
+		if x[0] and x[1] == "":
+			t = "X"
+		else:
+			t = ""
+		self.bgmusic_store.append([
+			t,
+			"<Custom background music from ZIP file>"
+		])
+		## Append standard bgmusics:
 		for name in bgm:
 			if x[0] and x[1] == name:
 				t = "X"
@@ -611,7 +632,10 @@ class LevelEditor (object):
 		if row[1] is None:
 			self.level.unset_bgimg()
 		else:
-			self.level.set_bgimg(row[0].get_value(row[1], 1))
+			if row[0].get_path(row[1]).get_indices()[0] == 0:
+				self.level.set_bgimg("")
+			else:
+				self.level.set_bgimg(row[0].get_value(row[1], 1))
 		self.changed = True
 		self.update_everything()
 	def on_button20_clicked(self, widget, *args):
@@ -626,7 +650,10 @@ class LevelEditor (object):
 		if row[1] is None:
 			self.level.unset_bgmusic()
 		else:
-			self.level.set_bgmusic(row[0].get_value(row[1], 1))
+			if row[0].get_path(row[1]).get_indices()[0] == 0:
+				self.level.set_bgmusic("")
+			else:
+				self.level.set_bgmusic(row[0].get_value(row[1], 1))
 		self.changed = True
 		self.update_everything()
 	def on_button22_clicked(self, widget, *args):
