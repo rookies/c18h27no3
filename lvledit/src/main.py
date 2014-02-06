@@ -198,7 +198,7 @@ class LevelEditor (object):
 		else:
 			self.messagedialog1_parent_dialog = parent_dlg
 			parent_dlg.set_sensitive(False)
-	def update_everything(self, blockdefs=True, bgimgs=True, bgmusic=True):
+	def update_everything(self, blockdefs=True, bgimgs=True, bgmusic=True, stdblocks=True):
 		## Metadata Store:
 		self.update_metadata_store()
 		## Blockdefs Stores:
@@ -206,7 +206,8 @@ class LevelEditor (object):
 			self.update_blockdefs_store()
 			self.update_blockdefs_store2()
 		## Standard blocks Store:
-		self.update_standard_blocks_store()
+		if stdblocks:
+			self.update_standard_blocks_store()
 		## Level layout:
 		self.fill_block_images()
 		## Window Title:
@@ -618,7 +619,8 @@ class LevelEditor (object):
 		row = self.builder.get_object("treeview-selection4").get_selected()
 		block = row[0].get_value(row[1], 0)
 		self.level.add_blockdef(1, block)
-		self.update_everything()
+		self.changed = True
+		self.update_everything(True, False, False, False)
 	def on_button16_clicked(self, widget, *args):
 		## edit
 		row_block = self.builder.get_object("treeview-selection4").get_selected()
@@ -626,7 +628,8 @@ class LevelEditor (object):
 		block = row_block[0].get_value(row_block[1], 0)
 		bdef = int(row_bdef[0].get_value(row_bdef[1], 0))
 		self.level.update_blockdef(bdef, 1, block)
-		self.update_everything()
+		self.changed = True
+		self.update_everything(True, False, False, False)
 	def on_button17_clicked(self, widget, *args):
 		## delete
 		row = self.builder.get_object("treeview-selection2").get_selected()
@@ -644,7 +647,8 @@ class LevelEditor (object):
 			self.open_messagedialog1("Fehler beim Löschen!", "Die Blockdefinition kann nicht gelöscht werden, da sie noch von Blöcken verwendet wird!", None)
 		else:
 			self.level.del_blockdef(bdef)
-			self.update_everything()
+			self.changed = True
+			self.update_everything(True, False, False, False)
 	
 	### window1/tab3 EVENTS ###
 	def on_button19_clicked(self, widget, *args):
