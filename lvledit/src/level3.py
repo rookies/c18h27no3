@@ -553,3 +553,7 @@ class Level (object):
 		self.zipbuf = newbuf
 		# Reopen the zipfile:
 		self.openzip()
+	def zip_rename(self, old, new):
+		buf = self.zipfile.read(old)
+		self.zipfile.writestr(new, buf)
+		self.zip_remove(old)

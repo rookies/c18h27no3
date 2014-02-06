@@ -807,11 +807,15 @@ class LevelEditor (object):
 			self.builder.get_object("button24").set_sensitive(True)
 			# allow deleting
 			self.builder.get_object("button25").set_sensitive(True)
+			# allow renaming
+			self.builder.get_object("button26").set_sensitive(True)
 		else:
 			# deny extracting
 			self.builder.get_object("button24").set_sensitive(False)
 			# deny deleting
 			self.builder.get_object("button25").set_sensitive(False)
+			# deny renaming
+			self.builder.get_object("button26").set_sensitive(False)
 	def on_button23_clicked(self, widget, *args):
 		# Add file
 		dlg = Gtk.FileChooserDialog("Datei hinzufügen", None, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, 1, Gtk.STOCK_OK, 2))
@@ -828,9 +832,9 @@ class LevelEditor (object):
 			if dlg2.run() == -5:
 				self.level.zip_add(f, entry.get_text())
 				print("Added zip entry '%s' from '%s'." % (entry.get_text(), f))
-				dlg2.destroy()
 				self.changed = True
 				self.update_everything()
+			dlg2.destroy()
 		dlg.destroy()
 	def on_button24_clicked(self, widget, *args):
 		# Extract file
@@ -860,6 +864,23 @@ class LevelEditor (object):
 				self.changed = True
 				self.update_everything()
 				print("Deleted zip entry '%s'." % f)
+	def on_button26_clicked(self, widget, *args):
+		# Rename file
+		row = self.builder.get_object("treeview8").get_selection().get_selected()
+		if row[1] is not None:
+			f = row[0].get_value(row[1], 1)
+			dlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.OK, "Dateiname eingeben")
+			dlg.set_default_response(2)
+			entry = Gtk.Entry()
+			entry.set_text(f)
+			dlg.vbox.pack_end(entry, True, True, 0)
+			dlg.show_all()
+			if dlg.run() == -5:
+				self.level.zip_rename(f, entry.get_text())
+				print("Renamed zip entry from '%s' to '%s'." % (f, entry.get_text()))
+				self.changed = True
+				self.update_everything()
+			dlg.destroy()
 	### scrolledwindow1 EVENTS ###
 	def on_adjustment2_value_changed(self, widget):
 		#print(self.builder.get_object("adjustment2").get_value())
