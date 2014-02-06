@@ -52,6 +52,7 @@
 	#cmakedefine DATALOADER_DEBUG
 	#cmakedefine DATALOADER_VERBOSE
 	#define LVL_DEBUG
+//	#define LVL_VERBOSE
 	/*
 	 * ============================
 	 * === FUNCTION DEFINITIONS ===

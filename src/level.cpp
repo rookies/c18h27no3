@@ -339,11 +339,11 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 			/*
 			 * Print status message:
 			*/
-	#ifdef LVL_DEBUG
+#ifdef LVL_DEBUG
 			std::cout << "LevelLoader: Metadata '" << m_metadata[i].get_key() << "' = '";
 			std::wcout << m_metadata[i].get_value().toWideString();
 			std::cout << "'" << std::endl;
-	#endif
+#endif
 		}
 	};
 	/*
@@ -398,9 +398,9 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 			/*
 			 * Print status message:
 			*/
-	#ifdef LVL_DEBUG
+#ifdef LVL_VERBOSE
 			std::cout << "LevelLoader: Blockdef #" << m_blockdefs[i].get_id() << "; type=" << m_blockdefs[i].get_type() << "; arg='" << m_blockdefs[i].get_arg() << "'" << std::endl;
-	#endif
+#endif
 		}
 	};
 	/*
@@ -466,9 +466,9 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				 * Write into array:
 				*/
 				m_columns[i].add_block(tmp2, tmp3);
-	#ifdef LVL_DEBUG
+#ifdef LVL_VERBOSE
 				std::cout << "LevelLoader: Block x=" << i << "; y=" << tmp2 << "; blockdef=" << tmp3 << std::endl;
-	#endif
+#endif
 			}
 			/*
 			 * Run through Y items:
@@ -493,9 +493,9 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				 * Write into array:
 				*/
 				m_columns[i].add_item(tmp2, tmp3);
-	#ifdef LVL_DEBUG
+#ifdef LVL_VERBOSE
 				std::cout << "LevelLoader: Item x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
-	#endif
+#endif
 			}
 			/*
 			 * Run through Y opponents:
@@ -520,9 +520,9 @@ bool Level::load_from_file(std::string file, unsigned int flags)
 				 * Write into array:
 				*/
 				m_columns[i].add_opponent(tmp2, tmp3);
-	#ifdef LVL_DEBUG
+#ifdef LVL_VERBOSE
 				std::cout << "LevelLoader: Opponent x=" << i << "; y=" << tmp2 << "; id=" << tmp3 << std::endl;
-	#endif
+#endif
 			}
 		}
 	};
