@@ -42,6 +42,7 @@ class LevelEditor (object):
 	items_store = None
 	bgimg_store = None
 	bgmusic_store = None
+	zipfile_store = None
 	level = level.Level()
 	changed = False
 	opened_file = None
@@ -149,6 +150,18 @@ class LevelEditor (object):
 		self.builder.get_object("treeview7").set_model(self.bgmusic_store)
 		## Fill the model:
 		self.update_bgmusic_store()
+		### CREATE STUFF FOR THE ZIPFILE TREEVIEW ###
+		size = Gtk.TreeViewColumn("Dateigröße", Gtk.CellRendererText(), text=0)
+		name = Gtk.TreeViewColumn("Dateiname", Gtk.CellRendererText(), text=1)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview8").append_column(size)
+		self.builder.get_object("treeview8").append_column(name)
+		## Create the model:
+		self.zipfile_store = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
+		## Assign the model to the treeview:
+		self.builder.get_object("treeview8").set_model(self.zipfile_store)
+		## Fill the model:
+		self.update_zipfile_store()
 		### RESIZE LEVEL LAYOUT ###
 		self.resize_level_layout()
 		### ENABLE DRAG & DROP FOR THE LEVEL EDITOR ###
@@ -207,6 +220,8 @@ class LevelEditor (object):
 		## BG music:
 		if bgmusic:
 			self.update_bgmusic_store()
+		## Zip file:
+		self.update_zipfile_store()
 	def update_levelwidth_scale_lower(self):
 		## get biggest block position:
 		cols = self.level.get_columns()
@@ -329,6 +344,13 @@ class LevelEditor (object):
 			else:
 				t = ""
 			self.bgmusic_store.append([ t, name ])
+	def update_zipfile_store(self):
+		self.zipfile_store.clear()
+		for f in self.level.zip_info():
+			self.zipfile_store.append([
+				"%d" % f.file_size,
+				f.filename
+			])
 	def update_window_title(self):
 		## Check for unsaved file:
 		if self.changed:
