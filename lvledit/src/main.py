@@ -994,8 +994,8 @@ class LevelEditor (object):
 			self.open_messagedialog1("Ungültiger Schlüssel!", "Dieser Schlüssel wird bereits verwendet!", self.builder.get_object("dialog2"))
 		elif len(key) > 65535 or len(key) == 0:
 			self.open_messagedialog1("Ungültiger Schlüssel!", "Der Schlüssel entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)", self.builder.get_object("dialog2"))
-		elif len(value) > 65535 or len(value) == 0:
-			self.open_messagedialog1("Ungültiger Wert!", "Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)", self.builder.get_object("dialog2"))
+		elif len(value) > 16383 or len(value) == 0:
+			self.open_messagedialog1("Ungültiger Wert!", "Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 16383 Zeichen)", self.builder.get_object("dialog2"))
 		else:
 			self.level.set_metadata(key, value)
 			self.changed = True
@@ -1018,8 +1018,8 @@ class LevelEditor (object):
 		# submit button pressed
 		key = self.builder.get_object("entry4").get_text()
 		value = self.builder.get_object("entry5").get_text().strip()
-		if len(value) > 65535 or len(value) == 0:
-			self.open_messagedialog1("Ungültiger Wert!", "Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 65535 Zeichen)", self.builder.get_object("dialog3"))
+		if len(value) > 16383 or len(value) == 0:
+			self.open_messagedialog1("Ungültiger Wert!", "Der Wert entspricht nicht der zulässigen Zeichen-Anzahl! (1 bis 16383 Zeichen)", self.builder.get_object("dialog3"))
 		else:
 			self.level.set_metadata(key, value)
 			self.changed = True
