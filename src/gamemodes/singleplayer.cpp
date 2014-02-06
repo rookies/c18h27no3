@@ -172,14 +172,28 @@ int SinglePlayer::init(Config conf, std::string arg)
 	/*
 	 * Load background music:
 	*/
-	if (m_level.has_bgmusic())
+	if (m_level.has_bgmusic() && conf.get("SOUND__GAME_MUSIC_VOLUME").value_int > 0)
 	{
-		fname = "";
-		fname.append("backgrounds/");
-		fname.append(m_level.get_bgmusic());
-		fname.append(".ogg");
-		if (!m_bgbuf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, fname)))
-			return 1;
+		if (m_level.get_bgmusic().compare("") == 0)
+		{
+			/*
+			 * Custom bgmusic
+			*/
+			if (m_level.has_music())
+				m_bgbuf = m_level.get_music();
+		}
+		else
+		{
+			/*
+			 * Standard bgmusic
+			*/
+			fname = "";
+			fname.append("backgrounds/");
+			fname.append(m_level.get_bgmusic());
+			fname.append(".ogg");
+			if (!m_bgbuf.loadFromFile(get_data_path(DATALOADER_TYPE_SOUND, fname)))
+				std::cerr << "Failed to load background music! Ignoring." << std::endl;
+		};
 		m_bgsound.setBuffer(m_bgbuf);
 		m_bgsound.setLoop(true);
 		m_bgsound.setVolume(conf.get("SOUND__GAME_MUSIC_VOLUME").value_int);

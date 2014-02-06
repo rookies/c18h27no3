@@ -965,6 +965,7 @@ class LevelEditor (object):
 		fname = self.builder.get_object("filechooserdialog2").get_filename()
 		try:
 			self.level.read(fname)
+			self.level.dump()
 		except Exception as e:
 			self.open_messagedialog1("Ungültige Datei!", str(e), None)
 		else:
