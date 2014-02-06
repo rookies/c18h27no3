@@ -814,17 +814,52 @@ class LevelEditor (object):
 			self.builder.get_object("button25").set_sensitive(False)
 	def on_button23_clicked(self, widget, *args):
 		# Add file
-		pass
+		dlg = Gtk.FileChooserDialog("Datei hinzufügen", None, Gtk.FileChooserAction.OPEN, (Gtk.STOCK_CANCEL, 1, Gtk.STOCK_OK, 2))
+		dlg.set_default_response(2)
+		res = dlg.run()
+		if res == 2:
+			f = dlg.get_filename()
+			dlg2 = Gtk.MessageDialog(None, 0, Gtk.MessageType.QUESTION, Gtk.ButtonsType.OK, "Dateiname eingeben")
+			dlg2.set_default_response(2)
+			entry = Gtk.Entry()
+			entry.set_text(os.path.basename(f))
+			dlg2.vbox.pack_end(entry, True, True, 0)
+			dlg2.show_all()
+			if dlg2.run() == -5:
+				self.level.zip_add(f, entry.get_text())
+				print("Added zip entry '%s' from '%s'." % (entry.get_text(), f))
+				dlg2.destroy()
+				self.changed = True
+				self.update_everything()
+		dlg.destroy()
 	def on_button24_clicked(self, widget, *args):
 		# Extract file
-		pass
+		row = self.builder.get_object("treeview8").get_selection().get_selected()
+		if row[1] is not None:
+			f = row[0].get_value(row[1], 1)
+			dlg = Gtk.FileChooserDialog("Datei extrahieren", None, Gtk.FileChooserAction.SELECT_FOLDER, (Gtk.STOCK_CANCEL, 1, Gtk.STOCK_OK, 2))
+			dlg.set_default_response(2)
+			res = dlg.run()
+			if res == 2:
+				self.level.zip_extract(f, dlg.get_filename())
+				print("Exported zip entry '%s' to '%s'." % (f, dlg.get_filename()))
+			dlg.destroy()
 	def on_button25_clicked(self, widget, *args):
 		# Delete file
 		row = self.builder.get_object("treeview8").get_selection().get_selected()
 		if row[1] is not None:
-			self.level.zip_remove(row[0].get_value(row[1], 1))
-			self.changed = True
-			self.update_everything()
+			f = row[0].get_value(row[1], 1)
+			dlg = Gtk.MessageDialog(parent=self.builder.get_object("window1"))
+			dlg.add_buttons(Gtk.STOCK_CANCEL, 1, Gtk.STOCK_OK, 2)
+			dlg.set_markup("Datei löschen?")
+			dlg.format_secondary_text("Soll die Datei '%s' wirklich gelöscht werden?" % f)
+			res = dlg.run()
+			dlg.destroy()
+			if res == 2:
+				self.level.zip_remove(f)
+				self.changed = True
+				self.update_everything()
+				print("Deleted zip entry '%s'." % f)
 	### scrolledwindow1 EVENTS ###
 	def on_adjustment2_value_changed(self, widget):
 		#print(self.builder.get_object("adjustment2").get_value())
