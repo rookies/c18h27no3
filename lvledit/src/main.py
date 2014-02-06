@@ -288,7 +288,7 @@ class LevelEditor (object):
 			t = ""
 		self.bgimg_store.append([
 			t,
-			"<Custom background image from ZIP file>",
+			"<Eigenes Hintergrundbild vom ZIP-Archiv>",
 			None
 		])
 		## Append standard bgimgs:
@@ -320,7 +320,7 @@ class LevelEditor (object):
 			t = ""
 		self.bgmusic_store.append([
 			t,
-			"<Custom background music from ZIP file>"
+			"<Eigene Hintergrundmusik vom ZIP-Archiv>"
 		])
 		## Append standard bgmusics:
 		for name in bgm:
