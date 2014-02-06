@@ -31,7 +31,7 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_offset(0),
 								m_blocks_i(false),
 								m_hearts_num(3),
-								m_health(100.),
+								m_health(255),
 								m_playerx(PLAYERPOS_X),
 								m_playery(PLAYERPOS_Y),
 								m_moving(false),
@@ -42,7 +42,8 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_successful(false),
 								m_gameover(false),
 								m_exit(false),
-								m_hasbg(false)
+								m_hasbg(false),
+								m_blink(false)
 {
 
 }
@@ -705,20 +706,31 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 		arr.add_sprite(m_items[i]);
 	}
 	arr.add_sprite(m_player);
-	arr.add_sprite(m_frame);
-	arr.add_sprite(m_healthm);
-	arr.add_rectshape(m_healthm_helper);
-	arr.add_sprite(m_weaponsprite);
-	for (i=0; i < 3; i++)
-		arr.add_sprite(m_hearts[i]);
 	if (m_offset < PLAYERPOS_X+2)
 	{
 		arr.add_sprite(m_ptoilet);
 		arr.add_rectshape(m_ptoiletbase);
 	};
+	arr.add_sprite(m_frame);
+	arr.add_sprite(m_weaponsprite);
 	arr.add_text(m_moneytext);
 	if (m_hearts_num > 3)
 		arr.add_text(m_heartstext);
+	for (i=0; i < 3; i++)
+		arr.add_sprite(m_hearts[i]);
+	if (m_health <= HEALTH_BLINK)
+	{
+		if (m_blinktimer.getElapsedTime().asMilliseconds() >= BLINKTIME_MS)
+		{
+			m_blink = !m_blink;
+			m_blinktimer.restart();
+		};
+		if (!m_blink)
+			arr.add_sprite(m_healthm);
+	}
+	else
+		arr.add_sprite(m_healthm);
+	arr.add_rectshape(m_healthm_helper);
 	if (m_successful || m_gameover)
 		arr.add_text(m_message);
 	return arr;
@@ -892,7 +904,7 @@ void SinglePlayer::update_healthm(void)
 	*/
 	float scale;
 	
-	scale = (100-m_health)/100.;
+	scale = (255-m_health)/255.;
 	m_healthm.setTextureRect(sf::IntRect(0, 0, ceil(SIZE_HEALTHMETER_IMGWIDTH*(1-scale)), SIZE_HEALTHMETER_IMGHEIGHT));
 	m_healthm.setPosition(sf::Vector2f((m_w*SIZE_HEALTHMETER_XOFFSET/100.)+(SIZE_HEALTHMETER_IMGWIDTH*m_sframe_scale*scale), m_h*SIZE_HEALTHMETER_YOFFSET/100.));
 }

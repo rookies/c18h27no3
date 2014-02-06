@@ -144,7 +144,7 @@
 			unsigned int m_hearts_num;
 			sf::Texture m_healthm_texture;
 			sf::Sprite m_healthm;
-			float m_health;
+			unsigned char m_health;
 			unsigned long m_money;
 			sf::RectangleShape m_healthm_helper;
 			sf::Texture m_ptoilet_texture;
@@ -174,5 +174,7 @@
 			sf::Sound m_itemsound;
 			sf::Texture m_weapon;
 			sf::Sprite m_weaponsprite;
+			sf::Clock m_blinktimer;
+			bool m_blink;
 	};
 #endif // SINGLEPLAYER_HPP
