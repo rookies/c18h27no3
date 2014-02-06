@@ -21,8 +21,10 @@
 #
 import level3 as level
 from PIL import Image, ImageDraw, ImageFont
+import os
 import os.path
 import sys
+import tempfile
 
 class ImgGenerator (object):
 	DATADIR = "../data/"
@@ -58,13 +60,22 @@ class ImgGenerator (object):
 		self.image = Image.new("RGB", self.img_sizes, "white")
 		# Create bgimg:
 		x = self.level.get_bgimg()
+		d = None
 		if x[0]:
-			img = self.IMGPATH+"backgrounds/"+x[1]+".png"
+			if x[1] == "":
+				d = tempfile.mkdtemp()
+				self.level.zip_extract("background.png", d)
+				img = os.path.join(d, "background.png")
+			else:
+				img = os.path.join(self.IMGPATH, "backgrounds", x[1]+".png")
 			if os.path.exists(img):
 				img = Image.open(img)
 				img = img.convert("RGBA")
 				img = img.resize((int(img.size[0]*(self.img_sizes[1]/img.size[1])),self.img_sizes[1]), Image.NEAREST)
 				self.image.paste(img, (0,0), img)
+			if d:
+				os.unlink(os.path.join(d, "background.png"))
+				os.rmdir(d)
 		# Create block textures:
 		for d in self.level.get_blockdefs():
 			if d["type"] is 1:
