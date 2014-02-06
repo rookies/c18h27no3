@@ -134,6 +134,7 @@
 			sf::Image m_bg_image;
 			sf::Texture m_bg_texture;
 			sf::Sprite m_bg;
+			bool m_hasbg;
 			sf::Texture m_frame_texture;
 			sf::Sprite m_frame;
 			float m_sframe_scale;

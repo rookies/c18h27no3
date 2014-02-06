@@ -41,7 +41,8 @@ SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_money(0),
 								m_successful(false),
 								m_gameover(false),
-								m_exit(false)
+								m_exit(false),
+								m_hasbg(false)
 {
 
 }
@@ -136,14 +137,36 @@ int SinglePlayer::init(Config conf, std::string arg)
 	*/
 	if (m_level.has_bgimg())
 	{
-		fname = "";
-		fname.append("backgrounds/");
-		fname.append(m_level.get_bgimg());
-		fname.append(".png");
-		if (!m_bg_image.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, fname)))
-			return 1;
-		m_bg_texture.loadFromImage(m_bg_image, sf::IntRect(0,0,SIZE_GAME_BG_IMGWIDTH,SIZE_GAME_BG_IMGHEIGHT));
-		m_bg.setTexture(m_bg_texture);
+		if (m_level.get_bgimg().compare("") == 0)
+		{
+			/*
+			 * Custom bgimg
+			*/
+			if (m_level.has_background())
+			{
+				m_bg_image = m_level.get_background();
+				m_hasbg = true;
+			};
+		}
+		else
+		{
+			/*
+			 * Standard bgimg
+			*/
+			fname = "";
+			fname.append("backgrounds/");
+			fname.append(m_level.get_bgimg());
+			fname.append(".png");
+			if (!m_bg_image.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, fname)))
+				std::cerr << "Failed to load background image! Ignoring." << std::endl;
+			else
+				m_hasbg = true;
+		};
+		if (m_hasbg)
+		{
+			m_bg_texture.loadFromImage(m_bg_image, sf::IntRect(0,0,SIZE_GAME_BG_IMGWIDTH,SIZE_GAME_BG_IMGHEIGHT));
+			m_bg.setTexture(m_bg_texture);
+		};
 	};
 	/*
 	 * Load background music:
@@ -799,8 +822,11 @@ void SinglePlayer::update_level(void)
 	/*
 	 * Place background:
 	*/
-	m_bg_texture.loadFromImage(m_bg_image, sf::IntRect(m_offset*SIZE_GAME_BG_BLOCKWIDTH/2.,0,SIZE_GAME_BG_IMGWIDTH,SIZE_GAME_BG_IMGHEIGHT));
-	m_bg.setTexture(m_bg_texture);
+	if (m_hasbg)
+	{
+		m_bg_texture.loadFromImage(m_bg_image, sf::IntRect(m_offset*SIZE_GAME_BG_BLOCKWIDTH/2.,0,SIZE_GAME_BG_IMGWIDTH,SIZE_GAME_BG_IMGHEIGHT));
+		m_bg.setTexture(m_bg_texture);
+	};
 	/*
 	 * Place portable toilet:
 	*/
