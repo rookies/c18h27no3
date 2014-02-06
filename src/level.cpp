@@ -22,14 +22,6 @@
  */
 #include "level.hpp"
 
-LevelMetadata::LevelMetadata()
-{
-	
-}
-LevelMetadata::~LevelMetadata()
-{
-
-}
 void LevelMetadata::set_key(std::string key)
 {
 	m_key = key;
@@ -47,14 +39,6 @@ sf::String LevelMetadata::get_value(void)
 	return m_value;
 }
 
-LevelBlockdef::LevelBlockdef()
-{
-
-}
-LevelBlockdef::~LevelBlockdef()
-{
-
-}
 void LevelBlockdef::set_id(unsigned short id)
 {
 	m_id = id;
@@ -199,6 +183,7 @@ Level::~Level()
 		delete[] m_columns;
 	if (m_ctextures_count > 0)
 		delete[] m_ctextures;
+	std::cout << "DEALLOCATE LEVEL" << std::endl;
 }
 bool Level::load_from_file(std::string file, unsigned int flags)
 {
@@ -923,7 +908,7 @@ bool Level::has_thumbnail(void)
 {
 	return m_has_thumbnail;
 }
-sf::Texture Level::get_thumbnail(void)
+sf::Texture & Level::get_thumbnail(void)
 {
 	return m_thumbnail;
 }

@@ -60,16 +60,23 @@ int LevelChooser::init(Config conf, std::string arg)
 	m_backbutton.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
 	/*
-	 * Search for levels:
+	 * Search for levels & init thumbnails:
 	*/
-	for (m_lvlc=0; true; m_lvlc++)
+	for (m_lvlc=0; m_lvlc <= LEVELCHOOSER_NUMITEMS; m_lvlc++)
 	{
 		sprintf(tmp, "%04d.dat", m_lvlc);
 		if (get_data_path(DATALOADER_TYPE_LEVEL, tmp).compare("") == 0)
 			break;
+		else
+		{
+			m_levels[m_lvlc].load_from_file(get_data_path(DATALOADER_TYPE_LEVEL, tmp), LEVELLOADER_NOBACKGROUND | LEVELLOADER_NOMUSIC | LEVELLOADER_NOTEXTURES);
+			if (m_levels[m_lvlc].has_thumbnail())
+			{
+				m_level_sprite[m_lvlc].setTexture(m_levels[m_lvlc].get_thumbnail());
+			};
+		};
 	}
-	m_lvlc_shown = (m_lvlc > LEVELCHOOSER_NUMITEMS)?LEVELCHOOSER_NUMITEMS:m_lvlc;
-	std::cout << "Levelchooser: Found " << m_lvlc << " levels, showing " << m_lvlc_shown << " of them." << std::endl;
+	std::cout << "Levelchooser: Showing " << m_lvlc << " levels." << std::endl;
 	/*
 	 * Init frames:
 	*/
@@ -77,16 +84,6 @@ int LevelChooser::init(Config conf, std::string arg)
 		return 1;
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 		m_frame_sprite[i].setTexture(m_frame);
-	/*
-	 * Init level previews:
-	*/
-	for (i=0; i < m_lvlc_shown; i++)
-	{
-		sprintf(tmp, "levelpreviews/%04d.png", i);
-		if (!m_level_texture[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, tmp)))
-			return 1;
-		m_level_sprite[i].setTexture(m_level_texture[i]);
-	}
 	/*
 	 * Init locks:
 	*/
@@ -185,7 +182,7 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 				m_backbutton.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 			else
 				m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
-			for (i=0; i < m_lvlc_shown; i++)
+			for (i=0; i < m_lvlc; i++)
 			{
 				if (m_level_sprite[i].getGlobalBounds().contains(mouse_x, mouse_y))
 				{
@@ -204,7 +201,7 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 						ret->set_gamemode(1); // go to main menu
 					else
 					{
-						for (i=0; i < m_lvlc_shown; i++)
+						for (i=0; i < m_lvlc; i++)
 						{
 							if (m_level_sprite[i].getGlobalBounds().contains(mouse_x, mouse_y))
 							{
@@ -230,7 +227,7 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.init(5+2*LEVELCHOOSER_NUMITEMS+m_lvlc_shown);
+	arr.init(5+2*LEVELCHOOSER_NUMITEMS+m_lvlc);
 	arr.add_sprite(m_fire.get_sprite());
 	arr.add_text(m_header);
 	arr.add_text(m_subheading);
@@ -239,7 +236,7 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
 		arr.add_rectshape(m_level_bg[i]);
-		if (i < m_lvlc_shown)
+		if (i < m_lvlc)
 			arr.add_sprite(m_level_sprite[i]);
 		arr.add_sprite(m_frame_sprite[i]);
 		//if (i > 0 && i < 5)

@@ -47,8 +47,6 @@
 	class LevelMetadata
 	{
 		public:
-			LevelMetadata();
-			virtual ~LevelMetadata();
 			void set_key(std::string key);
 			void set_value(sf::String value);
 			std::string get_key(void);
@@ -61,8 +59,6 @@
 	class LevelBlockdef
 	{
 		public:
-			LevelBlockdef();
-			virtual ~LevelBlockdef();
 			void set_id(unsigned short id);
 			void set_type(unsigned short type);
 			void set_arg(std::string arg);
@@ -164,7 +160,7 @@
 			 * Zip entries:
 			*/
 			bool has_thumbnail(void);
-			sf::Texture get_thumbnail(void);
+			sf::Texture & get_thumbnail(void);
 			bool has_background(void);
 			sf::Image get_background(void);
 			bool has_music(void);
