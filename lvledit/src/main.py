@@ -800,6 +800,31 @@ class LevelEditor (object):
 		elif self.notebook3_page is 1:
 			self.rm_item(self.trashcoords[0], self.trashcoords[1])
 		self.trashcoords = (0,0)
+	### window1/tab5 EVENTS ###
+	def on_treeview_selection8_changed(self, widget, *args):
+		if widget.count_selected_rows() == 1:
+			# allow extracting
+			self.builder.get_object("button24").set_sensitive(True)
+			# allow deleting
+			self.builder.get_object("button25").set_sensitive(True)
+		else:
+			# deny extracting
+			self.builder.get_object("button24").set_sensitive(False)
+			# deny deleting
+			self.builder.get_object("button25").set_sensitive(False)
+	def on_button23_clicked(self, widget, *args):
+		# Add file
+		pass
+	def on_button24_clicked(self, widget, *args):
+		# Extract file
+		pass
+	def on_button25_clicked(self, widget, *args):
+		# Delete file
+		row = self.builder.get_object("treeview8").get_selection().get_selected()
+		if row[1] is not None:
+			self.level.zip_remove(row[0].get_value(row[1], 1))
+			self.changed = True
+			self.update_everything()
 	### scrolledwindow1 EVENTS ###
 	def on_adjustment2_value_changed(self, widget):
 		#print(self.builder.get_object("adjustment2").get_value())
