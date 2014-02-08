@@ -67,8 +67,7 @@
 			int m_cursorsize;
 			int m_mouse_x;
 			int m_mouse_y;
-			sf::Texture m_cursor1_texture;
-			sf::Texture m_cursor2_texture;
+			sf::Texture m_cursor_texture;
 			sf::Sprite m_sprite;
 	};
 #endif // CURSOR_HPP

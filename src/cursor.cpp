@@ -33,27 +33,22 @@ Cursor::~Cursor()
 int Cursor::init(void)
 {
 	/*
-	 * Load cursor1:
+	 * Load cursor:
 	*/
-	if (!m_cursor1_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "cursor.png")))
-		return 1;
-	/*
-	 * Load cursor2:
-	*/
-	if (!m_cursor2_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "cursor_active.png")))
+	if (!m_cursor_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "cursor.png")))
 		return 1;
 	/*
 	 * Init sprite:
 	*/
-	m_sprite.setColor(sf::Color(255, 255, 255, 255));
-	m_sprite.setTexture(m_cursor1_texture);
+	m_sprite.setTexture(m_cursor_texture);
+	m_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
 	return 0;
 }
 void Cursor::set_mouse_position(int x, int y)
 {
 	m_mouse_x = x;
 	m_mouse_y = y;
-	m_sprite.setPosition((int)(m_mouse_x-m_cursorsize/2.0), (int)(m_mouse_y-m_cursorsize/2.0));
+	m_sprite.setPosition((int)(m_mouse_x-m_cursorsize/2.), (int)(m_mouse_y-m_cursorsize/2.));
 }
 int Cursor::get_mouse_position_x(void)
 {
@@ -65,8 +60,8 @@ int Cursor::get_mouse_position_y(void)
 }
 int Cursor::calculate_sizes(int w, int h)
 {
-	m_cursorsize = h*(SIZE_CURSOR/100.0);
-	m_sprite.setScale(m_cursorsize/16.0, m_cursorsize/16.0);
+	m_cursorsize = h*(SIZE_CURSOR/100.);
+	m_sprite.setScale(m_cursorsize/16., m_cursorsize/16.);
 	return 0;
 }
 sf::Sprite Cursor::get_drawable(int w, int h)
@@ -75,9 +70,9 @@ sf::Sprite Cursor::get_drawable(int w, int h)
 }
 void Cursor::activate_action_cursor(void)
 {
-	m_sprite.setTexture(m_cursor2_texture);
+	m_sprite.setTextureRect(sf::IntRect(16, 0, 16, 16));
 }
 void Cursor::deactivate_action_cursor(void)
 {
-	m_sprite.setTexture(m_cursor1_texture);
+	m_sprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
 }
