@@ -66,10 +66,6 @@ int SinglePlayer::init(Config conf, std::string arg)
 		return 1;
 	if (!m_player_f1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_f1.png")))
 		return 1;
-	if (!m_player_rf0.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_rf0.png")))
-		return 1;
-	if (!m_player_rf1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_rf1.png")))
-		return 1;
 	/*
 	 * Set player properties:
 	*/
@@ -760,20 +756,18 @@ void SinglePlayer::toggle_playertexture(void)
 	};
 	if (m_player_texture2_en)
 	{
-		if (m_backwards)
-			m_player.setTexture(m_player_rf0);
-		else
-			m_player.setTexture(m_player_f0);
+		m_player.setTexture(m_player_f0);
 		m_player_texture2_en = false;
 	}
 	else
 	{
-		if (m_backwards)
-			m_player.setTexture(m_player_rf1);
-		else
-			m_player.setTexture(m_player_f1);
+		m_player.setTexture(m_player_f1);
 		m_player_texture2_en = true;
 	};
+	if (m_backwards)
+		m_player.setTextureRect(sf::IntRect(m_player.getLocalBounds().width, 0, -m_player.getLocalBounds().width, m_player.getLocalBounds().height));
+	else
+		m_player.setTextureRect(sf::IntRect(0, 0, m_player.getLocalBounds().width, m_player.getLocalBounds().height));
 	m_player_texturecounter = 0;
 	m_playertimer.restart();
 }

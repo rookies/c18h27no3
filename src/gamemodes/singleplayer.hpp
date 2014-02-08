@@ -108,8 +108,6 @@
 			int m_width_hblk;
 			sf::Texture m_player_f0;
 			sf::Texture m_player_f1;
-			sf::Texture m_player_rf0;
-			sf::Texture m_player_rf1;
 			bool m_player_texture2_en;
 			int m_player_texturecounter;
 			sf::Sprite m_player;
