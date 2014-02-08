@@ -153,10 +153,9 @@ UniversalDrawableArray Intro::get_drawables(void)
 				rect = m_menu.getGlobalBounds();
 				rect.top += m_h*SIZE_INTRO_OFFSET/100.;
 				if (rect.intersects(m_logo.getGlobalBounds()))
-				{
-					m_logo.setPosition(m_logo.getPosition().x, m_logo.getPosition().y-move);
 					m_bumped = true;
-				};
+				if (m_bumped)
+					m_logo.setPosition(m_logo.getPosition().x, m_logo.getPosition().y-move*2);
 				m_clock.restart();
 			}
 			else if (m_menu.getPosition().y < m_h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0))

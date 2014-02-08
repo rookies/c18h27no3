@@ -179,7 +179,7 @@
 #	define SIZE_GAME_WEAPON_YOFFSET 17.
 #	define SIZE_GAME_WEAPON_WIDTH 6.5
 #	define SIZE_INTRO_LOGO_WIDTH 25.
-#	define SIZE_INTRO_OFFSET 12.
+#	define SIZE_INTRO_OFFSET 11.
 	/*
 	 * Sizes (in px):
 	*/
