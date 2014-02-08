@@ -35,7 +35,7 @@ int Intro::init(Config conf, std::string arg)
 	/*
 	 * Init logo:
 	*/
-	if (!m_logo_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "cdev.png")))
+	if (!m_logo_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "cdev_glowing.png")))
 		return 1;
 	m_logo_texture.setSmooth(true);
 	m_logo.setTexture(m_logo_texture);
@@ -104,6 +104,7 @@ UniversalDrawableArray Intro::get_drawables(void)
 	*/
 	UniversalDrawableArray arr;
 	float scale, move;
+	sf::FloatRect rect;
 	/*
 	 * Add items:
 	*/
@@ -120,7 +121,7 @@ UniversalDrawableArray Intro::get_drawables(void)
 			if (m_clock.getElapsedTime().asMilliseconds() >= 5 && m_state <= 100)
 			{
 				m_state++;
-				scale = ((m_w*SIZE_INTRO_LOGO_WIDTH/100.)/SIZE_CDEV_IMGWIDTH)*m_state/100.;
+				scale = ((m_w*SIZE_INTRO_LOGO_WIDTH/100.)/SIZE_CDEV_GLOWING_IMGWIDTH)*m_state/100.;
 				m_logo.setScale(scale, scale);
 				m_logo.setPosition((m_w-m_logo.getGlobalBounds().width)/2., (m_h-m_logo.getGlobalBounds().height)/2.);
 				m_clock.restart();
@@ -149,7 +150,9 @@ UniversalDrawableArray Intro::get_drawables(void)
 				m_state += 3;
 				move = m_menu.getPosition().y-m_h*(1-m_state/100.);
 				m_menu.setPosition((m_w-m_menu.getGlobalBounds().width)/2., m_h*(1-m_state/100.));
-				if (m_menu.getGlobalBounds().intersects(m_logo.getGlobalBounds()))
+				rect = m_menu.getGlobalBounds();
+				rect.top += m_h*SIZE_INTRO_OFFSET/100.;
+				if (rect.intersects(m_logo.getGlobalBounds()))
 				{
 					m_logo.setPosition(m_logo.getPosition().x, m_logo.getPosition().y-move);
 					m_bumped = true;
