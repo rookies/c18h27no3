@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 	/*
 	 * Init game:
 	*/
-	gamemode = 1;
+	gamemode = 13;
 	arg = "";
 	if (argc >= 3)
 	{

@@ -47,6 +47,7 @@
 #	include "gamemodes/loadgame.hpp"
 #	include "gamemodes/newgame.hpp"
 #	include "gamemodes/gameshop.hpp"
+#	include "gamemodes/intro.hpp"
 #	include "event_processor_return.hpp"
 #	include "universal_drawable.hpp"
 #	include "gamemode.hpp"
@@ -144,6 +145,7 @@
 			 * 10 - load game
 			 * 11 - new game
 			 * 12 - gameshop
+			 * 13 - intro
 			*/
 			int m_gamemode;
 			bool m_menusound_state;

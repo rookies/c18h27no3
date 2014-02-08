@@ -661,10 +661,15 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			break;
 		case 12:
 			m_gamemode_class = new GameShop;
+			break;
+		case 13:
+			m_gamemode_class = new Intro;
+			menusound = false;
+			cursor = false;
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
-			break;
 	}
 	/*
 	 * Set cursor & music:
