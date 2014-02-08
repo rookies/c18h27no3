@@ -118,15 +118,15 @@ UniversalDrawableArray Intro::get_drawables(void)
 			/*
 			 * Set logo properties:
 			*/
-			if (m_clock.getElapsedTime().asMilliseconds() >= 5 && m_state <= 100)
+			if (m_clock.getElapsedTime().asMilliseconds() >= 40 && m_state <= 1000)
 			{
-				m_state++;
-				scale = ((m_w*SIZE_INTRO_LOGO_WIDTH/100.)/SIZE_CDEV_GLOWING_IMGWIDTH)*m_state/100.;
+				m_state += 15;
+				scale = ((m_w*SIZE_INTRO_LOGO_WIDTH/100.)/SIZE_CDEV_GLOWING_IMGWIDTH)*m_state/1000.;
 				m_logo.setScale(scale, scale);
 				m_logo.setPosition((m_w-m_logo.getGlobalBounds().width)/2., (m_h-m_logo.getGlobalBounds().height)/2.);
 				m_clock.restart();
 			}
-			else if (m_state > 100)
+			else if (m_state > 1000)
 			{
 				m_stage++;
 				m_state = 0;
@@ -145,11 +145,11 @@ UniversalDrawableArray Intro::get_drawables(void)
 			/*
 			 * Set properties:
 			*/
-			if (m_clock.getElapsedTime().asMilliseconds() >= 5 && m_menu.getPosition().y >= m_h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0))
+			if (m_clock.getElapsedTime().asMilliseconds() >= 40 && m_menu.getPosition().y >= m_h*(SIZE_MAINMENU_LOGO_YOFFSET/100.0))
 			{
-				m_state += 3;
-				move = m_menu.getPosition().y-m_h*(1-m_state/100.);
-				m_menu.setPosition((m_w-m_menu.getGlobalBounds().width)/2., m_h*(1-m_state/100.));
+				m_state += 100;
+				move = m_menu.getPosition().y-m_h*(1-m_state/1000.);
+				m_menu.setPosition((m_w-m_menu.getGlobalBounds().width)/2., m_h*(1-m_state/1000.));
 				rect = m_menu.getGlobalBounds();
 				rect.top += m_h*SIZE_INTRO_OFFSET/100.;
 				if (rect.intersects(m_logo.getGlobalBounds()))
@@ -181,7 +181,7 @@ UniversalDrawableArray Intro::get_drawables(void)
 			/*
 			 * Set properties:
 			*/
-			if (m_clock.getElapsedTime().asMilliseconds() >= 5 && m_logo.getPosition().y > -m_logo.getGlobalBounds().height)
+			if (m_clock.getElapsedTime().asMilliseconds() >= 40 && m_logo.getPosition().y > -m_logo.getGlobalBounds().height)
 			{
 				m_logo.setPosition(m_logo.getPosition().x, m_logo.getPosition().y-m_h/100.);
 				m_clock.restart();
