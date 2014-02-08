@@ -106,9 +106,9 @@
 			bool m_blocks_i;
 			int m_visible_block_number;
 			int m_width_hblk;
-			sf::Texture m_player_f0;
-			sf::Texture m_player_f1;
-			bool m_player_texture2_en;
+			sf::Texture m_player_texture;
+			unsigned int m_player_textures;
+			unsigned int m_player_texture_c;
 			int m_player_texturecounter;
 			sf::Sprite m_player;
 			int m_player_xaction;

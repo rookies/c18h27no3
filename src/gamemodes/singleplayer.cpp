@@ -24,7 +24,7 @@
 
 SinglePlayer::SinglePlayer() : 	m_player_xaction(0),
 								m_player_ystatus(0),
-								m_player_texture2_en(false),
+								m_player_texture_c(0),
 								m_player_texturecounter(0),
 								m_initialized(false),
 								m_player_canjump(false),
@@ -62,14 +62,14 @@ int SinglePlayer::init(Config conf, std::string arg)
 	/*
 	 * Load player textures:
 	*/
-	if (!m_player_f0.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_f0.png")))
-		return 1;
-	if (!m_player_f1.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player_f1.png")))
+	if (!m_player_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player.png")))
 		return 1;
 	/*
 	 * Set player properties:
 	*/
-	m_player.setTexture(m_player_f0);
+	m_player.setTexture(m_player_texture);
+	m_player_textures = m_player_texture.getSize().x/(m_player_texture.getSize().y/3.);
+	m_player.setTextureRect(sf::IntRect(0, 0, m_player_texture.getSize().x/m_player_textures, m_player_texture.getSize().y));
 	/*
 	 * Set key values:
 	*/
@@ -747,6 +747,13 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 }
 void SinglePlayer::toggle_playertexture(void)
 {
+	/*
+	 * Variable declarations:
+	*/
+	unsigned int width;
+	/*
+	 * Check if we have to toggle:
+	*/
 	if (m_playertimer.getElapsedTime().asMilliseconds() < 100)
 		return;
 	if (m_player_texturecounter < 5)
@@ -754,20 +761,24 @@ void SinglePlayer::toggle_playertexture(void)
 		m_player_texturecounter++;
 		return;
 	};
-	if (m_player_texture2_en)
-	{
-		m_player.setTexture(m_player_f0);
-		m_player_texture2_en = false;
-	}
+	/*
+	 * Yes, toggle:
+	*/
+	if (m_player_texture_c == m_player_textures-1)
+		m_player_texture_c = 0;
 	else
-	{
-		m_player.setTexture(m_player_f1);
-		m_player_texture2_en = true;
-	};
+		m_player_texture_c++;
+	/*
+	 * If we're running backwards, flip the texture:
+	*/
+	width = m_player_texture.getSize().x/m_player_textures;
 	if (m_backwards)
-		m_player.setTextureRect(sf::IntRect(m_player.getLocalBounds().width, 0, -m_player.getLocalBounds().width, m_player.getLocalBounds().height));
+		m_player.setTextureRect(sf::IntRect(width*(m_player_texture_c+1), 0, -width, m_player_texture.getSize().y));
 	else
-		m_player.setTextureRect(sf::IntRect(0, 0, m_player.getLocalBounds().width, m_player.getLocalBounds().height));
+		m_player.setTextureRect(sf::IntRect(width*m_player_texture_c, 0, width, m_player_texture.getSize().y));
+	/*
+	 * Reset counter & clock:
+	*/
 	m_player_texturecounter = 0;
 	m_playertimer.restart();
 }
@@ -936,7 +947,7 @@ void SinglePlayer::restart_level(void)
 	m_player_ystatus = 0;
 	m_moving = false;
 	m_backwards = false;
-	m_player.setTexture(m_player_f0);
+	m_player.setTextureRect(sf::IntRect(0, 0, m_player_texture.getSize().x/m_player_textures, m_player_texture.getSize().y));
 	m_ptoiletbase.setRotation(0);
 	update_level();
 	place_player();
