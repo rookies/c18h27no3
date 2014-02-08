@@ -137,7 +137,6 @@
 			sf::Sprite m_frame;
 			float m_sframe_scale;
 			sf::Texture m_heart;
-			sf::Texture m_heart_grey;
 			sf::Sprite m_hearts[3];
 			unsigned int m_hearts_num;
 			sf::Texture m_healthm_texture;

@@ -202,12 +202,12 @@ int SinglePlayer::init(Config conf, std::string arg)
 		return 1;
 	m_frame.setTexture(m_frame_texture);
 	/*
-	 * Load heart textures:
+	 * Load heart texture:
 	*/
 	if (!m_heart.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "heart.png")))
 		return 1;
-	if (!m_heart_grey.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "heart_grey.png")))
-		return 1;
+	for (i=0; i < 3; i++)
+		m_hearts[i].setTexture(m_heart);
 	/*
 	 * Load health meter texture:
 	*/
@@ -899,9 +899,9 @@ void SinglePlayer::update_hearts(void)
 	for (i=0; i < 3; i++)
 	{
 		if (i < m_hearts_num)
-			m_hearts[i].setTexture(m_heart);
+			m_hearts[i].setTextureRect(sf::IntRect(0, 0, m_heart.getSize().x/2, m_heart.getSize().y));
 		else
-			m_hearts[i].setTexture(m_heart_grey);
+			m_hearts[i].setTextureRect(sf::IntRect(m_heart.getSize().x/2, 0, m_heart.getSize().x/2, m_heart.getSize().y));
 	}
 	/*
 	 * Update extra hearts view:
