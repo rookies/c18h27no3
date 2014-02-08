@@ -32,17 +32,11 @@ FireAnimation::FireAnimation() : m_backwards(false)
 	/*
 	 * Init background:
 	*/
-	for (i=0; i < FIRE_FRAMES; i++)
-	{
-		tmp.str("");
-		tmp << "fire";
-		tmp << i;
-		tmp << ".png";
-		m_fire[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, tmp.str()));
-	}
+	m_fire.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "fire.png"));
 	m_fireframe = 0;
 	m_fireclock.restart();
-	m_fire_sprite.setTexture(m_fire[0]);
+	m_fire_sprite.setTexture(m_fire);
+	m_fire_sprite.setTextureRect(sf::IntRect(0, 0, m_fire.getSize().x, m_fire.getSize().y));
 }
 FireAnimation::~FireAnimation()
 {
@@ -67,7 +61,7 @@ sf::Sprite FireAnimation::get_sprite(void)
 		else
 			m_fireframe++;
 		// Update frame & restart clock:
-		m_fire_sprite.setTexture(m_fire[m_fireframe]);
+		m_fire_sprite.setTextureRect(sf::IntRect(m_fireframe*(m_fire.getSize().x/FIRE_FRAMES), 0, m_fire.getSize().x, m_fire.getSize().y));
 		m_fireclock.restart();
 	};
 	return m_fire_sprite;

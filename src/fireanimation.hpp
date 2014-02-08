@@ -34,7 +34,7 @@
 			void calculate_sizes(int w, int h);
 			sf::Sprite get_sprite(void);
 		private:
-			sf::Texture m_fire[FIRE_FRAMES];
+			sf::Texture m_fire;
 			sf::Sprite m_fire_sprite;
 			sf::Clock m_fireclock;
 			unsigned int m_fireframe;
