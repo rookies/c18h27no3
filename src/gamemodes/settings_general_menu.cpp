@@ -55,18 +55,14 @@ int SettingsGeneralMenu::init(Config conf, std::string arg)
 	/*
 	 * Init arrows:
 	*/
-	if (!m_arrow_left.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow_left.png")))
+	if (!m_arrow.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow.png")))
 		return 1;
-	if (!m_arrow_right.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "arrow_right.png")))
-		return 1;
-	m_arrow_left1_sprite.setTexture(m_arrow_left);
-	m_arrow_left2_sprite.setTexture(m_arrow_left);
-	m_arrow_right1_sprite.setTexture(m_arrow_right);
-	m_arrow_right2_sprite.setTexture(m_arrow_right);
-	m_arrow_left1_sprite.setColor(sf::Color(255, 255, 255, 255));
-	m_arrow_left2_sprite.setColor(sf::Color(255, 255, 255, 255));
-	m_arrow_right1_sprite.setColor(sf::Color(255, 255, 255, 255));
-	m_arrow_right2_sprite.setColor(sf::Color(255, 255, 255, 255));
+	m_arrow_left1_sprite.setTexture(m_arrow);
+	m_arrow_left2_sprite.setTexture(m_arrow);
+	m_arrow_right1_sprite.setTexture(m_arrow);
+	m_arrow_right2_sprite.setTexture(m_arrow);
+	m_arrow_right1_sprite.setTextureRect(sf::IntRect(m_arrow.getSize().x, 0, -m_arrow.getSize().x, m_arrow.getSize().y));
+	m_arrow_right2_sprite.setTextureRect(sf::IntRect(m_arrow.getSize().x, 0, -m_arrow.getSize().x, m_arrow.getSize().y));
 	/*
 	 * Init menuitem shapes:
 	*/

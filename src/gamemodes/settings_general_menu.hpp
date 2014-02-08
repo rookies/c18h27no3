@@ -73,8 +73,7 @@
 			sf::RectangleShape m_menuitem2;
 			sf::RectangleShape m_menuitem3;
 			sf::RectangleShape m_menuitem4;
-			sf::Texture m_arrow_left;
-			sf::Texture m_arrow_right;
+			sf::Texture m_arrow;
 			sf::Sprite m_arrow_left1_sprite;
 			sf::Sprite m_arrow_left2_sprite;
 			sf::Sprite m_arrow_right1_sprite;
