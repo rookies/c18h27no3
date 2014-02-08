@@ -137,14 +137,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBARCHIVE_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBAVUTIL_LIBRARIES})
 #target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBSWSCALE_LIBRARIES})
 # .
-# add gettext target:
-# .
-#if (UNIX)
-#	add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD COMMAND "${CMAKE_SOURCE_DIR}/cmake/scripts/gettext.sh" "${CMAKE_SOURCE_DIR}/locale" "${CMAKE_BINARY_DIR}/locale")
-#elseif (WIN32)
-#	# FIXME: add windows-specific gettext target
-#endif ()
-# .
 # add install target:
 # .
 #if (UNIX)
