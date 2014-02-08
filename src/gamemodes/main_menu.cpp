@@ -54,15 +54,25 @@ int MainMenu::init(Config conf, std::string arg)
 	m_menuitem_over = -1;
 	m_menuitem_loaded = -1;
 	/*
-	 * Load font:
+	 * Load fonts:
 	*/
 	if (!m_font1.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Regular.ttf")))
 		return 1;
+	if (!m_font2.loadFromFile(get_data_path(DATALOADER_TYPE_FONT, "Vollkorn-Bold.ttf")))
+		return 1;
 	/*
-	 * Init update text:
+	 * Init update background:
 	*/
-	m_text1.setFont(m_font1);
-	m_text1.setColor(sf::Color::Red);
+	m_update_bg.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_update_bg.setFillColor(COLOR_MENU_ELEMENT);
+	/*
+	 * Init update text & heading:
+	*/
+	m_update_text.setFont(m_font1);
+	m_update_text.setColor(sf::Color::Black);
+	m_update_text.setString(L"Drücke F1, um die Downloadseite zu besuchen.");
+	m_update_heading.setFont(m_font2);
+	m_update_heading.setColor(sf::Color::Black);
 	return 0;
 }
 int MainMenu::uninit(void)
@@ -107,10 +117,18 @@ int MainMenu::calculate_sizes(int w, int h)
 		m_menuc_h[i] = (m_menu_h[i]/1920.0)*w;
 	}
 	/*
-	 * Calculate update text properties:
+	 * Set update background properties:
 	*/
-	m_text1.setCharacterSize(h/SIZE_UPDATER_TEXT_SIZE_DIVIDER);
-	m_text1.setPosition(sf::Vector2f(w*SIZE_UPDATER_TEXT_XOFFSET/100., h*SIZE_UPDATER_TEXT_YOFFSET/100.));
+	m_update_bg.setSize(sf::Vector2f(w*(SIZE_UPATER_BG_WIDTH/100.), h*(SIZE_UPATER_BG_HEIGHT/100.)));
+	m_update_bg.setOutlineThickness(h*(SIZE_MENU_ELEMENT_OUTLINE/100.0));
+	m_update_bg.setPosition((w-m_update_bg.getGlobalBounds().width)/2., h*(SIZE_UPATER_BG_YOFFSET/100.));
+	/*
+	 * Calculate update text & heading properties:
+	*/
+	m_update_text.setCharacterSize(h/SIZE_UPDATER_TEXT_SIZE_DIVIDER);
+	m_update_text.setPosition((w-m_update_text.getGlobalBounds().width)/2., h*SIZE_UPDATER_TEXT_YOFFSET/100.);
+	m_update_heading.setCharacterSize(h/SIZE_UPDATER_TEXT_SIZE_DIVIDER);
+	m_update_heading.setPosition((w-m_update_heading.getGlobalBounds().width)/2., h*SIZE_UPDATER_HEADING_YOFFSET/100.);
 	return 0;
 }
 void MainMenu::load_menuitem(int i)
@@ -125,6 +143,7 @@ void MainMenu::load_menuitem(int i)
 void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
 	unsigned int i;
+	std::string s;
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
@@ -132,6 +151,19 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 			{
 				case sf::Keyboard::Escape:
 					ret->set_exit(1); // exit
+					break;
+				case sf::Keyboard::F1:
+					if (m_updates)
+					{
+#ifdef OS_UNIX
+						s = "xdg-open \"";
+						s.append(m_updatelink);
+						s.append("\"");
+						system(s.c_str());
+#elif defined(OS_WINDOWS)
+						ShellExecute(NULL, "open", m_updatelink, NULL, NULL, SW_SHOWNORMAL);
+#endif
+					};
 					break;
 			}
 			break;
@@ -182,13 +214,14 @@ UniversalDrawableArray MainMenu::get_drawables(void)
 	*/
 	if (m_updatetext_changed)
 	{
-		m_text1.setString(get_wstring(m_updatetext));
+		m_update_heading.setString(get_wstring(m_updatetext));
+		m_update_heading.setPosition((m_w-m_update_heading.getGlobalBounds().width)/2., m_h*SIZE_UPDATER_HEADING_YOFFSET/100.);
 		m_updatetext_changed = false;
 	};
 	/*
 	 * Init UniversalDrawableArray:
 	*/
-	arr.init(2+(m_menuitem_over>-1?1:0)+(m_updates?1:0));
+	arr.init(2+(m_menuitem_over>-1?1:0)+(m_updates?3:0));
 	/*
 	 * Add elements:
 	*/
@@ -197,7 +230,11 @@ UniversalDrawableArray MainMenu::get_drawables(void)
 	if (m_menuitem_over > -1)
 		arr.add_sprite(m_img2_sprite);
 	if (m_updates)
-		arr.add_text(m_text1);
+	{
+		arr.add_rectshape(m_update_bg);
+		arr.add_text(m_update_heading);
+		arr.add_text(m_update_text);
+	};
 	/*
 	 * Return:
 	*/
@@ -231,12 +268,15 @@ void MainMenu::updater(void)
 		/*
 		 * Got an update.
 		*/
-		std::cout << "Updater: Got an update:" << std::endl;
-		std::cout << "= TEXT START =" << std::endl;
-		std::cout << res.getBody();
-		std::cout << "= TEXT END =" << std::endl;
-		m_updatetext = res.getBody();
-		m_updatetext_changed = true;
-		m_updates = true;
+		if (res.getBody().find_first_of("\n") != std::string::npos)
+		{
+			m_updatetext = res.getBody().substr(0, res.getBody().find_first_of("\n"));
+			m_updatelink = res.getBody().substr(res.getBody().find_first_of("\n")+1, res.getBody().length()-res.getBody().find_first_of("\n")-2);
+			m_updatetext_changed = true;
+			m_updates = true;
+			std::cout << "Updater: Got an update:" << std::endl;
+			std::cout << "Updater -> Text: " << m_updatetext << std::endl;
+			std::cout << "Updater -> Link: " << m_updatelink << std::endl;
+		};
 	};
 }

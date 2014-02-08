@@ -28,6 +28,9 @@
 #	include <SFML/Network.hpp>
 #	include <libintl.h>
 #	include <sstream>
+#	ifdef OS_WINDOWS
+#		include <windows.h>
+#	endif // OS_WINDOWS
 #	include "globals.hpp"
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
@@ -88,11 +91,15 @@
 			int m_logo_yoffset;
 			sf::Thread *m_update_thread;
 			sf::Font m_font1;
-			sf::Text m_text1;
+			sf::Font m_font2;
 			bool m_updates;
 			bool m_updatetext_changed;
 			std::string m_updatetext;
+			std::string m_updatelink;
 			float m_activewidth;
 			FireAnimation m_fire;
+			sf::RectangleShape m_update_bg;
+			sf::Text m_update_text;
+			sf::Text m_update_heading;
 	};
 #endif // MAIN_MENU_HPP
