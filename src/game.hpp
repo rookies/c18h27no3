@@ -153,5 +153,7 @@
 			bool m_cursor_state;
 			sf::SoundBuffer m_menusound_buffer;
 			sf::Sound m_menusound;
+			sf::Clock m_menusound_clock;
+			unsigned int m_menusound_delay;
 	};
 #endif // GAME_HPP

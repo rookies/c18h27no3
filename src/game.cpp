@@ -22,7 +22,7 @@
  */
 #include "game.hpp"
 
-Game::Game() : m_menusound_state(false), m_menusound_initialized(false), m_cursor_state(false)
+Game::Game() : m_menusound_state(false), m_menusound_initialized(false), m_cursor_state(false), m_menusound_delay(0)
 {
 	
 }
@@ -246,6 +246,14 @@ int Game::loop(void)
 		 * Process events:
 		*/
 		done = process_events();
+		/*
+		 * Check for menu sound clock:
+		*/
+		if (m_menusound_delay > 0 && m_menusound_clock.getElapsedTime().asMilliseconds() >= m_menusound_delay)
+		{
+			m_menusound.play();
+			m_menusound_delay = 0;
+		};
 		/*
 		 * Check if we have to draw the stuff:
 		*/
@@ -591,14 +599,14 @@ int Game::set_gamemode(int gamemode, std::string arg)
 	if (uninit_gamemode() == 1)
 		return 1;
 	/*
+	 * Set new game mode variable:
+	*/
+	m_gamemode = gamemode;
+	/*
 	 * Init new game mode:
 	*/
 	if (init_gamemode(gamemode, arg) == 1)
 		return 1;
-	/*
-	 * Set new game mode variable:
-	*/
-	m_gamemode = gamemode;
 	/*
 	 * Calculate sizes:
 	*/
@@ -664,7 +672,6 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			break;
 		case 13:
 			m_gamemode_class = new Intro;
-			menusound = false;
 			cursor = false;
 			break;
 		default:
@@ -702,6 +709,10 @@ int Game::uninit_gamemode(void)
 bool Game::set_menusound(bool state)
 {
 	/*
+	 * Variable declarations:
+	*/
+	bool init_now;
+	/*
 	 * Check if we have to do something:
 	*/
 	if (state == m_menusound_state) // state already there
@@ -733,10 +744,19 @@ bool Game::set_menusound(bool state)
 		 * Mark is initialized:
 		*/
 		m_menusound_initialized = true;
-	};
+		init_now = true;
+	}
+	else
+		init_now = false;
 	if (state)
 	{
-		m_menusound.play();
+		if (m_gamemode == 13)
+		{
+			m_menusound_clock.restart();
+			m_menusound_delay = 3500;
+		}
+		else
+			m_menusound.play();
 		m_menusound_state = true;
 	}
 	else
