@@ -70,7 +70,7 @@ int MainMenu::init(Config conf, std::string arg)
 	*/
 	m_update_text.setFont(m_font1);
 	m_update_text.setColor(sf::Color::Black);
-	m_update_text.setString(L"Drücke F1, um die Downloadseite zu besuchen.");
+	m_update_text.setString(get_wstring(_("updater_text")));
 	m_update_heading.setFont(m_font2);
 	m_update_heading.setColor(sf::Color::Black);
 	return 0;
@@ -158,7 +158,7 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 #ifdef OS_UNIX
 						s = "xdg-open \"";
 						s.append(m_updatelink);
-						s.append("\"");
+						s.append("\" &");
 						system(s.c_str());
 #elif defined(OS_WINDOWS)
 						ShellExecute(NULL, "open", m_updatelink, NULL, NULL, SW_SHOWNORMAL);
@@ -189,6 +189,7 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 			{
 				case sf::Mouse::Left:
 					if (m_menuitem_over == 0)
+						//ret->set_gamemode(11); // go to new game
 						ret->set_gamemode(9); // go to level chooser
 					else if (m_menuitem_over == 1)
 						ret->set_gamemode(10); // go to load game

@@ -38,6 +38,7 @@
 	 * Project name:
 	*/
 #	define PROJECTNAME "@CMAKE_PROJECT_NAME@"
+#	define PROJECT_FULLNAME "Route 94 - A Road To East"
 	/*
 	 * Update server:
 	*/
@@ -185,6 +186,11 @@
 #	define SIZE_GAME_WEAPON_WIDTH 6.5
 #	define SIZE_INTRO_LOGO_WIDTH 25.
 #	define SIZE_INTRO_OFFSET 11.
+#	define SIZE_NEWGAME_ARROW_HEIGHT 10.
+#	define SIZE_NEWGAME_ARROW_YOFFSET 30.
+#	define SIZE_NEWGAME_ARROW_XOFFSET 30.
+#	define SIZE_NEWGAME_HEADER 4.
+#	define SIZE_NEWGAME_HEADER_YOFFSET 5.
 	/*
 	 * Sizes (in px):
 	*/

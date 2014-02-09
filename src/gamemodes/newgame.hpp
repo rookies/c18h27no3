@@ -26,6 +26,8 @@
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
+#	include "../fireanimation.hpp"
+#	include "../widestring.hpp"
 	
 	class NewGame : public Gamemode
 	{
@@ -51,6 +53,12 @@
 			*/
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
-			
+			FireAnimation m_fire;
+			sf::Texture m_arrow;
+			sf::Sprite m_arrow_left;
+			sf::Sprite m_arrow_right;
+			sf::Font m_font1;
+			sf::Font m_font2;
+			sf::Text m_heading;
 	};
 #endif // NEWGAME_HPP

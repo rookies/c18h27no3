@@ -89,7 +89,7 @@ int Game::init(int gamemode, std::string arg)
 	if (m_config.get("GRAPHICS__FULLSCREEN").value_bool)
 		m_window.create(videomode, "Game", sf::Style::Fullscreen);
 	else
-		m_window.create(sf::VideoMode(m_screen_w, m_screen_h, m_screen_bits), "Game");
+		m_window.create(sf::VideoMode(m_screen_w, m_screen_h, m_screen_bits), PROJECT_FULLNAME);
 	std::cout << "[DONE]" << std::endl;
 	m_window_has_focus = true;
 	/*
