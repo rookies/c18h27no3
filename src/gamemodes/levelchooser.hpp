@@ -23,6 +23,7 @@
 #ifndef LEVELCHOOSER_HPP
 #	define LEVELCHOOSER_HPP
 
+#	include <libintl.h>
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"

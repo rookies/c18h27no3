@@ -161,7 +161,10 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 						s.append("\" &");
 						system(s.c_str());
 #elif defined(OS_WINDOWS)
-						ShellExecute(NULL, "open", m_updatelink, NULL, NULL, SW_SHOWNORMAL);
+						s = "open \"";
+						s.append(m_updatelink);
+						s.append("\" &");
+						system(s.c_str());
 #endif
 					};
 					break;

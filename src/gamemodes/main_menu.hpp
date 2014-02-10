@@ -28,9 +28,6 @@
 #	include <SFML/Network.hpp>
 #	include <libintl.h>
 #	include <sstream>
-#	ifdef OS_WINDOWS
-#		include <windows.h>
-#	endif // OS_WINDOWS
 #	include "globals.hpp"
 #	include "../widestring.hpp"
 #	include "../event_processor_return.hpp"
