@@ -207,11 +207,10 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 				/*
 				 * Calculate a position:
 				*/
-				pos = m_lastpos+((rand() % (m_h/2))-(m_h/4));
-				if (pos-(int(m_gapheight)/2) < 0)
-					pos = int(m_gapheight)/2;
-				if (pos+(int(m_gapheight)/2) > m_h)
-					pos = m_h-(int(m_gapheight)/2);
+				pos = ((rand() % (m_h/2))-(m_h/4));
+				if (m_lastpos+pos-(int(m_gapheight)/2) < 0 || m_lastpos+pos+(int(m_gapheight)/2) > m_h)
+					pos = -pos;
+				pos += m_lastpos;
 				m_lastpos = pos;
 				/*
 				 * Add the pipe:
