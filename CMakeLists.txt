@@ -120,6 +120,7 @@ set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/loadgame.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/newgame.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/gameshop.cpp)
 set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/intro.cpp)
+set(GAME_SOURCES ${GAME_SOURCES} src/gamemodes/flappyfstone.cpp)
 # .
 # add executable:
 # .

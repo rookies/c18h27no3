@@ -195,7 +195,8 @@ void MainMenu::process_event(sf::Event event, int mouse_x, int mouse_y, EventPro
 						//ret->set_gamemode(11); // go to new game
 						ret->set_gamemode(9); // go to level chooser
 					else if (m_menuitem_over == 1)
-						ret->set_gamemode(10); // go to load game
+						//ret->set_gamemode(10); // go to load game
+						ret->set_gamemode(14); // go to flappy falkenstone
 					else if (m_menuitem_over == 3)
 						ret->set_gamemode(2); // go to settings menu
 					else if (m_menuitem_over == 4)

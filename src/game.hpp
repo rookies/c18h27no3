@@ -48,6 +48,7 @@
 #	include "gamemodes/newgame.hpp"
 #	include "gamemodes/gameshop.hpp"
 #	include "gamemodes/intro.hpp"
+#	include "gamemodes/flappyfstone.hpp"
 #	include "event_processor_return.hpp"
 #	include "universal_drawable.hpp"
 #	include "gamemode.hpp"
@@ -146,6 +147,7 @@
 			 * 11 - new game
 			 * 12 - gameshop
 			 * 13 - intro
+			 * 14 - flappy falkenstone
 			*/
 			int m_gamemode;
 			bool m_menusound_state;
