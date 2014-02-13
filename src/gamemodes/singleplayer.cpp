@@ -276,6 +276,19 @@ int SinglePlayer::init(Config conf, std::string arg)
 	*/
 	m_actiontimer.restart();
 	m_playertimer.restart();
+	/*
+	 * Init touch controls:
+	*/
+#ifdef TOUCHSCREEN
+	if (!m_touch_controls.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "touch_controls.png")))
+		return 1;
+	m_touch_shoot.setTexture(m_touch_controls);
+	m_touch_shoot.setTextureRect(sf::IntRect(0, 0, SIZE_TOUCHCTRL_SHOOT_WIDTH, m_touch_controls.getSize().y));
+	m_touch_left.setTexture(m_touch_controls);
+	m_touch_left.setTextureRect(sf::IntRect(SIZE_TOUCHCTRL_SHOOT_WIDTH+SIZE_TOUCHCTRL_ARROW_WIDTH, 0, -SIZE_TOUCHCTRL_ARROW_WIDTH, m_touch_controls.getSize().y));
+	m_touch_right.setTexture(m_touch_controls);
+	m_touch_right.setTextureRect(sf::IntRect(SIZE_TOUCHCTRL_SHOOT_WIDTH, 0, SIZE_TOUCHCTRL_ARROW_WIDTH, m_touch_controls.getSize().y));
+#endif // TOUCHSCREEN
 	return 0;
 }
 int SinglePlayer::uninit(void)
@@ -361,12 +374,48 @@ int SinglePlayer::calculate_sizes(int w, int h)
 	m_heartstext.setCharacterSize(h/SIZE_GAME_HEARTSTEXT_SIZE_DIVIDER);
 	m_heartstext.setPosition(sf::Vector2f(w*SIZE_GAME_HEARTSTEXT_XOFFSET/100., h*SIZE_GAME_HEARTSTEXT_YOFFSET/100.));
 	m_message.setCharacterSize(h/SIZE_GAME_MESSAGE_SIZE_DIVIDER);
+	/*
+	 * Set touch controls properties:
+	*/
+#ifdef TOUCHSCREEN
+	scale = (w*SIZE_TOUCHCTRL_WIDTH/100.)/SIZE_TOUCHCTRL_SHOOT_WIDTH;
+	m_touch_shoot.setScale(scale, scale);
+	m_touch_shoot.setPosition(w*SIZE_TOUCHCTRL_XOFFSET/100., h*(1-(SIZE_TOUCHCTRL_YOFFSET2/100.))-m_touch_shoot.getGlobalBounds().height);
+	scale = (w*SIZE_TOUCHCTRL_WIDTH/100.)/SIZE_TOUCHCTRL_ARROW_WIDTH;
+	m_touch_left.setScale(scale, scale);
+	m_touch_left.setPosition(w*SIZE_TOUCHCTRL_XOFFSET/100., h*(1-(SIZE_TOUCHCTRL_YOFFSET/100.))-m_touch_left.getGlobalBounds().height);
+	scale = (w*SIZE_TOUCHCTRL_WIDTH/100.)/SIZE_TOUCHCTRL_ARROW_WIDTH;
+	m_touch_right.setScale(scale, scale);
+	m_touch_right.setPosition(w*(1-(SIZE_TOUCHCTRL_XOFFSET/100.))-m_touch_right.getGlobalBounds().width, h*(1-(SIZE_TOUCHCTRL_YOFFSET/100.))-m_touch_right.getGlobalBounds().height);
+#endif // TOUCHSCREEN
 	return 0;
 }
 void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
 	switch (event.type)
 	{
+#ifdef TOUCHSCREEN
+		case sf::Event::MouseButtonPressed:
+			if (m_touch_left.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_player_xaction = PLAYER_RUNNING_LEFT;
+			else if (m_touch_right.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_player_xaction = PLAYER_RUNNING_RIGHT;
+			else if (m_touch_shoot.getGlobalBounds().contains(mouse_x, mouse_y))
+				std::cout << "Shooting." << std::endl;
+			else if (m_player_canjump && m_player_ystatus == 0)
+			{
+				m_player_ystatus = 1;
+				m_playerj = 0;
+				m_jumptimer.restart();
+			};
+			break;
+		case sf::Event::MouseButtonReleased:
+			if (m_player_xaction == PLAYER_RUNNING_LEFT)
+				m_player_xaction = 0;
+			else if (m_player_xaction == PLAYER_RUNNING_RIGHT)
+				m_player_xaction = 0;
+			break;
+#else // TOUCHSCREEN
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
@@ -392,6 +441,7 @@ void SinglePlayer::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 			else if (event.key.code == m_key_goright && m_player_xaction == PLAYER_RUNNING_RIGHT)
 				m_player_xaction = 0;
 			break;
+#endif // TOUCHSCREEN
 	}
 	if (m_exit)
 		ret->set_gamemode(9); // levelchooser
@@ -704,7 +754,11 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	/*
 	 * Fill array:
 	*/
+#ifdef TOUCHSCREEN
+	arr.init(14+(m_level.has_bgimg()?1:0)+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0)+((m_successful||m_gameover)?1:0));
+#else // TOUCHSCREEN
 	arr.init(11+(m_level.has_bgimg()?1:0)+m_visible_block_number+m_visible_item_number+((m_offset < PLAYERPOS_X+2)?2:0)+((m_hearts_num > 3)?1:0)+((m_successful||m_gameover)?1:0));
+#endif // TOUCHSCREEN
 	if (m_level.has_bgimg())
 		arr.add_sprite(m_bg);
 	for (i=0; i < m_visible_block_number; i++)
@@ -741,6 +795,11 @@ UniversalDrawableArray SinglePlayer::get_drawables(void)
 	else
 		arr.add_sprite(m_healthm);
 	arr.add_rectshape(m_healthm_helper);
+#ifdef TOUCHSCREEN
+	arr.add_sprite(m_touch_shoot);
+	arr.add_sprite(m_touch_left);
+	arr.add_sprite(m_touch_right);
+#endif // TOUCHSCREEN
 	if (m_successful || m_gameover)
 		arr.add_text(m_message);
 	return arr;

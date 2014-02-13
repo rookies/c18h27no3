@@ -23,8 +23,6 @@
 #ifndef FLAPPYFSTONE_HPP
 #	define FLAPPYFSTONE_HPP
 
-#	define FLAPPYFSTONE_PIPENUM 12
-
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"

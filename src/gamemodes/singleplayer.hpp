@@ -173,5 +173,11 @@
 			sf::Sprite m_weaponsprite;
 			sf::Clock m_blinktimer;
 			bool m_blink;
+#ifdef TOUCHSCREEN
+			sf::Texture m_touch_controls;
+			sf::Sprite m_touch_shoot;
+			sf::Sprite m_touch_left;
+			sf::Sprite m_touch_right;
+#endif // TOUCHSCREEN
 	};
 #endif // SINGLEPLAYER_HPP

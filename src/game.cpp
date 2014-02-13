@@ -653,7 +653,11 @@ int Game::init_gamemode(int gamemode, std::string arg)
 		case 7:
 			m_gamemode_class = new SinglePlayer;
 			menusound = false;
+#ifdef TOUCHSCREEN
+			cursor = true;
+#else // TOUCHSCREEN
 			cursor = false;
+#endif // TOUCHSCREEN
 			break;
 		case 8:
 			m_gamemode_class = new Credits;
