@@ -237,11 +237,16 @@ int Game::loop(void)
 	 * Variable definitons:
 	*/
 	int done = 0;
+	sf::Int64 dur;
 	/*
 	 * Main loop:
 	*/
 	while (done == 0)
 	{
+		/*
+		 * Restart frameclock:
+		*/
+		m_frameclock.restart();
 		/*
 		 * Process events:
 		*/
@@ -267,6 +272,12 @@ int Game::loop(void)
 			if (wait_for_focus() == 1)
 				return 1;
 		};
+		/*
+		 * Get time needed for the last frame:
+		*/
+		dur = MIN_FRAMEDUR_US-m_frameclock.getElapsedTime().asMicroseconds();
+		if (dur > 0)
+			sf::sleep(sf::microseconds(dur));
 	}
 	return done;
 }

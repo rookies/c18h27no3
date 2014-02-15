@@ -74,18 +74,6 @@ int FlappyFStone::uninit(void)
 	*/
 	return 0;
 }
-#	define SIZE_FLAPPYFSTONE_PIPE_WIDTH 10.
-#	define SIZE_FLAPPYFSTONE_POINTSTEXT 10.
-#	define SIZE_FLAPPYFSTONE_PLAYER_HEIGHT 10.
-#	define SIZE_FLAPPYFSTONE_PLAYER_XOFFSET 5.
-#	define SIZE_FLAPPYFSTONE_GAPHEIGHT 30.
-#	define FLAPPYFSTONE_RANDOMIZER 30
-#	define FLAPPYFSTONE_CREATION_DIVIDER 1.
-#	define FLAPPYFSTONE_PIPEMOVEMENT_DIVIDER 4.
-#	define FLAPPYFSTONE_RISING_DIVIDER 2.
-#	define FLAPPYFSTONE_RISING_TIME 100
-#	define FLAPPYFSTONE_FALLING_DIVIDER 3.
-#	define FLAPPYFSTONE_SPEED_INCREASING_DIVIDER 4.
 int FlappyFStone::calculate_sizes(int w, int h)
 {
 	m_w = w;
@@ -215,7 +203,7 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 		/*
 		 * Add new pipes:
 		*/
-		if ((m_creationtimer.getElapsedTime().asMilliseconds() >= m_w/FLAPPYFSTONE_CREATION_DIVIDER/((m_points < FLAPPYFSTONE_SPEED_INCREASING_DIVIDER)?FLAPPYFSTONE_SPEED_INCREASING_DIVIDER:m_points)*FLAPPYFSTONE_SPEED_INCREASING_DIVIDER && rand() % FLAPPYFSTONE_RANDOMIZER == 0) || m_pipes_visible == 0)
+		if ((m_creationtimer.getElapsedTime().asMilliseconds() >= FLAPPYFSTONE_CREATION_MIN_INTERVAL/((m_points < FLAPPYFSTONE_SPEED_INCREASING_DIVIDER)?FLAPPYFSTONE_SPEED_INCREASING_DIVIDER:m_points)*FLAPPYFSTONE_SPEED_INCREASING_DIVIDER && rand() % FLAPPYFSTONE_RANDOMIZER == 0) || m_pipes_visible == 0)
 		{
 			if (!m_pipes_wasfull || m_pipe_overwrite > -1)
 			{

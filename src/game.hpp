@@ -157,5 +157,6 @@
 			sf::Sound m_menusound;
 			sf::Clock m_menusound_clock;
 			unsigned int m_menusound_delay;
+			sf::Clock m_frameclock;
 	};
 #endif // GAME_HPP
