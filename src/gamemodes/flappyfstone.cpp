@@ -36,7 +36,8 @@ int FlappyFStone::init(Config conf, std::string arg)
 	/*
 	 * Variable declarations:
 	*/
-	unsigned int i;
+	unsigned int i, j;
+	sf::Image img;
 	/*
 	 * Load font:
 	*/
@@ -65,6 +66,13 @@ int FlappyFStone::init(Config conf, std::string arg)
 		return 1;
 	m_fstone_texture.setSmooth(true);
 	m_fstone.setTexture(m_fstone_texture);
+	/*
+	 * Create fstone colormap:
+	*/
+	img = m_fstone_texture.copyToImage();
+	for (i=0; i < SIZE_FLAPPYFSTONE_PLAYER_IMGHEIGHT; i++)
+		for (j=0; j < SIZE_FLAPPYFSTONE_PLAYER_IMGWIDTH; j++)
+			m_fstone_colormap[i][j] = (img.getPixel(j,i).a != 0);
 	return 0;
 }
 int FlappyFStone::uninit(void)
@@ -103,8 +111,8 @@ int FlappyFStone::calculate_sizes(int w, int h)
 	/*
 	 * Set fstone position & size:
 	*/
-	scale = ((h*SIZE_FLAPPYFSTONE_PLAYER_HEIGHT)/100.)/m_fstone_texture.getSize().x;
-	m_fstone.setScale(scale, scale);
+	m_fstone_scale = ((h*SIZE_FLAPPYFSTONE_PLAYER_HEIGHT)/100.)/m_fstone_texture.getSize().x;
+	m_fstone.setScale(m_fstone_scale, m_fstone_scale);
 	m_fstone.setPosition((w*SIZE_FLAPPYFSTONE_PLAYER_XOFFSET)/100., (h-m_fstone.getGlobalBounds().height)/2.);
 	/*
 	 * Set middle position:
@@ -145,11 +153,12 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 	 * Variable declarations:
 	*/
 	UniversalDrawableArray arr;
-	unsigned int i;
+	unsigned int i, j;
 	unsigned int t;
 	int pos;
 	bool collision;
 	sf::FloatRect rect;
+	sf::IntRect int_rect;
 	float pos2;
 	/*
 	 * Check for gameover:
@@ -245,8 +254,33 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 		collision = false;
 		for (i=0; i < m_pipes_visible; i++)
 		{
-			if (m_pipes[i].getGlobalBounds().intersects(m_fstone.getGlobalBounds()))
-				collision = true;
+			if (m_pipes[i].getGlobalBounds().intersects(m_fstone.getGlobalBounds(), rect))
+			{
+				/*
+				 * Sprite rects are in conflict, check for pixels
+				 * Translate the coordinates to the sprite as reference system:
+				*/
+				rect.left -= m_fstone.getGlobalBounds().left;
+				rect.top -= m_fstone.getGlobalBounds().top;
+				/*
+				 * Translate the coordinates to the texture as reference system:
+				*/
+				rect.left /= m_fstone_scale;
+				rect.top /= m_fstone_scale;
+				rect.width /= m_fstone_scale;
+				rect.height /= m_fstone_scale;
+				/*
+				 * Convert to integer:
+				*/
+				int_rect = sf::IntRect(rect);
+				/*
+				 * Check all rect points for collisions with the colormap:
+				*/
+				for (i=0; i < int_rect.height; i++)
+					for (j=0; j < int_rect.width; j++)
+						if (m_fstone_colormap[i][j])
+							collision = true;
+			};
 		}
 		if (m_fstone.getPosition().y >= m_h-m_fstone.getGlobalBounds().height || collision)
 		{

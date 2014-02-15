@@ -73,5 +73,7 @@
 			sf::Font m_font1;
 			sf::Text m_pointstext;
 			sf::Clock m_exittimer;
+			bool m_fstone_colormap[SIZE_FLAPPYFSTONE_PLAYER_IMGHEIGHT][SIZE_FLAPPYFSTONE_PLAYER_IMGWIDTH];
+			float m_fstone_scale;
 	};
 #endif // FLAPPYFSTONE_HPP
