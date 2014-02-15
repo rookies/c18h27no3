@@ -58,7 +58,8 @@
 			int m_pipe_overwrite;
 			bool m_pipes_wasfull;
 			unsigned int m_w, m_h;
-			sf::RectangleShape m_pipes[FLAPPYFSTONE_PIPENUM];
+			sf::Texture m_pipe;
+			sf::Sprite m_pipes[FLAPPYFSTONE_PIPENUM];
 			sf::Clock m_creationtimer;
 			sf::Clock m_movementtimer;
 			int m_lastpos;

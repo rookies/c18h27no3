@@ -49,10 +49,15 @@ int FlappyFStone::init(Config conf, std::string arg)
 	m_pointstext.setString("0");
 	m_pointstext.setColor(sf::Color::Black);
 	/*
+	 * Load pipe texture:
+	*/
+	if (!m_pipe.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "pipe.png")))
+		return 1;
+	/*
 	 * Init pipes:
 	*/
 	for (i=0; i < FLAPPYFSTONE_PIPENUM; i++)
-		m_pipes[i].setFillColor(sf::Color(0,255,0));
+		m_pipes[i].setTexture(m_pipe);
 	/*
 	 * Load fstone:
 	*/
@@ -69,6 +74,18 @@ int FlappyFStone::uninit(void)
 	*/
 	return 0;
 }
+#	define SIZE_FLAPPYFSTONE_PIPE_WIDTH 10.
+#	define SIZE_FLAPPYFSTONE_POINTSTEXT 10.
+#	define SIZE_FLAPPYFSTONE_PLAYER_HEIGHT 10.
+#	define SIZE_FLAPPYFSTONE_PLAYER_XOFFSET 5.
+#	define SIZE_FLAPPYFSTONE_GAPHEIGHT 30.
+#	define FLAPPYFSTONE_RANDOMIZER 30
+#	define FLAPPYFSTONE_CREATION_DIVIDER 1.
+#	define FLAPPYFSTONE_PIPEMOVEMENT_DIVIDER 4.
+#	define FLAPPYFSTONE_RISING_DIVIDER 2.
+#	define FLAPPYFSTONE_RISING_TIME 100
+#	define FLAPPYFSTONE_FALLING_DIVIDER 3.
+#	define FLAPPYFSTONE_SPEED_INCREASING_DIVIDER 4.
 int FlappyFStone::calculate_sizes(int w, int h)
 {
 	m_w = w;
@@ -77,21 +94,30 @@ int FlappyFStone::calculate_sizes(int w, int h)
 	 * Variable declarations:
 	*/
 	unsigned int i;
+	float scale;
 	/*
 	 * Set points text properties:
 	*/
-	m_pointstext.setCharacterSize(h/10.);
+	m_pointstext.setCharacterSize((h*SIZE_FLAPPYFSTONE_POINTSTEXT)/100.);
 	update_points();
 	/*
-	 * Set pipe size:
+	 * Set pipe properties:
 	*/
+	scale = ((w*SIZE_FLAPPYFSTONE_PIPE_WIDTH)/100.)/m_pipe.getSize().x;
 	for (i=0; i < FLAPPYFSTONE_PIPENUM; i++)
-		m_pipes[i].setSize(sf::Vector2f(w/20., h));
+	{
+		m_pipes[i].setScale(scale, scale);
+		if (i % 2 == 0) // upper pipe
+			m_pipes[i].setTextureRect(sf::IntRect(0, h, m_pipe.getSize().x, -h));
+		else // lower pipe
+			m_pipes[i].setTextureRect(sf::IntRect(0, 0, m_pipe.getSize().x, h));
+	}
 	/*
 	 * Set fstone position & size:
 	*/
-	m_fstone.setScale(0.001*h, 0.001*h);
-	m_fstone.setPosition(w*0.05, (h-m_fstone.getGlobalBounds().height)/2.);
+	scale = ((h*SIZE_FLAPPYFSTONE_PLAYER_HEIGHT)/100.)/m_fstone_texture.getSize().x;
+	m_fstone.setScale(scale, scale);
+	m_fstone.setPosition((w*SIZE_FLAPPYFSTONE_PLAYER_XOFFSET)/100., (h-m_fstone.getGlobalBounds().height)/2.);
 	/*
 	 * Set middle position:
 	*/
@@ -99,7 +125,7 @@ int FlappyFStone::calculate_sizes(int w, int h)
 	/*
 	 * Set gap height:
 	*/
-	m_gapheight = h/3;
+	m_gapheight = (h*SIZE_FLAPPYFSTONE_GAPHEIGHT)/100.;
 	return 0;
 }
 void FlappyFStone::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -136,6 +162,7 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 	int pos;
 	bool collision;
 	sf::FloatRect rect;
+	float pos2;
 	/*
 	 * Check for gameover:
 	*/
@@ -150,27 +177,28 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 		*/
 		if (m_rising)
 		{
-			if (m_risingtimer.getElapsedTime().asMilliseconds() >= 100)
+			if (m_risingtimer.getElapsedTime().asMilliseconds() >= FLAPPYFSTONE_RISING_TIME)
 				m_rising = false;
 			else
 			{
-				m_fstone.setPosition(m_fstone.getPosition().x, m_fstone.getPosition().y-((t/2.)*m_w/1280.));
+				m_fstone.setPosition(m_fstone.getPosition().x, m_fstone.getPosition().y-((t/FLAPPYFSTONE_RISING_DIVIDER)*m_w/1280.));
 			};
 		}
 		else
-			m_fstone.setPosition(m_fstone.getPosition().x, m_fstone.getPosition().y+((t/5.)*m_w/1280.));
+			m_fstone.setPosition(m_fstone.getPosition().x, m_fstone.getPosition().y+((t/FLAPPYFSTONE_FALLING_DIVIDER)*m_w/1280.));
 		/*
 		 * Move pipes & check for completion:
 		*/
 		for (i=0; i < m_pipes_visible; i++)
 		{
+			pos2 = (t/FLAPPYFSTONE_PIPEMOVEMENT_DIVIDER+m_points/FLAPPYFSTONE_SPEED_INCREASING_DIVIDER)*m_w/1280.;
 			rect = m_pipes[i].getGlobalBounds();
-			if (i % 2 == 0 && rect.left+rect.width > m_fstone.getPosition().x && rect.left+rect.width-((t/4.)*m_w/1280.) <= m_fstone.getPosition().x)
+			if (i % 2 == 0 && rect.left+rect.width > m_fstone.getPosition().x && rect.left+rect.width-pos2 <= m_fstone.getPosition().x)
 			{
 				m_points++;
 				update_points();
 			};
-			m_pipes[i].setPosition(rect.left-((t/4.)*m_w/1280.), rect.top);
+			m_pipes[i].setPosition(rect.left-pos2, rect.top);
 		}
 		m_movementtimer.restart();
 		/*
@@ -187,7 +215,7 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 		/*
 		 * Add new pipes:
 		*/
-		if ((m_creationtimer.getElapsedTime().asMilliseconds() >= m_w/1.5 && rand() % 20 == 0) || m_pipes_visible == 0)
+		if ((m_creationtimer.getElapsedTime().asMilliseconds() >= m_w/FLAPPYFSTONE_CREATION_DIVIDER/((m_points < FLAPPYFSTONE_SPEED_INCREASING_DIVIDER)?FLAPPYFSTONE_SPEED_INCREASING_DIVIDER:m_points)*FLAPPYFSTONE_SPEED_INCREASING_DIVIDER && rand() % FLAPPYFSTONE_RANDOMIZER == 0) || m_pipes_visible == 0)
 		{
 			if (!m_pipes_wasfull || m_pipe_overwrite > -1)
 			{
@@ -215,7 +243,7 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 				/*
 				 * Add the pipe:
 				*/
-				m_pipes[i].setPosition(m_w-1, pos-(int(m_gapheight)/2)-int(m_h));
+				m_pipes[i].setPosition(m_w-1, pos-(int(m_gapheight)/2)-m_pipes[i].getGlobalBounds().height);
 				m_pipes[i+1].setPosition(m_w-1, pos+(m_gapheight/2));
 				if (m_pipes_visible == FLAPPYFSTONE_PIPENUM)
 					m_pipes_wasfull = true;
@@ -244,7 +272,7 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 	*/
 	arr.init(m_pipes_visible+2);
 	for (i=0; i < m_pipes_visible; i++)
-		arr.add_rectshape(m_pipes[i]);
+		arr.add_sprite(m_pipes[i]);
 	arr.add_sprite(m_fstone);
 	arr.add_text(m_pointstext);
 	return arr;
