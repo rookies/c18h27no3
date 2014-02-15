@@ -153,7 +153,7 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 	 * Variable declarations:
 	*/
 	UniversalDrawableArray arr;
-	unsigned int i, j;
+	unsigned int i, j, k;
 	unsigned int t;
 	int pos;
 	bool collision;
@@ -276,9 +276,9 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 				/*
 				 * Check all rect points for collisions with the colormap:
 				*/
-				for (i=0; i < int_rect.height; i++)
-					for (j=0; j < int_rect.width; j++)
-						if (m_fstone_colormap[i][j])
+				for (j=0; j < int_rect.height; j++)
+					for (k=0; k < int_rect.width; k++)
+						if (m_fstone_colormap[j][k])
 							collision = true;
 			};
 		}
