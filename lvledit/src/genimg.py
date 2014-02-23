@@ -77,11 +77,20 @@ class ImgGenerator (object):
 				os.unlink(os.path.join(d, "background.png"))
 				os.rmdir(d)
 		# Create block textures:
+		tmpfiles = []
 		for d in self.level.get_blockdefs():
 			if d["type"] is 1:
 				img = self.IMGPATH+"blocks/"+d["arg"]+".png"
 				if not os.path.exists(img):
 					img = self.IMGPATH+"block_not_found.png"
+			elif d["type"] is 3:
+				tmp = tempfile.mkstemp()[1]
+				try:
+					self.level.zip_writeto("textures/"+d["arg"]+".png", tmp)
+					img = tmp
+				except KeyError:
+					img = self.IMGPATH+"block_not_found.png"
+				tmpfiles.append(tmp)
 			else:
 				img = self.IMGPATH+"block_not_found.png"
 			i = d["id"]
@@ -123,6 +132,9 @@ class ImgGenerator (object):
 		draw.text((int(self.img_sizes[1]/20),20+s1), self.level.get_metadata("creator"), (0,0,0), font=font2)
 		draw.text((int(self.img_sizes[1]/15),30+s1+s2), self.level.get_metadata("creator_mail"), (0,0,0), font=font3)
 		draw.text((int(self.img_sizes[1]/15),40+s1+s2+s3), self.level.get_metadata("creator_www"), (0,0,0), font=font3)
+		# Remove tmpfiles:
+		for f in tmpfiles:
+			os.unlink(f)
 		
 	def save(self, path):
 		self.image.save(path)
