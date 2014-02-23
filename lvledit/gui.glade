@@ -878,6 +878,7 @@ Eigene Blöcke: (-&gt; Blockdefinitionen)
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tab_pos">left</property>
+                    <signal name="switch-page" handler="on_notebook2_switch_page" swapped="no"/>
                     <child>
                       <object class="GtkFrame" id="frame1">
                         <property name="visible">True</property>
@@ -993,10 +994,21 @@ Eigene Blöcke: (-&gt; Blockdefinitionen)
                             <property name="can_focus">False</property>
                             <property name="left_padding">12</property>
                             <child>
-                              <object class="GtkLabel" id="label23">
+                              <object class="GtkScrolledWindow" id="scrolledwindow10">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Noch nicht implementiert.</property>
+                                <property name="can_focus">True</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="treeview9">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection9">
+                                        <signal name="changed" handler="on_treeview_selection9_changed" swapped="no"/>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -1005,7 +1017,7 @@ Eigene Blöcke: (-&gt; Blockdefinitionen)
                           <object class="GtkLabel" id="label10">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Eigene Blöcke definieren&lt;/b&gt;</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Verfügbare Eigene Blöcke&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
                           </object>
                         </child>

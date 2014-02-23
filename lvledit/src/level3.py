@@ -557,3 +557,7 @@ class Level (object):
 		buf = self.zipfile.read(old)
 		self.zipfile.writestr(new, buf)
 		self.zip_remove(old)
+	def zip_writeto(self, member, dst):
+		dst_f = open(dst, "wb")
+		dst_f.write(self.zipfile.read(member))
+		dst_f.close()

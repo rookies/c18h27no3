@@ -29,6 +29,8 @@ import glob
 import subprocess
 import operator
 import traceback
+import re
+import tempfile
 
 class LevelEditor (object):
 	IMGPATH = "../data/img/"
@@ -39,6 +41,7 @@ class LevelEditor (object):
 	blockdefs_store = None
 	blockdefs_store2 = None
 	standard_blocks_store = None
+	own_blocks_store = None
 	items_store = None
 	bgimg_store = None
 	bgmusic_store = None
@@ -54,6 +57,9 @@ class LevelEditor (object):
 	trashcoords = (0, 0)
 	dragtype = 0
 	notebook3_page = 0
+	own_blocks_tmpfiles = {}
+	tab2_blockdefs_rows = 0
+	tab2_blocks_rows = 0
 	
 	def __init__(self):
 		### READ FROM GUI FILE ###
@@ -112,6 +118,18 @@ class LevelEditor (object):
 		self.builder.get_object("treeview4").set_model(self.standard_blocks_store)
 		## Fill the model:
 		self.update_standard_blocks_store()
+		### CREATE STUFF FOR THE OWN BLOCKS TREEVIEW ###
+		name = Gtk.TreeViewColumn("Name", Gtk.CellRendererText(), text=0)
+		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
+		## Add the columns to the TreeView:
+		self.builder.get_object("treeview9").append_column(name)
+		self.builder.get_object("treeview9").append_column(img)
+		## Create the model:
+		self.own_blocks_store = Gtk.ListStore(GObject.TYPE_STRING, GdkPixbuf.Pixbuf)
+		## Assign the model to the TreeView:
+		self.builder.get_object("treeview9").set_model(self.own_blocks_store)
+		## Fill the model:
+		self.update_own_blocks_store()
 		### CREATE STUFF FOR THE ITEMS TREEVIEW ###
 		ident = Gtk.TreeViewColumn("ID", Gtk.CellRendererText(), text=0)
 		img = Gtk.TreeViewColumn("Vorschau", Gtk.CellRendererPixbuf(), pixbuf=1)
@@ -184,6 +202,10 @@ class LevelEditor (object):
 			self.quit()
 	def quit(self):
 		Gtk.main_quit()
+		## Remove old temporary files:
+		for name, tmpf in self.own_blocks_tmpfiles.items():
+			os.unlink(tmpf)
+		self.own_blocks_tmpfiles = {}
 	def translate_coords(self, x, y):
 		x_trans = math.floor(x/self.get_block_height())
 		y_trans = math.floor((self.get_level_layout_height()-y)*2/self.get_block_height())
@@ -208,6 +230,8 @@ class LevelEditor (object):
 		## Standard blocks Store:
 		if stdblocks:
 			self.update_standard_blocks_store()
+		## Own blocks Store:
+		self.update_own_blocks_store()
 		## Level layout:
 		self.fill_block_images()
 		## Window Title:
@@ -247,6 +271,30 @@ class LevelEditor (object):
 				name,
 				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
 			])
+	def update_own_blocks_store(self):
+		## Remove old temporary files:
+		for name, tmpf in self.own_blocks_tmpfiles.items():
+			os.unlink(tmpf)
+		self.own_blocks_tmpfiles = {}
+		## Clear store:
+		self.own_blocks_store.clear()
+		blocks = []
+		pattern = re.compile("^textures/.*\.png$")
+		for f in self.level.zip_list():
+			if pattern.match(f) is not None:
+				name = os.path.basename(f).split(".", 2)[0]
+				blocks.append((name, f))
+		blocks.sort(key=operator.itemgetter(0))
+		for name, f in blocks:
+			tmpf = tempfile.mkstemp()
+			self.level.zip_writeto(f, tmpf[1])
+			img = Gtk.Image()
+			img.set_from_file(tmpf[1])
+			self.own_blocks_store.append([
+				name,
+				img.get_pixbuf().scale_simple(128, 64, GdkPixbuf.InterpType.NEAREST)
+			])
+			self.own_blocks_tmpfiles[name] = tmpf[1]
 	def update_metadata_store(self):
 		self.metadata_store.clear()
 		for key, value in self.level.get_all_metadata().items():
@@ -381,11 +429,16 @@ class LevelEditor (object):
 	def get_image_from_blockdef_id(self, ident):
 		img = Gtk.Image()
 		bdef = self.level.get_blockdef_by_id(ident)
-		if bdef is None or bdef[0] != 1:
+		if bdef is None or bdef[0] not in [1, 3]:
 			fname = self.IMGPATH + "block_not_found.png"
-		else:
+		elif bdef[0] == 1:
 			if os.path.exists(self.IMGPATH + "blocks/" + bdef[1] + ".png"):
 				fname = self.IMGPATH + "blocks/" + bdef[1] + ".png"
+			else:
+				fname = self.IMGPATH + "block_not_found.png"
+		elif bdef[0] == 3:
+			if os.path.exists(self.own_blocks_tmpfiles[bdef[1]]):
+				fname = self.own_blocks_tmpfiles[bdef[1]]
 			else:
 				fname = self.IMGPATH + "block_not_found.png"
 		img.set_from_file(fname)
@@ -579,12 +632,11 @@ class LevelEditor (object):
 			# Disable deleting:
 			self.builder.get_object("button3").set_sensitive(False)
 	### window1/tab2 EVENTS ###
-	def on_treeview_selection2_changed(self, widget):
-		## blockdefs
-		if widget.count_selected_rows() == 1:
+	def update_tab2_buttons(self):
+		if self.tab2_blockdefs_rows == 1:
 			# allow deleting
 			self.builder.get_object("button17").set_sensitive(True)
-			if self.builder.get_object("treeview-selection4").count_selected_rows() == 1:
+			if self.tab2_blocks_rows == 1:
 				# allow editing
 				self.builder.get_object("button16").set_sensitive(True)
 			else:
@@ -595,12 +647,11 @@ class LevelEditor (object):
 			self.builder.get_object("button17").set_sensitive(False)
 			# deny editing
 			self.builder.get_object("button16").set_sensitive(False)
-	def on_treeview_selection4_changed(self, widget):
-		## standard blocks
-		if widget.count_selected_rows() == 1:
+		
+		if self.tab2_blocks_rows == 1:
 			# allow adding
 			self.builder.get_object("button15").set_sensitive(True)
-			if self.builder.get_object("treeview-selection2").count_selected_rows() == 1:
+			if self.tab2_blockdefs_rows == 1:
 				# allow editing
 				self.builder.get_object("button16").set_sensitive(True)
 			else:
@@ -611,23 +662,53 @@ class LevelEditor (object):
 			self.builder.get_object("button15").set_sensitive(False)
 			# deny editing
 			self.builder.get_object("button16").set_sensitive(False)
+	def on_treeview_selection2_changed(self, widget):
+		## blockdefs
+		self.tab2_blockdefs_rows = widget.count_selected_rows()
+		self.update_tab2_buttons()
+	def on_treeview_selection4_changed(self, widget):
+		## standard blocks
+		self.tab2_blocks_rows = widget.count_selected_rows()
+		self.update_tab2_buttons()
+	def on_treeview_selection9_changed(self, widget):
+		## custom blocks
+		self.tab2_blocks_rows = widget.count_selected_rows()
+		self.update_tab2_buttons()
+	def on_notebook2_switch_page(self, widget, frame, page):
+		if page == 0:
+			self.tab2_blocks_rows = self.builder.get_object("treeview-selection4").count_selected_rows()
+		elif page == 1:
+			self.tab2_blocks_rows = 0
+		elif page == 2:
+			self.tab2_blocks_rows = self.builder.get_object("treeview-selection9").count_selected_rows()
+		self.update_tab2_buttons()
 	def on_button18_clicked(self, widget, *args):
 		## reload
 		self.update_everything()
 	def on_button15_clicked(self, widget, *args):
 		## add
-		row = self.builder.get_object("treeview-selection4").get_selected()
+		if self.builder.get_object("notebook2").get_current_page() == 0:
+			row = self.builder.get_object("treeview-selection4").get_selected()
+			t = 1
+		elif self.builder.get_object("notebook2").get_current_page() == 2:
+			row = self.builder.get_object("treeview-selection9").get_selected()
+			t = 3
 		block = row[0].get_value(row[1], 0)
-		self.level.add_blockdef(1, block)
+		self.level.add_blockdef(t, block)
 		self.changed = True
 		self.update_everything(True, False, False, False)
 	def on_button16_clicked(self, widget, *args):
 		## edit
-		row_block = self.builder.get_object("treeview-selection4").get_selected()
+		if self.builder.get_object("notebook2").get_current_page() == 0:
+			row_block = self.builder.get_object("treeview-selection4").get_selected()
+			t = 1
+		elif self.builder.get_object("notebook2").get_current_page() == 2:
+			row_block = self.builder.get_object("treeview-selection9").get_selected()
+			t = 3
 		row_bdef = self.builder.get_object("treeview-selection2").get_selected()
 		block = row_block[0].get_value(row_block[1], 0)
 		bdef = int(row_bdef[0].get_value(row_bdef[1], 0))
-		self.level.update_blockdef(bdef, 1, block)
+		self.level.update_blockdef(bdef, t, block)
 		self.changed = True
 		self.update_everything(True, False, False, False)
 	def on_button17_clicked(self, widget, *args):
