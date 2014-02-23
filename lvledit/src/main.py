@@ -437,7 +437,7 @@ class LevelEditor (object):
 			else:
 				fname = self.IMGPATH + "block_not_found.png"
 		elif bdef[0] == 3:
-			if os.path.exists(self.own_blocks_tmpfiles[bdef[1]]):
+			if bdef[1] in self.own_blocks_tmpfiles and os.path.exists(self.own_blocks_tmpfiles[bdef[1]]):
 				fname = self.own_blocks_tmpfiles[bdef[1]]
 			else:
 				fname = self.IMGPATH + "block_not_found.png"
