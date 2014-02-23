@@ -165,6 +165,7 @@
 			sf::Image get_background(void);
 			bool has_music(void);
 			sf::SoundBuffer get_music(void);
+			sf::Texture get_custom_texture(std::string name);
 		private:
 			unsigned short m_levelwidth;
 			unsigned short m_metadata_number;

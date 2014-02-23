@@ -928,3 +928,12 @@ sf::SoundBuffer Level::get_music(void)
 {
 	return m_music;
 }
+sf::Texture Level::get_custom_texture(std::string name)
+{
+	unsigned int i;
+	for (i=0; i < m_ctextures_count; i++)
+	{
+		if (m_ctextures[i].name == name)
+			return m_ctextures[i].texture;
+	}
+}

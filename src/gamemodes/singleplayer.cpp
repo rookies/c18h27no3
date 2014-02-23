@@ -108,6 +108,10 @@ int SinglePlayer::init(Config conf, std::string arg)
 					return 1;
 			};
 		}
+		else if (m_level.get_blockdef(i).get_type() == BLOCKDEF_TYPE_SPECIAL)
+		{
+			m_block_textures[i] = m_level.get_custom_texture(m_level.get_blockdef(i).get_arg());
+		}
 		else
 		{
 			if (!m_block_textures[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "block_not_found.png")))
