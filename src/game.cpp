@@ -694,6 +694,9 @@ int Game::init_gamemode(int gamemode, std::string arg)
 			cursor = false;
 			menusound = false;
 			break;
+		case 15:
+			m_gamemode_class = new Minigames;
+			break;
 		default:
 			std::cout << "Invalid gamemode passed to init_gamemode(): " << gamemode << std::endl;
 			return 1;
