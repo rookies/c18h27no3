@@ -60,6 +60,14 @@ int LevelChooser::init(Config conf, std::string arg)
 	m_backbutton.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
 	m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
 	/*
+	 * FIXME: Init minigames button:
+	*/
+	m_minitext.setFont(m_font1);
+	m_minitext.setColor(sf::Color::Black);
+	m_minitext.setString(L"Minispiele");
+	m_minibutton.setOutlineColor(COLOR_MENU_ELEMENT_OUTLINE);
+	m_minibutton.setFillColor(COLOR_MENU_ELEMENT);
+	/*
 	 * Search for levels & init thumbnails:
 	*/
 	for (m_lvlc=0; m_lvlc <= LEVELCHOOSER_NUMITEMS; m_lvlc++)
@@ -105,9 +113,6 @@ int LevelChooser::init(Config conf, std::string arg)
 }
 int LevelChooser::uninit(void)
 {
-	/*
-	 * ...
-	*/
 	return 0;
 }
 int LevelChooser::calculate_sizes(int w, int h)
@@ -134,6 +139,14 @@ int LevelChooser::calculate_sizes(int w, int h)
 	m_backbutton.setPosition((w-m_backbutton.getGlobalBounds().width)/2., h*SIZE_LEVELCHOOSER_BACKBUTTON_YOFFSET/100.);
 	m_backtext.setCharacterSize(h*SIZE_MENU_ELEMENT_HEIGHT/200.);
 	m_backtext.setPosition((w-m_backtext.getGlobalBounds().width)/2., h*(SIZE_MENU_ELEMENT_TEXT_GAP+SIZE_LEVELCHOOSER_BACKBUTTON_YOFFSET)/100.);
+	/*
+	 * FIXME: Resize & position minigames button:
+	*/
+	m_minibutton.setSize(sf::Vector2f(w*SIZE_MENU_ELEMENT_WIDTH/100., h*SIZE_MENU_ELEMENT_HEIGHT/100.));
+	m_minibutton.setOutlineThickness(h*SIZE_MENU_ELEMENT_OUTLINE/100.0);
+	m_minibutton.setPosition((w-m_minibutton.getGlobalBounds().width)/2., h*(SIZE_LEVELCHOOSER_BACKBUTTON_YOFFSET+7)/100.);
+	m_minitext.setCharacterSize(h*SIZE_MENU_ELEMENT_HEIGHT/200.);
+	m_minitext.setPosition((w-m_minitext.getGlobalBounds().width)/2., h*(SIZE_MENU_ELEMENT_TEXT_GAP+SIZE_LEVELCHOOSER_BACKBUTTON_YOFFSET+7)/100.);
 	/*
 	 * Resize & position frames, level images, locks & level backgrounds:
 	*/
@@ -182,6 +195,10 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 				m_backbutton.setFillColor(COLOR_MENU_ELEMENT_HOVER);
 			else
 				m_backbutton.setFillColor(COLOR_MENU_ELEMENT);
+			if (m_minibutton.getGlobalBounds().contains(mouse_x, mouse_y))
+				m_minibutton.setFillColor(COLOR_MENU_ELEMENT_HOVER);
+			else
+				m_minibutton.setFillColor(COLOR_MENU_ELEMENT);
 			for (i=0; i < m_lvlc; i++)
 			{
 				if (m_level_sprite[i].getGlobalBounds().contains(mouse_x, mouse_y))
@@ -199,6 +216,8 @@ void LevelChooser::process_event(sf::Event event, int mouse_x, int mouse_y, Even
 				case sf::Mouse::Left:
 					if (m_backbutton.getGlobalBounds().contains(mouse_x, mouse_y))
 						ret->set_gamemode(1); // go to main menu
+					else if (m_minibutton.getGlobalBounds().contains(mouse_x, mouse_y))
+						ret->set_gamemode(15); // go to minigames
 					else
 					{
 						for (i=0; i < m_lvlc; i++)
@@ -227,12 +246,14 @@ UniversalDrawableArray LevelChooser::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.init(5+2*LEVELCHOOSER_NUMITEMS+m_lvlc);
+	arr.init(7+2*LEVELCHOOSER_NUMITEMS+m_lvlc);
 	arr.add_sprite(m_fire.get_sprite());
 	arr.add_text(m_header);
 	arr.add_text(m_subheading);
 	arr.add_rectshape(m_backbutton);
 	arr.add_text(m_backtext);
+	arr.add_rectshape(m_minibutton);
+	arr.add_text(m_minitext);
 	for (i=0; i < LEVELCHOOSER_NUMITEMS; i++)
 	{
 		arr.add_rectshape(m_level_bg[i]);

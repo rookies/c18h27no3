@@ -245,7 +245,6 @@ UniversalDrawableArray FlappyFStone::get_drawables(void)
 				if (m_pipes_visible == FLAPPYFSTONE_PIPENUM)
 					m_pipes_wasfull = true;
 				m_creationtimer.restart();
-				std::cout << "Added pipe at " << i << std::endl;
 			};
 		};
 		/*

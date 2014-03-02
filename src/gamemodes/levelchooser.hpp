@@ -70,5 +70,7 @@
 			sf::Text m_backtext;
 			unsigned int m_lvlc;
 			Level m_levels[LEVELCHOOSER_NUMITEMS];
+			sf::RectangleShape m_minibutton;
+			sf::Text m_minitext;
 	};
 #endif // LEVELCHOOSER_HPP

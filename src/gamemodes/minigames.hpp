@@ -54,5 +54,11 @@
 		private:
 			sf::Texture m_grass_texture;
 			sf::Sprite m_grass;
+			sf::Texture m_player_texture;
+			sf::Sprite m_player;
+			sf::Texture m_door;
+			sf::Sprite m_doors[MINIGAMES_DOORNUM];
+			sf::Texture m_exit_texture;
+			sf::Sprite m_exit;
 	};
 #endif // MINIGAMES_HPP
