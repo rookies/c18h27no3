@@ -127,7 +127,10 @@ int FlappyFStone::calculate_sizes(int w, int h)
 void FlappyFStone::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
 {
 	if (m_failed && m_exittimer.getElapsedTime().asSeconds() >= 1)
-		ret->set_gamemode(1);
+	{
+		ret->set_gamemode(15); // go to minigames
+		ret->set_gamemode_arg("1");
+	};
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:

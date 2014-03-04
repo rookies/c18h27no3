@@ -66,6 +66,14 @@ int Minigames::init(Config conf, std::string arg)
 	for (i=0; i < MINIGAMES_DOORNUM; i++)
 		m_doors[i].setTexture(m_door);
 	/*
+	 * Read argument (door number):
+	*/
+	if (arg.compare("") != 0)
+	{
+		i = atoi(arg.c_str());
+		m_playerx = (SIZE_MINIGAMES_DOOR_FIRST_XOFFSET+(i*SIZE_MINIGAMES_DOOR_XGAP + 2*(i+.25)*(SIZE_MINIGAMES_DOOR_HEIGHT/m_door.getSize().y*m_door.getSize().x)))/100.*(1920/(1080/20*2));
+	};
+	/*
 	 * Load exit texture:
 	*/
 	if (!m_exit_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "exit.png")))
@@ -152,6 +160,17 @@ void Minigames::process_event(sf::Event event, int mouse_x, int mouse_y, EventPr
 				case sf::Keyboard::Escape:
 					ret->set_gamemode(9); // go to levelchooser
 					break;
+				case sf::Keyboard::Return:
+					switch (m_door_num)
+					{
+						case 1:
+							ret->set_gamemode(9); // go to levelchooser
+							break;
+						case 2:
+							ret->set_gamemode(14); // go to flappy falkenstone
+							break;
+					}
+					break;
 				default:
 					if (event.key.code == m_key_goleft)
 						m_player_xaction = PLAYER_RUNNING_LEFT;
@@ -218,10 +237,7 @@ UniversalDrawableArray Minigames::get_drawables(void)
 		};
 	}
 	if (intersects != m_door_num)
-	{
 		m_door_num = intersects;
-		std::cout << "Player intersects now door #" << intersects << std::endl;
-	};
 	/*
 	 * Change casino sign frame:
 	*/
