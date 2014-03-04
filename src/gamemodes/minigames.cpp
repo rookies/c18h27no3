@@ -22,7 +22,13 @@
  */
 #include "minigames.hpp"
 
-Minigames::Minigames() : m_player_xaction(0), m_playerx(PLAYERPOS_X), m_backwards(false), m_player_texture_c(0), m_player_texturecounter(0)
+Minigames::Minigames() : 	m_player_xaction(0),
+							m_playerx(PLAYERPOS_X),
+							m_backwards(false),
+							m_player_texture_c(0),
+							m_player_texturecounter(0),
+							m_casinoframe(0),
+							m_door_num(0)
 {
 
 }
@@ -66,6 +72,13 @@ int Minigames::init(Config conf, std::string arg)
 		return 1;
 	m_exit.setTexture(m_exit_texture);
 	/*
+	 * Load casino texture:
+	*/
+	if (!m_casino_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "casino.png")))
+		return 1;
+	m_casino.setTexture(m_casino_texture);
+	m_casino.setTextureRect(sf::IntRect(0, 0, m_casino_texture.getSize().x, m_casino_texture.getSize().y/MINIGAMES_CASINOSIGN_IMGNUM));
+	/*
 	 * Set key values:
 	*/
 	m_key_goleft = conf.get("CONTROL__KEY_GOLEFT").value_int;
@@ -75,6 +88,7 @@ int Minigames::init(Config conf, std::string arg)
 	*/
 	m_actiontimer.restart();
 	m_playertimer.restart();
+	m_casinotimer.restart();
 	return 0;
 }
 int Minigames::uninit(void)
@@ -120,6 +134,12 @@ int Minigames::calculate_sizes(int w, int h)
 	scale = ((w*SIZE_MINIGAMES_SIGN_WIDTH)/100.)/m_exit_texture.getSize().y;
 	m_exit.setScale(scale, scale);
 	m_exit.setPosition(m_doors[0].getPosition().x+(m_doors[0].getGlobalBounds().width-m_exit.getGlobalBounds().width)/2., (SIZE_MINIGAMES_SIGN_YOFFSET*h)/100.-m_exit.getGlobalBounds().height);
+	/*
+	 * Set casino sign properties:
+	*/
+	scale = ((w*SIZE_MINIGAMES_CASINOSIGN_WIDTH)/100.)/m_casino_texture.getSize().y;
+	m_casino.setScale(scale, scale);
+	m_casino.setPosition((w-m_casino.getGlobalBounds().width)/2., (h*SIZE_MINIGAMES_CASINOSIGN_YOFFSET)/100.);
 	return 0;
 }
 void Minigames::process_event(sf::Event event, int mouse_x, int mouse_y, EventProcessorReturn *ret)
@@ -155,7 +175,7 @@ UniversalDrawableArray Minigames::get_drawables(void)
 	UniversalDrawableArray arr;
 	unsigned int i;
 	double multip, ssize;
-	bool intersects;
+	unsigned int intersects;
 	/*
 	 * Perform player actions:
 	*/
@@ -188,18 +208,31 @@ UniversalDrawableArray Minigames::get_drawables(void)
 	/*
 	 * Check for door interaction:
 	*/
-	intersects = false;
+	intersects = 0;
 	for (i=0; i < MINIGAMES_DOORNUM; i++)
 	{
 		if (m_doors[i].getGlobalBounds().intersects(m_player.getGlobalBounds()))
 		{
-			std::cout << "Player intersects door #" << i << std::endl;
-			intersects = true;
+			intersects = i+1;
 			break;
 		};
 	}
-	if (!intersects)
-		std::cout << "Player intersects no door." << std::endl;
+	if (intersects != m_door_num)
+	{
+		m_door_num = intersects;
+		std::cout << "Player intersects now door #" << intersects << std::endl;
+	};
+	/*
+	 * Change casino sign frame:
+	*/
+	if (m_casinotimer.getElapsedTime().asMilliseconds() >= MINIGAMES_CASINOSIGN_BLINK_MS)
+	{
+		m_casinoframe++;
+		if (m_casinoframe == MINIGAMES_CASINOSIGN_IMGNUM)
+			m_casinoframe = 0;
+		m_casino.setTextureRect(sf::IntRect(0, (m_casino_texture.getSize().y/MINIGAMES_CASINOSIGN_IMGNUM)*m_casinoframe, m_casino_texture.getSize().x, m_casino_texture.getSize().y/MINIGAMES_CASINOSIGN_IMGNUM));
+		m_casinotimer.restart();
+	};
 	/*
 	 * Reset timer:
 	*/
@@ -207,12 +240,13 @@ UniversalDrawableArray Minigames::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.init(3+MINIGAMES_DOORNUM);
+	arr.init(4+MINIGAMES_DOORNUM);
 	arr.add_sprite(m_grass);
 	for (i=0; i < MINIGAMES_DOORNUM; i++)
 		arr.add_sprite(m_doors[i]);
 	arr.add_sprite(m_exit);
 	arr.add_sprite(m_player);
+	arr.add_sprite(m_casino);
 	/*
 	 * Return array:
 	*/

@@ -78,5 +78,10 @@
 			unsigned int m_player_textures;
 			unsigned int m_player_texture_c;
 			int m_player_texturecounter;
+			sf::Texture m_casino_texture;
+			sf::Sprite m_casino;
+			sf::Clock m_casinotimer;
+			unsigned int m_casinoframe;
+			unsigned int m_door_num;
 	};
 #endif // MINIGAMES_HPP
