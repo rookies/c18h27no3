@@ -74,11 +74,14 @@ int Minigames::init(Config conf, std::string arg)
 		m_playerx = (SIZE_MINIGAMES_DOOR_FIRST_XOFFSET+(i*SIZE_MINIGAMES_DOOR_XGAP + 2*(i+.25)*(SIZE_MINIGAMES_DOOR_HEIGHT/m_door.getSize().y*m_door.getSize().x)))/100.*(1920/(1080/20*2));
 	};
 	/*
-	 * Load exit texture:
+	 * Load sign textures:
 	*/
-	if (!m_exit_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "exit.png")))
-		return 1;
-	m_exit.setTexture(m_exit_texture);
+	for (i=0; i < MINIGAMES_DOORNUM; i++)
+	{
+		if (!m_sign_textures[i].loadFromFile(get_data_path(DATALOADER_TYPE_IMG, m_sign_paths[i])))
+			return 1;
+		m_signs[i].setTexture(m_sign_textures[i]);
+	}
 	/*
 	 * Load casino texture:
 	*/
@@ -137,11 +140,14 @@ int Minigames::calculate_sizes(int w, int h)
 		m_doors[i].setPosition(((SIZE_MINIGAMES_DOOR_FIRST_XOFFSET+(i*SIZE_MINIGAMES_DOOR_XGAP))*w)/100., h/20.*19.5-m_doors[i].getGlobalBounds().height);
 	}
 	/*
-	 * Set exit properties:
+	 * Set sign properties:
 	*/
-	scale = ((w*SIZE_MINIGAMES_SIGN_WIDTH)/100.)/m_exit_texture.getSize().y;
-	m_exit.setScale(scale, scale);
-	m_exit.setPosition(m_doors[0].getPosition().x+(m_doors[0].getGlobalBounds().width-m_exit.getGlobalBounds().width)/2., (SIZE_MINIGAMES_SIGN_YOFFSET*h)/100.-m_exit.getGlobalBounds().height);
+	for (i=0; i < MINIGAMES_DOORNUM; i++)
+	{
+		scale = ((w*SIZE_MINIGAMES_SIGN_WIDTH)/100.)/m_sign_textures[i].getSize().x;
+		m_signs[i].setScale(scale, scale);
+		m_signs[i].setPosition(m_doors[i].getPosition().x+(m_doors[i].getGlobalBounds().width-m_signs[i].getGlobalBounds().width)/2., (SIZE_MINIGAMES_SIGN_YOFFSET*h)/100.-m_signs[i].getGlobalBounds().height);
+	}
 	/*
 	 * Set casino sign properties:
 	*/
@@ -256,11 +262,13 @@ UniversalDrawableArray Minigames::get_drawables(void)
 	/*
 	 * Add elements:
 	*/
-	arr.init(4+MINIGAMES_DOORNUM);
+	arr.init(3+(MINIGAMES_DOORNUM*2));
 	arr.add_sprite(m_grass);
 	for (i=0; i < MINIGAMES_DOORNUM; i++)
+	{
 		arr.add_sprite(m_doors[i]);
-	arr.add_sprite(m_exit);
+		arr.add_sprite(m_signs[i]);
+	}
 	arr.add_sprite(m_player);
 	arr.add_sprite(m_casino);
 	/*

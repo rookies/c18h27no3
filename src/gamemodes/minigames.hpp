@@ -64,8 +64,12 @@
 			sf::Sprite m_player;
 			sf::Texture m_door;
 			sf::Sprite m_doors[MINIGAMES_DOORNUM];
-			sf::Texture m_exit_texture;
-			sf::Sprite m_exit;
+			sf::Texture m_sign_textures[MINIGAMES_DOORNUM];
+			sf::Sprite m_signs[MINIGAMES_DOORNUM];
+			std::string m_sign_paths[MINIGAMES_DOORNUM] = {
+				"exit.png",
+				"minigames/flappyfstone.png"
+			};
 			int m_key_goleft;
 			int m_key_goright;
 			long double m_playerx;
