@@ -23,6 +23,9 @@
 #ifndef MINIGAMES_HPP
 #	define MINIGAMES_HPP
 
+#	define PLAYER_RUNNING_LEFT 1
+#	define PLAYER_RUNNING_RIGHT 2
+
 #	include "../gamemode.hpp"
 #	include "../universal_drawable.hpp"
 #	include "../event_processor_return.hpp"
@@ -52,6 +55,9 @@
 			*/
 			UniversalDrawableArray get_drawables(void); /* Called in Game::draw() */
 		private:
+			void place_player(void);
+			void toggle_playertexture(void);
+			
 			sf::Texture m_grass_texture;
 			sf::Sprite m_grass;
 			sf::Texture m_player_texture;
@@ -60,5 +66,17 @@
 			sf::Sprite m_doors[MINIGAMES_DOORNUM];
 			sf::Texture m_exit_texture;
 			sf::Sprite m_exit;
+			int m_key_goleft;
+			int m_key_goright;
+			long double m_playerx;
+			int m_player_xaction;
+			double m_blockw;
+			double m_blockh;
+			bool m_backwards;
+			sf::Clock m_actiontimer;
+			sf::Clock m_playertimer;
+			unsigned int m_player_textures;
+			unsigned int m_player_texture_c;
+			int m_player_texturecounter;
 	};
 #endif // MINIGAMES_HPP

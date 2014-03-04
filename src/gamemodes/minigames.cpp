@@ -22,7 +22,7 @@
  */
 #include "minigames.hpp"
 
-Minigames::Minigames()
+Minigames::Minigames() : m_player_xaction(0), m_playerx(PLAYERPOS_X), m_backwards(false), m_player_texture_c(0), m_player_texturecounter(0)
 {
 
 }
@@ -50,6 +50,7 @@ int Minigames::init(Config conf, std::string arg)
 	if (!m_player_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "player.png")))
 		return 1;
 	m_player.setTexture(m_player_texture);
+	m_player_textures = m_player_texture.getSize().x/(m_player_texture.getSize().y/3.);
 	m_player.setTextureRect(sf::IntRect(0, 0, m_player_texture.getSize().y/3, m_player_texture.getSize().y));
 	/*
 	 * Load door texture:
@@ -64,6 +65,16 @@ int Minigames::init(Config conf, std::string arg)
 	if (!m_exit_texture.loadFromFile(get_data_path(DATALOADER_TYPE_IMG, "exit.png")))
 		return 1;
 	m_exit.setTexture(m_exit_texture);
+	/*
+	 * Set key values:
+	*/
+	m_key_goleft = conf.get("CONTROL__KEY_GOLEFT").value_int;
+	m_key_goright = conf.get("CONTROL__KEY_GORIGHT").value_int;
+	/*
+	 * Init timers:
+	*/
+	m_actiontimer.restart();
+	m_playertimer.restart();
 	return 0;
 }
 int Minigames::uninit(void)
@@ -78,6 +89,11 @@ int Minigames::calculate_sizes(int w, int h)
 	float scale;
 	unsigned int i;
 	/*
+	 * Calculate block sizes:
+	*/
+	m_blockh = h/VERTICAL_BLOCK_NUMBER;
+	m_blockw = 2*m_blockh;
+	/*
 	 * Set grass properties:
 	*/
 	scale = h/20./16.;
@@ -88,7 +104,7 @@ int Minigames::calculate_sizes(int w, int h)
 	*/
 	scale = (h/VERTICAL_BLOCK_NUMBER*3)/24;
 	m_player.setScale(scale, scale);
-	m_player.setPosition(h/20.*2*1, h/20.*16.5);
+	place_player();
 	/*
 	 * Set door properties:
 	*/
@@ -116,7 +132,18 @@ void Minigames::process_event(sf::Event event, int mouse_x, int mouse_y, EventPr
 				case sf::Keyboard::Escape:
 					ret->set_gamemode(9); // go to levelchooser
 					break;
+				default:
+					if (event.key.code == m_key_goleft)
+						m_player_xaction = PLAYER_RUNNING_LEFT;
+					else if (event.key.code == m_key_goright)
+						m_player_xaction = PLAYER_RUNNING_RIGHT;
 			}
+			break;
+		case sf::Event::KeyReleased:
+			if (event.key.code == m_key_goleft && m_player_xaction == PLAYER_RUNNING_LEFT)
+				m_player_xaction = 0;
+			else if (event.key.code == m_key_goright && m_player_xaction == PLAYER_RUNNING_RIGHT)
+				m_player_xaction = 0;
 			break;
 	}
 }
@@ -127,6 +154,56 @@ UniversalDrawableArray Minigames::get_drawables(void)
 	*/
 	UniversalDrawableArray arr;
 	unsigned int i;
+	double multip, ssize;
+	bool intersects;
+	/*
+	 * Perform player actions:
+	*/
+	multip = m_actiontimer.getElapsedTime().asMilliseconds()/12.;
+	ssize = PLAYER_XSTEPSIZE*multip;
+	/*
+	 * Perform X actions (running):
+	*/
+	switch (m_player_xaction)
+	{
+		case PLAYER_RUNNING_LEFT:
+			if (m_playerx-ssize >= 0)
+			{
+				m_playerx -= ssize;
+				m_backwards = true;
+				toggle_playertexture();
+				place_player();
+			};
+			break;
+		case PLAYER_RUNNING_RIGHT:
+			if (m_playerx <= 34)
+			{
+				m_playerx += ssize;
+				m_backwards = false;
+				toggle_playertexture();
+				place_player();
+			};
+			break;
+	}
+	/*
+	 * Check for door interaction:
+	*/
+	intersects = false;
+	for (i=0; i < MINIGAMES_DOORNUM; i++)
+	{
+		if (m_doors[i].getGlobalBounds().intersects(m_player.getGlobalBounds()))
+		{
+			std::cout << "Player intersects door #" << i << std::endl;
+			intersects = true;
+			break;
+		};
+	}
+	if (!intersects)
+		std::cout << "Player intersects no door." << std::endl;
+	/*
+	 * Reset timer:
+	*/
+	m_actiontimer.restart();
 	/*
 	 * Add elements:
 	*/
@@ -140,4 +217,45 @@ UniversalDrawableArray Minigames::get_drawables(void)
 	 * Return array:
 	*/
 	return arr;
+}
+void Minigames::toggle_playertexture(void)
+{
+	/*
+	 * Variable declarations:
+	*/
+	unsigned int width;
+	/*
+	 * Check if we have to toggle:
+	*/
+	if (m_playertimer.getElapsedTime().asMilliseconds() < 100)
+		return;
+	if (m_player_texturecounter < 5)
+	{
+		m_player_texturecounter++;
+		return;
+	};
+	/*
+	 * Yes, toggle:
+	*/
+	if (m_player_texture_c == m_player_textures-1)
+		m_player_texture_c = 0;
+	else
+		m_player_texture_c++;
+	/*
+	 * If we're running backwards, flip the texture:
+	*/
+	width = m_player_texture.getSize().x/m_player_textures;
+	if (m_backwards)
+		m_player.setTextureRect(sf::IntRect(width*(m_player_texture_c+1), 0, -width, m_player_texture.getSize().y));
+	else
+		m_player.setTextureRect(sf::IntRect(width*m_player_texture_c, 0, width, m_player_texture.getSize().y));
+	/*
+	 * Reset counter & clock:
+	*/
+	m_player_texturecounter = 0;
+	m_playertimer.restart();
+}
+void Minigames::place_player(void)
+{
+	m_player.setPosition(m_playerx*m_blockw/2., m_blockh*16.5);
 }
